@@ -1,5 +1,6 @@
+use models::vector_commitment_config::VectorCommitmentConfig;
+
 struct TableCommitmentConfig {
     columns: felt252,
-    height: felt252,
-    verifier_friendly_commitment_layers: felt252,
+    vector: VectorCommitmentConfig
 }
