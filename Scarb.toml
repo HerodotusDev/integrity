@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "src/models",
     "src/channel",
     "contract/channel",
 ]
