@@ -5,7 +5,6 @@ members = [
 ]
 
 [workspace.package]
-name = "cairo-verifier"
 edition = "2021"
 version = "0.1.0"
 
