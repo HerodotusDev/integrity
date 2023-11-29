@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = [
+    "src/test_sandbox"
+]
+
+[workspace.package]
+name = "cairo-verifier"
+edition = "2021"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace.dependencies]
+starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+tokio = { version = "1.0", features = ["macros"] }
+thiserror = "1"
+cairo-lang-starknet = "2"
+lazy_static = "1.4.0"

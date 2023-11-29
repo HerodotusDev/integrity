@@ -1,0 +1,22 @@
+[package]
+name = "channel_contract"
+version = "0.1.0"
+
+[dependencies]
+openzeppelin = { workspace = true }
+snforge_std = { workspace = true }
+starknet = { workspace = true }
+channel = { path = "../../src/channel"}
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[tool.snforge]
+exit_first = true
+
+# Default profile
+[tool.sncast]
+account = "herodotus"
+network = "testnet"
+url = "https://starknet-testnet.public.blastapi.io"

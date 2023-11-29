@@ -2,13 +2,24 @@
 version = 1
 
 [[package]]
-name = "cairo_verifier"
+name = "channel"
+version = "0.1.0"
+
+[[package]]
+name = "channel_contract"
 version = "0.1.0"
 dependencies = [
+ "channel",
+ "openzeppelin",
  "snforge_std",
 ]
 
 [[package]]
+name = "openzeppelin"
+version = "0.8.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts.git?tag=v0.8.0#c23e8e96de60e6e3159b1ff8591a1187269c0eb7"
+
+[[package]]
 name = "snforge_std"
 version = "0.1.0"
-source = "git+https://github.com/foundry-rs/starknet-foundry.git?tag=v0.11.0#5465c41541c44a7804d16318fab45a2f0ccec9e7"
+source = "git+https://github.com/foundry-rs/starknet-foundry?tag=v0.11.0#5465c41541c44a7804d16318fab45a2f0ccec9e7"
