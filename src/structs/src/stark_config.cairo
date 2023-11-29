@@ -1,7 +1,7 @@
-use models::traces_config::TracesConfig;
-use models::table_commitment_config::TableCommitmentConfig;
-use models::fri_config::FriConfig;
-use models::proof_of_work_config::ProofOfWorkConfig;
+use structs::traces_config::TracesConfig;
+use structs::table_commitment_config::TableCommitmentConfig;
+use structs::fri_config::FriConfig;
+use structs::proof_of_work_config::ProofOfWorkConfig;
 
 struct StarkConfig {
     traces: TracesConfig,

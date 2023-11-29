@@ -1,4 +1,4 @@
-use models::stark_config::StarkConfig;
+use structs::stark_config::StarkConfig;
 
 struct StarkProof {
     config: StarkConfig,

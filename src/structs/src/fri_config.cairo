@@ -1,4 +1,4 @@
-use models::table_commitment_config::TableCommitmentConfig;
+use structs::table_commitment_config::TableCommitmentConfig;
 
 struct FriConfig {
     // Log2 of the size of the input layer to FRI.

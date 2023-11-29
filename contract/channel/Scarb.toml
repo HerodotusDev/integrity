@@ -6,7 +6,7 @@ version = "0.1.0"
 openzeppelin = { workspace = true }
 snforge_std = { workspace = true }
 starknet = { workspace = true }
-channel = { path = "../../src/channel"}
+channel = { workspace = true }
 
 [[target.starknet-contract]]
 sierra = true

@@ -1,0 +1,6 @@
+[package]
+name = "verifier"
+version = "0.1.0"
+
+[dependencies]
+structs = { workspace = true }
