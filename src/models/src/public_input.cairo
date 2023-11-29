@@ -1,5 +1,3 @@
-use models::stark_config::StarkConfig;
-
 struct StarkProof {
     config: StarkConfig,
 // public_input: PublicInput,
