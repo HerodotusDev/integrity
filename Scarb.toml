@@ -3,7 +3,7 @@ members = [
     "src/structs",
     "src/verifier",
     "src/channel",
-    "contract/channel",
+    "contract/channel_contract",
 ]
 name = "cairo_verifier"
 version = "0.1.0"
@@ -15,3 +15,11 @@ starknet = "2.3.1"
 structs = { path = "src/structs" }
 verifier = { path = "src/verifier" }
 channel = { path = "src/channel" }
+
+[tool.snforge]
+exit_first = true
+
+# Default profile
+[tool.sncast]
+account = "cairo1_verifier"
+url = "https://devnet.starknet.visoft.solutions"

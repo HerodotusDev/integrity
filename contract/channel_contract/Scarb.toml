@@ -11,12 +11,3 @@ channel = { workspace = true }
 [[target.starknet-contract]]
 sierra = true
 casm = true
-
-[tool.snforge]
-exit_first = true
-
-# Default profile
-[tool.sncast]
-account = "herodotus"
-network = "testnet"
-url = "https://starknet-testnet.public.blastapi.io"
