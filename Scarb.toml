@@ -3,6 +3,7 @@ members = [
     "src/structs",
     "src/verifier",
     "src/channel",
+    "src/common",
     "contract/channel_contract",
 ]
 name = "cairo_verifier"
@@ -15,6 +16,7 @@ starknet = "2.3.1"
 structs = { path = "src/structs" }
 verifier = { path = "src/verifier" }
 channel = { path = "src/channel" }
+common = { path = "src/common" }
 
 [tool.snforge]
 exit_first = true
