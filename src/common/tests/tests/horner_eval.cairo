@@ -1,6 +1,6 @@
 use core::debug::PrintTrait;
 use core::array::ArrayTrait;
-use common::horner_eval;
+use common::horner_eval::horner_eval;
 
 #[test]
 fn test_horner_eval_0() {
