@@ -1,7 +1,5 @@
-use core::traits::Destruct;
-use core::option::OptionTrait;
-use core::traits::TryInto;
 use core::DivRem;
+use core::traits::TryInto;
 use core::zeroable::NonZero;
 
 // 2^8 = 256
