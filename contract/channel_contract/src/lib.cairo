@@ -10,6 +10,8 @@ mod ChannelContract {
 
     #[external(v0)]
     impl ChannelContractImpl of super::IChannelContract<ContractState> {
-        fn add(ref self: ContractState, a: felt252, b: felt252) -> felt252 {0}
+        fn add(ref self: ContractState, a: felt252, b: felt252) -> felt252 {
+            0
+        }
     }
 }

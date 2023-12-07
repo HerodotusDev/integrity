@@ -10,7 +10,9 @@ fn horner_eval(coefs: Array<felt252>, point: felt252) -> felt252 {
         if i != 0 {
             i -= 1;
             res = *coefs.at(i) + point * res;
-        } else { break; }
+        } else {
+            break;
+        }
     };
     res
 }
