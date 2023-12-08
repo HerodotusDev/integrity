@@ -4,11 +4,15 @@ version = 1
 [[package]]
 name = "cairo_blake2s"
 version = "0.1.0"
-source = "git+https://github.com/HerodotusDev/cairo-blake2s.git#96112bdbe80c3ee8a0845a4792339b9b1ce8d03a"
+source = "git+https://github.com/HerodotusDev/cairo-blake2s.git#7aea89a1a9fbdfb689faa6086c8dd68abae0b5cd"
 
 [[package]]
 name = "channel"
 version = "0.1.0"
+dependencies = [
+ "cairo_blake2s",
+ "common",
+]
 
 [[package]]
 name = "channel_contract"
@@ -22,9 +26,6 @@ dependencies = [
 [[package]]
 name = "common"
 version = "0.1.0"
-dependencies = [
- "cairo_blake2s",
-]
 
 [[package]]
 name = "openzeppelin"
