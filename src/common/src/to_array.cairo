@@ -1,6 +1,7 @@
 use core::DivRem;
 use core::traits::TryInto;
 use core::zeroable::NonZero;
+use core::array::ArrayTrait;
 
 // 2^8 = 256
 const U128maxU8: u128 = 256;
@@ -19,16 +20,22 @@ const U64maxU32: u64 = 4294967296;
 
 trait ToArrayTrait<F, T> {
     fn to_array_le(self: F, ref output: Array<T>);
+    fn to_array_be(self: F, ref output: Array<T>);
 }
 
-impl U256ToArrayLeU32 of ToArrayTrait<u256, u32> {
+impl U256ToArrayU32 of ToArrayTrait<u256, u32> {
     fn to_array_le(mut self: u256, ref output: Array<u32>) {
         self.low.to_array_le(ref output);
         self.high.to_array_le(ref output);
     }
+
+    fn to_array_be(mut self: u256, ref output: Array<u32>) {
+        self.high.to_array_be(ref output);
+        self.low.to_array_be(ref output);
+    }
 }
 
-impl U128ToArrayLeU32 of ToArrayTrait<u128, u32> {
+impl U128ToArrayU32 of ToArrayTrait<u128, u32> {
     fn to_array_le(mut self: u128, ref output: Array<u32>) {
         let mut i = 4;
         loop {
@@ -42,4 +49,26 @@ impl U128ToArrayLeU32 of ToArrayTrait<u128, u32> {
             }
         }
     }
+
+    fn to_array_be(mut self: u128, ref output: Array<u32>) {
+        let mut array = ArrayTrait::<u32>::new();
+        self.to_array_le(ref array);
+        let mut i = array.len();
+        loop {
+            if i != 0 {
+                i -= 1;
+                output.append(*array.at(i));
+            } else {
+                break;
+            }
+        }
+    }
 }
+
+
+// function flipEndiannessU128(u128 number):
+//     u128 reversed_number = 0
+//     for i from 0 to 15:
+//         byte = (number / 256^i) % 256
+//         reversed_number += byte * 256^(15 - i)
+//     return reversed_number

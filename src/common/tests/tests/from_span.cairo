@@ -9,7 +9,7 @@ fn test_from_array_1() {
     array.append(0x00000000);
     array.append(0x00000000);
     array.append(0x00000000);
-    assert(array.span().from_span() == 1827398791_u128, 'Invalid value');
+    assert(array.span().from_span_le() == 1827398791_u128, 'Invalid value');
 }
 
 #[test]
@@ -19,7 +19,7 @@ fn test_from_array_2() {
     array.append(0x0040ec18);
     array.append(0x00000000);
     array.append(0x00000000);
-    assert(array.span().from_span() == 18273987910128309_u128, 'Invalid value');
+    assert(array.span().from_span_le() == 18273987910128309_u128, 'Invalid value');
 }
 
 #[test]
@@ -34,7 +34,7 @@ fn test_from_array_3() {
     array.append(0x00000000);
     array.append(0x00000000);
     assert(
-        array.span().from_span() == 182739879101283091827398791012830918273987910128309_u256,
+        array.span().from_span_le() == 182739879101283091827398791012830918273987910128309_u256,
         'Invalid value'
     );
 }
@@ -53,7 +53,7 @@ fn test_from_array_4() {
     assert(
         array
             .span()
-            .from_span() == 18273987910112830918273987910128309910128309182739879101283099101283091827399_u256,
+            .from_span_le() == 18273987910112830918273987910128309910128309182739879101283099101283091827399_u256,
         'Invalid value'
     );
 }

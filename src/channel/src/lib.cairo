@@ -36,8 +36,8 @@ impl ChannelImpl of ChannelTrait {
 
     fn random_uint256_to_prover(ref self: Channel) -> u256 {
         let mut hash_data = ArrayTrait::<u32>::new();
-        self.digest.to_array_le(ref hash_data);
-        self.counter.to_array_le(ref hash_data);
+        self.digest.to_array_be(ref hash_data);
+        self.counter.to_array_be(ref hash_data);
         self.counter += 1;
         blake2s(hash_data)
     }
