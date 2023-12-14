@@ -11,6 +11,7 @@ const C_PRIME_AS_UINT256_HIGH: u128 =
     329648542954659146201578277794459156480; // 31 * 0x8000000000000110000000000000000;
 const STARK_PRIME: u256 =
     3618502788666131213697322783095070105623107215331596699973092056135872020481;
+const INVERSE_2_TO_256_MOD_STARK_PRIME: felt252 = 113078212145816603762751633895895194930089271709401121343797004406777446400;
 
 #[derive(Drop)]
 struct Channel {
@@ -55,7 +56,8 @@ impl ChannelImpl of ChannelTrait {
                 let rand = self.random_uint256_to_prover();
                 if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
                     n -= 1;
-                    res.append((rand % STARK_PRIME).try_into().unwrap());
+                    let to_append = (rand % STARK_PRIME).try_into().unwrap();
+                    res.append(to_append * INVERSE_2_TO_256_MOD_STARK_PRIME);
                 }
             } else {
                 break;
