@@ -51,7 +51,37 @@ impl U128ToArrayU32 of ToArrayTrait<u128, u32> {
     }
 
     fn to_array_be(mut self: u128, ref output: Array<u32>) {
-        let mut array = ArrayTrait::<u32>::new();
+        let mut array = ArrayTrait::<u8>::new();
+        self.to_array_le(ref array);
+        let mut i = array.len();
+        loop {
+            if i != 0 {
+                i -= 4;
+                output.append(((*array.at(i+3)).into() + (*array.at(i+2)).into()*256_u32 + (*array.at(i+1)).into()*65536_u32 + (*array.at(i)).into()*16777216_u32));
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+impl U128ToArrayU8 of ToArrayTrait<u128, u8> {
+    fn to_array_le(mut self: u128, ref output: Array<u8>) {
+        let mut i = 16;
+        loop {
+            if i != 0 {
+                i -= 1;
+                let (q, r) = DivRem::div_rem(self, U128maxU8.try_into().unwrap());
+                output.append(r.try_into().unwrap());
+                self = q;
+            } else {
+                break;
+            }
+        }
+    }
+
+    fn to_array_be(mut self: u128, ref output: Array<u8>) {
+        let mut array = ArrayTrait::<u8>::new();
         self.to_array_le(ref array);
         let mut i = array.len();
         loop {
@@ -64,11 +94,3 @@ impl U128ToArrayU32 of ToArrayTrait<u128, u32> {
         }
     }
 }
-
-
-// function flipEndiannessU128(u128 number):
-//     u128 reversed_number = 0
-//     for i from 0 to 15:
-//         byte = (number / 256^i) % 256
-//         reversed_number += byte * 256^(15 - i)
-//     return reversed_number

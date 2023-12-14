@@ -1,3 +1,4 @@
+use common::flip_endiannes::FlipEndiannessTrait;
 use core::option::OptionTrait;
 use core::traits::TryInto;
 use core::array::ArrayTrait;
@@ -39,7 +40,7 @@ impl ChannelImpl of ChannelTrait {
         self.digest.to_array_be(ref hash_data);
         self.counter.to_array_be(ref hash_data);
         self.counter += 1;
-        blake2s(hash_data)
+        blake2s(hash_data).flip_endiannes()
     }
 
     fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
