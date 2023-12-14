@@ -3,28 +3,6 @@ use core::array::ArrayTrait;
 use common::from_span::FromSpanTrait;
 
 #[test]
-fn test_from_array_0() {
-    let mut array = ArrayTrait::<u8>::new();
-    array.append(0x0);
-    array.append(0x1);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    array.append(0x0);
-    assert(array.span().from_span() == 256_u128, 'Invalid value');
-}
-
-#[test]
 fn test_from_array_1() {
     let mut array = ArrayTrait::<u32>::new();
     array.append(0x6cebe487);

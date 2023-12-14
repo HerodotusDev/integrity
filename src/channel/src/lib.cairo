@@ -14,7 +14,7 @@ const STARK_PRIME: u256 =
 #[derive(Drop)]
 struct Channel {
     digest: u256,
-    counter: u128,
+    counter: u256,
 }
 
 trait ChannelTrait {
@@ -36,8 +36,8 @@ impl ChannelImpl of ChannelTrait {
 
     fn random_uint256_to_prover(ref self: Channel) -> u256 {
         let mut hash_data = ArrayTrait::<u32>::new();
-        self.digest.to_array(ref hash_data);
-        u256 { low: self.counter, high: 0 }.to_array(ref hash_data);
+        self.digest.to_array_le(ref hash_data);
+        self.counter.to_array_le(ref hash_data);
         self.counter += 1;
         blake2s(hash_data)
     }

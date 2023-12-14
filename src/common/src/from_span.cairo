@@ -20,23 +20,6 @@ trait FromSpanTrait<F, T> {
     fn from_span(self: Span<F>) -> T;
 }
 
-impl U128FromSpanU8 of FromSpanTrait<u8, u128> {
-    fn from_span(self: Span<u8>) -> u128 {
-        let mut out = 0_u128;
-        let mut i = 16;
-        loop {
-            if i != 0 {
-                i -= 1;
-                out = out * U128maxU8;
-                out = out + (*self.at(i)).into();
-            } else {
-                break;
-            }
-        };
-        out
-    }
-}
-
 impl U256FromSpanU32 of FromSpanTrait<u32, u256> {
     fn from_span(self: Span<u32>) -> u256 {
         u256 { low: self.from_span(), high: self.slice(4, 4).from_span(), }

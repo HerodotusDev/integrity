@@ -18,34 +18,18 @@ const U128maxU32: u128 = 4294967296;
 const U64maxU32: u64 = 4294967296;
 
 trait ToArrayTrait<F, T> {
-    fn to_array(self: F, ref output: Array<T>);
+    fn to_array_le(self: F, ref output: Array<T>);
 }
 
-impl U128ToArrayU8 of ToArrayTrait<u128, u8> {
-    fn to_array(mut self: u128, ref output: Array<u8>) {
-        let mut i = 16;
-        loop {
-            if i != 0 {
-                i -= 1;
-                let (q, r) = DivRem::div_rem(self, U128maxU8.try_into().unwrap());
-                output.append(r.try_into().unwrap());
-                self = q;
-            } else {
-                break;
-            }
-        }
+impl U256ToArrayLeU32 of ToArrayTrait<u256, u32> {
+    fn to_array_le(mut self: u256, ref output: Array<u32>) {
+        self.low.to_array_le(ref output);
+        self.high.to_array_le(ref output);
     }
 }
 
-impl U256ToArrayU32 of ToArrayTrait<u256, u32> {
-    fn to_array(mut self: u256, ref output: Array<u32>) {
-        self.low.to_array(ref output);
-        self.high.to_array(ref output);
-    }
-}
-
-impl U128ToArrayU32 of ToArrayTrait<u128, u32> {
-    fn to_array(mut self: u128, ref output: Array<u32>) {
+impl U128ToArrayLeU32 of ToArrayTrait<u128, u32> {
+    fn to_array_le(mut self: u128, ref output: Array<u32>) {
         let mut i = 4;
         loop {
             if i != 0 {
