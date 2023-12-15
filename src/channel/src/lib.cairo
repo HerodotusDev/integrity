@@ -4,7 +4,7 @@ use core::traits::TryInto;
 use core::array::ArrayTrait;
 use core::traits::Into;
 use common::to_array::ToArrayTrait;
-use cairo_blake2s::blake2s::blake2s;
+use common::blake2s::blake2s;
 
 const C_PRIME_AS_UINT256_LOW: u128 = 31;
 const C_PRIME_AS_UINT256_HIGH: u128 =
