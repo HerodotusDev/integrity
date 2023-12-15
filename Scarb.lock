@@ -2,23 +2,5 @@
 version = 1
 
 [[package]]
-name = "channel"
+name = "cairo_verifier"
 version = "0.1.0"
-dependencies = [
- "common",
-]
-
-[[package]]
-name = "common"
-version = "0.1.0"
-
-[[package]]
-name = "structs"
-version = "0.1.0"
-
-[[package]]
-name = "verifier"
-version = "0.1.0"
-dependencies = [
- "structs",
-]

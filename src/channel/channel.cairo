@@ -1,10 +1,6 @@
-use common::flip_endiannes::FlipEndiannessTrait;
-use core::option::OptionTrait;
-use core::traits::TryInto;
-use core::array::ArrayTrait;
-use core::traits::Into;
-use common::to_array::ToArrayTrait;
-use common::blake2s::blake2s;
+use cairo_verifier::common::flip_endiannes::FlipEndiannessTrait;
+use cairo_verifier::common::to_array::ToArrayTrait;
+use cairo_verifier::common::blake2s::blake2s;
 
 const C_PRIME_AS_UINT256_LOW: u128 = 31;
 const C_PRIME_AS_UINT256_HIGH: u128 =

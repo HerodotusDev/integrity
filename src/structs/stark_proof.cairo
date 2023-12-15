@@ -1,4 +1,4 @@
-use structs::stark_config::StarkConfig;
+use cairo_verifier::structs::stark_config::StarkConfig;
 
 struct StarkProof {
     config: StarkConfig,

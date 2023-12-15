@@ -1,4 +1,4 @@
-use structs::table_commitment_config::TableCommitmentConfig;
+use cairo_verifier::structs::table_commitment_config::TableCommitmentConfig;
 
 struct TracesConfig {
     original: TableCommitmentConfig,

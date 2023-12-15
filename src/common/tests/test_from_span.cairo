@@ -1,8 +1,7 @@
-use core::debug::PrintTrait;
-use core::array::ArrayTrait;
-use common::from_span::FromSpanTrait;
+use cairo_verifier::common::from_span::FromSpanTrait;
 
 #[test]
+#[available_gas(9999999999)]
 fn test_from_array_1() {
     let mut array = ArrayTrait::<u32>::new();
     array.append(0x6cebe487);
@@ -13,6 +12,7 @@ fn test_from_array_1() {
 }
 
 #[test]
+#[available_gas(9999999999)]
 fn test_from_array_2() {
     let mut array = ArrayTrait::<u32>::new();
     array.append(0x5e0352b5);
@@ -23,6 +23,7 @@ fn test_from_array_2() {
 }
 
 #[test]
+#[available_gas(9999999999)]
 fn test_from_array_3() {
     let mut array = ArrayTrait::<u32>::new();
     array.append(0xb49552b5);
@@ -40,6 +41,7 @@ fn test_from_array_3() {
 }
 
 #[test]
+#[available_gas(9999999999)]
 fn test_from_array_4() {
     let mut array = ArrayTrait::<u32>::new();
     array.append(0x6f254ac7);

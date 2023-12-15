@@ -1,4 +1,4 @@
-use common::blake2s::{blake2s, load32};
+use cairo_verifier::common::blake2s::{blake2s, load32};
 
 
 fn get_arr_v1(n: u32) -> Array<u32> {

@@ -1,7 +1,7 @@
-use structs::traces_config::TracesConfig;
-use structs::table_commitment_config::TableCommitmentConfig;
-use structs::fri_config::FriConfig;
-use structs::proof_of_work_config::ProofOfWorkConfig;
+use cairo_verifier::structs::traces_config::TracesConfig;
+use cairo_verifier::structs::table_commitment_config::TableCommitmentConfig;
+use cairo_verifier::structs::fri_config::FriConfig;
+use cairo_verifier::structs::proof_of_work_config::ProofOfWorkConfig;
 
 struct StarkConfig {
     traces: TracesConfig,

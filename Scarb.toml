@@ -1,4 +1,3 @@
-[workspace]
-members = ["crates/*"]
+[package]
 name = "cairo_verifier"
 version = "0.1.0"

@@ -1,8 +1,7 @@
-use core::debug::PrintTrait;
-use core::array::ArrayTrait;
-use common::horner_eval::horner_eval;
+use cairo_verifier::common::horner_eval::horner_eval;
 
 #[test]
+#[available_gas(9999999999)]
 fn test_horner_eval_0() {
     let mut coefs = ArrayTrait::<felt252>::new();
     let eval = horner_eval(coefs, 1);
@@ -10,6 +9,7 @@ fn test_horner_eval_0() {
 }
 
 #[test]
+#[available_gas(9999999999)]
 fn test_horner_eval_1() {
     let mut coefs = ArrayTrait::<felt252>::new();
     coefs.append(1);
@@ -18,6 +18,7 @@ fn test_horner_eval_1() {
 }
 
 #[test]
+#[available_gas(9999999999)]
 fn test_horner_eval_2() {
     let mut coefs = ArrayTrait::<felt252>::new();
     coefs.append(4);
@@ -30,6 +31,7 @@ fn test_horner_eval_2() {
 }
 
 #[test]
+#[available_gas(9999999999)]
 fn test_horner_eval_3() {
     let mut coefs = ArrayTrait::<felt252>::new();
     coefs.append(4);
