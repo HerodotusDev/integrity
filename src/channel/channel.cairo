@@ -1,13 +1,12 @@
-use cairo_verifier::common::flip_endiannes::FlipEndiannessTrait;
-use cairo_verifier::common::to_array::ToArrayTrait;
-use cairo_verifier::common::blake2s::blake2s;
+use cairo_verifier::common::{flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s};
 
 const C_PRIME_AS_UINT256_LOW: u128 = 31;
 const C_PRIME_AS_UINT256_HIGH: u128 =
     329648542954659146201578277794459156480; // 31 * 0x8000000000000110000000000000000;
 const STARK_PRIME: u256 =
     3618502788666131213697322783095070105623107215331596699973092056135872020481;
-const INVERSE_2_TO_256_MOD_STARK_PRIME: felt252 = 113078212145816603762751633895895194930089271709401121343797004406777446400;
+const INVERSE_2_TO_256_MOD_STARK_PRIME: felt252 =
+    113078212145816603762751633895895194930089271709401121343797004406777446400;
 
 #[derive(Drop)]
 struct Channel {
@@ -15,18 +14,7 @@ struct Channel {
     counter: u256,
 }
 
-trait ChannelTrait {
-    fn new(digest: u256) -> Channel;
-
-    // Generate randomness.
-    fn random_uint256_to_prover(ref self: Channel) -> u256;
-    fn random_felts_to_prover(ref self: Channel, n: felt252) -> Array<felt252>;
-// // Reads a 64bit integer from the prover.
-// fn read_uint256_from_prover(ref self: Channel) -> u256;
-// // Reads a field elements from the prover
-// fn read_felts_from_prover(ref self: Channel, n: felt252) -> Array<felt252>;
-}
-
+#[generate_trait]
 impl ChannelImpl of ChannelTrait {
     fn new(digest: u256) -> Channel {
         Channel { digest: digest, counter: 0 }

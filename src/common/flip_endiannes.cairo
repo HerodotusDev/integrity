@@ -1,5 +1,4 @@
-use cairo_verifier::common::from_span::FromSpanTrait;
-use cairo_verifier::common::to_array::ToArrayTrait;
+use cairo_verifier::common::{from_span::FromSpanTrait, to_array::ToArrayTrait};
 
 trait FlipEndiannessTrait<F> {
     fn flip_endiannes(self: F) -> F;

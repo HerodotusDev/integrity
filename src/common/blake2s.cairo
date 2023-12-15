@@ -87,19 +87,12 @@ fn blake2s_init() -> blake2s_state {
         i += 1;
     };
 
-    blake2s_state {
-        h: blake2s_IV,
-        t0: 0,
-        t1: 0,
-        f0: 0,
-        buf: buf,
-        buflen: 0
-    }
+    blake2s_state { h: blake2s_IV, t0: 0, t1: 0, f0: 0, buf: buf, buflen: 0 }
 }
 
 fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
     assert(m.len() == 16, 'in array must have length 16');
-    
+
     let mut v0: u32 = *s.h[0];
     let mut v1: u32 = *s.h[1];
     let mut v2: u32 = *s.h[2];
@@ -139,21 +132,45 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
                 break;
             }
             if i == 0 {
-                a = v0; b = v4; c = v8; d = v12;
+                a = v0;
+                b = v4;
+                c = v8;
+                d = v12;
             } else if i == 1 {
-                a = v1; b = v5; c = v9; d = v13;
+                a = v1;
+                b = v5;
+                c = v9;
+                d = v13;
             } else if i == 2 {
-                a = v2; b = v6; c = v10; d = v14;
+                a = v2;
+                b = v6;
+                c = v10;
+                d = v14;
             } else if i == 3 {
-                a = v3; b = v7; c = v11; d = v15;
+                a = v3;
+                b = v7;
+                c = v11;
+                d = v15;
             } else if i == 4 {
-                a = v0; b = v5; c = v10; d = v15;
+                a = v0;
+                b = v5;
+                c = v10;
+                d = v15;
             } else if i == 5 {
-                a = v1; b = v6; c = v11; d = v12;
+                a = v1;
+                b = v6;
+                c = v11;
+                d = v12;
             } else if i == 6 {
-                a = v2; b = v7; c = v8; d = v13;
+                a = v2;
+                b = v7;
+                c = v8;
+                d = v13;
             } else if i == 7 {
-                a = v3; b = v4; c = v9; d = v14;
+                a = v3;
+                b = v4;
+                c = v9;
+                d = v14;
             };
 
             // G function begin
@@ -181,21 +198,45 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
             // G function end
 
             if i == 0 {
-                v0 = a; v4 = b; v8 = c; v12 = d;
+                v0 = a;
+                v4 = b;
+                v8 = c;
+                v12 = d;
             } else if i == 1 {
-                v1 = a; v5 = b; v9 = c; v13 = d;
+                v1 = a;
+                v5 = b;
+                v9 = c;
+                v13 = d;
             } else if i == 2 {
-                v2 = a; v6 = b; v10 = c; v14 = d;
+                v2 = a;
+                v6 = b;
+                v10 = c;
+                v14 = d;
             } else if i == 3 {
-                v3 = a; v7 = b; v11 = c; v15 = d;
+                v3 = a;
+                v7 = b;
+                v11 = c;
+                v15 = d;
             } else if i == 4 {
-                v0 = a; v5 = b; v10 = c; v15 = d;
+                v0 = a;
+                v5 = b;
+                v10 = c;
+                v15 = d;
             } else if i == 5 {
-                v1 = a; v6 = b; v11 = c; v12 = d;
+                v1 = a;
+                v6 = b;
+                v11 = c;
+                v12 = d;
             } else if i == 6 {
-                v2 = a; v7 = b; v8 = c; v13 = d;
+                v2 = a;
+                v7 = b;
+                v8 = c;
+                v13 = d;
             } else if i == 7 {
-                v3 = a; v4 = b; v9 = c; v14 = d;
+                v3 = a;
+                v4 = b;
+                v9 = c;
+                v14 = d;
             };
 
             i += 1;

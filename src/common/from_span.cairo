@@ -1,6 +1,3 @@
-use core::array::SpanTrait;
-use core::traits::Into;
-
 // 2^8 = 256
 const U128maxU8: u128 = 256;
 const U64maxU8: u64 = 256;
