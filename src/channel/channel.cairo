@@ -1,4 +1,6 @@
-use cairo_verifier::common::{flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s};
+use cairo_verifier::common::{
+    flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s
+};
 
 const C_PRIME_AS_UINT256_LOW: u128 = 31;
 const C_PRIME_AS_UINT256_HIGH: u128 =

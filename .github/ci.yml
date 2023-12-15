@@ -1,0 +1,13 @@
+name: CI
+on:
+  push:
+  merge_group:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: software-mansion/setup-scarb@v1
+      - run: scarb fmt --check
+      - run: scarb test
