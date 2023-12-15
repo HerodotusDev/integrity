@@ -1,28 +1,4 @@
 [workspace]
-members = [
-    "src/structs",
-    "src/verifier",
-    "src/channel",
-    "src/common",
-    "contract/channel_contract",
-]
+members = ["crates/*"]
 name = "cairo_verifier"
 version = "0.1.0"
-
-[workspace.dependencies]
-openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.8.0" }
-snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.11.0" }
-cairo_blake2s = { git = "https://github.com/HerodotusDev/cairo-blake2s.git" }
-starknet = "2.3.1"
-structs = { path = "src/structs" }
-verifier = { path = "src/verifier" }
-channel = { path = "src/channel" }
-common = { path = "src/common" }
-
-[tool.snforge]
-exit_first = true
-
-# Default profile
-[tool.sncast]
-account = "cairo1_verifier"
-url = "https://devnet.starknet.visoft.solutions"

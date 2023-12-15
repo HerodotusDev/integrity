@@ -1,7 +1,0 @@
-[package]
-name = "channel"
-version = "0.1.0"
-
-[dependencies]
-cairo_blake2s = { workspace = true }
-common = { workspace = true }
