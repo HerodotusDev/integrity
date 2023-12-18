@@ -30,11 +30,7 @@ struct ContinuousPageHeader {
 #[generate_trait]
 impl PageImpl of PageTrait {
     // Returns the product of (z - (addr + alpha * val)) over a single page.
-    fn get_product(
-        self: @Page,
-        z: felt252,
-        alpha: felt252
-    ) -> felt252 {
+    fn get_product(self: @Page, z: felt252, alpha: felt252) -> felt252 {
         let mut res = 1;
         let mut i = 0;
         loop {
@@ -49,17 +45,17 @@ impl PageImpl of PageTrait {
 }
 
 fn get_continuous_pages_product(page_headers: Span<ContinuousPageHeader>) -> (felt252, felt252) {
-        let mut res = 1;
-        let mut total_length = 0;
-        let mut i = 0;
-        loop {
-            if i == page_headers.len() {
-                break (res, total_length);
-            }
-            let current = page_headers.at(i);
-
-            res *= *current.prod;
-            total_length += *current.size;
+    let mut res = 1;
+    let mut total_length = 0;
+    let mut i = 0;
+    loop {
+        if i == page_headers.len() {
+            break (res, total_length);
         }
+        let current = page_headers.at(i);
+
+        res *= *current.prod;
+        total_length += *current.size;
+    }
 }
 

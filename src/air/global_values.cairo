@@ -18,16 +18,13 @@ struct GlobalValues {
     initial_bitwise_addr: felt252,
     rc_min: felt252,
     rc_max: felt252,
-
     // Constants.
     offset_size: felt252,
     half_offset_size: felt252,
     pedersen_shift_point: EcPoint,
-
     // Periodic columns.
     pedersen_points_x: felt252,
     pedersen_points_y: felt252,
-
     // Interaction elements.
     memory_multi_column_perm_perm_interaction_elm: felt252,
     memory_multi_column_perm_hash_interaction_elm0: felt252,
@@ -35,7 +32,6 @@ struct GlobalValues {
     diluted_check_permutation_interaction_elm: felt252,
     diluted_check_interaction_z: felt252,
     diluted_check_interaction_alpha: felt252,
-
     // Permutation products.
     memory_multi_column_perm_perm_public_memory_prod: felt252,
     rc16_perm_public_memory_prod: felt252,

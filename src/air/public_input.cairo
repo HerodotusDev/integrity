@@ -1,4 +1,6 @@
-use cairo_verifier::air::public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product};
+use cairo_verifier::air::public_memory::{
+    Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product
+};
 use cairo_verifier::common::felt252::{pow, Felt252PartialOrd, Felt252Div};
 
 #[derive(Drop)]
@@ -15,10 +17,7 @@ impl PublicInputImpl of PublicInputTrait {
     // This is the value that needs to be at the memory__multi_column_perm__perm__public_memory_prod
     // member expression.
     fn get_public_memory_product_ratio(
-        self: @PublicInput,
-        z: felt252,
-        alpha: felt252,
-        public_memory_column_size: felt252
+        self: @PublicInput, z: felt252, alpha: felt252, public_memory_column_size: felt252
     ) -> felt252 {
         let (pages_product, total_length) = self.get_public_memory_product(z, alpha);
 
@@ -34,9 +33,7 @@ impl PublicInputImpl of PublicInputTrait {
 
     // Returns the product of all public memory cells.
     fn get_public_memory_product(
-        self: @PublicInput,
-        z: felt252,
-        alpha: felt252
+        self: @PublicInput, z: felt252, alpha: felt252
     ) -> (felt252, felt252) {
         let main_page_prod = self.main_page.get_product(z, alpha);
 

@@ -18,7 +18,8 @@ fn eval_composition_polynomial(
     let public_memory_column_size = trace_domain_size / PUBLIC_MEMORY_STEP;
     assert(public_memory_column_size >= 0, 'Invalid column size');
 
-    let public_memory_prod_ratio = public_input.get_public_memory_product_ratio(memory_z, memory_alpha, public_memory_column_size);
+    let public_memory_prod_ratio = public_input
+        .get_public_memory_product_ratio(memory_z, memory_alpha, public_memory_column_size);
 
     // TODO diluted
 
@@ -37,10 +38,7 @@ fn eval_composition_polynomial(
         rc_max: 0,
         offset_size: 0,
         half_offset_size: 0,
-        pedersen_shift_point: EcPoint {
-            x: 0,
-            y: 0
-        },
+        pedersen_shift_point: EcPoint { x: 0, y: 0 },
         pedersen_points_x: 0,
         pedersen_points_y: 0,
         memory_multi_column_perm_perm_interaction_elm: 0,
