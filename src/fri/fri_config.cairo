@@ -25,13 +25,13 @@ struct FriConfig {
 fn fri_config_validate(
     config: FriConfig, log_n_cosets: felt252, n_verifier_friendly_commitment_layers: felt252
 ) -> felt252 {
-    assert(0_u256 <= config.log_last_layer_degree_bound.into(), '');
-    assert(config.log_last_layer_degree_bound.try_into().unwrap() <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, '');
+    assert(0_u256 <= config.log_last_layer_degree_bound.into(), 'Invalid value');
+    assert(config.log_last_layer_degree_bound.try_into().unwrap() <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Invalid value');
 
-    assert(2_u256 <= config.n_layers.into(), '');
-    assert(config.n_layers.try_into().unwrap() <= MAX_FRI_LAYERS + 1, '');
+    assert(2_u256 <= config.n_layers.into(), 'Invalid value');
+    assert(config.n_layers.try_into().unwrap() <= MAX_FRI_LAYERS + 1, 'Invalid value');
 
-    assert(*(config.fri_step_sizes[0]) == 0, '');
+    assert(*(config.fri_step_sizes[0]) == 0, 'Invalid value');
 
     let len: u32 = config.n_layers.try_into().unwrap();
     let mut i: u32 = 1;
@@ -44,9 +44,9 @@ fn fri_config_validate(
         let table_commitment = *(config.inner_layers.at(i));
 
         let fri_step_u32: u32 = fri_step.try_into().unwrap();
-        assert(1_u32 <= fri_step_u32, '');
-        assert(fri_step_u32 <= MAX_FRI_STEP + 1, '');
-        assert(table_commitment.columns == fri_step * fri_step, '');
+        assert(1_u32 <= fri_step_u32, 'Invalid value');
+        assert(fri_step_u32 <= MAX_FRI_STEP + 1, 'Invalid value');
+        assert(table_commitment.columns == fri_step * fri_step, 'Invalid value');
 
         i += 1;
         log_input_size -= fri_step;
