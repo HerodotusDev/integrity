@@ -1,4 +1,3 @@
-mod fri_config;
 mod proof_of_work_config;
 mod stark_config;
 mod stark_proof;
