@@ -1,2 +1,4 @@
 target
 .snfoundry_cache/
+build
+.protostar_cache
