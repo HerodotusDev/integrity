@@ -1,5 +1,4 @@
-mod layout;
-mod layouts;
-mod ec_point;
-mod ecdsa;
-
+mod composition;
+mod global_values;
+mod constants;
+mod public_input;
