@@ -14,6 +14,7 @@ fn fri_formula2(f_x: felt252, f_minus_x: felt252, eval_point: felt252, x_inv: fe
 
 // Function to fold 4 elements into one using 2 layers of FRI.
 fn fri_formula4(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> felt252 {
+    assert(values.len() == 4, 'Values length not equal 4');
     // Applying the first layer of folding.
     let g0 = fri_formula2(*values[0], *values[1], eval_point, x_inv);
     let g1 = fri_formula2(*values[2], *values[3], eval_point, x_inv * OMEGA_4);
@@ -24,6 +25,7 @@ fn fri_formula4(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> f
 
 // Function to fold 8 elements into one using 3 layers of FRI.
 fn fri_formula8(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> felt252 {
+    assert(values.len() == 8, 'Values length not equal 8');
     // Applying the first two layers of folding.
     let g0 = fri_formula4(values.slice(0, 4), eval_point, x_inv);
     let g1 = fri_formula4(values.slice(4, 4), eval_point, x_inv * OMEGA_8);
@@ -40,6 +42,7 @@ fn fri_formula8(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> f
 
 // Function to fold 16 elements into one using 4 layers of FRI.
 fn fri_formula16(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> felt252 {
+    assert(values.len() == 16, 'Values length not equal 16');
     // Applying the first three layers of folding.
     let g0 = fri_formula8(values.slice(0, 8), eval_point, x_inv);
     let g1 = fri_formula8(values.slice(8, 8), eval_point, x_inv * OMEGA_16);
@@ -54,4 +57,23 @@ fn fri_formula16(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> 
 
     // Last layer, combining the results of the previous layers.
     fri_formula2(g0, g1, eval_point8, x_inv8)
+}
+
+// Folds 'coset_size' elements into one using log2(coset_size) layers of FRI.
+// 'coset_size' can be 2, 4, 8, or 16.
+fn fri_formula(values: Span<felt252>, eval_point: felt252, x_inv: felt252, coset_size: felt252) -> felt252 {
+    // Sort by usage frequency.
+    if (coset_size == 8) {
+        return fri_formula8(values, eval_point, x_inv);
+    }
+    else if (coset_size == 4) {
+        return fri_formula4(values, eval_point, x_inv);
+    }
+    else if (coset_size == 16) {
+        return fri_formula16(values, eval_point, x_inv);
+    }
+    else {
+        assert(values.len() == 2, 'Values length not equal 2');
+        return fri_formula2(*values[0], *values[1], eval_point, x_inv);
+    }
 }
