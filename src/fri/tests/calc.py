@@ -1,0 +1,11 @@
+DEFAULT_PRIME = 2**251 + 17 * 2**192 + 1
+
+OMEGA16 = 2607735469685256064975697808597423000021425046638838630471627721324227832437
+
+# Printing the values in hexadecimal format directly
+print("DEFAULT_PRIME in hexadecimal:", hex(DEFAULT_PRIME))
+print(hex(pow(OMEGA16, 1, DEFAULT_PRIME)))
+print(hex(pow(OMEGA16, 2, DEFAULT_PRIME)))
+print(hex(pow(OMEGA16, 4, DEFAULT_PRIME)))
+print(hex(pow(OMEGA16, 8, DEFAULT_PRIME)))
+print(hex(pow(OMEGA16, 16, DEFAULT_PRIME)))
