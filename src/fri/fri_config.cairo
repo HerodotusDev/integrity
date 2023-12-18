@@ -1,3 +1,4 @@
+use core::array::ArrayTrait;
 use core::option::OptionTrait;
 use core::array::SpanTrait;
 use core::traits::Into;
@@ -15,7 +16,7 @@ struct FriConfig {
     n_layers: felt252,
     // Array of size n_layers - 1, each entry is a configuration of a table commitment for the
     // corresponding inner layer.
-    inner_layers: Span<TableCommitmentConfig>,
+    inner_layers: Array<TableCommitmentConfig>,
     // Array of size n_layers, each entry represents the FRI step size,
     // i.e. the number of FRI-foldings between layer i and i+1.
     fri_step_sizes: Span<felt252>,
