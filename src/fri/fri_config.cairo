@@ -26,7 +26,10 @@ fn fri_config_validate(
     config: FriConfig, log_n_cosets: felt252, n_verifier_friendly_commitment_layers: felt252
 ) -> felt252 {
     assert(0_u256 <= config.log_last_layer_degree_bound.into(), 'Invalid value');
-    assert(config.log_last_layer_degree_bound.try_into().unwrap() <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Invalid value');
+    assert(
+        config.log_last_layer_degree_bound.try_into().unwrap() <= MAX_LAST_LAYER_LOG_DEGREE_BOUND,
+        'Invalid value'
+    );
 
     assert(2_u256 <= config.n_layers.into(), 'Invalid value');
     assert(config.n_layers.try_into().unwrap() <= MAX_FRI_LAYERS + 1, 'Invalid value');
@@ -38,7 +41,9 @@ fn fri_config_validate(
     let mut sum_of_step_sizes: felt252 = 0;
     let mut log_input_size = config.log_input_size;
     loop {
-        if i == len { break; }
+        if i == len {
+            break;
+        }
 
         let fri_step: felt252 = *(config.fri_step_sizes.at(i));
         let table_commitment = *(config.inner_layers.at(i));
@@ -53,9 +58,7 @@ fn fri_config_validate(
         sum_of_step_sizes += fri_step;
 
         validate_vector_commitment(
-            table_commitment.vector,
-            log_input_size,
-            n_verifier_friendly_commitment_layers,
+            table_commitment.vector, log_input_size, n_verifier_friendly_commitment_layers,
         );
     };
 

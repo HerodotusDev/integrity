@@ -61,18 +61,17 @@ fn fri_formula16(values: Span<felt252>, eval_point: felt252, x_inv: felt252) -> 
 
 // Folds 'coset_size' elements into one using log2(coset_size) layers of FRI.
 // 'coset_size' can be 2, 4, 8, or 16.
-fn fri_formula(values: Span<felt252>, eval_point: felt252, x_inv: felt252, coset_size: felt252) -> felt252 {
+fn fri_formula(
+    values: Span<felt252>, eval_point: felt252, x_inv: felt252, coset_size: felt252
+) -> felt252 {
     // Sort by usage frequency.
     if (coset_size == 8) {
         return fri_formula8(values, eval_point, x_inv);
-    }
-    else if (coset_size == 4) {
+    } else if (coset_size == 4) {
         return fri_formula4(values, eval_point, x_inv);
-    }
-    else if (coset_size == 16) {
+    } else if (coset_size == 16) {
         return fri_formula16(values, eval_point, x_inv);
-    }
-    else {
+    } else {
         assert(values.len() == 2, 'Values length not equal 2');
         return fri_formula2(*values[0], *values[1], eval_point, x_inv);
     }
