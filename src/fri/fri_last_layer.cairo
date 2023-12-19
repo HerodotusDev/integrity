@@ -7,9 +7,7 @@ use cairo_verifier::fri::fri_layer::FriLayerQuery;
 // Verifies FRI last layer by evaluating the given polynomial on the given points (=inverses of
 // x_inv_values), and comparing the results to the given values.
 fn verify_last_layer(
-    n_queries: felt252,
-    queries: Span<FriLayerQuery>,
-    coefficients: Span<felt252>
+    n_queries: felt252, queries: Span<FriLayerQuery>, coefficients: Span<felt252>
 ) {
     let mut i: u32 = 0;
     let len: u32 = n_queries.try_into().unwrap();
