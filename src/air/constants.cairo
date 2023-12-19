@@ -28,3 +28,13 @@ const MEMORY_STEP: felt252 = 2;
 const NUM_COLUMNS_FIRST: felt252 = 7;
 const NUM_COLUMNS_SECOND: felt252 = 3;
 const IS_DYNAMIC_AIR: felt252 = 0;
+
+mod segments {
+    const PROGRAM: usize = 0;
+    const EXECUTION: usize = 1;
+    const OUTPUT: usize = 2;
+    const PEDERSEN: usize = 3;
+    const RANGE_CHECK: usize = 4;
+    const BITWISE: usize = 5;
+    const N_SEGMENTS: usize = 6;
+}
