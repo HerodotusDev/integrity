@@ -4,8 +4,19 @@ use cairo_verifier::air::public_memory::{
 use cairo_verifier::common::felt252::{pow, Felt252PartialOrd, Felt252Div};
 
 #[derive(Drop)]
+struct SegmentInfo {
+    // Start address of the memory segment.
+    begin_addr: felt252,
+    // Stop pointer of the segment - not necessarily the end of the segment.
+    stop_ptr: felt252,
+}
+
+#[derive(Drop)]
 struct PublicInput {
     log_n_steps: felt252,
+    rc_min: felt252,
+    rc_max: felt252,
+    segments: Array<SegmentInfo>,
     padding_addr: felt252,
     padding_value: felt252,
     main_page: Page,
