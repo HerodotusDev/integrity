@@ -1,13 +1,17 @@
 use core::array::SpanTrait;
 use core::array::ArrayTrait;
+use cairo_verifier::fri::fri_formula::fri_formula;
+use cairo_verifier::common::math;
 
 // Constant parameters for computing the next FRI layer.
+#[derive(Drop, Copy)]
 struct FriLayerComputationParams {
     coset_size: felt252,
     fri_group: Span<felt252>,
     eval_point: felt252,
 }
 
+#[derive(Drop, Copy)]
 struct FriLayerQuery {
     index: felt252,
     y_value: felt252,
@@ -40,7 +44,7 @@ fn compute_coset_elements(
     fri_group: Span<felt252>,
 ) -> (Array<felt252>, felt252) {
     let mut coset_elements = ArrayTrait::<felt252>::new();
-    let mut coset_x_inv: felt252 = 1;
+    let mut coset_x_inv: felt252 = 0;
 
     let mut i: u32 = 0;
     let mut j: u32 = 0;
@@ -62,4 +66,82 @@ fn compute_coset_elements(
     };
 
     (coset_elements, coset_x_inv)
+}
+
+// Computes FRI next layer for the given queries. I.e., takes the given i-th layer queries
+// and produces queries for layer i+1 (a single query for each coset in the i-th layer).
+//
+// Inputs:
+//   - n_queries: the number of input queries.
+//   - queries: input queries.
+//   - sibling_witness: a list of all the query's siblings.
+//   - params: the parameters to use for the layer computation.
+//
+// Outputs:
+//   - next_queries: queries for the next layer.
+//   - verify_indices: query indices of the given layer for Merkle verification.
+//   - verify_y_values: query y values of the given layer for Merkle verification.
+fn compute_next_layer(
+    mut n_queries: felt252,
+    queries: Span<FriLayerQuery>,
+    sibling_witness: Span<felt252>,
+    params: FriLayerComputationParams,
+) -> (Array<FriLayerQuery>, Array<felt252>, Array<felt252>) {
+    let mut next_queries = ArrayTrait::<FriLayerQuery>::new();
+    let mut verify_indices = ArrayTrait::<felt252>::new();
+    let mut verify_y_values = ArrayTrait::<felt252>::new();
+
+    let coset_size = params.coset_size;
+
+    let mut i: u32 = 0;
+    loop {
+        if n_queries == 0 {
+            break;
+        }
+
+        let coset_index = *(queries.at(i)).index;
+        assert(0_u256 <= coset_index.into(), 'Invalid value');
+
+        verify_indices.append(coset_index);
+
+        let (coset_elements, coset_x_inv) = compute_coset_elements(
+            n_queries,
+            queries,
+            sibling_witness,
+            coset_size,
+            coset_index * coset_size,
+            0,
+            params.fri_group
+        );
+
+        let coset_elements_len = coset_elements.len();
+        assert(0 <= coset_elements_len, 'Invalid value');
+
+        let coset_elements_span = coset_elements.span();
+
+        let mut j: u32 = 0;
+        loop {
+            if j == coset_elements_len {
+                break;
+            }
+            verify_y_values.append(*(coset_elements_span.at(j)));
+        };
+
+        let fri_formula_res = fri_formula(
+            coset_elements_span, params.eval_point, coset_x_inv, coset_size,
+        );
+
+        let next_x_inv = math::pow(coset_x_inv, params.coset_size);
+
+        next_queries
+            .append(
+                FriLayerQuery {
+                    index: coset_index, y_value: fri_formula_res, x_inv_value: next_x_inv
+                }
+            );
+
+        i += 1;
+    };
+
+    (next_queries, verify_indices, verify_y_values)
 }
