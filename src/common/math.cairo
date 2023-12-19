@@ -17,6 +17,11 @@ fn pow(base: felt252, exp: felt252) -> felt252 {
             exp = exp / 2; // Divide exponent by 2
         }
     };
-
     res
+}
+
+fn mul_inverse(x: felt252) -> felt252 {
+    // From Fermat's little theorem, a ^ (p - 1) = 1 when p is prime and a != 0. Since a ^ (p - 1) = a · a ^ (p - 2) we have that 
+    // a ^ (p - 2) is the multiplicative inverse of a modulo p.
+    pow(x, 3618502788666131213697322783095070105623107215331596699973092056135872020479)
 }
