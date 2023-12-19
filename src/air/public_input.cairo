@@ -5,6 +5,7 @@ use cairo_verifier::common::felt252::{pow, Felt252PartialOrd, Felt252Div};
 
 #[derive(Drop)]
 struct PublicInput {
+    log_n_steps: felt252,
     padding_addr: felt252,
     padding_value: felt252,
     main_page: Page,

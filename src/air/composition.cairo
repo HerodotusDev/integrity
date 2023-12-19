@@ -1,8 +1,15 @@
 use cairo_verifier::air::global_values::{EcPoint, InteractionElements, GlobalValues};
-use cairo_verifier::air::constants::{PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING};
+use cairo_verifier::air::constants::{
+    PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING, PEDERSEN_BUILTIN_RATIO,
+    PEDERSEN_BUILTIN_REPETITIONS
+};
 use cairo_verifier::air::public_input::{PublicInput, PublicInputTrait};
 use cairo_verifier::air::diluted::get_diluted_product;
-use cairo_verifier::common::felt252::{Felt252Div, Felt252PartialOrd};
+use cairo_verifier::air::pedersen::{eval_pedersen_x, eval_pedersen_y};
+use cairo_verifier::common::felt252::{Felt252Div, Felt252PartialOrd, pow};
+
+const SHIFT_POINT_X: felt252 = 0x49ee3eba8c1600700ee1b87eb599f16716b0b1022947733551fde4050ca6804;
+const SHIFT_POINT_Y: felt252 = 0x3ca0cfe4b3bc6ddf346d49d06ea0ed34e621062c0e056c1d0405d266e10268a;
 
 fn eval_composition_polynomial(
     interaction_elements: InteractionElements,
@@ -16,20 +23,26 @@ fn eval_composition_polynomial(
     let memory_z = interaction_elements.memory_multi_column_perm_perm_interaction_elm;
     let memory_alpha = interaction_elements.memory_multi_column_perm_hash_interaction_elm0;
 
+    // Public memory
     let public_memory_column_size = trace_domain_size / PUBLIC_MEMORY_STEP;
     assert(public_memory_column_size >= 0, 'Invalid column size');
-
     let public_memory_prod_ratio = public_input
         .get_public_memory_product_ratio(memory_z, memory_alpha, public_memory_column_size);
 
-    // TODO diluted
+    // Diluted
     let diluted_z = interaction_elements.diluted_check_interaction_z;
     let diluted_alpha = interaction_elements.diluted_check_interaction_alpha;
     let diluted_prod = get_diluted_product(
         DILUTED_N_BITS, DILUTED_SPACING, diluted_z, diluted_alpha
     );
 
-    // TODO periodic cols
+    // Periodic columns
+    let n_steps = pow(2, public_input.log_n_steps);
+    let n_pedersen_hash_copies = n_steps / (PEDERSEN_BUILTIN_RATIO * PEDERSEN_BUILTIN_REPETITIONS);
+    assert(n_pedersen_hash_copies >= 0, 'Invalid pedersen copies');
+    let pedersen_point = pow(point, n_pedersen_hash_copies);
+    let pedersen_points_x = eval_pedersen_x(pedersen_point);
+    let pedersen_points_y = eval_pedersen_y(pedersen_point);
 
     let global_values = GlobalValues {
         trace_length: 0,
