@@ -3,7 +3,6 @@ use core::array::ArrayTrait;
 use cairo_verifier::fri::fri_formula::fri_formula;
 use cairo_verifier::common::math;
 
-// Constant parameters for computing the next FRI layer.
 #[derive(Drop, Copy)]
 struct FriLayerComputationParams {
     coset_size: felt252,
