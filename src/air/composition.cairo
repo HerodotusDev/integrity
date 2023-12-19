@@ -1,6 +1,7 @@
 use cairo_verifier::air::global_values::{EcPoint, InteractionElements, GlobalValues};
-use cairo_verifier::air::constants::{PUBLIC_MEMORY_STEP};
+use cairo_verifier::air::constants::{PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING};
 use cairo_verifier::air::public_input::{PublicInput, PublicInputTrait};
+use cairo_verifier::air::diluted::get_diluted_product;
 use cairo_verifier::common::felt252::{Felt252Div, Felt252PartialOrd};
 
 fn eval_composition_polynomial(
@@ -22,6 +23,11 @@ fn eval_composition_polynomial(
         .get_public_memory_product_ratio(memory_z, memory_alpha, public_memory_column_size);
 
     // TODO diluted
+    let diluted_z = interaction_elements.diluted_check_interaction_z;
+    let diluted_alpha = interaction_elements.diluted_check_interaction_alpha;
+    let diluted_prod = get_diluted_product(
+        DILUTED_N_BITS, DILUTED_SPACING, diluted_z, diluted_alpha
+    );
 
     // TODO periodic cols
 

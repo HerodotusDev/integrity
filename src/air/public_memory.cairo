@@ -40,6 +40,7 @@ impl PageImpl of PageTrait {
             let current = self.at(i);
 
             res *= z - (*current.address + alpha * *current.value);
+            i += 1;
         }
     }
 }
@@ -56,6 +57,8 @@ fn get_continuous_pages_product(page_headers: Span<ContinuousPageHeader>) -> (fe
 
         res *= *current.prod;
         total_length += *current.size;
+
+        i += 1;
     }
 }
 
