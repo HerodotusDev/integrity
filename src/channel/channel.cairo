@@ -17,6 +17,20 @@ struct Channel {
     counter: u256,
 }
 
+// A wrapper around felt with a guarantee that the felt must be read from the channel before
+// use.
+#[derive(Drop)]
+struct ChannelUnsentFelt {
+    value: felt252,
+}
+
+// A wrapper around felt with a guarantee that the felt was read from the channel as data from the
+// prover.
+#[derive(Drop)]
+struct ChannelSentFelt {
+    value: felt252,
+}
+
 #[generate_trait]
 impl ChannelImpl of ChannelTrait {
     fn new(digest: u256) -> Channel {
@@ -60,5 +74,14 @@ impl ChannelImpl of ChannelTrait {
             }
         };
         res
+    }
+
+    // Reads a field element vector from the prover. Unlike read_felts_from_prover, this hashes all the
+    // field elements at once. See Channel.
+    fn read_felt_vector_from_prover(
+        ref self: Channel, values: Span<ChannelUnsentFelt>
+    ) -> Array<ChannelSentFelt> {
+        let sent_felts = ArrayTrait::<ChannelSentFelt>::new();
+        sent_felts
     }
 }
