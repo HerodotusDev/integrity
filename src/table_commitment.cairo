@@ -1,3 +1,5 @@
+use cairo_verifier::vector_commitment::VectorCommitmentConfig;
+
 // Commitment values for a table commitment protocol. Used to generate a commitment by "reading"
 // these values from the channel.
 #[derive(Drop, Copy)]
@@ -16,9 +18,8 @@ struct TableCommitment {
 
 #[derive(Drop, Copy)]
 struct TableCommitmentConfig {
-    a: felt252, // dummy
-// n_columns: felt,
-// vector: VectorCommitmentConfig*,
+    columns: felt252,
+    vector: VectorCommitmentConfig
 }
 
 fn table_commit(
