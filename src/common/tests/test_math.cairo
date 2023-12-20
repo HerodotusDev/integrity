@@ -55,7 +55,10 @@ fn test_mul_inverse_3() {
 fn test_mul_inverse_4() {
     let x = 3;
     let inv_x = mul_inverse(x);
-    assert(inv_x == 1206167596222043737899107594365023368541035738443865566657697352045290673494, 'Invalid value');
+    assert(
+        inv_x == 1206167596222043737899107594365023368541035738443865566657697352045290673494,
+        'Invalid value'
+    );
     assert(x * inv_x == 1, 'Invalid value');
 }
 

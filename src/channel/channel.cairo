@@ -53,7 +53,8 @@ impl ChannelImpl of ChannelTrait {
         let mut res = ArrayTrait::<felt252>::new();
         loop {
             if n != 0 {
-                res.append(self.random_felt_to_prover())
+                res.append(self.random_felt_to_prover());
+                n -= 1;
             } else {
                 break;
             }
