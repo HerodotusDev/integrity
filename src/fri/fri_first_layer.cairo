@@ -29,6 +29,8 @@ fn gather_first_layer_queries(
                     y_value: *(evaluations.at(i)),
                     x_inv_value: math::mul_inverse(shifted_x_value),
                 }
-            )
+            );
+
+        i += 1;
     }
 }

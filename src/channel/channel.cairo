@@ -1,3 +1,4 @@
+use core::array::ArrayTrait;
 use cairo_verifier::common::{
     flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s
 };
@@ -30,21 +31,29 @@ impl ChannelImpl of ChannelTrait {
         blake2s(hash_data).flip_endiannes()
     }
 
-    fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
-        let mut res = ArrayTrait::<felt252>::new();
+    fn random_felt_to_prover(ref self: Channel) -> felt252 {
+        let mut res: felt252 = 0;
 
         // To ensure a uniform distribution over field elements, if the generated 256-bit number x is in
         // range [0, C * PRIME), take x % PRIME. Otherwise, regenerate.
         // The maximal possible C is 2**256//PRIME = 31.        
 
         loop {
+            let rand = self.random_uint256_to_prover();
+            if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
+                let to_append = (rand % STARK_PRIME).try_into().unwrap();
+                res = to_append * INVERSE_2_TO_256_MOD_STARK_PRIME;
+                break;
+            }
+        };
+        res
+    }
+
+    fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
+        let mut res = ArrayTrait::<felt252>::new();
+        loop {
             if n != 0 {
-                let rand = self.random_uint256_to_prover();
-                if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
-                    n -= 1;
-                    let to_append = (rand % STARK_PRIME).try_into().unwrap();
-                    res.append(to_append * INVERSE_2_TO_256_MOD_STARK_PRIME);
-                }
+                res.append(self.random_felt_to_prover())
             } else {
                 break;
             }
