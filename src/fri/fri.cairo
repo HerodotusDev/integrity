@@ -1,3 +1,4 @@
+use core::traits::Into;
 use core::option::OptionTrait;
 use core::traits::TryInto;
 use core::array::SpanTrait;
@@ -40,8 +41,6 @@ struct FriCommitment {
 
 #[derive(Drop, Copy)]
 struct FriDecommitment {
-    // Number of queries.
-    n_values: felt252,
     // Array of size n_values, containing the values of the input layer at query indices.
     values: Span<felt252>,
     // Array of size n_values, containing the field elements that correspond to the query indices
@@ -61,7 +60,6 @@ struct FriWitness {
 #[derive(Drop, Copy)]
 struct FriLayerWitness {
     // Values for the sibling leaves required for decommitment.
-    n_leaves: felt252,
     leaves: Span<felt252>,
     // Table commitment witnesses for decommiting all the leaves.
     table_witness: TableCommitmentWitness,
@@ -104,8 +102,9 @@ fn fri_commit_rounds(
         if i == len {
             break;
         }
-
-        commitments.append(table_commit(*(unsent_commitments.at(i)), *(configs.at(i))));
+        // Read commitments.
+        commitments.append(table_commit(*unsent_commitments.at(i), *configs.at(i)));
+        // Send the next eval_points.
         eval_points.append(channel.random_felt_to_prover());
 
         i += 1;
@@ -131,6 +130,7 @@ fn fri_commit(
     let n_coefficients = math::pow(2, config.log_last_layer_degree_bound);
     let coefficients = channel
         .read_felt_vector_from_prover(unsent_commitment.last_layer_coefficients);
+    assert(n_coefficients == coefficients.len().into(), 'Invalid value');
 
     FriCommitment {
         config: config,
@@ -147,9 +147,8 @@ fn fri_decommit_layers(
     layer_witness: Span<FriLayerWitness>,
     eval_points: Span<felt252>,
     step_sizes: Span<felt252>,
-    mut queries: Span<FriLayerQuery>,
+    mut queries: Array<FriLayerQuery>,
 ) -> Array<FriLayerQuery> {
-    let last_queries = ArrayTrait::<FriLayerQuery>::new();
     let len: u32 = n_layers.try_into().unwrap();
     let mut i: u32 = 0;
 
@@ -159,16 +158,15 @@ fn fri_decommit_layers(
         }
 
         // Params.
-        let coset_size = math::pow(2, *(step_sizes.at(i)));
+        let coset_size = math::pow(2, *step_sizes.at(i));
         let params = FriLayerComputationParams {
-            coset_size: coset_size, fri_group: fri_group, eval_point: *(eval_points.at(i))
+            coset_size, fri_group, eval_point: *eval_points.at(i)
         };
 
         // Compute next layer queries.
         let (next_queries, verify_indices, verify_y_values) = compute_next_layer(
-            queries, *(layer_witness.at(i)).leaves, params
+            queries.span(), *layer_witness.at(i).leaves, params
         );
-        queries = next_queries.span();
 
         // Table decommitment.
         table_decommit(
@@ -178,10 +176,11 @@ fn fri_decommit_layers(
             *layer_witness.at(i).table_witness
         );
 
+        queries = next_queries;
         i += 1;
     };
 
-    last_queries
+    queries
 }
 
 // FRI protocol component decommitment.
@@ -191,7 +190,7 @@ fn fri_decommit(
     decommitment: FriDecommitment,
     witness: FriWitness,
 ) {
-    assert(queries.len().into() == decommitment.n_values, 'Invalid value');
+    assert(queries.len() == decommitment.values.len(), 'Invalid value');
 
     // Compute first FRI layer queries.
     let fri_queries = gather_first_layer_queries(
@@ -209,16 +208,15 @@ fn fri_decommit(
         witness.layers,
         commitment.eval_points.slice(1, commitment.eval_points.len() - 1),
         commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
-        fri_queries.span(),
+        fri_queries,
     );
 
     // Last layer.
     assert(
         commitment
             .last_layer_coefficients
-            .len() == math::pow(2, commitment.config.log_last_layer_degree_bound)
-            .try_into()
-            .unwrap(),
+            .len()
+            .into() == math::pow(2, commitment.config.log_last_layer_degree_bound),
         'Invlid value'
     );
     verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);

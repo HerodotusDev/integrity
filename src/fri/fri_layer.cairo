@@ -44,7 +44,7 @@ fn compute_coset_elements(
     let mut coset_elements = ArrayTrait::<felt252>::new();
     let mut coset_x_inv: felt252 = 0;
 
-    let len = queries.len();
+    let i_len = queries.len();
     let mut i: u32 = 0;
     let mut j: u32 = 0;
 
@@ -53,14 +53,16 @@ fn compute_coset_elements(
             break;
         }
 
-        if i != len && *(queries.at(i)).index == coset_start_index + offset_within_coset {
-            coset_elements.append(*(queries.at(i)).y_value);
-            coset_x_inv = (*(queries.at(i)).x_inv_value) * (*(fri_group.at(i)));
+        if i != i_len && *queries.at(i).index == coset_start_index + offset_within_coset {
+            coset_elements.append(*queries.at(i).y_value);
+            coset_x_inv = (*queries.at(i).x_inv_value) * (*fri_group.at(i + j));
             i += 1;
         } else {
             coset_elements.append(*(sibling_witness.at(j)));
             j += 1;
         }
+        
+        offset_within_coset += 1;
     };
 
     (coset_elements, coset_x_inv)
@@ -104,6 +106,7 @@ fn compute_next_layer(
             queries, sibling_witness, coset_size, coset_index * coset_size, 0, params.fri_group
         );
 
+        // Verify that at least one query was consumed.
         let coset_elements_len = coset_elements.len();
         assert(0 <= coset_elements_len, 'Invalid value');
 
@@ -121,8 +124,8 @@ fn compute_next_layer(
             coset_elements_span, params.eval_point, coset_x_inv, coset_size,
         );
 
+        // Write next layer query.
         let next_x_inv = math::pow(coset_x_inv, params.coset_size);
-
         next_queries
             .append(
                 FriLayerQuery {

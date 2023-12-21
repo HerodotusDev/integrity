@@ -8,7 +8,6 @@ use cairo_verifier::channel::channel::ChannelSentFelt;
 
 // Verifies FRI last layer by evaluating the given polynomial on the given points (=inverses of
 // x_inv_values), and comparing the results to the given values.
-
 fn verify_last_layer(queries: Span<FriLayerQuery>, coefficients: Span<ChannelSentFelt>) {
     let mut i: u32 = 0;
     let len: u32 = queries.len();

@@ -1,3 +1,5 @@
+// Returns the elements of the multiplicative subgroup of order 16, in bit-reversed order for the
+// cairo prime field. Note that the first 2^k elements correspond to the group of size 2^k.
 fn get_fri_group() -> Array<felt252> {
     array![
         0x1,
