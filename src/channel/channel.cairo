@@ -56,6 +56,7 @@ impl ChannelImpl of ChannelTrait {
         let value_u256: u256 = value.into();
         let mut hash_data = ArrayTrait::<u32>::new();
 
+        assert(self.digest.low != 0xffffffffffffffffffffffffffffffff, 'digest low is 2^128-1');
         (self.digest + 1).to_array_be(ref hash_data);
         value_u256.to_array_be(ref hash_data);
 
