@@ -31,3 +31,13 @@ fn test_random_uint256_to_prover() {
         'invalid random uint256'
     );
 }
+
+#[test]
+#[available_gas(9999999999)]
+fn test_read_felt_from_prover() {
+    let mut channel = ChannelTrait::new(0);
+
+    channel.read_felt_from_prover(0xffffffffffffffffffffffffffffffffffffffff);
+
+    assert(channel.digest == 0xb056692f5fc4f27dedd1fb6269b02c542a415f1d84555708a354ffb25cf97ad5, 'invalid read felt');
+}

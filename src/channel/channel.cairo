@@ -51,4 +51,14 @@ impl ChannelImpl of ChannelTrait {
         };
         res
     }
+
+    fn read_felt_from_prover(ref self: Channel, value: felt252) {
+        let value_u256: u256 = value.into();
+        let mut hash_data = ArrayTrait::<u32>::new();
+
+        (self.digest + 1).to_array_be(ref hash_data);
+        value_u256.to_array_be(ref hash_data);
+
+        self.digest = blake2s(hash_data).flip_endiannes();
+    }
 }
