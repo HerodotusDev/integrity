@@ -53,7 +53,7 @@ fn fri_config_validate(
         let fri_step_u32: u32 = fri_step.try_into().unwrap();
         assert(1_u32 <= fri_step_u32, 'Invalid value');
         assert(fri_step_u32 <= MAX_FRI_STEP + 1, 'Invalid value');
-        assert(table_commitment.columns == fri_step * fri_step, 'Invalid value');
+        assert(table_commitment.n_columns == fri_step * fri_step, 'Invalid value');
 
         i += 1;
         log_input_size -= fri_step;

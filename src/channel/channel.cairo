@@ -19,14 +19,14 @@ struct Channel {
 
 // A wrapper around felt with a guarantee that the felt must be read from the channel before
 // use.
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct ChannelUnsentFelt {
     value: felt252,
 }
 
 // A wrapper around felt with a guarantee that the felt was read from the channel as data from the
 // prover.
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct ChannelSentFelt {
     value: felt252,
 }

@@ -8,11 +8,11 @@ use cairo_verifier::fri::fri_layer::FriLayerQuery;
 use cairo_verifier::FIELD_GENERATOR_INV;
 
 fn gather_first_layer_queries(
-    n_queries: felt252, queries: Span<felt252>, evaluations: Span<felt252>, x_values: Span<felt252>
-) {
+    queries: Span<felt252>, evaluations: Span<felt252>, x_values: Span<felt252>
+) -> Array<FriLayerQuery> {
     let mut fri_queries = ArrayTrait::<FriLayerQuery>::new();
 
-    let len: u32 = n_queries.try_into().unwrap();
+    let len: u32 = queries.len();
     let mut i: u32 = 0;
     loop {
         if i == len {
@@ -32,5 +32,7 @@ fn gather_first_layer_queries(
             );
 
         i += 1;
-    }
+    };
+
+    fri_queries
 }

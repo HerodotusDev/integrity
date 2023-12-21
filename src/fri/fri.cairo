@@ -1,3 +1,5 @@
+use core::option::OptionTrait;
+use core::traits::TryInto;
 use core::array::SpanTrait;
 use core::traits::Destruct;
 use cairo_verifier::channel::channel::ChannelTrait;
@@ -10,6 +12,10 @@ use cairo_verifier::channel::channel::Channel;
 use cairo_verifier::channel::channel::{ChannelUnsentFelt, ChannelSentFelt};
 use cairo_verifier::fri::fri_config::FriConfig;
 use cairo_verifier::common::math;
+use cairo_verifier::table_commitment::TableCommitmentWitness;
+use cairo_verifier::fri::fri_first_layer::gather_first_layer_queries;
+use cairo_verifier::fri::fri_group::get_fri_group;
+use cairo_verifier::fri::fri_layer::FriLayerQuery;
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
@@ -32,6 +38,35 @@ struct FriCommitment {
     // Array of size 2**log_last_layer_degree_bound containing coefficients for the last layer
     // polynomial.
     last_layer_coefficients: Span<ChannelSentFelt>,
+}
+
+#[derive(Drop, Copy)]
+struct FriDecommitment {
+    // Number of queries.
+    n_values: felt252,
+    // Array of size n_values, containing the values of the input layer at query indices.
+    values: Span<felt252>,
+    // Array of size n_values, containing the field elements that correspond to the query indices
+    // (See queries_to_points).
+    points: Span<felt252>,
+}
+
+// A witness for the decommitment of the FRI layers over queries.
+#[derive(Drop, Copy)]
+struct FriWitness {
+    // An array of size n_layers - 1, containing a witness for each inner layer.
+    layers: Span<FriLayerWitness>,
+}
+
+// A witness for a single FRI layer. This witness is required to verify the transition from an
+// inner layer to the following layer.
+#[derive(Drop, Copy)]
+struct FriLayerWitness {
+    // Values for the sibling leaves required for decommitment.
+    n_leaves: felt252,
+    leaves: Span<felt252>,
+    // Table commitment witnesses for decommiting all the leaves.
+    table_witness: TableCommitmentWitness,
 }
 
 // A FRI phase with N layers starts with a single input layer.
@@ -105,4 +140,45 @@ fn fri_commit(
         eval_points: eval_points.span(),
         last_layer_coefficients: coefficients.span()
     }
+}
+
+fn fri_decommit_layers(
+    fri_group: Span<felt252>,
+    n_layers: felt252,
+    commitment: Span<TableCommitment>,
+    layer_witness: Span<FriLayerWitness>,
+    eval_points: Span<felt252>,
+    step_sizes: Span<felt252>,
+    queries: Span<felt252>,
+) -> Array<FriLayerQuery> {
+    let last_queries = ArrayTrait::<FriLayerQuery>::new();
+    let len: u32 = n_layers.try_into().unwrap();
+    let mut i: u32 = 0;
+
+    loop {
+        if i == len {
+            break;
+        }
+    //
+
+    };
+
+    last_queries
+}
+
+// FRI protocol component decommitment.
+fn fri_decommit(
+    queries: Span<felt252>,
+    commitment: FriCommitment,
+    decommitment: FriDecommitment,
+    witness: FriWitness,
+) {
+    assert(queries.len().into() == decommitment.n_values, 'Invalid value');
+    let fri_first_layer_evaluations = decommitment.values;
+
+    let fri_queries = gather_first_layer_queries(
+        queries, decommitment.values, decommitment.points,
+    );
+
+    let fri_group = get_fri_group();
 }
