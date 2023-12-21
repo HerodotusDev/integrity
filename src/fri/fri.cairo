@@ -7,15 +7,15 @@ use cairo_verifier::table_commitment::{
     TableCommitment, TableCommitmentConfig, TableUnsentCommitment
 };
 use core::array::ArrayTrait;
-use cairo_verifier::table_commitment::table_commit;
+use cairo_verifier::table_commitment::{table_commit, table_decommit};
 use cairo_verifier::channel::channel::Channel;
 use cairo_verifier::channel::channel::{ChannelUnsentFelt, ChannelSentFelt};
 use cairo_verifier::fri::fri_config::FriConfig;
 use cairo_verifier::common::math;
-use cairo_verifier::table_commitment::TableCommitmentWitness;
+use cairo_verifier::table_commitment::{TableCommitmentWitness, TableDecommitment};
 use cairo_verifier::fri::fri_first_layer::gather_first_layer_queries;
 use cairo_verifier::fri::fri_group::get_fri_group;
-use cairo_verifier::fri::fri_layer::FriLayerQuery;
+use cairo_verifier::fri::fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer};
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
@@ -149,7 +149,7 @@ fn fri_decommit_layers(
     layer_witness: Span<FriLayerWitness>,
     eval_points: Span<felt252>,
     step_sizes: Span<felt252>,
-    queries: Span<felt252>,
+    mut queries: Span<FriLayerQuery>,
 ) -> Array<FriLayerQuery> {
     let last_queries = ArrayTrait::<FriLayerQuery>::new();
     let len: u32 = n_layers.try_into().unwrap();
@@ -159,8 +159,28 @@ fn fri_decommit_layers(
         if i == len {
             break;
         }
-    //
 
+        // Params.
+        let coset_size = math::pow(2, *(step_sizes.at(i)));
+        let params = FriLayerComputationParams {
+            coset_size: coset_size, fri_group: fri_group, eval_point: *(eval_points.at(i))
+        };
+
+        // Compute next layer queries.
+        let (next_queries, verify_indices, verify_y_values) = compute_next_layer(
+            queries, *(layer_witness.at(i)).leaves, params
+        );
+        queries = next_queries.span();
+
+        // Table decommitment.
+        table_decommit(
+            *commitment.at(i),
+            verify_indices.span(),
+            TableDecommitment { values: verify_y_values.span() },
+            *layer_witness.at(i).table_witness
+        );
+
+        i += 1;
     };
 
     last_queries
@@ -181,4 +201,14 @@ fn fri_decommit(
     );
 
     let fri_group = get_fri_group();
+
+    let last_queries = fri_decommit_layers(
+        fri_group.span(),
+        commitment.config.n_layers - 1,
+        commitment.inner_layers,
+        witness.layers,
+        commitment.eval_points.slice(1, commitment.eval_points.len() - 1),
+        commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
+        fri_queries.span(),
+    );
 }

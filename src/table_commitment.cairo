@@ -1,4 +1,6 @@
-use cairo_verifier::vector_commitment::{VectorCommitmentConfig, VectorUnsentCommitment, VectorCommitment, VectorCommitmentWitness};
+use cairo_verifier::vector_commitment::{
+    VectorCommitmentConfig, VectorUnsentCommitment, VectorCommitment, VectorCommitmentWitness
+};
 use cairo_verifier::channel::channel::ChannelSentFelt;
 
 // Commitment values for a table commitment protocol. Used to generate a commitment by "reading"
@@ -26,7 +28,6 @@ struct TableCommitmentConfig {
 #[derive(Drop, Copy)]
 struct TableDecommitment {
     // n_columns * n_queries values to decommit.
-    n_values: felt252,
     values: Span<felt252>,
 }
 
@@ -42,19 +43,11 @@ fn table_commit(
     TableCommitment {
         config: TableCommitmentConfig {
             n_columns: 0,
-            vector: VectorCommitmentConfig {
-                height: 0,
-                n_verifier_friendly_commitment_layers: 0,
-            }
+            vector: VectorCommitmentConfig { height: 0, n_verifier_friendly_commitment_layers: 0, }
         },
         vector_commitment: VectorCommitment {
-            config: VectorCommitmentConfig {
-                height: 0,
-                n_verifier_friendly_commitment_layers: 0,
-            },
-            commitment_hash: ChannelSentFelt {
-                value: 0,
-            }
+            config: VectorCommitmentConfig { height: 0, n_verifier_friendly_commitment_layers: 0, },
+            commitment_hash: ChannelSentFelt { value: 0, }
         }
     }
 }
@@ -69,10 +62,7 @@ fn table_commit(
 // witness - the decommitment witness.
 fn table_decommit(
     commitment: TableCommitment,
-    n_queries: felt252,
-    queries: felt252,
+    queries: Span<felt252>,
     decommitment: TableDecommitment,
     witness: TableCommitmentWitness,
-) {
-
-}
+) {}

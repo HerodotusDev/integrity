@@ -34,7 +34,6 @@ struct FriLayerQuery {
 //     query was consumed by this function.
 
 fn compute_coset_elements(
-    mut n_queries: felt252,
     queries: Span<FriLayerQuery>,
     sibling_witness: Span<felt252>,
     coset_size: felt252,
@@ -45,6 +44,7 @@ fn compute_coset_elements(
     let mut coset_elements = ArrayTrait::<felt252>::new();
     let mut coset_x_inv: felt252 = 0;
 
+    let len = queries.len();
     let mut i: u32 = 0;
     let mut j: u32 = 0;
 
@@ -53,10 +53,9 @@ fn compute_coset_elements(
             break;
         }
 
-        if n_queries != 0 && *(queries.at(i)).index == coset_start_index + offset_within_coset {
+        if i != len && *(queries.at(i)).index == coset_start_index + offset_within_coset {
             coset_elements.append(*(queries.at(i)).y_value);
             coset_x_inv = (*(queries.at(i)).x_inv_value) * (*(fri_group.at(i)));
-            n_queries -= 1;
             i += 1;
         } else {
             coset_elements.append(*(sibling_witness.at(j)));
@@ -81,10 +80,7 @@ fn compute_coset_elements(
 //   - verify_indices: query indices of the given layer for Merkle verification.
 //   - verify_y_values: query y values of the given layer for Merkle verification.
 fn compute_next_layer(
-    mut n_queries: felt252,
-    queries: Span<FriLayerQuery>,
-    sibling_witness: Span<felt252>,
-    params: FriLayerComputationParams,
+    queries: Span<FriLayerQuery>, sibling_witness: Span<felt252>, params: FriLayerComputationParams,
 ) -> (Array<FriLayerQuery>, Array<felt252>, Array<felt252>) {
     let mut next_queries = ArrayTrait::<FriLayerQuery>::new();
     let mut verify_indices = ArrayTrait::<felt252>::new();
@@ -92,9 +88,10 @@ fn compute_next_layer(
 
     let coset_size = params.coset_size;
 
+    let len = queries.len();
     let mut i: u32 = 0;
     loop {
-        if n_queries == 0 {
+        if i == len {
             break;
         }
 
@@ -104,13 +101,7 @@ fn compute_next_layer(
         verify_indices.append(coset_index);
 
         let (coset_elements, coset_x_inv) = compute_coset_elements(
-            n_queries,
-            queries,
-            sibling_witness,
-            coset_size,
-            coset_index * coset_size,
-            0,
-            params.fri_group
+            queries, sibling_witness, coset_size, coset_index * coset_size, 0, params.fri_group
         );
 
         let coset_elements_len = coset_elements.len();
