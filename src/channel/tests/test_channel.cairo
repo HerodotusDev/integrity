@@ -55,4 +55,9 @@ fn test_read_from_prover() {
 
     assert(channel.counter == 0, 'invalid read felts');
     assert(channel.digest == 0x413b1e08fe14f181acc48007a89e4d044a9edb54523e8eae5829fde606d4074d, 'invalid read felts');
+
+    channel.read_uint64_from_prover(6969);
+    
+    assert(channel.counter == 0, 'invalid read uint64');
+    assert(channel.digest == 0xeeee1f1910516152d49bea3829151bdd149fcd878fe4e7b52881300c113395ce, 'invalid read uint64');
 }

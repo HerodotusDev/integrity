@@ -88,4 +88,18 @@ impl ChannelImpl of ChannelTrait {
 
         self.digest = blake2s(hash_data).flip_endiannes();
     }
+
+    fn read_uint64_from_prover(ref self: Channel, value: u64) {
+        let mut hash_data = ArrayTrait::<u32>::new();
+
+        assert(self.digest.low != 0xffffffffffffffffffffffffffffffff, 'digest low is 2^128-1');
+        (self.digest + 1).to_array_be(ref hash_data);
+
+        let low: u32 = (value % 0x100000000).try_into().unwrap();
+        let high: u32 = (value / 0x100000000).try_into().unwrap();
+        hash_data.append(high.flip_endiannes());
+        hash_data.append(low.flip_endiannes());
+
+        self.digest = blake2s(hash_data).flip_endiannes();
+    }
 }
