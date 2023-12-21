@@ -1,22 +1,19 @@
 use core::option::OptionTrait;
 use core::traits::TryInto;
 use core::array::SpanTrait;
-use core::traits::Destruct;
-use cairo_verifier::channel::channel::ChannelTrait;
-use cairo_verifier::table_commitment::{
-    TableCommitment, TableCommitmentConfig, TableUnsentCommitment
-};
 use core::array::ArrayTrait;
-use cairo_verifier::table_commitment::{table_commit, table_decommit};
-use cairo_verifier::channel::channel::Channel;
-use cairo_verifier::channel::channel::{ChannelUnsentFelt, ChannelSentFelt};
-use cairo_verifier::fri::fri_config::FriConfig;
+use core::traits::Destruct;
 use cairo_verifier::common::math;
-use cairo_verifier::table_commitment::{TableCommitmentWitness, TableDecommitment};
+use cairo_verifier::channel::channel::{ChannelUnsentFelt, ChannelSentFelt, Channel, ChannelTrait};
+use cairo_verifier::fri::fri_config::FriConfig;
 use cairo_verifier::fri::fri_first_layer::gather_first_layer_queries;
 use cairo_verifier::fri::fri_group::get_fri_group;
 use cairo_verifier::fri::fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer};
 use cairo_verifier::fri::fri_last_layer::verify_last_layer;
+use cairo_verifier::table_commitment::{
+    TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
+    TableUnsentCommitment, table_commit, table_decommit
+};
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
