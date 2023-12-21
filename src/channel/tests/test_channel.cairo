@@ -46,8 +46,13 @@ fn test_read_from_prover() {
     arr.append(2);
     arr.append(3);
     arr.append(-1);
-    channel.read_felts_from_prover(arr);
+    channel.read_felts_from_prover(arr.span());
 
     assert(channel.counter == 0, 'invalid read felts');
     assert(channel.digest == 0x135bc3291210bb6248a09cea1a97b0023c5602b18a9e0786aeed16352972504, 'invalid read felts');
+
+    channel.read_felt_vector_from_prover(arr.span());
+
+    assert(channel.counter == 0, 'invalid read felts');
+    assert(channel.digest == 0x413b1e08fe14f181acc48007a89e4d044a9edb54523e8eae5829fde606d4074d, 'invalid read felts');
 }
