@@ -61,7 +61,7 @@ fn compute_coset_elements(
             coset_elements.append(*(sibling_witness.at(j)));
             j += 1;
         }
-        
+
         offset_within_coset += 1;
     };
 
