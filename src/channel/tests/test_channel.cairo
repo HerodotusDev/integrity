@@ -40,7 +40,10 @@ fn test_read_from_prover() {
     channel.read_felt_from_prover(0xffffffffffffffffffffffffffffffffffffffff);
 
     assert(channel.counter == 0, 'invalid read felt');
-    assert(channel.digest == 0xb056692f5fc4f27dedd1fb6269b02c542a415f1d84555708a354ffb25cf97ad5, 'invalid read felt');
+    assert(
+        channel.digest == 0xb056692f5fc4f27dedd1fb6269b02c542a415f1d84555708a354ffb25cf97ad5,
+        'invalid read felt'
+    );
 
     let mut arr = ArrayTrait::<felt252>::new();
     arr.append(2);
@@ -49,15 +52,24 @@ fn test_read_from_prover() {
     channel.read_felts_from_prover(arr.span());
 
     assert(channel.counter == 0, 'invalid read felts');
-    assert(channel.digest == 0x135bc3291210bb6248a09cea1a97b0023c5602b18a9e0786aeed16352972504, 'invalid read felts');
+    assert(
+        channel.digest == 0x135bc3291210bb6248a09cea1a97b0023c5602b18a9e0786aeed16352972504,
+        'invalid read felts'
+    );
 
     channel.read_felt_vector_from_prover(arr.span());
 
     assert(channel.counter == 0, 'invalid read felts');
-    assert(channel.digest == 0x413b1e08fe14f181acc48007a89e4d044a9edb54523e8eae5829fde606d4074d, 'invalid read felts');
+    assert(
+        channel.digest == 0x413b1e08fe14f181acc48007a89e4d044a9edb54523e8eae5829fde606d4074d,
+        'invalid read felts'
+    );
 
     channel.read_uint64_from_prover(6969);
-    
+
     assert(channel.counter == 0, 'invalid read uint64');
-    assert(channel.digest == 0xeeee1f1910516152d49bea3829151bdd149fcd878fe4e7b52881300c113395ce, 'invalid read uint64');
+    assert(
+        channel.digest == 0xeeee1f1910516152d49bea3829151bdd149fcd878fe4e7b52881300c113395ce,
+        'invalid read uint64'
+    );
 }
