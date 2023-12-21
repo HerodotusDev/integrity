@@ -16,6 +16,7 @@ use cairo_verifier::table_commitment::{TableCommitmentWitness, TableDecommitment
 use cairo_verifier::fri::fri_first_layer::gather_first_layer_queries;
 use cairo_verifier::fri::fri_group::get_fri_group;
 use cairo_verifier::fri::fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer};
+use cairo_verifier::fri::fri_last_layer::verify_last_layer;
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
@@ -194,14 +195,16 @@ fn fri_decommit(
     witness: FriWitness,
 ) {
     assert(queries.len().into() == decommitment.n_values, 'Invalid value');
-    let fri_first_layer_evaluations = decommitment.values;
 
+    // Compute first FRI layer queries.
     let fri_queries = gather_first_layer_queries(
         queries, decommitment.values, decommitment.points,
     );
 
+    // Compute fri_group.
     let fri_group = get_fri_group();
 
+    // Decommit inner layers.
     let last_queries = fri_decommit_layers(
         fri_group.span(),
         commitment.config.n_layers - 1,
@@ -211,4 +214,15 @@ fn fri_decommit(
         commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
         fri_queries.span(),
     );
+
+    // Last layer.
+    assert(
+        commitment
+            .last_layer_coefficients
+            .len() == math::pow(2, commitment.config.log_last_layer_degree_bound)
+            .try_into()
+            .unwrap(),
+        'Invlid value'
+    );
+    verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);
 }
