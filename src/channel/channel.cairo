@@ -1,6 +1,7 @@
 use cairo_verifier::common::{
     flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s
 };
+use poseidon::poseidon_hash_span;
 
 const C_PRIME_AS_UINT256_LOW: u128 = 31;
 const C_PRIME_AS_UINT256_HIGH: u128 =
@@ -61,5 +62,10 @@ impl ChannelImpl of ChannelTrait {
         value_u256.to_array_be(ref hash_data);
 
         self.digest = blake2s(hash_data).flip_endiannes();
+    }
+
+    fn read_felts_from_prover(ref self: Channel, values: Array<felt252>) {
+        let hashed = poseidon_hash_span(values.span());
+        self.read_felt_from_prover(hashed);
     }
 }

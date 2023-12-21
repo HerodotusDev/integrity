@@ -34,10 +34,20 @@ fn test_random_uint256_to_prover() {
 
 #[test]
 #[available_gas(9999999999)]
-fn test_read_felt_from_prover() {
+fn test_read_from_prover() {
     let mut channel = ChannelTrait::new(0);
 
     channel.read_felt_from_prover(0xffffffffffffffffffffffffffffffffffffffff);
 
+    assert(channel.counter == 0, 'invalid read felt');
     assert(channel.digest == 0xb056692f5fc4f27dedd1fb6269b02c542a415f1d84555708a354ffb25cf97ad5, 'invalid read felt');
+
+    let mut arr = ArrayTrait::<felt252>::new();
+    arr.append(2);
+    arr.append(3);
+    arr.append(-1);
+    channel.read_felts_from_prover(arr);
+
+    assert(channel.counter == 0, 'invalid read felts');
+    assert(channel.digest == 0x135bc3291210bb6248a09cea1a97b0023c5602b18a9e0786aeed16352972504, 'invalid read felts');
 }
