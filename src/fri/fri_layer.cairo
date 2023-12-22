@@ -20,7 +20,6 @@ struct FriLayerQuery {
 // Computes the elements of the coset starting at coset_start_index.
 //
 // Inputs:
-//   - n_queries: the number of input queries.
 //   - queries: an iterator over the input queries.
 //   - sibling_witness: a list of all the query's siblings.
 //   - coset_size: the number of elements in the coset.
@@ -72,7 +71,6 @@ fn compute_coset_elements(
 // and produces queries for layer i+1 (a single query for each coset in the i-th layer).
 //
 // Inputs:
-//   - n_queries: the number of input queries.
 //   - queries: input queries.
 //   - sibling_witness: a list of all the query's siblings.
 //   - params: the parameters to use for the layer computation.
