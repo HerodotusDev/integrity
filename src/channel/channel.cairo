@@ -75,7 +75,7 @@ impl ChannelImpl of ChannelTrait {
     fn read_felt_vector_from_prover(ref self: Channel, values: Span<felt252>) {
         let mut hash_data = ArrayTrait::<u32>::new();
 
-        assert(self.digest.low != 0xffffffffffffffffffffffffffffffff, 'digest low is 2^128-1');
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         (self.digest + 1).to_array_be(ref hash_data);
 
         let mut i = 0;
@@ -94,7 +94,7 @@ impl ChannelImpl of ChannelTrait {
     fn read_uint64_from_prover(ref self: Channel, value: u64) {
         let mut hash_data = ArrayTrait::<u32>::new();
 
-        assert(self.digest.low != 0xffffffffffffffffffffffffffffffff, 'digest low is 2^128-1');
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         (self.digest + 1).to_array_be(ref hash_data);
 
         let low: u32 = (value % 0x100000000).try_into().unwrap();
