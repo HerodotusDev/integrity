@@ -2,6 +2,7 @@ use cairo_verifier::common::{
     flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s
 };
 use poseidon::poseidon_hash_span;
+use core::integer::BoundedU128;
 
 const C_PRIME_AS_UINT256_LOW: u128 = 31;
 const C_PRIME_AS_UINT256_HIGH: u128 =
@@ -59,7 +60,7 @@ impl ChannelImpl of ChannelTrait {
         let value_u256: u256 = value.into();
         let mut hash_data = ArrayTrait::<u32>::new();
 
-        assert(self.digest.low != 0xffffffffffffffffffffffffffffffff, 'digest low is 2^128-1');
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         (self.digest + 1).to_array_be(ref hash_data);
         value_u256.to_array_be(ref hash_data);
 
