@@ -65,6 +65,7 @@ impl ChannelImpl of ChannelTrait {
         value_u256.to_array_be(ref hash_data);
 
         self.digest = blake2s(hash_data).flip_endiannes();
+        self.counter = 0;
     }
 
     fn read_felts_from_prover(ref self: Channel, values: Span<felt252>) {
@@ -89,6 +90,7 @@ impl ChannelImpl of ChannelTrait {
         };
 
         self.digest = blake2s(hash_data).flip_endiannes();
+        self.counter = 0;
     }
 
     fn read_uint64_from_prover(ref self: Channel, value: u64) {
@@ -103,5 +105,6 @@ impl ChannelImpl of ChannelTrait {
         hash_data.append(low.flip_endiannes());
 
         self.digest = blake2s(hash_data).flip_endiannes();
+        self.counter = 0;
     }
 }
