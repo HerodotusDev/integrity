@@ -1,5 +1,5 @@
 use cairo_verifier::common::{
-    flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s
+    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s
 };
 use poseidon::poseidon_hash_span;
 use core::integer::BoundedU128;
@@ -28,10 +28,10 @@ impl ChannelImpl of ChannelTrait {
 
     fn random_uint256_to_prover(ref self: Channel) -> u256 {
         let mut hash_data = ArrayTrait::<u32>::new();
-        self.digest.to_array_be(ref hash_data);
-        self.counter.to_array_be(ref hash_data);
+        hash_data.append_big_endian(self.digest);
+        hash_data.append_big_endian(self.counter);
         self.counter += 1;
-        blake2s(hash_data).flip_endiannes()
+        blake2s(hash_data).flip_endianness()
     }
 
     fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
@@ -61,10 +61,10 @@ impl ChannelImpl of ChannelTrait {
         let mut hash_data = ArrayTrait::<u32>::new();
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
-        (self.digest + 1).to_array_be(ref hash_data);
-        value_u256.to_array_be(ref hash_data);
+        hash_data.append_big_endian(self.digest + 1);
+        hash_data.append_big_endian(value_u256);
 
-        self.digest = blake2s(hash_data).flip_endiannes();
+        self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
     }
 
@@ -77,7 +77,7 @@ impl ChannelImpl of ChannelTrait {
         let mut hash_data = ArrayTrait::<u32>::new();
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
-        (self.digest + 1).to_array_be(ref hash_data);
+        hash_data.append_big_endian(self.digest + 1);
 
         let mut i = 0;
         loop {
@@ -85,11 +85,11 @@ impl ChannelImpl of ChannelTrait {
                 break;
             };
             let value_u256: u256 = (*values[i] * MONTGOMERY_R).into();
-            value_u256.to_array_be(ref hash_data);
+            hash_data.append_big_endian(value_u256);
             i += 1;
         };
 
-        self.digest = blake2s(hash_data).flip_endiannes();
+        self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
     }
 
@@ -97,14 +97,14 @@ impl ChannelImpl of ChannelTrait {
         let mut hash_data = ArrayTrait::<u32>::new();
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
-        (self.digest + 1).to_array_be(ref hash_data);
+        hash_data.append_big_endian(self.digest + 1);
 
         let low: u32 = (value % 0x100000000).try_into().unwrap();
         let high: u32 = (value / 0x100000000).try_into().unwrap();
-        hash_data.append(high.flip_endiannes());
-        hash_data.append(low.flip_endiannes());
+        hash_data.append(high.flip_endianness());
+        hash_data.append(low.flip_endianness());
 
-        self.digest = blake2s(hash_data).flip_endiannes();
+        self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
     }
 }

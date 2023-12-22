@@ -1,32 +1,32 @@
-use cairo_verifier::common::to_array::ToArrayTrait;
+use cairo_verifier::common::array_append::ArrayAppendTrait;
 
 #[test]
 #[available_gas(9999999999)]
-fn test_to_array_le_1() {
+fn test_array_append_le_1() {
     let value = 1827398791_u128; // = 0x6cebe487
     let mut result = ArrayTrait::<u32>::new();
-    value.to_array_le(ref result);
+    result.append_little_endian(value);
     assert((*result[0]) == 0x6cebe487, 'Invalid value');
     assert((*result[1]) == 0x00000000, 'Invalid value');
 }
 
 #[test]
 #[available_gas(9999999999)]
-fn test_to_array_le_2() {
+fn test_array_append_le_2() {
     let value = 18273987910128309_u128; // = 0x40ec185e0352b5
     let mut result = ArrayTrait::<u32>::new();
-    value.to_array_le(ref result);
+    result.append_little_endian(value);
     assert((*result[0]) == 0x5e0352b5, 'Invalid value');
     assert((*result[1]) == 0x0040ec18, 'Invalid value');
 }
 
 #[test]
 #[available_gas(9999999999)]
-fn test_to_array_le_3() {
+fn test_array_append_le_3() {
     let value =
         182739879101283091827398791012830918273987910128309_u256; // = 0x7d09239523c3e2d590e3500b26c941117ab49552b5
     let mut result = ArrayTrait::<u32>::new();
-    value.to_array_le(ref result);
+    result.append_little_endian(value);
     assert((*result[0]) == 0xb49552b5, 'Invalid value');
     assert((*result[1]) == 0xc941117a, 'Invalid value');
     assert((*result[2]) == 0xe3500b26, 'Invalid value');
@@ -37,11 +37,11 @@ fn test_to_array_le_3() {
 
 #[test]
 #[available_gas(9999999999)]
-fn test_to_array_le_4() {
+fn test_array_append_le_4() {
     let value =
         18273987910112830918273987910128309910128309182739879101283099101283091827399_u256; // = 0x2866b5eb89ac02463b066d1405c0e20f5a19ba600c90767713f2ae1b6f254ac7
     let mut result = ArrayTrait::<u32>::new();
-    value.to_array_le(ref result);
+    result.append_little_endian(value);
     assert((*result[0]) == 0x6f254ac7, 'Invalid value');
     assert((*result[1]) == 0x13f2ae1b, 'Invalid value');
     assert((*result[2]) == 0x0c907677, 'Invalid value');
