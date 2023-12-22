@@ -98,7 +98,7 @@ fn compute_next_layer(
         }
 
         let coset_index = *(queries.at(i)).index;
-        assert(0_u256 <= coset_index.into(), 'Invalid value');
+        assert(coset_index.into() >= 0_u256, 'Must be non negative value');
 
         verify_indices.append(coset_index);
 
@@ -108,7 +108,7 @@ fn compute_next_layer(
 
         // Verify that at least one query was consumed.
         let coset_elements_len = coset_elements.len();
-        assert(0 <= coset_elements_len, 'Invalid value');
+        assert(coset_elements_len >= 0, 'Must be non negative value');
 
         let coset_elements_span = coset_elements.span();
 

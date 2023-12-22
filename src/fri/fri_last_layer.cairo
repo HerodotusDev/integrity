@@ -18,7 +18,7 @@ fn verify_last_layer(queries: Span<FriLayerQuery>, coefficients: Span<ChannelSen
         let value = horner_eval::horner_eval(
             coefficients, math::mul_inverse(*queries.at(i).x_inv_value)
         );
-        assert(value == *queries.at(i).y_value, '');
+        assert(value == *queries.at(i).y_value, 'Invalid value');
         i += 1;
     }
 }

@@ -20,7 +20,7 @@ fn gather_first_layer_queries(
         }
 
         // Translate the coset to the homogenous group to have simple FRI equations.
-        let shifted_x_value = *(x_values.at(i)) * FIELD_GENERATOR_INVERSE;
+        let shifted_x_value = (*x_values.at(i)) * FIELD_GENERATOR_INVERSE;
 
         fri_queries
             .append(

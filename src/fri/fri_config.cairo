@@ -27,32 +27,31 @@ struct FriConfig {
 fn fri_config_validate(
     config: FriConfig, log_n_cosets: felt252, n_verifier_friendly_commitment_layers: felt252
 ) -> felt252 {
-    assert(0_u256 <= config.log_last_layer_degree_bound.into(), 'Invalid value');
-    assert(
-        config.log_last_layer_degree_bound.try_into().unwrap() <= MAX_LAST_LAYER_LOG_DEGREE_BOUND,
-        'Invalid value'
-    );
+    let n_layers = config.n_layers.try_into().unwrap();
+    let log_last_layer_degree_bound = config.log_last_layer_degree_bound.try_into().unwrap();
 
-    assert(2_u256 <= config.n_layers.into(), 'Invalid value');
-    assert(config.n_layers.try_into().unwrap() <= MAX_FRI_LAYERS + 1, 'Invalid value');
+    assert(log_last_layer_degree_bound >= 0, 'Must be non negative value');
+    assert(log_last_layer_degree_bound <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Value too big');
 
-    assert(*(config.fri_step_sizes[0]) == 0, 'Invalid value');
+    assert(*config.fri_step_sizes.at(0) == 0, 'Invalid value');
 
-    let len: u32 = config.n_layers.try_into().unwrap();
+    assert(n_layers >= 2, 'Value too small');
+    assert(n_layers <= MAX_FRI_LAYERS + 1, 'Value too big');
+
     let mut i: u32 = 1;
     let mut sum_of_step_sizes: felt252 = 0;
     let mut log_input_size = config.log_input_size;
     loop {
-        if i == len {
+        if i == n_layers {
             break;
         }
 
-        let fri_step: felt252 = *(config.fri_step_sizes.at(i));
-        let table_commitment = *(config.inner_layers.at(i));
+        let fri_step: felt252 = *config.fri_step_sizes.at(i);
+        let table_commitment = *config.inner_layers.at(i);
 
         let fri_step_u32: u32 = fri_step.try_into().unwrap();
-        assert(1_u32 <= fri_step_u32, 'Invalid value');
-        assert(fri_step_u32 <= MAX_FRI_STEP + 1, 'Invalid value');
+        assert(fri_step_u32 >= 1, 'Value too small');
+        assert(fri_step_u32 <= MAX_FRI_STEP + 1, 'Value too big');
         assert(table_commitment.n_columns == fri_step * fri_step, 'Invalid value');
 
         i += 1;
