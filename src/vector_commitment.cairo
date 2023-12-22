@@ -1,17 +1,15 @@
-use cairo_verifier::channel::channel::{ChannelSentFelt, ChannelUnsentFelt};
-
 // Commitment values for a vector commitment. Used to generate a commitment by "reading" these
 // values from the channel.
 #[derive(Drop, Copy)]
 struct VectorUnsentCommitment {
-    commitment_hash: ChannelUnsentFelt,
+    commitment_hash: felt252,
 }
 
 // Commitment for a vector of field elements.
 #[derive(Drop, Copy)]
 struct VectorCommitment {
     config: VectorCommitmentConfig,
-    commitment_hash: ChannelSentFelt,
+    commitment_hash: felt252,
 }
 
 #[derive(Drop, Copy)]

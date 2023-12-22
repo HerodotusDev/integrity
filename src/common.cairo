@@ -4,6 +4,7 @@ mod from_span;
 mod horner_eval;
 mod to_array;
 mod math;
+mod array_print;
 
 #[cfg(test)]
 mod tests;

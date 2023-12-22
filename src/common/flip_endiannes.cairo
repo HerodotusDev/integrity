@@ -4,6 +4,15 @@ trait FlipEndiannessTrait<F> {
     fn flip_endiannes(self: F) -> F;
 }
 
+impl FlipEndiannessU32 of FlipEndiannessTrait<u32> {
+    fn flip_endiannes(self: u32) -> u32 {
+        (self % 256) * 16777216
+            + (self / 256 % 256) * 65536
+            + (self / 65536 % 256) * 256
+            + (self / 16777216 % 256)
+    }
+}
+
 impl FlipEndiannessU256 of FlipEndiannessTrait<u256> {
     fn flip_endiannes(self: u256) -> u256 {
         let mut data = ArrayTrait::<u32>::new();

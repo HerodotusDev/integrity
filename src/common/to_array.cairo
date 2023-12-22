@@ -1,3 +1,5 @@
+use cairo_verifier::common::flip_endiannes::FlipEndiannessU32;
+
 // 2^8 = 256
 const U128maxU8: u128 = 256;
 const U64maxU8: u64 = 256;
@@ -52,13 +54,7 @@ impl U128ToArrayU32 of ToArrayTrait<u128, u32> {
         loop {
             if i != 0 {
                 i -= 1;
-                output
-                    .append(
-                        (*array.at(i) % 256) * 16777216
-                            + (*array.at(i) / 256 % 256) * 65536
-                            + (*array.at(i) / 65536 % 256) * 256
-                            + (*array.at(i) / 16777216 % 256)
-                    );
+                output.append((*array.at(i)).flip_endiannes());
             } else {
                 break;
             }

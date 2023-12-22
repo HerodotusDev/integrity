@@ -1,7 +1,6 @@
 use cairo_verifier::vector_commitment::{
     VectorCommitmentConfig, VectorUnsentCommitment, VectorCommitment, VectorCommitmentWitness
 };
-use cairo_verifier::channel::channel::ChannelSentFelt;
 
 // Commitment values for a table commitment protocol. Used to generate a commitment by "reading"
 // these values from the channel.
@@ -47,7 +46,7 @@ fn table_commit(
         },
         vector_commitment: VectorCommitment {
             config: VectorCommitmentConfig { height: 0, n_verifier_friendly_commitment_layers: 0, },
-            commitment_hash: ChannelSentFelt { value: 0, }
+            commitment_hash: 0
         }
     }
 }

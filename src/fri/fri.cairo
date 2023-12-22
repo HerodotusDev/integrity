@@ -5,7 +5,7 @@ use core::array::SpanTrait;
 use core::array::ArrayTrait;
 use core::traits::Destruct;
 use cairo_verifier::common::math;
-use cairo_verifier::channel::channel::{ChannelUnsentFelt, ChannelSentFelt, Channel, ChannelTrait};
+use cairo_verifier::channel::channel::{Channel, ChannelTrait};
 use cairo_verifier::fri::fri_config::FriConfig;
 use cairo_verifier::fri::fri_first_layer::gather_first_layer_queries;
 use cairo_verifier::fri::fri_group::get_fri_group;
@@ -24,7 +24,7 @@ struct FriUnsentCommitment {
     inner_layers: Span<TableUnsentCommitment>,
     // Array of size 2**log_last_layer_degree_bound containing coefficients for the last layer
     // polynomial.
-    last_layer_coefficients: Span<ChannelUnsentFelt>,
+    last_layer_coefficients: Span<felt252>,
 }
 
 #[derive(Drop, Copy)]
@@ -36,7 +36,7 @@ struct FriCommitment {
     eval_points: Span<felt252>,
     // Array of size 2**log_last_layer_degree_bound containing coefficients for the last layer
     // polynomial.
-    last_layer_coefficients: Span<ChannelSentFelt>,
+    last_layer_coefficients: Span<felt252>,
 }
 
 #[derive(Drop, Copy)]
@@ -127,16 +127,17 @@ fn fri_commit(
     );
 
     // Read last layer coefficients.
+    channel.read_felt_vector_from_prover(unsent_commitment.last_layer_coefficients);
+    let coefficients = unsent_commitment.last_layer_coefficients;
+
     let n_coefficients = math::pow(2, config.log_last_layer_degree_bound);
-    let coefficients = channel
-        .read_felt_vector_from_prover(unsent_commitment.last_layer_coefficients);
     assert(n_coefficients == coefficients.len().into(), 'Invalid value');
 
     FriCommitment {
         config: config,
         inner_layers: commitments.span(),
         eval_points: eval_points.span(),
-        last_layer_coefficients: coefficients.span()
+        last_layer_coefficients: coefficients
     }
 }
 
