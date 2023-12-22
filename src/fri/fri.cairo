@@ -140,7 +140,7 @@ fn fri_commit(
     }
 }
 
-fn fri_decommit_layers(
+fn fri_verify_layers(
     fri_group: Span<felt252>,
     n_layers: felt252,
     commitment: Span<TableCommitment>,
@@ -184,7 +184,7 @@ fn fri_decommit_layers(
 }
 
 // FRI protocol component decommitment.
-fn fri_decommit(
+fn fri_verify(
     queries: Span<felt252>,
     commitment: FriCommitment,
     decommitment: FriDecommitment,
@@ -200,8 +200,8 @@ fn fri_decommit(
     // Compute fri_group.
     let fri_group = get_fri_group();
 
-    // Decommit inner layers.
-    let last_queries = fri_decommit_layers(
+    // Verify inner layers.
+    let last_queries = fri_verify_layers(
         fri_group.span(),
         commitment.config.n_layers - 1,
         commitment.inner_layers,

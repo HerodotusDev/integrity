@@ -5,7 +5,7 @@ use core::traits::TryInto;
 
 use cairo_verifier::common::math;
 use cairo_verifier::fri::fri_layer::FriLayerQuery;
-use cairo_verifier::FIELD_GENERATOR_INV;
+use cairo_verifier::FIELD_GENERATOR_INVERSE;
 
 fn gather_first_layer_queries(
     queries: Span<felt252>, evaluations: Span<felt252>, x_values: Span<felt252>
@@ -20,7 +20,7 @@ fn gather_first_layer_queries(
         }
 
         // Translate the coset to the homogenous group to have simple FRI equations.
-        let shifted_x_value = *(x_values.at(i)) * FIELD_GENERATOR_INV;
+        let shifted_x_value = *(x_values.at(i)) * FIELD_GENERATOR_INVERSE;
 
         fri_queries
             .append(

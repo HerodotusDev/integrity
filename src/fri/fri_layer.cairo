@@ -58,7 +58,7 @@ fn compute_coset_elements(
             coset_x_inv = (*queries.at(i).x_inv_value) * (*fri_group.at(i + j));
             i += 1;
         } else {
-            coset_elements.append(*(sibling_witness.at(j)));
+            coset_elements.append(*sibling_witness.at(j));
             j += 1;
         }
 
