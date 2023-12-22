@@ -1,5 +1,5 @@
 use cairo_verifier::common::{
-    flip_endiannes::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s
+    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s
 };
 use poseidon::poseidon_hash_span;
 use core::integer::BoundedU128;
@@ -31,7 +31,7 @@ impl ChannelImpl of ChannelTrait {
         hash_data.append_big_endian(self.digest);
         hash_data.append_big_endian(self.counter);
         self.counter += 1;
-        blake2s(hash_data).flip_endiannes()
+        blake2s(hash_data).flip_endianness()
     }
 
     fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
@@ -64,7 +64,7 @@ impl ChannelImpl of ChannelTrait {
         hash_data.append_big_endian(self.digest + 1);
         hash_data.append_big_endian(value_u256);
 
-        self.digest = blake2s(hash_data).flip_endiannes();
+        self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
     }
 
@@ -89,7 +89,7 @@ impl ChannelImpl of ChannelTrait {
             i += 1;
         };
 
-        self.digest = blake2s(hash_data).flip_endiannes();
+        self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
     }
 
@@ -101,10 +101,10 @@ impl ChannelImpl of ChannelTrait {
 
         let low: u32 = (value % 0x100000000).try_into().unwrap();
         let high: u32 = (value / 0x100000000).try_into().unwrap();
-        hash_data.append(high.flip_endiannes());
-        hash_data.append(low.flip_endiannes());
+        hash_data.append(high.flip_endianness());
+        hash_data.append(low.flip_endianness());
 
-        self.digest = blake2s(hash_data).flip_endiannes();
+        self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
     }
 }

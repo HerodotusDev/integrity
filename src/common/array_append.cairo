@@ -1,4 +1,4 @@
-use cairo_verifier::common::flip_endiannes::FlipEndiannessU32;
+use cairo_verifier::common::flip_endianness::FlipEndiannessU32;
 
 // 2^8 = 256
 const U128maxU8: u128 = 256;
@@ -54,7 +54,7 @@ impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
         loop {
             if i != 0 {
                 i -= 1;
-                self.append((*array.at(i)).flip_endiannes());
+                self.append((*array.at(i)).flip_endianness());
             } else {
                 break;
             }
