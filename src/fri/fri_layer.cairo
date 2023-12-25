@@ -1,3 +1,7 @@
+use core::debug::PrintTrait;
+use core::option::OptionTrait;
+use core::traits::TryInto;
+use core::traits::Into;
 use core::array::SpanTrait;
 use core::array::ArrayTrait;
 use cairo_verifier::fri::fri_formula::fri_formula;
@@ -10,7 +14,7 @@ struct FriLayerComputationParams {
     eval_point: felt252,
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct FriLayerQuery {
     index: felt252,
     y_value: felt252,
@@ -33,8 +37,8 @@ struct FriLayerQuery {
 //     query was consumed by this function.
 
 fn compute_coset_elements(
-    queries: Span<FriLayerQuery>,
-    sibling_witness: Span<felt252>,
+    ref queries: Span<FriLayerQuery>,
+    ref sibling_witness: Span<felt252>,
     coset_size: felt252,
     coset_start_index: felt252,
     mut offset_within_coset: felt252,
@@ -52,12 +56,13 @@ fn compute_coset_elements(
             break;
         }
 
-        if i != i_len && *queries.at(i).index == coset_start_index + offset_within_coset {
-            coset_elements.append(*queries.at(i).y_value);
-            coset_x_inv = (*queries.at(i).x_inv_value) * (*fri_group.at(i + j));
+        if i != i_len && (*queries.at(0)).index == coset_start_index + offset_within_coset {
+            let query = *queries.pop_front().unwrap();
+            coset_elements.append(query.y_value);
+            coset_x_inv = (query.x_inv_value) * (*fri_group.at(i + j));
             i += 1;
         } else {
-            coset_elements.append(*sibling_witness.at(j));
+            coset_elements.append(*sibling_witness.pop_front().unwrap());
             j += 1;
         }
 
@@ -80,28 +85,35 @@ fn compute_coset_elements(
 //   - verify_indices: query indices of the given layer for Merkle verification.
 //   - verify_y_values: query y values of the given layer for Merkle verification.
 fn compute_next_layer(
-    queries: Span<FriLayerQuery>, sibling_witness: Span<felt252>, params: FriLayerComputationParams,
+    mut queries: Span<FriLayerQuery>,
+    mut sibling_witness: Span<felt252>,
+    params: FriLayerComputationParams,
 ) -> (Array<FriLayerQuery>, Array<felt252>, Array<felt252>) {
     let mut next_queries = ArrayTrait::<FriLayerQuery>::new();
     let mut verify_indices = ArrayTrait::<felt252>::new();
     let mut verify_y_values = ArrayTrait::<felt252>::new();
 
     let coset_size = params.coset_size;
-
-    let len = queries.len();
-    let mut i: u32 = 0;
     loop {
-        if i == len {
+        if queries.len() == 0 {
             break;
         }
 
-        let coset_index = *(queries.at(i)).index;
+        let index_u256: u256 = (*queries.at(0).index).into();
+        let coset_size_u256: u256 = coset_size.into();
+
+        let coset_index = (index_u256 / coset_size_u256).low.into();
         assert(coset_index.into() >= 0_u256, 'Must be non negative value');
 
         verify_indices.append(coset_index);
 
         let (coset_elements, coset_x_inv) = compute_coset_elements(
-            queries, sibling_witness, coset_size, coset_index * coset_size, 0, params.fri_group
+            ref queries,
+            ref sibling_witness,
+            coset_size,
+            coset_index * coset_size,
+            0,
+            params.fri_group
         );
 
         // Verify that at least one query was consumed.
@@ -116,6 +128,7 @@ fn compute_next_layer(
                 break;
             }
             verify_y_values.append(*(coset_elements_span.at(j)));
+            j += 1;
         };
 
         let fri_formula_res = fri_formula(
@@ -130,8 +143,6 @@ fn compute_next_layer(
                     index: coset_index, y_value: fri_formula_res, x_inv_value: next_x_inv
                 }
             );
-
-        i += 1;
     };
 
     (next_queries, verify_indices, verify_y_values)
