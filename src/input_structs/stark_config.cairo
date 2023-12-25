@@ -1,7 +1,7 @@
 #[derive(Copy, Drop)]
 struct StarkConfig {
     traces: TracesConfig,
-// composition: TableCommitmentConfig,
+    composition: TableCommitmentConfig,
 // fri: FriConfig,
 // proof_of_work: ProofOfWorkConfig,
 // // Log2 of the trace domain size.
