@@ -2,13 +2,13 @@ use crate::ast::{Expr, Exprs};
 
 grammar;
 
-pub Expr: Exprs = {
+pub CairoParserOutput: Exprs = {
     StructName "()" => Exprs(Vec::new()),
     StructName "(" <n:Comma<Arg>> ")" => Exprs(n.iter().flat_map(|x| x.iter().cloned()).collect()),
 };
 
 Arg: Exprs = {
-    ArgName "=" <n:Expr> => n,
+    ArgName "=" <n:CairoParserOutput> => n,
     ArgName "=" <n:Num> => Exprs(vec![Expr::Value(n)]),
     ArgName "=" "[" <n:Comma<Num>> "]" => Exprs(vec![Expr::Array(n)])
 };
