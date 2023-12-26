@@ -25,11 +25,11 @@ fn main() -> anyhow::Result<()> {
         .map_err(|e| anyhow::anyhow!("{}", e))?;
     let result = format!("{parsed}");
 
-    // let target = cli.target;
-    // let function = "main";
-    // let args: WrappedArg = serde_json::from_str(&result).unwrap();
+    let target = cli.target;
+    let function = "main";
+    let args: WrappedArg = serde_json::from_str(&result).unwrap();
 
-    // let result = run(&target, &function, &args)?;
+    let result = run(&target, &function, &args)?;
 
     println!("{result:?}");
     Ok(())
