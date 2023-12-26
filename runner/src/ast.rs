@@ -13,7 +13,20 @@ impl Display for Expr {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Expr::Value(v) => write!(f, "{v}"),
-            Expr::Array(v) => write!(f, "{v:?}"),
+            Expr::Array(v) => {
+                write!(f, "[")?;
+
+                for (i, expr) in v.iter().enumerate() {
+                    if i != 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{expr}")?;
+                }
+
+                write!(f, "]")?;
+
+                Ok(())
+            },
         }
     }
 }
