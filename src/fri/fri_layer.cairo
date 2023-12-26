@@ -1,3 +1,5 @@
+use cairo_verifier::common::array_extend::ArrayExtendTrait;
+use core::box::BoxTrait;
 use core::debug::PrintTrait;
 use core::option::OptionTrait;
 use core::traits::TryInto;
@@ -46,26 +48,26 @@ fn compute_coset_elements(
 ) -> (Array<felt252>, felt252) {
     let mut coset_elements = ArrayTrait::<felt252>::new();
     let mut coset_x_inv: felt252 = 0;
-
-    let i_len = queries.len();
     let mut i: u32 = 0;
-    let mut j: u32 = 0;
-
     loop {
         if offset_within_coset == coset_size {
             break;
         }
 
-        if i != i_len && (*queries.at(0)).index == coset_start_index + offset_within_coset {
-            let query = *queries.pop_front().unwrap();
-            coset_elements.append(query.y_value);
-            coset_x_inv = (query.x_inv_value) * (*fri_group.at(i + j));
-            i += 1;
-        } else {
-            coset_elements.append(*sibling_witness.pop_front().unwrap());
-            j += 1;
+        match queries.get(0) {
+            Option::Some(q) => {
+                if *q.unbox().index == coset_start_index + offset_within_coset {
+                    let query = *queries.pop_front().unwrap();
+                    coset_elements.append(query.y_value);
+                    coset_x_inv = (query.x_inv_value) * (*fri_group.at(i));
+                } else {
+                    coset_elements.append(*sibling_witness.pop_front().unwrap());
+                }
+            },
+            Option::None => { coset_elements.append(*sibling_witness.pop_front().unwrap()); },
         }
 
+        i += 1;
         offset_within_coset += 1;
     };
 
@@ -122,14 +124,7 @@ fn compute_next_layer(
 
         let coset_elements_span = coset_elements.span();
 
-        let mut j: u32 = 0;
-        loop {
-            if j == coset_elements_len {
-                break;
-            }
-            verify_y_values.append(*(coset_elements_span.at(j)));
-            j += 1;
-        };
+        verify_y_values.extend(coset_elements_span);
 
         let fri_formula_res = fri_formula(
             coset_elements_span, params.eval_point, coset_x_inv, coset_size,

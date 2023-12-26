@@ -5,6 +5,7 @@ mod horner_eval;
 mod array_append;
 mod math;
 mod array_print;
+mod array_extend;
 
 #[cfg(test)]
 mod tests;
