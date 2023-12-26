@@ -6,14 +6,14 @@ use std::{
 #[derive(Debug, Clone)]
 pub enum Expr {
     Value(String),
-    Array(Vec<String>),
+    Array(Vec<Expr>),
 }
 
 impl Display for Expr {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Expr::Value(v) => write!(f, "{}", v),
-            Expr::Array(v) => write!(f, "{:?}", v),
+            Expr::Value(v) => write!(f, "{v}"),
+            Expr::Array(v) => write!(f, "{v:?}"),
         }
     }
 }
@@ -29,7 +29,7 @@ impl Display for Exprs {
             if i != 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", expr)?;
+            write!(f, "{expr}")?;
         }
 
         write!(f, "]")?;
