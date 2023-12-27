@@ -1,7 +1,7 @@
-use core::debug::PrintTrait;
-use core::array::ArrayTrait;
-use cairo_verifier::fri::fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer};
-use cairo_verifier::fri::fri_group::get_fri_group;
+use cairo_verifier::fri::{
+    fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer},
+    fri_group::get_fri_group,
+};
 
 #[test]
 #[available_gas(9999999999)]

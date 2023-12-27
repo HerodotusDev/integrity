@@ -1,13 +1,6 @@
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
-use core::box::BoxTrait;
-use core::debug::PrintTrait;
-use core::option::OptionTrait;
-use core::traits::TryInto;
-use core::traits::Into;
-use core::array::SpanTrait;
-use core::array::ArrayTrait;
-use cairo_verifier::fri::fri_formula::fri_formula;
-use cairo_verifier::common::math;
+use cairo_verifier::{
+    common::{array_extend::ArrayExtendTrait, math::pow}, fri::fri_formula::fri_formula
+};
 
 #[derive(Drop, Copy)]
 struct FriLayerComputationParams {
@@ -126,7 +119,7 @@ fn compute_next_layer(
         );
 
         // Write next layer query.
-        let next_x_inv = math::pow(coset_x_inv, params.coset_size);
+        let next_x_inv = pow(coset_x_inv, params.coset_size);
         next_queries
             .append(
                 FriLayerQuery {

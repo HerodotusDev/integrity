@@ -1,4 +1,3 @@
-use core::array::ArrayTrait;
 use cairo_verifier::fri::fri_formula::{fri_formula};
 
 #[test]

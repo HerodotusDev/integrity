@@ -1,9 +1,4 @@
-use core::option::OptionTrait;
-use core::traits::TryInto;
-
-use cairo_verifier::common::horner_eval;
-use cairo_verifier::common::math;
-use cairo_verifier::fri::fri_layer::FriLayerQuery;
+use cairo_verifier::{common::{horner_eval, math}, fri::fri_layer::FriLayerQuery,};
 
 // Verifies FRI last layer by evaluating the given polynomial on the given points
 // (=inverses of x_inv_values), and comparing the results to the given values.

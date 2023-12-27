@@ -1,5 +1,3 @@
-use core::array::SpanTrait;
-
 // Constants representing primitive roots of unity for orders 2, 4, 8, and 16.
 // These are calculated based on the formula 1 / 3^((PRIME - 1) / 16) where 3 is a generator.
 const OMEGA_16: felt252 = 0x5c3ed0c6f6ac6dd647c9ba3e4721c1eb14011ea3d174c52d7981c5b8145aa75;

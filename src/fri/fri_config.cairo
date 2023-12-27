@@ -1,9 +1,7 @@
-use core::array::ArrayTrait;
-use core::option::OptionTrait;
-use core::array::SpanTrait;
-use core::traits::Into;
-use cairo_verifier::table_commitment::TableCommitmentConfig;
-use cairo_verifier::vector_commitment::{validate_vector_commitment, VectorCommitmentConfig};
+use cairo_verifier::{
+    table_commitment::TableCommitmentConfig,
+    vector_commitment::{validate_vector_commitment, VectorCommitmentConfig},
+};
 
 const MAX_LAST_LAYER_LOG_DEGREE_BOUND: u32 = 15;
 const MAX_FRI_LAYERS: u32 = 15;

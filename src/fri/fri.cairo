@@ -1,19 +1,15 @@
-use core::traits::Into;
-use core::option::OptionTrait;
-use core::traits::TryInto;
-use core::array::SpanTrait;
-use core::array::ArrayTrait;
-use core::traits::Destruct;
-use cairo_verifier::common::math;
-use cairo_verifier::channel::channel::{Channel, ChannelTrait};
-use cairo_verifier::fri::fri_config::FriConfig;
-use cairo_verifier::fri::fri_first_layer::gather_first_layer_queries;
-use cairo_verifier::fri::fri_group::get_fri_group;
-use cairo_verifier::fri::fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer};
-use cairo_verifier::fri::fri_last_layer::verify_last_layer;
-use cairo_verifier::table_commitment::{
-    TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
-    TableUnsentCommitment, table_commit, table_decommit
+use cairo_verifier::{
+    common::math::pow, channel::channel::{Channel, ChannelTrait},
+    fri::{
+        fri_config::FriConfig, fri_first_layer::gather_first_layer_queries,
+        fri_group::get_fri_group,
+        fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer},
+        fri_last_layer::verify_last_layer,
+    },
+    table_commitment::{
+        TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
+        TableUnsentCommitment, table_commit, table_decommit
+    }
 };
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
@@ -130,7 +126,7 @@ fn fri_commit(
     channel.read_felt_vector_from_prover(unsent_commitment.last_layer_coefficients);
     let coefficients = unsent_commitment.last_layer_coefficients;
 
-    let n_coefficients = math::pow(2, config.log_last_layer_degree_bound);
+    let n_coefficients = pow(2, config.log_last_layer_degree_bound);
     assert(n_coefficients == coefficients.len().into(), 'Invalid value');
 
     FriCommitment {
@@ -159,7 +155,7 @@ fn fri_verify_layers(
         }
 
         // Params.
-        let coset_size = math::pow(2, *step_sizes.at(i));
+        let coset_size = pow(2, *step_sizes.at(i));
         let params = FriLayerComputationParams {
             coset_size, fri_group, eval_point: *eval_points.at(i)
         };
@@ -217,7 +213,7 @@ fn fri_verify(
         commitment
             .last_layer_coefficients
             .len()
-            .into() == math::pow(2, commitment.config.log_last_layer_degree_bound),
+            .into() == pow(2, commitment.config.log_last_layer_degree_bound),
         'Invlid value'
     );
     verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);

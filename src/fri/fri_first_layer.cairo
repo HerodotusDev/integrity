@@ -1,11 +1,6 @@
-use core::array::SpanTrait;
-use core::option::OptionTrait;
-use core::array::ArrayTrait;
-use core::traits::TryInto;
-
-use cairo_verifier::common::math;
-use cairo_verifier::fri::fri_layer::FriLayerQuery;
-use cairo_verifier::FIELD_GENERATOR_INVERSE;
+use cairo_verifier::{
+    common::{math::mul_inverse, consts::FIELD_GENERATOR_INVERSE}, fri::fri_layer::FriLayerQuery,
+};
 
 fn gather_first_layer_queries(
     queries: Span<felt252>, evaluations: Span<felt252>, x_values: Span<felt252>
@@ -27,7 +22,7 @@ fn gather_first_layer_queries(
                 FriLayerQuery {
                     index: *(queries.at(i)),
                     y_value: *(evaluations.at(i)),
-                    x_inv_value: math::mul_inverse(shifted_x_value),
+                    x_inv_value: mul_inverse(shifted_x_value),
                 }
             );
 
