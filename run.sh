@@ -2,4 +2,4 @@
 
 scarb build
 cd runner
-cargo run -- ../target/dev/cairo_verifier.sierra < resources/parserin.txt
+cargo run --release -- ../target/dev/cairo_verifier.sierra < resources/parserin.txt
