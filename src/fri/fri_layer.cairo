@@ -54,17 +54,13 @@ fn compute_coset_elements(
             break;
         }
 
-        match queries.get(0) {
-            Option::Some(q) => {
-                if *q.unbox().index == coset_start_index + offset_within_coset {
-                    let query = *queries.pop_front().unwrap();
-                    coset_elements.append(query.y_value);
-                    coset_x_inv = (query.x_inv_value) * (*fri_group.at(i));
-                } else {
-                    coset_elements.append(*sibling_witness.pop_front().unwrap());
-                }
-            },
-            Option::None => { coset_elements.append(*sibling_witness.pop_front().unwrap()); },
+        let q = queries.get(0);
+        if q.is_some() && *q.unwrap().unbox().index == coset_start_index + offset_within_coset {
+            let query = *queries.pop_front().unwrap();
+            coset_elements.append(query.y_value);
+            coset_x_inv = (query.x_inv_value) * (*fri_group.at(i));
+        } else {
+            coset_elements.append(*sibling_witness.pop_front().unwrap());
         }
 
         i += 1;
