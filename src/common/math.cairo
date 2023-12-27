@@ -1,3 +1,5 @@
+use cairo_verifier::common::consts::STARK_PRIME_MINUS_TWO;
+
 fn pow(base: felt252, exp: felt252) -> felt252 {
     if exp == 0 {
         return 1;
@@ -23,5 +25,5 @@ fn pow(base: felt252, exp: felt252) -> felt252 {
 fn mul_inverse(x: felt252) -> felt252 {
     // From Fermat's little theorem, a ^ (p - 1) = 1 when p is prime and a != 0. Since a ^ (p - 1) = a · a ^ (p - 2) we have that 
     // a ^ (p - 2) is the multiplicative inverse of a modulo p.
-    pow(x, 3618502788666131213697322783095070105623107215331596699973092056135872020479)
+    pow(x, STARK_PRIME_MINUS_TWO)
 }

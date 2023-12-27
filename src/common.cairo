@@ -6,6 +6,7 @@ mod array_append;
 mod math;
 mod array_print;
 mod array_extend;
+mod consts;
 
 #[cfg(test)]
 mod tests;

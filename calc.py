@@ -1,3 +1,0 @@
-DEFAULT_PRIME = 2**251 + 17 * 2**192 + 1
-
-print((pow(3, DEFAULT_PRIME-2, DEFAULT_PRIME)))

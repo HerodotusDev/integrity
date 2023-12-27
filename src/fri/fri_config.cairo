@@ -27,10 +27,9 @@ struct FriConfig {
 fn fri_config_validate(
     config: FriConfig, log_n_cosets: felt252, n_verifier_friendly_commitment_layers: felt252
 ) -> felt252 {
-    let n_layers = config.n_layers.try_into().unwrap();
-    let log_last_layer_degree_bound = config.log_last_layer_degree_bound.try_into().unwrap();
+    let n_layers: u32 = config.n_layers.try_into().unwrap();
+    let log_last_layer_degree_bound: u32 = config.log_last_layer_degree_bound.try_into().unwrap();
 
-    assert(log_last_layer_degree_bound >= 0, 'Must be non negative value');
     assert(log_last_layer_degree_bound <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Value too big');
 
     assert(*config.fri_step_sizes.at(0) == 0, 'Invalid value');
