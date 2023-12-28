@@ -126,8 +126,9 @@ fn fri_commit(
     channel.read_felt_vector_from_prover(unsent_commitment.last_layer_coefficients);
     let coefficients = unsent_commitment.last_layer_coefficients;
 
-    let n_coefficients = pow(2, config.log_last_layer_degree_bound);
-    assert(n_coefficients == coefficients.len().into(), 'Invalid value');
+    assert(
+        pow(2, config.log_last_layer_degree_bound) == coefficients.len().into(), 'Invalid value'
+    );
 
     FriCommitment {
         config: config,
