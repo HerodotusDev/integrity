@@ -1,7 +1,7 @@
 use cairo_verifier::air::public_memory::{
     Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product
 };
-use cairo_verifier::common::felt252::{pow, Felt252PartialOrd, Felt252Div};
+use cairo_verifier::common::math::{pow, Felt252PartialOrd, Felt252Div};
 
 #[derive(Drop)]
 struct SegmentInfo {

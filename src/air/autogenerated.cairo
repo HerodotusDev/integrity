@@ -1,5 +1,5 @@
 use cairo_verifier::air::global_values::GlobalValues;
-use cairo_verifier::common::felt252::{Felt252Div, pow};
+use cairo_verifier::common::math::{Felt252Div, pow};
 
 fn eval_composition_polynomial_inner(
     mask_values: Array<felt252>,
