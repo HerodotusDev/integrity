@@ -3,7 +3,7 @@
 // `point` is the value at which the polynomial will be evaluated.
 // The function returns the polynomial evaluation as `felt252`.
 
-fn horner_eval(coefs: Array<felt252>, point: felt252) -> felt252 {
+fn horner_eval(coefs: Span<felt252>, point: felt252) -> felt252 {
     let mut res = 0;
     let mut i = coefs.len();
     loop {

@@ -1,14 +1,12 @@
 use cairo_verifier::common::{
-    flip_endiannes::FlipEndiannessTrait, to_array::ToArrayTrait, blake2s::blake2s
+    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+    consts::{
+        C_PRIME_AS_UINT256_LOW, C_PRIME_AS_UINT256_HIGH, STARK_PRIME, MONTGOMERY_R,
+        MONTGOMERY_R_INVERSE
+    }
 };
-
-const C_PRIME_AS_UINT256_LOW: u128 = 31;
-const C_PRIME_AS_UINT256_HIGH: u128 =
-    329648542954659146201578277794459156480; // 31 * 0x8000000000000110000000000000000;
-const STARK_PRIME: u256 =
-    3618502788666131213697322783095070105623107215331596699973092056135872020481;
-const INVERSE_2_TO_256_MOD_STARK_PRIME: felt252 =
-    113078212145816603762751633895895194930089271709401121343797004406777446400;
+use poseidon::poseidon_hash_span;
+use core::integer::BoundedU128;
 
 #[derive(Drop)]
 struct Channel {
@@ -24,31 +22,92 @@ impl ChannelImpl of ChannelTrait {
 
     fn random_uint256_to_prover(ref self: Channel) -> u256 {
         let mut hash_data = ArrayTrait::<u32>::new();
-        self.digest.to_array_be(ref hash_data);
-        self.counter.to_array_be(ref hash_data);
+        hash_data.append_big_endian(self.digest);
+        hash_data.append_big_endian(self.counter);
         self.counter += 1;
-        blake2s(hash_data).flip_endiannes()
+        blake2s(hash_data).flip_endianness()
     }
 
-    fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
-        let mut res = ArrayTrait::<felt252>::new();
+    fn random_felt_to_prover(ref self: Channel) -> felt252 {
+        let mut res: felt252 = 0;
 
         // To ensure a uniform distribution over field elements, if the generated 256-bit number x is in
         // range [0, C * PRIME), take x % PRIME. Otherwise, regenerate.
         // The maximal possible C is 2**256//PRIME = 31.        
 
         loop {
+            let rand = self.random_uint256_to_prover();
+            if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
+                let to_append = (rand % STARK_PRIME).try_into().unwrap();
+                res = to_append * MONTGOMERY_R_INVERSE;
+                break;
+            }
+        };
+        res
+    }
+
+    fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
+        let mut res = ArrayTrait::<felt252>::new();
+        loop {
             if n != 0 {
-                let rand = self.random_uint256_to_prover();
-                if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
-                    n -= 1;
-                    let to_append = (rand % STARK_PRIME).try_into().unwrap();
-                    res.append(to_append * INVERSE_2_TO_256_MOD_STARK_PRIME);
-                }
+                res.append(self.random_felt_to_prover());
+                n -= 1;
             } else {
                 break;
             }
         };
         res
+    }
+
+    fn read_felt_from_prover(ref self: Channel, value: felt252) {
+        let value_u256: u256 = value.into();
+        let mut hash_data = ArrayTrait::<u32>::new();
+
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
+        hash_data.append_big_endian(self.digest + 1);
+        hash_data.append_big_endian(value_u256);
+
+        self.digest = blake2s(hash_data).flip_endianness();
+        self.counter = 0;
+    }
+
+    fn read_felts_from_prover(ref self: Channel, values: Span<felt252>) {
+        let hashed = poseidon_hash_span(values);
+        self.read_felt_from_prover(hashed);
+    }
+
+    fn read_felt_vector_from_prover(ref self: Channel, values: Span<felt252>) {
+        let mut hash_data = ArrayTrait::<u32>::new();
+
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
+        hash_data.append_big_endian(self.digest + 1);
+
+        let mut i = 0;
+        loop {
+            if i == values.len() {
+                break;
+            };
+            let value_u256: u256 = (*values[i] * MONTGOMERY_R).into();
+            hash_data.append_big_endian(value_u256);
+            i += 1;
+        };
+
+        self.digest = blake2s(hash_data).flip_endianness();
+        self.counter = 0;
+    }
+
+    fn read_uint64_from_prover(ref self: Channel, value: u64) {
+        let mut hash_data = ArrayTrait::<u32>::new();
+
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
+        hash_data.append_big_endian(self.digest + 1);
+
+        let low: u32 = (value % 0x100000000).try_into().unwrap();
+        let high: u32 = (value / 0x100000000).try_into().unwrap();
+        hash_data.append(high.flip_endianness());
+        hash_data.append(low.flip_endianness());
+
+        self.digest = blake2s(hash_data).flip_endianness();
+        self.counter = 0;
     }
 }
