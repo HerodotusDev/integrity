@@ -19,45 +19,47 @@ fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(arr: Array<T>) -> Array<T> 
     let sorted_right = merge_sort(right_arr);
 
     let mut result_arr = array![];
-    merge_recursive(sorted_left, sorted_right, ref result_arr, 0, 0);
+    merge_iterative(sorted_left.span(), sorted_right.span(), ref result_arr);
     result_arr
 }
 
-// Merge two sorted arrays
-/// # Arguments
-/// * `left_arr` - Left array
-/// * `right_arr` - Right array
-/// * `result_arr` - Result array
-/// * `left_arr_ix` - Left array index
-/// * `right_arr_ix` - Right array index
-/// # Returns
-/// * `Array<usize>` - Sorted array
-fn merge_recursive<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
-    left_arr: Array<T>,
-    right_arr: Array<T>,
-    ref result_arr: Array<T>,
-    left_arr_ix: u32,
-    right_arr_ix: u32
+fn merge_iterative<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
+    left_arr: Span<T>, right_arr: Span<T>, ref result_arr: Array<T>,
 ) {
-    if result_arr.len() == left_arr.len() + right_arr.len() {
-        return;
-    }
+    let mut left_arr_ix = 0;
+    let mut right_arr_ix = 0;
 
-    if left_arr_ix == left_arr.len() {
-        result_arr.append(*right_arr[right_arr_ix]);
-        return merge_recursive(left_arr, right_arr, ref result_arr, left_arr_ix, right_arr_ix + 1);
-    }
+    loop {
+        if left_arr_ix < left_arr.len() && right_arr_ix < right_arr.len() {
+            if *left_arr.at(left_arr_ix) < *right_arr.at(right_arr_ix) {
+                result_arr.append(*left_arr.at(left_arr_ix));
+                left_arr_ix += 1;
+            } else {
+                result_arr.append(*right_arr.at(right_arr_ix));
+                right_arr_ix += 1;
+            }
+        } else {
+            break;
+        }
+    };
 
-    if right_arr_ix == right_arr.len() {
-        result_arr.append(*left_arr[left_arr_ix]);
-        return merge_recursive(left_arr, right_arr, ref result_arr, left_arr_ix + 1, right_arr_ix);
-    }
+    // Append the remaining elements from left_arr, if any
+    loop {
+        if left_arr_ix < left_arr.len() {
+            result_arr.append(*left_arr.at(left_arr_ix));
+            left_arr_ix += 1;
+        } else {
+            break;
+        }
+    };
 
-    if *left_arr[left_arr_ix] < *right_arr[right_arr_ix] {
-        result_arr.append(*left_arr[left_arr_ix]);
-        merge_recursive(left_arr, right_arr, ref result_arr, left_arr_ix + 1, right_arr_ix)
-    } else {
-        result_arr.append(*right_arr[right_arr_ix]);
-        merge_recursive(left_arr, right_arr, ref result_arr, left_arr_ix, right_arr_ix + 1)
+    // Append the remaining elements from right_arr, if any
+    loop {
+        if right_arr_ix < right_arr.len() {
+            result_arr.append(*right_arr.at(right_arr_ix));
+            right_arr_ix += 1;
+        } else {
+            break;
+        }
     }
 }
