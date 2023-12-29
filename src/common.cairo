@@ -7,6 +7,7 @@ mod math;
 mod array_print;
 mod array_extend;
 mod consts;
+mod merge_sort;
 
 #[cfg(test)]
 mod tests;

@@ -4,3 +4,4 @@ mod test_from_span;
 mod test_horner_eval;
 mod test_array_append;
 mod test_math;
+mod test_merge_sort;
