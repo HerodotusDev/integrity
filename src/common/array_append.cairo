@@ -32,6 +32,18 @@ impl ArrayU32AppendU256 of ArrayAppendTrait<u32, u256> {
     }
 }
 
+impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
+    fn append_little_endian(ref self: Array<u32>, element: felt252) {
+        let as_u256: u256 = element.into();
+        self.append_little_endian(as_u256);
+    }
+
+    fn append_big_endian(ref self: Array<u32>, element: felt252) {
+        let as_u256: u256 = element.into();
+        self.append_big_endian(as_u256);
+    }
+}
+
 impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
     fn append_little_endian(ref self: Array<u32>, mut element: u128) {
         let mut i = 4;
