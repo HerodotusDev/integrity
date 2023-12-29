@@ -1,4 +1,4 @@
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
+use cairo_verifier::common::array_split::ArraySplitTrait;
 
 // Merge Sort
 /// # Arguments
@@ -13,7 +13,7 @@ fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(arr: Array<T>) -> Array<T> 
 
     // Create left and right arrays
     let middle = len / 2;
-    let (mut left_arr, mut right_arr) = split_array(arr, middle);
+    let (mut left_arr, mut right_arr) = arr.split(middle);
 
     // Recursively sort the left and right arrays
     let mut sorted_left = merge_sort(left_arr);
@@ -61,19 +61,4 @@ fn merge_recursive<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
         result_arr.append(*right_arr[right_arr_ix]);
         merge_recursive(left_arr, right_arr, ref result_arr, left_arr_ix, right_arr_ix + 1)
     }
-}
-
-// Split an array into two arrays.
-/// * `arr` - The array to split.
-/// * `index` - The index to split the array at.
-/// # Returns
-/// * `(Array<T>, Array<T>)` - The two arrays.
-fn split_array<T, +Copy<T>, +Drop<T>>(arr: Array<T>, index: usize) -> (Array<T>, Array<T>) {
-    let mut arr1 = array![];
-    let mut arr2 = array![];
-
-    arr1.extend(arr.span().slice(0, index));
-    arr2.extend(arr.span().slice(index, arr.len() - index));
-
-    (arr1, arr2)
 }
