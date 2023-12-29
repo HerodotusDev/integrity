@@ -12,8 +12,7 @@ fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(arr: Array<T>) -> Array<T> 
     }
 
     // Create left and right arrays
-    let middle = len / 2;
-    let (left_arr, right_arr) = arr.split(middle);
+    let (left_arr, right_arr) = arr.split(len / 2);
 
     // Recursively sort the left and right arrays
     let sorted_left = merge_sort(left_arr);
