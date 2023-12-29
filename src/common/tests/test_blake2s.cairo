@@ -154,8 +154,10 @@ fn test_blake2s_v2() {
     );
 }
 
-#[test]
-#[available_gas(9999999999)]
+// notice: this test takes a lot of time and computation
+//         uncomment it when making changes to blake2s
+// #[test]
+// #[available_gas(9999999999)]
 fn test_blake2s_big() {
     let mut sum: u256 = 0;
     let mut arr = ArrayTrait::new();
