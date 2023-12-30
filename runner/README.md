@@ -1,35 +1,48 @@
-# Cairo Verifier
+# Cairo1 Verifier
 
-This document provides steps to build and run the Cairo Verifier.
+## Overview
 
-## Building the Verifier
+The Cairo1 Verifier is a tool designed for parsing and utilizing proofs in the Cairo language. This document provides instructions on how to get and use the parsed proof.
 
-To build the latest version of the verifier and create a Sierra file, follow these steps:
+## Getting the Parsed Proof
 
-1. Navigate to the project root directory:
+To obtain the parsed proof, follow these steps:
 
-```bash
-cd .
-```
+### 1. Download Source Code
 
-2. Build the project:
+- Access the source code at [Cairo1 Parser Repository](https://github.com/neotheprogramist/cairo-lang/tree/parser).
 
-```bash
-scarb build
-```
+### 2. Install Dependencies
 
-## Running the Verifier
+- Execute the command: `pipenv install`.
 
-After building the verifier, you can run it with the following steps:
+### 3. Activate Virtual Environment
 
-1. Navigate to the runner directory:
+- Activate the virtual environment with: `pipenv shell`.
 
-```bash
-cd runner
-```
+### 4. Run the Parser
 
-2. Run the verifier:
+- Use the parser by running:
+  ```
+  python src/main.py -l starknet_with_keccak < src/starkware/cairo/stark_verifier/air/example_proof.json > parseout.txt
+  ```
 
-```bash
-cargo run --release -- ../target/dev/cairo_verifier.sierra < resources/parserin.txt
-```
+### 5. Access Output File
+
+- The output will be available in the `parseout.txt` file.
+
+## Using the Parsed Proof
+
+Once you have the parsed proof, you can use it as follows:
+
+### 1. Copy Proof to Input File
+
+- Copy the entire content or a consistent section of `parseout.txt` to `runner/resources/parsein.txt`.
+
+### 2. Adjust Input Structures
+
+- Modify the structures in `src/input_structs` to match the copied content.
+
+### 3. Execute the Runner Script
+
+- Run the script using: `./run.sh`.
