@@ -23,7 +23,7 @@ fn main() -> anyhow::Result<()> {
     let parsed = parser::CairoParserOutputParser::new()
         .parse(&input)
         .map_err(|e| anyhow::anyhow!("{}", e))?;
-    let result = format!("{parsed}");
+    let result = parsed.to_string();
 
     let target = cli.target;
     let function = "main";

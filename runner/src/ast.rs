@@ -12,7 +12,7 @@ pub enum Expr {
 impl Display for Expr {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Expr::Value(v) => write!(f, "{v}"),
+            Expr::Value(v) => write!(f, "\"{v}\""),
             Expr::Array(v) => {
                 write!(f, "[")?;
 
