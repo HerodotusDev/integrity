@@ -29,7 +29,7 @@ fn main() -> anyhow::Result<()> {
     let function = "main";
     let args: VecFelt252 = serde_json::from_str(&result).unwrap();
 
-    let result = run(&target, &function, &[Arg::Array(args.to_vec())])?;
+    let result = run(&target, function, &[Arg::Array(args.to_vec())])?;
 
     println!("{result:?}");
     Ok(())
