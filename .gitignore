@@ -20,3 +20,6 @@
 
 # vscode
 **/.vscode/
+
+# Resources
+runner/resources/
