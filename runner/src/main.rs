@@ -1,6 +1,6 @@
 use std::io::{stdin, Read};
 
-use cairo_args_runner::{run, WrappedArg};
+use cairo_args_runner::{run, Arg, VecFelt252};
 use clap::Parser;
 use lalrpop_util::lalrpop_mod;
 
@@ -27,9 +27,9 @@ fn main() -> anyhow::Result<()> {
 
     let target = cli.target;
     let function = "main";
-    let args: WrappedArg = serde_json::from_str(&result).unwrap();
+    let args: VecFelt252 = serde_json::from_str(&result).unwrap();
 
-    let result = run(&target, &function, &args)?;
+    let result = run(&target, &function, &[Arg::Array(args.to_vec())])?;
 
     println!("{result:?}");
     Ok(())

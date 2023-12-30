@@ -1,4 +1,4 @@
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 struct StarkConfig {
     traces: TracesConfig,
     composition: TableCommitmentConfig,
@@ -15,25 +15,25 @@ struct StarkConfig {
 // n_verifier_friendly_commitment_layers: felt252,
 }
 
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 struct TracesConfig {
     original: TableCommitmentConfig,
     interaction: TableCommitmentConfig,
 }
 
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 struct TableCommitmentConfig {
     columns: felt252,
     vector: VectorCommitmentConfig
 }
 
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 struct VectorCommitmentConfig {
     height: felt252,
     verifier_friendly_commitment_layers: felt252,
 }
 
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 struct FriConfig {
     // Log2 of the size of the input layer to FRI.
     log_input_size: felt252,
@@ -48,7 +48,7 @@ struct FriConfig {
     log_last_layer_degree_bound: felt252,
 }
 
-#[derive(Copy, Drop)]
+#[derive(Copy, Drop, Serde)]
 struct ProofOfWorkConfig {
     // Proof of work difficulty (number of bits required to be 0).
     n_bits: felt252,

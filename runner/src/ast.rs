@@ -26,7 +26,7 @@ impl Display for Expr {
                 write!(f, "]")?;
 
                 Ok(())
-            },
+            }
         }
     }
 }
