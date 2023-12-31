@@ -20,12 +20,12 @@ Arg: Exprs = {
 };
 
 FriWitnessLayers: Exprs = {
-    <n:Num> "," "[" <a:Comma<Num>> "]" => Exprs(vec![Expr::Value(n)].into_iter().chain(a.into_iter().map(|x| Expr::Value(x))).collect()),
+    <n:Num> "," "[" <a:Comma<Num>> "]" => Exprs(vec![Expr::Value(n)].into_iter().chain(a.into_iter().map(Expr::Value)).collect()),
     StructName "(" ArgName "=" StructName "(" <n:FriWitnessLayersArgs> ")" ")" => n,
 };
 
 FriWitnessLayersArgs: Exprs = {
-    ArgName "=" <n:Num> "," ArgName "=" "[" <a:Comma<Num>> "]" => Exprs(vec![Expr::Value(n)].into_iter().chain(a.into_iter().map(|x| Expr::Value(x))).collect()),
+    ArgName "=" <n:Num> "," ArgName "=" "[" <a:Comma<Num>> "]" => Exprs(vec![Expr::Value(n)].into_iter().chain(a.into_iter().map(Expr::Value)).collect()),
 };
 
 Comma<T>: Vec<T> = {
