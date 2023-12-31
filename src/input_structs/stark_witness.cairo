@@ -5,6 +5,7 @@ struct StarkWitness {
     interaction: TableCommitmentWitness,
     composition_decommitment: TableDecommitment,
     composition_witness: TableCommitmentWitness,
+    fri_witness: FriWitness,
 }
 
 #[derive(Drop, Serde)]
@@ -37,5 +38,5 @@ struct VectorCommitmentWitness {
 
 #[derive(Drop, Serde)]
 struct FriWitness {
-    layers: Array<Array<felt252>>,
+    layers: Array<felt252>,
 }
