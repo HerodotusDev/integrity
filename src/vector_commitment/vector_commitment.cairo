@@ -1,7 +1,8 @@
 use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-use cairo_verifier::common::{array_append::ArrayAppendTrait, blake2s::blake2s,};
+use cairo_verifier::common::{array_append::ArrayAppendTrait, blake2s::blake2s, math::pow};
 use poseidon::hades_permutation;
-
+// TODO: remove
+use core::debug::PrintTrait;
 
 // Commitment for a vector of field elements.
 #[derive(Drop, Copy)]
@@ -21,6 +22,14 @@ struct VectorCommitmentConfig {
 struct VectorQuery {
     index: felt252,
     value: felt252,
+}
+
+// A query to the vector commitment that contains also the depth of the query in the Merkle tree.
+#[derive(Drop, Copy)]
+struct VectorQueryWithDepth {
+    index: felt252,
+    value: felt252,
+    depth: felt252,
 }
 
 // Witness for a decommitment over queries.
@@ -45,7 +54,38 @@ fn vector_commitment_decommit(
     queries: Array<VectorQuery>,
     witness: VectorCommitmentWitness,
 ) {
-    assert(false, 'not implemented');
+    let shift = pow(2, commitment.config.height);
+    let shifted_queries = shift_queries(queries.span(), shift, commitment.config.height).span();
+
+    let mut i: u32 = 0;
+    loop {
+        if i == shifted_queries.len() {
+            break;
+        }
+        let q: VectorQueryWithDepth = *shifted_queries.at(i);
+        q.index.print();
+        q.value.print();
+        q.depth.print();
+        i += 1;
+    };
+}
+
+fn shift_queries(queries: Span<VectorQuery>, shift: felt252, height: felt252) -> Array<VectorQueryWithDepth> {
+    let mut shifted_queries = ArrayTrait::new();
+    let mut i = 0;
+    loop {
+        if i == queries.len() {
+            break;
+        };
+        let q = *queries[i];
+        shifted_queries.append(VectorQueryWithDepth {
+            index: q.index + shift,
+            value: q.value,
+            depth: height,
+        });
+        i += 1;
+    };
+    shifted_queries
 }
 
 fn hash_blake_or_poseidon(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {

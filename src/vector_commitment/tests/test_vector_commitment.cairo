@@ -13,6 +13,8 @@ fn test_truncated_blake2s() {
     assert(out == 642191007116032514313255519742888271333651019057, 'invalid truncated_blake2s');
 }
 
+#[test]
+#[available_gas(9999999999)]
 fn test_vector_commitment_decommit() {
     let n_queries = 15;
     let queries = array![
