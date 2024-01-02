@@ -57,8 +57,9 @@ fn vector_commitment_decommit(
     let shift = pow(2, commitment.config.height);
     let shifted_queries = shift_queries(queries.span(), shift, commitment.config.height);
 
-    let root = compute_root_from_queries(shifted_queries, 0, commitment.config.n_verifier_friendly_commitment_layers, witness.authentications, 0);
-    root.print();
+    let expected_commitment = compute_root_from_queries(shifted_queries, 0, commitment.config.n_verifier_friendly_commitment_layers, witness.authentications, 0);
+
+    assert(expected_commitment == commitment.commitment_hash, 'decommitment failed');
 }
 
 // TODO: move to another file 
@@ -90,6 +91,7 @@ fn compute_root_from_queries(
     if current.index == 1 { // root
         assert(current.depth == 0, 'root depth must be 0');
         assert(start + 1 == queue.len(), 'root must be the last element');
+        assert(auth_start == authentications.len(), 'root must have no auth left');
         return current.value;
     }
 
