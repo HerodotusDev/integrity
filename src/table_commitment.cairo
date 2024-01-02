@@ -1,12 +1,12 @@
 use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorUnsentCommitment, VectorCommitment, VectorCommitmentWitness
+    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness
 };
 
 // Commitment values for a table commitment protocol. Used to generate a commitment by "reading"
 // these values from the channel.
 #[derive(Drop, Copy)]
 struct TableUnsentCommitment {
-    vector: VectorUnsentCommitment,
+    vector: felt252,
 }
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.

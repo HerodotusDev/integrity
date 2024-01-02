@@ -31,12 +31,6 @@ struct VectorCommitmentWitness {
     authentications: Span<felt252>,
 }
 
-// TODO: check if we shouldn't delet this
-#[derive(Drop, Copy)]
-struct VectorUnsentCommitment {
-    commitment_hash: felt252,
-}
-
 fn validate_vector_commitment(
     config: VectorCommitmentConfig,
     expected_height: felt252,
