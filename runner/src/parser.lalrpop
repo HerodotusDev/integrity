@@ -1,0 +1,33 @@
+use crate::ast::{Expr, Exprs};
+
+grammar;
+
+pub CairoParserOutput: Exprs = {
+    StructName "()" => Exprs(Vec::new()),
+    StructName "(" <n:Comma<Arg>> ")" => Exprs(n.iter().flat_map(|x| x.iter().cloned()).collect()),
+};
+
+CairoParserOutputInner: Exprs = {
+    <n:Num> => Exprs(vec![Expr::Value(n)]),
+    "[" <n:Comma<CairoParserOutputInner>> "]" => Exprs(vec![Expr::Array(n.iter().flat_map(|x| x.iter().cloned()).collect())]),
+    StructName "()" => Exprs(Vec::new()),
+    StructName "(" <n:Comma<Arg>> ")" => Exprs(n.iter().flat_map(|x| x.iter().cloned()).collect()),
+};
+
+Arg: Exprs = {
+    ArgName "=" <n:CairoParserOutputInner> => n,
+};
+
+Comma<T>: Vec<T> = {
+    <mut v:(<T> ",")*> <e:T?> => match e {
+        None => v,
+        Some(e) => {
+            v.push(e);
+            v
+        }
+    }
+};
+
+StructName: String = <s:r"[A-Z][A-Za-z]+"> => s.to_string();
+ArgName: String = <s:r"[a-z_]+"> => s.to_string();
+Num: String = <s:r"[0-9]+"> => s.to_string();

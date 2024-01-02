@@ -1,18 +1,12 @@
 use cairo_verifier::common::{
-    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s
+    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+    consts::{
+        C_PRIME_AS_UINT256_LOW, C_PRIME_AS_UINT256_HIGH, STARK_PRIME, MONTGOMERY_R,
+        MONTGOMERY_R_INVERSE
+    }
 };
 use poseidon::poseidon_hash_span;
 use core::integer::BoundedU128;
-
-const C_PRIME_AS_UINT256_LOW: u128 = 31;
-const C_PRIME_AS_UINT256_HIGH: u128 =
-    329648542954659146201578277794459156480; // 31 * 0x8000000000000110000000000000000;
-const STARK_PRIME: u256 =
-    3618502788666131213697322783095070105623107215331596699973092056135872020481;
-const MONTGOMERY_R: felt252 =
-    3618502788666127798953978732740734578953660990361066340291730267701097005025; // 2**256 % STARK_PRIME
-const MONTGOMERY_R_INVERSE: felt252 =
-    113078212145816603762751633895895194930089271709401121343797004406777446400;
 
 #[derive(Drop)]
 struct Channel {
@@ -34,21 +28,30 @@ impl ChannelImpl of ChannelTrait {
         blake2s(hash_data).flip_endianness()
     }
 
-    fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
-        let mut res = ArrayTrait::<felt252>::new();
+    fn random_felt_to_prover(ref self: Channel) -> felt252 {
+        let mut res: felt252 = 0;
 
         // To ensure a uniform distribution over field elements, if the generated 256-bit number x is in
         // range [0, C * PRIME), take x % PRIME. Otherwise, regenerate.
         // The maximal possible C is 2**256//PRIME = 31.        
 
         loop {
+            let rand = self.random_uint256_to_prover();
+            if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
+                let to_append = (rand % STARK_PRIME).try_into().unwrap();
+                res = to_append * MONTGOMERY_R_INVERSE;
+                break;
+            }
+        };
+        res
+    }
+
+    fn random_felts_to_prover(ref self: Channel, mut n: felt252) -> Array<felt252> {
+        let mut res = ArrayTrait::<felt252>::new();
+        loop {
             if n != 0 {
-                let rand = self.random_uint256_to_prover();
-                if (rand < u256 { low: C_PRIME_AS_UINT256_LOW, high: C_PRIME_AS_UINT256_HIGH }) {
-                    n -= 1;
-                    let to_append = (rand % STARK_PRIME).try_into().unwrap();
-                    res.append(to_append * MONTGOMERY_R_INVERSE);
-                }
+                res.append(self.random_felt_to_prover());
+                n -= 1;
             } else {
                 break;
             }
