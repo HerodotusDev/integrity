@@ -46,3 +46,12 @@ const SHIFT_POINT_Y: felt252 = 0x3ca0cfe4b3bc6ddf346d49d06ea0ed34e621062c0e056c1
 const SECURITY_BITS: felt252 = 128;
 const MAX_ADDRESS: felt252 = 0xffffffffffffffff;
 const INITIAL_PC: felt252 = 1;
+
+fn get_builtins() -> Array<felt252> {
+    array![
+        'output',
+        'pedersen',
+        'range_check',
+        'bitwise'
+    ]
+}

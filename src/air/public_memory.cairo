@@ -1,9 +1,10 @@
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct AddrValue {
     address: felt252,
     value: felt252
 }
 
+#[derive(Drop)]
 type Page = Array<AddrValue>;
 
 // Information about a continuous page (a consecutive section of the public memory)..
