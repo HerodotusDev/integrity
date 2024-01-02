@@ -1,13 +1,4 @@
-use core::debug::PrintTrait;
-use core::array::ArrayTrait;
-use core::traits::TryInto;
-use cairo_verifier::channel::channel::ChannelTrait;
-use core::option::OptionTrait;
-use core::traits::Into;
-use core::NonZero;
-
-use cairo_verifier::channel::channel::Channel;
-use cairo_verifier::common::merge_sort::merge_sort;
+use cairo_verifier::{channel::channel::{Channel, ChannelTrait}, common::merge_sort::merge_sort};
 
 // 2^64 = 18446744073709551616
 const U128maxU64: u128 = 18446744073709551616;
