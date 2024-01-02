@@ -1,6 +1,6 @@
 use cairo_verifier::{
     table_commitment::TableCommitmentConfig,
-    vector_commitment::{validate_vector_commitment, VectorCommitmentConfig},
+    vector_commitment::vector_commitment::{validate_vector_commitment, VectorCommitmentConfig},
 };
 
 const MAX_LAST_LAYER_LOG_DEGREE_BOUND: u32 = 15;

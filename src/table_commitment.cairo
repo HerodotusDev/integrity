@@ -1,4 +1,4 @@
-use cairo_verifier::vector_commitment::{
+use cairo_verifier::vector_commitment::vector_commitment::{
     VectorCommitmentConfig, VectorUnsentCommitment, VectorCommitment, VectorCommitmentWitness
 };
 

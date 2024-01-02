@@ -1,5 +1,4 @@
 mod channel;
-mod vector_commitment;
 mod common;
 mod input_structs;
 mod structs;
