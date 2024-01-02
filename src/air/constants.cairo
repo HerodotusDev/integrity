@@ -48,10 +48,5 @@ const MAX_ADDRESS: felt252 = 0xffffffffffffffff;
 const INITIAL_PC: felt252 = 1;
 
 fn get_builtins() -> Array<felt252> {
-    array![
-        'output',
-        'pedersen',
-        'range_check',
-        'bitwise'
-    ]
+    array!['output', 'pedersen', 'range_check', 'bitwise']
 }
