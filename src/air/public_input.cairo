@@ -86,25 +86,8 @@ impl PublicInputImpl of PublicInputTrait {
 
         let program_end_pc = initial_fp - 2;
         let program_len = program_end_pc - initial_pc;
+        memory.extract_range(initial_pc, program_len);
 
         (0, 0)
-    }
-}
-
-fn extract_range(memory: Page, addr: felt252, length: felt252) -> Span<felt252> {
-    let mut arr = ArrayTrait::new();
-    let mut i = 0;
-
-    loop {
-        if i == length {
-            break arr.span();
-        }
-
-        let current = *memory.at((addr + i).try_into().unwrap());
-
-        // TODO is this needed? If not we can just use slice directly 
-        assert(current.address == addr + i, 'Invalid address');
-        arr.append(current.value);
-        i += 1;
     }
 }
