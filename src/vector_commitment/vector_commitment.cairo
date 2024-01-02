@@ -55,22 +55,76 @@ fn vector_commitment_decommit(
     witness: VectorCommitmentWitness,
 ) {
     let shift = pow(2, commitment.config.height);
-    let shifted_queries = shift_queries(queries.span(), shift, commitment.config.height).span();
+    let shifted_queries = shift_queries(queries.span(), shift, commitment.config.height);
 
-    let mut i: u32 = 0;
-    loop {
-        if i == shifted_queries.len() {
-            break;
-        }
-        let q: VectorQueryWithDepth = *shifted_queries.at(i);
-        q.index.print();
-        q.value.print();
-        q.depth.print();
-        i += 1;
-    };
+    let root = compute_root_from_queries(shifted_queries, 0, commitment.config.n_verifier_friendly_commitment_layers, witness.authentications, 0);
+    root.print();
 }
 
-fn shift_queries(queries: Span<VectorQuery>, shift: felt252, height: felt252) -> Array<VectorQueryWithDepth> {
+// TODO: move to another file 
+fn div_rem2(x: felt252) -> (felt252, felt252) {
+    let x: u256 = x.into();
+    let x_div = x / 2;
+    let x_rem = x % 2;
+    let x_div: felt252 = x_div.try_into().unwrap();
+    let x_rem: felt252 = x_rem.try_into().unwrap();
+    (x_div, x_rem)
+}
+
+// TODO: refactor
+fn is_ge(x: felt252, y: felt252) -> bool {
+    let x: u256 = x.into();
+    let y: u256 = y.into();
+    x >= y
+}
+
+fn compute_root_from_queries(
+    mut queue: Array<VectorQueryWithDepth>,
+    start: u32,
+    n_verifier_friendly_layers: felt252,
+    authentications: Span<felt252>,
+    auth_start: u32
+) -> felt252 {
+    let current: VectorQueryWithDepth = *queue[start];
+
+    if current.index == 1 { // root
+        assert(current.depth == 0, 'root depth must be 0');
+        assert(start + 1 == queue.len(), 'root must be the last element');
+        return current.value;
+    }
+
+    let (parent, bit) = div_rem2(current.index);
+    let is_verifier_friendly = is_ge(n_verifier_friendly_layers, current.depth);
+    let hash = if bit == 0 {
+        if start + 1 != queue.len() {
+            let next: VectorQueryWithDepth = *queue[start + 1];
+            if current.index + 1 == next.index {
+                // next is a sibling of current
+                let hash = hash_blake_or_poseidon(current.value, next.value, is_verifier_friendly);
+                queue
+                    .append(
+                        VectorQueryWithDepth {
+                            index: parent, value: hash, depth: current.depth - 1,
+                        }
+                    );
+                return compute_root_from_queries(
+                    queue, start + 2, n_verifier_friendly_layers, authentications, auth_start
+                );
+            }
+        }
+        hash_blake_or_poseidon(current.value, *authentications[auth_start], is_verifier_friendly)
+    } else {
+        hash_blake_or_poseidon(*authentications[auth_start], current.value, is_verifier_friendly)
+    };
+    queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
+    compute_root_from_queries(
+        queue, start + 1, n_verifier_friendly_layers, authentications, auth_start + 1
+    )
+}
+
+fn shift_queries(
+    queries: Span<VectorQuery>, shift: felt252, height: felt252
+) -> Array<VectorQueryWithDepth> {
     let mut shifted_queries = ArrayTrait::new();
     let mut i = 0;
     loop {
@@ -78,11 +132,10 @@ fn shift_queries(queries: Span<VectorQuery>, shift: felt252, height: felt252) ->
             break;
         };
         let q = *queries[i];
-        shifted_queries.append(VectorQueryWithDepth {
-            index: q.index + shift,
-            value: q.value,
-            depth: height,
-        });
+        shifted_queries
+            .append(
+                VectorQueryWithDepth { index: q.index + shift, value: q.value, depth: height, }
+            );
         i += 1;
     };
     shifted_queries
