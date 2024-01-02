@@ -57,7 +57,13 @@ fn vector_commitment_decommit(
     let shift = pow(2, commitment.config.height);
     let shifted_queries = shift_queries(queries.span(), shift, commitment.config.height);
 
-    let expected_commitment = compute_root_from_queries(shifted_queries, 0, commitment.config.n_verifier_friendly_commitment_layers, witness.authentications, 0);
+    let expected_commitment = compute_root_from_queries(
+        shifted_queries,
+        0,
+        commitment.config.n_verifier_friendly_commitment_layers,
+        witness.authentications,
+        0
+    );
 
     assert(expected_commitment == commitment.commitment_hash, 'decommitment failed');
 }
