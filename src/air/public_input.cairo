@@ -1,13 +1,11 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-use cairo_verifier::common::array_append::ArrayAppendTrait;
-use core::array::ArrayTrait;
-use cairo_verifier::air::public_memory::{
-    Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product
+use cairo_verifier::{
+    common::{
+        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+        math::{pow, Felt252PartialOrd, Felt252Div}
+    },
+    air::public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product}
 };
-use cairo_verifier::common::math::{pow, Felt252PartialOrd, Felt252Div};
-use core::pedersen::PedersenTrait;
-use core::hash::{HashStateTrait, HashStateExTrait, Hash};
-use cairo_verifier::common::blake2s::blake2s;
+use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 
 #[derive(Drop, Copy)]
 struct SegmentInfo {
@@ -82,6 +80,7 @@ impl PublicInputImpl of PublicInputTrait {
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
         hash_data.append((1 + self.continuous_page_headers.len()).flip_endianness());
+
         // Main page.
         hash_data.append(self.main_page.len().flip_endianness());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
