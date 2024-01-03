@@ -30,7 +30,8 @@ fn get_queries() -> Span<VectorQuery> {
         VectorQuery { index: 887991, value: 1022535991370990930332590451711848013554441682785, },
         VectorQuery { index: 918820, value: 224038758314235415917884799763993555998811070874, },
         VectorQuery { index: 931416, value: 505599032726154718331451347724946473511894248513 },
-    ].span()
+    ]
+        .span()
 }
 
 fn get_witness_authentications() -> Span<felt252> {
@@ -267,7 +268,8 @@ fn get_witness_authentications() -> Span<felt252> {
         1145720166361978830818985131684525612821849437881963152582648517987656170242,
         3011114029276924436505563433464520331248987625963149365139994455589348268051,
         1643293848324002295213462888260312636052214431402365640390341129728736785907,
-    ].span()
+    ]
+        .span()
 }
 
 #[test]
@@ -282,9 +284,9 @@ fn test_vector_commitment_decommit() {
 
     vector_commitment_decommit(commitment, get_queries(), witness);
 }
-
 // TODO: test failing vector decommit
 
 // TODO: test vector_commit
 
 // TODO: test validate_vector_commitment
+

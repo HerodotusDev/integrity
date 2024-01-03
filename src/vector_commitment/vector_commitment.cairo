@@ -65,9 +65,7 @@ fn vector_commit(
 }
 
 fn vector_commitment_decommit(
-    commitment: VectorCommitment,
-    queries: Span<VectorQuery>,
-    witness: VectorCommitmentWitness,
+    commitment: VectorCommitment, queries: Span<VectorQuery>, witness: VectorCommitmentWitness,
 ) {
     let shift = pow(2, commitment.config.height);
     let shifted_queries = shift_queries(queries, shift, commitment.config.height);
