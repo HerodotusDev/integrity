@@ -1,5 +1,8 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-use cairo_verifier::common::{array_append::ArrayAppendTrait, blake2s::blake2s, math::pow};
+use cairo_verifier::common::{
+    array_append::ArrayAppendTrait, blake2s::blake2s, math::pow,
+    flip_endianness::FlipEndiannessTrait
+};
+use cairo_verifier::channel::channel::{Channel, ChannelImpl};
 use poseidon::hades_permutation;
 // TODO: remove
 use core::debug::PrintTrait;
@@ -46,6 +49,13 @@ fn validate_vector_commitment(
     n_verifier_friendly_commitment_layers: felt252,
 ) {
     assert(false, 'not implemented');
+}
+
+fn vector_commit(
+    ref channel: Channel, unsent_commitment: felt252, config: VectorCommitmentConfig
+) -> VectorCommitment {
+    channel.read_felt_from_prover(unsent_commitment); // commitment is being sent
+    VectorCommitment { config: config, commitment_hash: unsent_commitment, }
 }
 
 fn vector_commitment_decommit(
