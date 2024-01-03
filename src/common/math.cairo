@@ -29,7 +29,7 @@ fn mul_inverse(x: felt252) -> felt252 {
 }
 
 // Verifies that 0 <= x < RANGE_CHECK_BOUND
-fn assert_nn(x: felt252) {
+fn assert_range_u128(x: felt252) {
     let a: Option<u128> = x.try_into();
     assert(a.is_some(), 'range check failed');
 }
