@@ -2,6 +2,7 @@ use cairo_verifier::air::public_memory::{
     Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product
 };
 use cairo_verifier::common::math::{pow, Felt252PartialOrd, Felt252Div};
+use cairo_verifier::common::hash::hash_felts;
 use cairo_verifier::air::constants::{segments, MAX_ADDRESS, get_builtins, INITIAL_PC};
 
 #[derive(Drop)]
@@ -96,8 +97,7 @@ impl PublicInputImpl of PublicInputTrait {
         assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
         assert(*program[5] == 0x0, 'Invalid program');
 
-        // TODO hash program
-        let program_hash = 0;
+        let program_hash = hash_felts(program);
 
         // 2. Execution segment
         // 2.1 Initial_fp, initial_pc
