@@ -1,7 +1,10 @@
+use core::array::ArrayTrait;
 use cairo_verifier::air::public_memory::{
     Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product
 };
 use cairo_verifier::common::math::{pow, Felt252PartialOrd, Felt252Div};
+use core::pedersen::PedersenTrait;
+use core::hash::{HashStateTrait, HashStateExTrait, Hash};
 
 #[derive(Drop)]
 struct SegmentInfo {
@@ -23,12 +26,41 @@ struct PublicInput {
     continuous_page_headers: Span<ContinuousPageHeader>
 }
 
+// impl ArrayHash<T, S, +Hash<T, S>, +HashStateTrait<S>, +Copy<T>, +Drop<T>, +Drop<S>> of Hash<Array<T>, S> {
+//     fn update_state(mut state: S, value: Array<T>) -> S {
+//         let mut i: u32 = 0;
+//         loop {
+//             if i == value.len() {
+//                 break;
+//             }
+
+//             state = state.update_with(*value.at(i));
+//         };
+//         state
+//     }
+// }
+
 #[generate_trait]
 impl PublicInputImpl of PublicInputTrait {
 
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
     fn get_public_input_hash(self: @PublicInput) -> u256 {
-        
+        // Main page hash.
+        let mut hash_state = PedersenTrait::new(0);
+        let mut i: u32 = 0;
+        loop {
+            if i == self.main_page.len() {
+                break;
+            }
+
+            let page = *self.main_page.at(i);
+            hash_state = hash_state.update_with((page.address, page.value));
+
+            i += 1;
+        };
+
+        let main_page_hash = hash_state.finalize();
+
         0
     }
 

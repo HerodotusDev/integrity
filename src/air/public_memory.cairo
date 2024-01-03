@@ -1,4 +1,4 @@
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct AddrValue {
     address: felt252,
     value: felt252
