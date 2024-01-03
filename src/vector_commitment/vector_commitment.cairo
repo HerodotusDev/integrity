@@ -64,6 +64,8 @@ fn vector_commit(
     VectorCommitment { config: config, commitment_hash: unsent_commitment, }
 }
 
+// Decommits a VectorCommitment at multiple indices.
+// Indices must be sorted and unique.
 fn vector_commitment_decommit(
     commitment: VectorCommitment, queries: Span<VectorQuery>, witness: VectorCommitmentWitness,
 ) {
@@ -98,6 +100,9 @@ fn is_ge(x: felt252, y: felt252) -> bool {
     x >= y
 }
 
+// Verifies a queue of Merkle queries. [queue_head, queue_tail) is a queue, where each element
+// represents a node index (given in a heap-like indexing) and value (either an inner
+// node or a leaf).
 fn compute_root_from_queries(
     mut queue: Array<VectorQueryWithDepth>,
     start: u32,
@@ -145,6 +150,8 @@ fn compute_root_from_queries(
     )
 }
 
+// Shifts the query indices by shift=2**height, to convert index representation to heap-like.
+// Validates the query index range.
 fn shift_queries(
     queries: Span<VectorQuery>, shift: felt252, height: felt252
 ) -> Array<VectorQueryWithDepth> {
@@ -173,10 +180,15 @@ fn hash_blake_or_poseidon(x: felt252, y: felt252, is_verifier_friendly: bool) ->
     }
 }
 
+// A 160 LSB truncated version of blake2s.
+// hash:
+//   blake2s(x, y) & ~((1<<96) - 1).
 fn truncated_blake2s(x: felt252, y: felt252) -> felt252 {
     let mut data = ArrayTrait::<u32>::new();
     data.append_big_endian(x);
     data.append_big_endian(y);
+    
+    // Truncate hash - convert value to felt, by taking the least significant 160 bits.
     let hash = blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000;
     hash.try_into().unwrap()
 }
