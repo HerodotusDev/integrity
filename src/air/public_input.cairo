@@ -55,6 +55,7 @@ impl PublicInputImpl of PublicInputTrait {
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_max).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.layout).into());
 
+        // Dynamic params.
         let mut i: u32 = 0;
         loop {
             if i == self.dynamic_params.len() {
@@ -65,6 +66,7 @@ impl PublicInputImpl of PublicInputTrait {
             >::append_big_endian(ref hash_data, (*self.dynamic_params.at(i)).into());
         };
 
+        // Segments.
         let mut i: u32 = 0;
         loop {
             if i == self.segments.len() {
@@ -79,10 +81,12 @@ impl PublicInputImpl of PublicInputTrait {
 
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data.append(self.continuous_page_headers.len().flip_endianness());
+        hash_data.append((1 + self.continuous_page_headers.len()).flip_endianness());
+        // Main page.
         hash_data.append(self.main_page.len().flip_endianness());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
 
+        // Add the rest of the pages.
         let mut i: u32 = 0;
         loop {
             if i == self.continuous_page_headers.len() {
