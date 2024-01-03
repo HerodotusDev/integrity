@@ -25,6 +25,13 @@ struct PublicInput {
 
 #[generate_trait]
 impl PublicInputImpl of PublicInputTrait {
+
+    // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
+    fn get_public_input_hash(self: @PublicInput) -> u256 {
+        
+        0
+    }
+
     // Returns the ratio between the product of all public memory cells and z^|public_memory|.
     // This is the value that needs to be at the memory__multi_column_perm__perm__public_memory_prod
     // member expression.
