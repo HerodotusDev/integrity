@@ -86,7 +86,21 @@ impl PublicInputImpl of PublicInputTrait {
 
         let program_end_pc = initial_fp - 2;
         let program_len = program_end_pc - initial_pc;
-        memory.extract_range(initial_pc, program_len);
+        let program = memory.extract_range(initial_pc, program_len);
+
+        assert(
+            *program[0] == 0x40780017fff7fff, 'Invalid program'
+        ); // Instruction: ap += N_BUILTINS.
+        assert(*program[1] == builtins.len().into(), 'Invalid program');
+        assert(*program[2] == 0x1104800180018000, 'Invalid program'); // Instruction: call rel ?.
+        assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
+        assert(*program[5] == 0x0, 'Invalid program');
+
+        // TODO hash program
+        let program_hash = 0;
+
+        // 2. Execution segment
+        // 2.1 Initial_fp, initial_pc
 
         (0, 0)
     }
