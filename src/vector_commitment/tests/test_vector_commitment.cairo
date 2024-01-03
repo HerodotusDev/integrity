@@ -13,11 +13,8 @@ fn test_truncated_blake2s() {
     assert(out == 642191007116032514313255519742888271333651019057, 'invalid truncated_blake2s');
 }
 
-#[test]
-#[available_gas(9999999999)]
-fn test_vector_commitment_decommit() {
-    let n_queries = 15;
-    let queries = array![
+fn get_queries() -> Span<VectorQuery> {
+    array![
         VectorQuery { index: 8944, value: 1157029198022238202306346125123666191662554108005, },
         VectorQuery { index: 87688, value: 1156474867121067569936479332616669839586441580873, },
         VectorQuery { index: 102053, value: 525816285038390391761216558389282806925768838548, },
@@ -33,8 +30,11 @@ fn test_vector_commitment_decommit() {
         VectorQuery { index: 887991, value: 1022535991370990930332590451711848013554441682785, },
         VectorQuery { index: 918820, value: 224038758314235415917884799763993555998811070874, },
         VectorQuery { index: 931416, value: 505599032726154718331451347724946473511894248513 },
-    ];
-    let witness_authentications = array![
+    ].span()
+}
+
+fn get_witness_authentications() -> Span<felt252> {
+    array![
         129252051435949032402481343903845417193011527432,
         1225462692330827760978713557642008436414090898865,
         67278565381239641413204827679887695736774949722,
@@ -266,15 +266,21 @@ fn test_vector_commitment_decommit() {
         1075724842662989335468528908116802032030906667500613297221647595406068106876,
         1145720166361978830818985131684525612821849437881963152582648517987656170242,
         3011114029276924436505563433464520331248987625963149365139994455589348268051,
-        1643293848324002295213462888260312636052214431402365640390341129728736785907
-    ];
+        1643293848324002295213462888260312636052214431402365640390341129728736785907,
+    ].span()
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_vector_commitment_decommit() {
+    let witness_authentications = get_witness_authentications();
     let commitment = VectorCommitment {
         config: VectorCommitmentConfig { height: 20, n_verifier_friendly_commitment_layers: 9, },
         commitment_hash: 936159606372446880770773180413943646119933747687072192231671834696463400536
     };
-    let witness = VectorCommitmentWitness { authentications: witness_authentications.span(), };
+    let witness = VectorCommitmentWitness { authentications: witness_authentications, };
 
-    vector_commitment_decommit(commitment, n_queries, queries, witness);
+    vector_commitment_decommit(commitment, get_queries(), witness);
 }
 
 // TODO: test failing vector decommit

@@ -66,12 +66,11 @@ fn vector_commit(
 
 fn vector_commitment_decommit(
     commitment: VectorCommitment,
-    n_queries: felt252,
-    queries: Array<VectorQuery>,
+    queries: Span<VectorQuery>,
     witness: VectorCommitmentWitness,
 ) {
     let shift = pow(2, commitment.config.height);
-    let shifted_queries = shift_queries(queries.span(), shift, commitment.config.height);
+    let shifted_queries = shift_queries(queries, shift, commitment.config.height);
 
     let expected_commitment = compute_root_from_queries(
         shifted_queries,
@@ -113,7 +112,7 @@ fn compute_root_from_queries(
     if current.index == 1 { // root
         assert(current.depth == 0, 'root depth must be 0');
         assert(start + 1 == queue.len(), 'root must be the last element');
-        assert(auth_start == authentications.len(), 'root must have no auth left');
+        assert(auth_start == authentications.len(), 'authentications is too long');
         return current.value;
     }
 
@@ -136,8 +135,10 @@ fn compute_root_from_queries(
                 );
             }
         }
+        assert(auth_start != authentications.len(), 'authentications is too short');
         hash_blake_or_poseidon(current.value, *authentications[auth_start], is_verifier_friendly)
     } else {
+        assert(auth_start != authentications.len(), 'authentications is too short');
         hash_blake_or_poseidon(*authentications[auth_start], current.value, is_verifier_friendly)
     };
     queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
