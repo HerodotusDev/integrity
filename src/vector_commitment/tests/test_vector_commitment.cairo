@@ -290,3 +290,4 @@ fn test_vector_commitment_decommit() {
 
 // TODO: test validate_vector_commitment
 
+
