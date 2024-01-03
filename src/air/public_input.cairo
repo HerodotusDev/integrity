@@ -42,7 +42,6 @@ struct PublicInput {
 
 #[generate_trait]
 impl PublicInputImpl of PublicInputTrait {
-
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
     fn get_public_input_hash(self: @PublicInput) -> u256 {
         // Main page hash.
