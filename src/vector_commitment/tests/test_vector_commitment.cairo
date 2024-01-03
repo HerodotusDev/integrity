@@ -276,3 +276,9 @@ fn test_vector_commitment_decommit() {
 
     vector_commitment_decommit(commitment, n_queries, queries, witness);
 }
+
+// TODO: test failing vector decommit
+
+// TODO: test vector_commit
+
+// TODO: test validate_vector_commitment

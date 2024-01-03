@@ -48,7 +48,13 @@ fn validate_vector_commitment(
     expected_height: felt252,
     n_verifier_friendly_commitment_layers: felt252,
 ) {
-    assert(false, 'not implemented');
+    assert(config.height == expected_height, 'height mismatch');
+    // Note that n_verifier_friendly_commitment_layers can be greater than height (in such a case,
+    // all Merkle layers use the verifier-friendly hash).
+    assert(
+        config.n_verifier_friendly_commitment_layers == n_verifier_friendly_commitment_layers,
+        'n_verifier_friendly... mismatch'
+    );
 }
 
 fn vector_commit(
