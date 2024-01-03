@@ -28,6 +28,12 @@ fn mul_inverse(x: felt252) -> felt252 {
     pow(x, STARK_PRIME_MINUS_TWO)
 }
 
+// Verifies that 0 <= x < RANGE_CHECK_BOUND
+fn assert_nn(x: felt252) {
+    let a: Option<u128> = x.try_into();
+    assert(a.is_some(), 'range check failed');
+}
+
 impl Felt252Div of Div<felt252> {
     fn div(lhs: felt252, rhs: felt252) -> felt252 {
         let lhs_u256: u256 = lhs.into();
