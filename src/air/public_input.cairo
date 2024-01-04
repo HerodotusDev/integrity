@@ -34,18 +34,18 @@ impl PublicInputImpl of PublicInputTrait {
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
     fn get_public_input_hash(self: @PublicInput) -> u256 {
         // Main page hash.
-        let mut hash_state = PedersenTrait::new(0);
+        let mut main_page_hash_state = PedersenTrait::new(0);
         let mut i: u32 = 0;
         loop {
             if i == self.main_page.len() {
                 break;
             }
+
             let page = *self.main_page.at(i);
-            hash_state = hash_state.update_with((page.address, page.value));
+            main_page_hash_state = main_page_hash_state.update_with((page.address, page.value));
+
             i += 1;
         };
-
-        let main_page_hash = hash_state.finalize();
 
         let mut hash_data = ArrayTrait::<u32>::new();
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
@@ -59,9 +59,12 @@ impl PublicInputImpl of PublicInputTrait {
             if i == self.dynamic_params.len() {
                 break;
             }
+
             ArrayAppendTrait::<
                 _, u256
             >::append_big_endian(ref hash_data, (*self.dynamic_params.at(i)).into());
+
+            i += 1;
         };
 
         // Segments.
@@ -70,20 +73,25 @@ impl PublicInputImpl of PublicInputTrait {
             if i == self.segments.len() {
                 break;
             }
+
             let segment = *self.segments.at(i);
             ArrayAppendTrait::<
                 _, u256
             >::append_big_endian(ref hash_data, segment.begin_addr.into());
             ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, segment.stop_ptr.into());
+
+            i += 1;
         };
 
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data.append((1 + self.continuous_page_headers.len()).flip_endianness());
+        hash_data.append(1 + self.continuous_page_headers.len());
 
         // Main page.
-        hash_data.append(self.main_page.len().flip_endianness());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
+        hash_data.append(self.main_page.len());
+        ArrayAppendTrait::<
+            _, u256
+        >::append_big_endian(ref hash_data, main_page_hash_state.finalize().into());
 
         // Add the rest of the pages.
         let mut i: u32 = 0;
@@ -91,6 +99,7 @@ impl PublicInputImpl of PublicInputTrait {
             if i == self.continuous_page_headers.len() {
                 break;
             }
+
             let continuous_page = *self.continuous_page_headers.at(i);
             ArrayAppendTrait::<
                 _, u256
@@ -99,6 +108,8 @@ impl PublicInputImpl of PublicInputTrait {
                 _, u256
             >::append_big_endian(ref hash_data, continuous_page.size.into());
             ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, continuous_page.hash);
+
+            i += 1;
         };
 
         blake2s(hash_data)
