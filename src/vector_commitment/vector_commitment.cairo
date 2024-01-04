@@ -1,6 +1,6 @@
 use cairo_verifier::common::{
     array_append::ArrayAppendTrait, blake2s::blake2s, math::pow,
-    flip_endianness::FlipEndiannessTrait
+    flip_endianness::FlipEndiannessTrait, math::div_rem2, math::Felt252PartialOrd
 };
 use cairo_verifier::channel::channel::{Channel, ChannelImpl};
 use poseidon::hades_permutation;
@@ -83,23 +83,6 @@ fn vector_commitment_decommit(
     assert(expected_commitment == commitment.commitment_hash, 'decommitment failed');
 }
 
-// TODO: move to another file 
-fn div_rem2(x: felt252) -> (felt252, felt252) {
-    let x: u256 = x.into();
-    let x_div = x / 2;
-    let x_rem = x % 2;
-    let x_div: felt252 = x_div.try_into().unwrap();
-    let x_rem: felt252 = x_rem.try_into().unwrap();
-    (x_div, x_rem)
-}
-
-// TODO: refactor
-fn is_ge(x: felt252, y: felt252) -> bool {
-    let x: u256 = x.into();
-    let y: u256 = y.into();
-    x >= y
-}
-
 // Verifies a queue of Merkle queries. [queue_head, queue_tail) is a queue, where each element
 // represents a node index (given in a heap-like indexing) and value (either an inner
 // node or a leaf).
@@ -120,7 +103,7 @@ fn compute_root_from_queries(
     }
 
     let (parent, bit) = div_rem2(current.index);
-    let is_verifier_friendly = is_ge(n_verifier_friendly_layers, current.depth);
+    let is_verifier_friendly = n_verifier_friendly_layers >= current.depth;
     let hash = if bit == 0 {
         if start + 1 != queue.len() {
             let next: VectorQueryWithDepth = *queue[start + 1];
