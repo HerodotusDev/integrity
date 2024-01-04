@@ -1,6 +1,6 @@
 use cairo_verifier::vector_commitment::vector_commitment::{
-    truncated_blake2s, VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
-    VectorQuery, vector_commitment_decommit, validate_vector_commitment
+    truncated_blake2s, VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness,
+    vector_commit, VectorQuery, vector_commitment_decommit, validate_vector_commitment
 };
 use cairo_verifier::channel::channel::Channel;
 use core::debug::PrintTrait;
@@ -45,10 +45,7 @@ fn get_invalid_queries() -> Span<VectorQuery> {
         };
         let q: VectorQuery = *queries[i];
         arr.append(if i == 2 {
-            VectorQuery {
-                index: q.index + 1,
-                value: q.value,
-            }
+            VectorQuery { index: q.index + 1, value: q.value, }
         } else {
             q
         });
@@ -334,25 +331,28 @@ fn test_vector_commit() {
         counter: 0x1690c7c85c57a4897623c1364852d8df91e4b36675085fddc7d10a7ea946fcbd,
     };
     let unsent_felt: felt252 = 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e;
-    let config = VectorCommitmentConfig {
-        height: 15,
-        n_verifier_friendly_commitment_layers: 5,
-    };
+    let config = VectorCommitmentConfig { height: 15, n_verifier_friendly_commitment_layers: 5, };
 
     let res = vector_commit(ref channel, unsent_felt, config);
 
     assert(res.config.height == config.height, 'invalid config height');
-    assert(res.config.n_verifier_friendly_commitment_layers == config.n_verifier_friendly_commitment_layers, 'invalid config n_veri...');
-    assert(res.commitment_hash == 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e, 'invalid commitment_hash');
+    assert(
+        res
+            .config
+            .n_verifier_friendly_commitment_layers == config
+            .n_verifier_friendly_commitment_layers,
+        'invalid config n_veri...'
+    );
+    assert(
+        res.commitment_hash == 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e,
+        'invalid commitment_hash'
+    );
 }
 
 #[test]
 #[available_gas(9999999999)]
 fn test_validate_vector_commitment() {
-    let config = VectorCommitmentConfig {
-        height: 21,
-        n_verifier_friendly_commitment_layers: 7,
-    };
+    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
     validate_vector_commitment(config, 21, 7);
 }
 
@@ -360,10 +360,7 @@ fn test_validate_vector_commitment() {
 #[should_panic]
 #[available_gas(9999999999)]
 fn test_invalid_validate_vector_commitment_1() {
-    let config = VectorCommitmentConfig {
-        height: 21,
-        n_verifier_friendly_commitment_layers: 7,
-    };
+    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
     validate_vector_commitment(config, 21, 8);
 }
 
@@ -371,11 +368,7 @@ fn test_invalid_validate_vector_commitment_1() {
 #[should_panic]
 #[available_gas(9999999999)]
 fn test_invalid_validate_vector_commitment_2() {
-    let config = VectorCommitmentConfig {
-        height: 21,
-        n_verifier_friendly_commitment_layers: 7,
-    };
+    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
     validate_vector_commitment(config, 22, 7);
 }
-
 
