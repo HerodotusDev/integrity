@@ -1,21 +1,35 @@
-# Cairo1 verifier
+# Cairo Verifier
 
-## Build
-``` sh
+This document provides steps to build and run the Cairo Verifier.
+
+## Building the Verifier
+
+To build the latest version of the verifier and create a Sierra file, follow these steps:
+
+1. Navigate to the project root directory:
+
+```bash
+cd .
+```
+
+2. Build the project:
+
+```bash
 scarb build
 ```
 
-## Test
-``` sh
-scarb test
+## Running the Verifier
+
+After building the verifier, you can run it with the following steps:
+
+1. Navigate to the runner directory:
+
+```bash
+cd runner
 ```
 
-## Format
-``` sh
-scarb fmt
-```
+2. Run the verifier:
 
-## Clean
-``` sh
-scarb clean
+```bash
+cargo run --release -- ../target/dev/cairo_verifier.sierra < resources/parserin.txt
 ```
