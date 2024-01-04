@@ -1,6 +1,6 @@
 use cairo_verifier::vector_commitment::vector_commitment::{
     truncated_blake2s, VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
-    VectorQuery, vector_commitment_decommit
+    VectorQuery, vector_commitment_decommit, validate_vector_commitment
 };
 use cairo_verifier::channel::channel::Channel;
 use core::debug::PrintTrait;
@@ -346,5 +346,36 @@ fn test_vector_commit() {
     assert(res.commitment_hash == 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e, 'invalid commitment_hash');
 }
 
-// TODO: test validate_vector_commitment
+#[test]
+#[available_gas(9999999999)]
+fn test_validate_vector_commitment() {
+    let config = VectorCommitmentConfig {
+        height: 21,
+        n_verifier_friendly_commitment_layers: 7,
+    };
+    validate_vector_commitment(config, 21, 7);
+}
+
+#[test]
+#[should_panic]
+#[available_gas(9999999999)]
+fn test_invalid_validate_vector_commitment_1() {
+    let config = VectorCommitmentConfig {
+        height: 21,
+        n_verifier_friendly_commitment_layers: 7,
+    };
+    validate_vector_commitment(config, 21, 8);
+}
+
+#[test]
+#[should_panic]
+#[available_gas(9999999999)]
+fn test_invalid_validate_vector_commitment_2() {
+    let config = VectorCommitmentConfig {
+        height: 21,
+        n_verifier_friendly_commitment_layers: 7,
+    };
+    validate_vector_commitment(config, 22, 7);
+}
+
 
