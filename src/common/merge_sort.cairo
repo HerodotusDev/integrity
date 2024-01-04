@@ -1,29 +1,50 @@
 use cairo_verifier::common::array_split::ArraySplitTrait;
+use core::debug::PrintTrait;
+use cairo_verifier::common::array_print::{ArrayPrintTrait, SpanPrintTrait};
 
 // Merge Sort
 /// # Arguments
 /// * `arr` - Array to sort
 /// # Returns
 /// * `Array<T>` - Sorted array
-fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(arr: Array<T>) -> Array<T> {
-    let len = arr.len();
-    if len <= 1 {
-        return arr;
-    }
+fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> Array<T> {
+    let mut chunk = 1;
+    loop {
+        if chunk >= arr.len() {
+            break;
+        }
+        let mut start = 0;
+        let mut new_arr: Array<T> = ArrayTrait::new();
+        let arr_span = arr.span();
+        loop {
+            let start2 = start + chunk;
+            let size2 = if start + 2 * chunk >= arr_span.len() {
+                arr_span.len() - start - chunk
+            } else {
+                chunk
+            };
 
-    // Create left and right arrays
-    let (left_arr, right_arr) = arr.split(len / 2);
+            merge_arrays(arr_span.slice(start, chunk), arr_span.slice(start2, size2), ref new_arr);
 
-    // Recursively sort the left and right arrays
-    let sorted_left = merge_sort(left_arr);
-    let sorted_right = merge_sort(right_arr);
-
-    let mut result_arr = array![];
-    merge_iterative(sorted_left.span(), sorted_right.span(), ref result_arr);
-    result_arr
+            start += 2 * chunk;
+            if start + chunk >= arr_span.len() {
+                break;
+            };
+        };
+        loop {
+            if start >= arr_span.len() {
+                break;
+            };
+            new_arr.append(*arr_span.at(start));
+            start += 1;
+        };
+        arr = new_arr;
+        chunk *= 2;
+    };
+    arr
 }
 
-fn merge_iterative<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
+fn merge_arrays<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
     left_arr: Span<T>, right_arr: Span<T>, ref result_arr: Array<T>,
 ) {
     let mut left_arr_ix = 0;
