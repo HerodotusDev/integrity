@@ -7,9 +7,9 @@ mod oods;
 mod fri;
 mod table_commitment;
 mod vector_commitment;
+mod queries;
 
 use cairo_verifier::input_structs::stark_proof::StarkProof;
-
 
 fn main(x: Array<felt252>) {
     let mut x_span = x.span();
