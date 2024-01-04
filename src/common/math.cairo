@@ -1,5 +1,4 @@
 use cairo_verifier::common::consts::STARK_PRIME_MINUS_TWO;
-use core::traits::TryInto;
 
 fn pow(base: felt252, exp: felt252) -> felt252 {
     if exp == 0 {
@@ -40,11 +39,15 @@ impl Felt252Div of Div<felt252> {
     }
 }
 
-fn div_rem2(lhs: felt252,) -> (felt252, felt252) {
-    let lhs: u256 = lhs.into();
-    let quotient = lhs / 2;
-    let remainder = lhs - (quotient * 2);
-    (quotient.try_into().unwrap(), remainder.try_into().unwrap())
+impl DivRemFelt252 of DivRem<felt252> {
+    fn div_rem(lhs: felt252, rhs: NonZero<felt252>) -> (felt252, felt252) {
+        let (q, r) = DivRem::div_rem(
+            Into::<felt252, u256>::into(lhs),
+            TryInto::<u256, NonZero<u256>>::try_into(Into::<felt252, u256>::into(rhs.into()))
+                .unwrap(),
+        );
+        (q.try_into().unwrap(), r.try_into().unwrap())
+    }
 }
 
 impl Felt252PartialOrd of PartialOrd<felt252> {

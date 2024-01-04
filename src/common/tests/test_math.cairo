@@ -1,4 +1,4 @@
-use cairo_verifier::common::math::{pow, mul_inverse};
+use cairo_verifier::common::math::{pow, mul_inverse, DivRemFelt252};
 
 #[test]
 #[available_gas(9999999999)]
@@ -76,4 +76,12 @@ fn test_mul_inverse_6() {
     let x = 19345680409051406060084;
     let inv_inv_x = mul_inverse(mul_inverse(x));
     assert(x == inv_inv_x, 'Invalid value');
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_div_rem_felt252() {
+    let (q, r) = DivRem::div_rem(17, 2.try_into().unwrap());
+    assert(q == 8, 'wrong quotient');
+    assert(r == 1, 'wrong remainder');
 }

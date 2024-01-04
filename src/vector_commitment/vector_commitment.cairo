@@ -1,6 +1,6 @@
 use cairo_verifier::common::{
     array_append::ArrayAppendTrait, blake2s::blake2s, math::pow,
-    flip_endianness::FlipEndiannessTrait, math::div_rem2, math::Felt252PartialOrd
+    flip_endianness::FlipEndiannessTrait, math::DivRemFelt252, math::Felt252PartialOrd
 };
 use cairo_verifier::channel::channel::{Channel, ChannelImpl};
 use poseidon::hades_permutation;
@@ -100,7 +100,7 @@ fn compute_root_from_queries(
         return current.value;
     }
 
-    let (parent, bit) = div_rem2(current.index);
+    let (parent, bit) = DivRem::div_rem(current.index, 2.try_into().unwrap());
     let is_verifier_friendly = n_verifier_friendly_layers >= current.depth;
     let hash = if bit == 0 {
         if start + 1 != queue.len() {
