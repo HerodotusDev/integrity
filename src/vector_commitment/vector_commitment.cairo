@@ -1,5 +1,5 @@
 use cairo_verifier::common::{
-    array_append::ArrayAppendTrait, blake2s::blake2s, math::pow,
+    array_append::ArrayAppendTrait, blake2s::blake2s, math::pow, blake2s::truncated_blake2s,
     flip_endianness::FlipEndiannessTrait, math::DivRemFelt252, math::Felt252PartialOrd
 };
 use cairo_verifier::channel::channel::{Channel, ChannelImpl};
@@ -159,17 +159,4 @@ fn hash_blake_or_poseidon(x: felt252, y: felt252, is_verifier_friendly: bool) ->
     } else {
         truncated_blake2s(x, y)
     }
-}
-
-// A 160 LSB truncated version of blake2s.
-// hash:
-//   blake2s(x, y) & ~((1<<96) - 1).
-fn truncated_blake2s(x: felt252, y: felt252) -> felt252 {
-    let mut data = ArrayTrait::<u32>::new();
-    data.append_big_endian(x);
-    data.append_big_endian(y);
-
-    // Truncate hash - convert value to felt, by taking the least significant 160 bits.
-    let hash = blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000;
-    hash.try_into().unwrap()
 }
