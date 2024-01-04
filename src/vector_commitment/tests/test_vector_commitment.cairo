@@ -34,6 +34,28 @@ fn get_queries() -> Span<VectorQuery> {
         .span()
 }
 
+fn get_invalid_queries() -> Span<VectorQuery> {
+    let queries = get_queries();
+    let mut arr = ArrayTrait::new();
+    let mut i = 0;
+    loop {
+        if i == queries.len() {
+            break;
+        };
+        let q: VectorQuery = *queries[i];
+        arr.append(if i == 2 {
+            VectorQuery {
+                index: q.index + 1,
+                value: q.value,
+            }
+        } else {
+            q
+        });
+        i += 1;
+    };
+    arr.span()
+}
+
 fn get_witness_authentications() -> Span<felt252> {
     array![
         129252051435949032402481343903845417193011527432,
@@ -272,8 +294,10 @@ fn get_witness_authentications() -> Span<felt252> {
         .span()
 }
 
-#[test]
-#[available_gas(9999999999)]
+// notice: this test takes a lot of time and computation
+//         uncomment it when making changes to vector_commitment_decommit
+// #[test]
+// #[available_gas(9999999999)]
 fn test_vector_commitment_decommit() {
     let witness_authentications = get_witness_authentications();
     let commitment = VectorCommitment {
@@ -284,10 +308,26 @@ fn test_vector_commitment_decommit() {
 
     vector_commitment_decommit(commitment, get_queries(), witness);
 }
-// TODO: test failing vector decommit
+
+// notice: this test takes a lot of time and computation
+//         uncomment it when making changes to vector_commitment_decommit
+// #[test]
+// #[should_panic]
+// #[available_gas(9999999999)]
+fn test_invalid_vector_commitment_decommit() {
+    let witness_authentications = get_witness_authentications();
+    let commitment = VectorCommitment {
+        config: VectorCommitmentConfig { height: 20, n_verifier_friendly_commitment_layers: 9, },
+        commitment_hash: 936159606372446880770773180413943646119933747687072192231671834696463400536
+    };
+    let witness = VectorCommitmentWitness { authentications: witness_authentications, };
+
+    vector_commitment_decommit(commitment, get_invalid_queries(), witness);
+}
+
+
 
 // TODO: test vector_commit
 
 // TODO: test validate_vector_commitment
-
 
