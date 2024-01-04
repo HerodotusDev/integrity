@@ -4,8 +4,6 @@ use cairo_verifier::common::{
 };
 use cairo_verifier::channel::channel::{Channel, ChannelImpl};
 use poseidon::hades_permutation;
-// TODO: remove
-use core::debug::PrintTrait;
 
 // Commitment for a vector of field elements.
 #[derive(Drop, Copy)]
