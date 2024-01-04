@@ -85,9 +85,12 @@ impl PublicInputImpl of PublicInputTrait {
         assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
         assert(final_pc == INITIAL_PC + 4, 'Invalid final_pc');
 
+        let mut memory_index: usize = 0;
+
         let program_end_pc = initial_fp - 2;
         let program_len = program_end_pc - initial_pc;
         let program = memory.extract_range(initial_pc, program_len);
+        memory_index += program_len.try_into().unwrap();
 
         assert(
             *program[0] == 0x40780017fff7fff, 'Invalid program'
@@ -101,7 +104,17 @@ impl PublicInputImpl of PublicInputTrait {
 
         // 2. Execution segment
         // 2.1 Initial_fp, initial_pc
+        let fp2 = *memory.at(memory_index);
+        assert(fp2.address == initial_fp - 2, 'Invalid fp2 addr');
+        assert(fp2.value == initial_fp, 'Invalid fp2 val');
 
-        (0, 0)
+        let fp1 = *memory.at(memory_index + 1);
+        assert(fp1.address == initial_fp - 1, 'Invalid fp1 addr');
+        assert(fp1.value == 0, 'Invalid fp1 val');
+        memory_index += 2;
+
+        // 2.2 Main arguments and return values
+
+        (program_hash, 0)
     }
 }
