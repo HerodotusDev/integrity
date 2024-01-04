@@ -60,12 +60,11 @@ impl ChannelImpl of ChannelTrait {
     }
 
     fn read_felt_from_prover(ref self: Channel, value: felt252) {
-        let value_u256: u256 = value.into();
         let mut hash_data = ArrayTrait::<u32>::new();
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
-        hash_data.append_big_endian(value_u256);
+        hash_data.append_big_endian(value);
 
         self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
@@ -87,8 +86,7 @@ impl ChannelImpl of ChannelTrait {
             if i == values.len() {
                 break;
             };
-            let value_u256: u256 = (*values[i] * MONTGOMERY_R).into();
-            hash_data.append_big_endian(value_u256);
+            hash_data.append_big_endian(*values[i] * MONTGOMERY_R);
             i += 1;
         };
 
