@@ -7,25 +7,7 @@ use cairo_verifier::common::array_print::{ArrayPrintTrait, SpanPrintTrait};
 /// * `arr` - Array to sort
 /// # Returns
 /// * `Array<T>` - Sorted array
-fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(arr: Array<T>) -> Array<T> {
-    let len = arr.len();
-    if len <= 1 {
-        return arr;
-    }
-
-    // Create left and right arrays
-    let (left_arr, right_arr) = arr.split(len / 2);
-
-    // Recursively sort the left and right arrays
-    let sorted_left = merge_sort(left_arr);
-    let sorted_right = merge_sort(right_arr);
-
-    let mut result_arr = array![];
-    merge_iterative(sorted_left.span(), sorted_right.span(), ref result_arr);
-    result_arr
-}
-
-fn merge_sort_new<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> Array<T> {
+fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> Array<T> {
     let mut chunk = 1;
     loop {
         if chunk >= arr.len() {
@@ -42,7 +24,7 @@ fn merge_sort_new<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> A
                 chunk
             };
 
-            merge_iterative(arr_span.slice(start, chunk), arr_span.slice(start2, size2), ref new_arr);
+            merge_arrays(arr_span.slice(start, chunk), arr_span.slice(start2, size2), ref new_arr);
 
             start += 2 * chunk;
             if start + chunk >= arr_span.len() {
@@ -62,7 +44,7 @@ fn merge_sort_new<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> A
     arr
 }
 
-fn merge_iterative<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
+fn merge_arrays<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
     left_arr: Span<T>, right_arr: Span<T>, ref result_arr: Array<T>,
 ) {
     let mut left_arr_ix = 0;
