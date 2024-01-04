@@ -5,7 +5,6 @@ mod test_horner_eval;
 mod test_array_append;
 mod test_math;
 mod test_merge_sort;
-
 // notice: this test takes a lot of time and computation
 //         uncomment it when making changes to blake2s
 // mod test_blake2s_big;
@@ -13,3 +12,5 @@ mod test_merge_sort;
 // notice: this test takes a lot of time and computation
 //         uncomment it when making changes to merge sort
 // mod test_merge_sort_big;
+
+

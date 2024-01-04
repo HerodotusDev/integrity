@@ -1,6 +1,5 @@
 use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitment, VectorCommitmentConfig, vector_commit,
-    validate_vector_commitment
+    VectorCommitment, VectorCommitmentConfig, vector_commit, validate_vector_commitment
 };
 use cairo_verifier::channel::channel::Channel;
 

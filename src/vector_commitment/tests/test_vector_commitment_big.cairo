@@ -1,7 +1,6 @@
-
 use cairo_verifier::vector_commitment::vector_commitment::{
     VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit, VectorQuery,
-    vector_commitment_decommit, 
+    vector_commitment_decommit,
 };
 
 
