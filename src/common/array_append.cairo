@@ -33,6 +33,8 @@ impl ArrayU32AppendU256 of ArrayAppendTrait<u32, u256> {
     }
 }
 
+// input's MSB is padded with 0s
+// (internally felt252 is converted to u256)
 impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
     fn append_little_endian(ref self: Array<u32>, element: felt252) {
         self.append_little_endian(Into::<felt252, u256>::into(element));
