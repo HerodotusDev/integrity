@@ -25,14 +25,14 @@ fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(arr: Array<T>) -> Array<T> 
     result_arr
 }
 
-fn merge_sort_new(mut arr: Array<u32>) -> Array<u32> {
+fn merge_sort_new<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> Array<T> {
     let mut chunk = 1;
     loop {
         if chunk >= arr.len() {
             break;
         }
         let mut start = 0;
-        let mut new_arr: Array<u32> = ArrayTrait::new();
+        let mut new_arr: Array<T> = ArrayTrait::new();
         let arr_span = arr.span();
         loop {
             let start2 = start + chunk;
