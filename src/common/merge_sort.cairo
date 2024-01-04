@@ -35,9 +35,6 @@ fn merge_sort_new(mut arr: Array<u32>) -> Array<u32> {
         let mut new_arr: Array<u32> = ArrayTrait::new();
         let arr_span = arr.span();
         loop {
-            if start + chunk >= arr_span.len() {
-                break;
-            };
             let start2 = start + chunk;
             let size2 = if start + 2 * chunk >= arr_span.len() {
                 arr_span.len() - start - chunk
@@ -48,6 +45,9 @@ fn merge_sort_new(mut arr: Array<u32>) -> Array<u32> {
             merge_iterative(arr_span.slice(start, chunk), arr_span.slice(start2, size2), ref new_arr);
 
             start += 2 * chunk;
+            if start + chunk >= arr_span.len() {
+                break;
+            };
         };
         loop {
             if start >= arr_span.len() {
