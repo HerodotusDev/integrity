@@ -74,3 +74,33 @@ impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
         }
     }
 }
+
+impl ArrayU32AppendU64 of ArrayAppendTrait<u32, u64> {
+    fn append_little_endian(ref self: Array<u32>, mut element: u64) {
+        let mut i = 2;
+        loop {
+            if i != 0 {
+                i -= 1;
+                let (q, r) = DivRem::div_rem(element, U64maxU32.try_into().unwrap());
+                self.append(r.try_into().unwrap());
+                element = q;
+            } else {
+                break;
+            }
+        }
+    }
+
+    fn append_big_endian(ref self: Array<u32>, mut element: u64) {
+        let mut array = ArrayTrait::<u32>::new();
+        array.append_little_endian(element);
+        let mut i = array.len();
+        loop {
+            if i != 0 {
+                i -= 1;
+                self.append((*array.at(i)).flip_endianness());
+            } else {
+                break;
+            }
+        }
+    }
+}
