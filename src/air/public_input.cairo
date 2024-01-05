@@ -118,3 +118,4 @@ impl PublicInputImpl of PublicInputTrait {
         (program_hash, 0)
     }
 }
+

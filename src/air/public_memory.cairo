@@ -61,6 +61,30 @@ impl PageImpl of PageTrait {
             i += 1;
         }
     }
+
+    fn verify_stack(
+        self: @Page,
+        start_ap: felt252,
+        segment_address: felt252,
+        builtins: Array<felt252>,
+        memory_index: felt252
+    ) {
+        let mut i = 0;
+
+        // TODO size of SegmentInfo
+        let size = 2;
+        loop {
+            if i == builtins.len() {
+                break;
+            }
+
+            let current = *self.at(memory_index.try_into().unwrap() + i);
+
+            assert(current.address == start_ap + i.into(), 'Invalid address');
+            assert(current.value == segment_address + size * (i.into() + 1), 'Invalid builtin');
+            i += 1;
+        };
+    }
 }
 
 fn get_continuous_pages_product(page_headers: Span<ContinuousPageHeader>) -> (felt252, felt252) {
