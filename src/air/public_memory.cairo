@@ -1,4 +1,4 @@
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct AddrValue {
     address: felt252,
     value: felt252
@@ -15,14 +15,14 @@ type Page = Array<AddrValue>;
 // StarkProof object.
 //   z     = interaction_elements.memory_multi_column_perm_perm__interaction_elm
 //   alpha = interaction_elements.memory_multi_column_perm_hash_interaction_elm0
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct ContinuousPageHeader {
     // Start address.
-    //start_address: felt252,
+    start_address: felt252,
     // Size of the page.
     size: felt252,
     // Hash of the page.
-    //hash: u256
+    hash: u256,
     // Cumulative product of the page.
     prod: felt252,
 }
