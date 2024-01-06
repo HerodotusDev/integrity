@@ -1,6 +1,6 @@
 use cairo_verifier::common::blake2s::{blake2s, truncated_blake2s, load32};
 
-fn get_arr_v1(n: u32) -> Array<u32> {
+fn get_arr_v1(n: u32) -> Array<u8> {
     let mut arr = ArrayTrait::new();
     let mut i: u32 = 1;
     loop {
@@ -13,7 +13,10 @@ fn get_arr_v1(n: u32) -> Array<u32> {
     let mut out = ArrayTrait::new();
     i = 0;
     loop {
-        out.append(load32(*arr[4 * i], *arr[4 * i + 1], *arr[4 * i + 2], *arr[4 * i + 3]));
+        out.append(*arr[4 * i]);
+        out.append(*arr[4 * i + 1]);
+        out.append(*arr[4 * i + 2]);
+        out.append(*arr[4 * i + 3]);
         i += 1;
         if i == n {
             break;
@@ -22,7 +25,7 @@ fn get_arr_v1(n: u32) -> Array<u32> {
     out
 }
 
-fn get_arr_v2(n: u32) -> Array<u32> {
+fn get_arr_v2(n: u32) -> Array<u8> {
     let mut arr = ArrayTrait::new();
     let mut s: u32 = 1;
     let mut i: u32 = 1;
@@ -39,7 +42,10 @@ fn get_arr_v2(n: u32) -> Array<u32> {
     let mut out = ArrayTrait::new();
     i = 0;
     loop {
-        out.append(load32(*arr[4 * i], *arr[4 * i + 1], *arr[4 * i + 2], *arr[4 * i + 3]));
+        out.append(*arr[4 * i]);
+        out.append(*arr[4 * i + 1]);
+        out.append(*arr[4 * i + 2]);
+        out.append(*arr[4 * i + 3]);
         i += 1;
         if i == n {
             break;

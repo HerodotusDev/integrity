@@ -3,7 +3,7 @@ use cairo_verifier::common::array_append::ArrayAppendTrait;
 use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
 
 
-fn blake2s(data: Array<u32>) -> u256 {
+fn blake2s(data: Array<u8>) -> u256 {
     let mut state = blake2s_init();
     state = blake2s_update(state, data);
     blake2s_final(state)
@@ -13,7 +13,7 @@ fn blake2s(data: Array<u32>) -> u256 {
 // hash:
 //   blake2s(x, y) & ~((1<<96) - 1).
 fn truncated_blake2s(x: felt252, y: felt252) -> felt252 {
-    let mut data = ArrayTrait::<u32>::new();
+    let mut data = ArrayTrait::<u8>::new();
     data.append_big_endian(x);
     data.append_big_endian(y);
 
@@ -78,7 +78,7 @@ struct blake2s_state {
     t0: u32,
     t1: u32,
     f0: u32,
-    buf: Array<u32>, // length: 16 (64 bytes)
+    buf: Array<u8>, // length: 64
     buflen: u32,
 }
 
@@ -96,7 +96,7 @@ fn blake2s_init() -> blake2s_state {
     let mut buf = ArrayTrait::new();
     let mut i = 0;
     loop {
-        if i == 16 {
+        if i == 64 {
             break;
         }
         buf.append(0);
@@ -106,8 +106,19 @@ fn blake2s_init() -> blake2s_state {
     blake2s_state { h: blake2s_IV, t0: 0, t1: 0, f0: 0, buf: buf, buflen: 0 }
 }
 
-fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
-    assert(m.len() == 16, 'in array must have length 16');
+fn blake2s_compress(mut s: blake2s_state, in: Array<u8>) -> blake2s_state {
+    assert(in.len() == 64, 'in array must have length 64');
+
+    let mut m: Array<u32> = ArrayTrait::new();
+
+    let mut i: u32 = 0;
+    loop {
+        if i == 16 {
+            break;
+        }
+        m.append(load32(*in[4*i+0], *in[4*i+1], *in[4*i+2], *in[4*i+3]));
+        i += 1;
+    };
 
     let mut v0: u32 = *s.h[0];
     let mut v1: u32 = *s.h[1];
@@ -277,13 +288,13 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
     s
 }
 
-fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
+fn blake2s_update(mut s: blake2s_state, in: Array<u8>) -> blake2s_state {
     let mut in_len = in.len();
     let mut in_shift = 0;
     let in_span = in.span();
     if in_len != 0 {
         let left = s.buflen;
-        let fill = 16 - left;
+        let fill = 64 - left;
         if in_len > fill {
             s.buflen = 0;
 
@@ -319,7 +330,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
             in_len -= fill;
 
             loop {
-                if in_len <= 16 {
+                if in_len <= 64_u32 {
                     break;
                 }
 
@@ -332,7 +343,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
                 let mut compress_in = ArrayTrait::new();
                 i = 0;
                 loop {
-                    if i == 16 {
+                    if i == 64_u32 {
                         break;
                     }
                     compress_in.append(*in_span[in_shift + i]);
@@ -341,8 +352,8 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
 
                 s = blake2s_compress(s, compress_in);
 
-                in_shift += 16;
-                in_len -= 16;
+                in_shift += 64_u32;
+                in_len -= 64_u32;
             };
         }
 
@@ -365,7 +376,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
             i += 1;
         };
         loop {
-            if new_buf.len() == 16 {
+            if new_buf.len() == 64_u32 {
                 break;
             }
             new_buf.append(0);
@@ -381,7 +392,7 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
     assert(s.f0 == 0, 'blake2s_is_lastblock');
 
     // blake2s_increment_counter 
-    s.t0 = u32_wrapping_add(s.t0, s.buflen * 4);
+    s.t0 = u32_wrapping_add(s.t0, s.buflen);
     if s.t0 < s.buflen {
         s.t1 = u32_wrapping_add(s.t1, 1);
     }
@@ -399,7 +410,7 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
         i += 1;
     };
     loop {
-        if i == 16 {
+        if i == 64 {
             break;
         }
         buf.append(0);
