@@ -116,7 +116,7 @@ fn blake2s_compress(mut s: blake2s_state, in: Array<u8>) -> blake2s_state {
         if i == 16 {
             break;
         }
-        m.append(load32(*in[4*i+0], *in[4*i+1], *in[4*i+2], *in[4*i+3]));
+        m.append(load32(*in[4 * i + 0], *in[4 * i + 1], *in[4 * i + 2], *in[4 * i + 3]));
         i += 1;
     };
 
