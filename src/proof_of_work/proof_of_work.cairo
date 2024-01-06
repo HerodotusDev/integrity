@@ -3,8 +3,7 @@ use cairo_verifier::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
         blake2s_u8::blake2s, array_append::ArrayAppendTrait, math::pow,
     },
-    channel::channel::{Channel, ChannelTrait},
-    proof_of_work::config::{ProofOfWorkConfig, BYTE_UPPER_BOUND, WORD_UPPER_BOUND}
+    channel::channel::{Channel, ChannelTrait}, proof_of_work::config::{ProofOfWorkConfig}
 };
 
 const MAGIC: u64 = 0x0123456789abcded;
@@ -23,8 +22,8 @@ fn proof_of_work_commit(
 
 fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     // Compute the initial hash.
-    // Hash(0123456789abcded || digest   || n_bits )
-    //      8 bytes          || 32 bytes || 1 byte
+    // Hash(0x0123456789abcded || digest   || n_bits )
+    //      8 bytes            || 32 bytes || 1 byte
     // Total of 0x29 = 41 bytes.
 
     let mut init_hash_data = ArrayTrait::<u8>::new();
