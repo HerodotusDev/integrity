@@ -36,40 +36,49 @@ fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     //     + digest / POW_2_12 * POW_2_4 + n_bits.into() * POW_2_3;
 
     let mut init_hash_data = ArrayTrait::<u8>::new();
-    init_hash_data.append_big_endian(u256{low: 0xD7CA1D48A19D8FF802A71D94169DE383, high: 0x0123456789ABCDED1C5A5F4381DF1F5C});
-    init_hash_data.append_big_endian(u256{low: 0x00000000000000000000000000000000, high: 0x82621FDC5514A10A1400000000000000});
-    let span = init_hash_data.span().slice(0,41);
+    init_hash_data
+        .append_big_endian(
+            u256 {
+                low: 0xD7CA1D48A19D8FF802A71D94169DE383, high: 0x0123456789ABCDED1C5A5F4381DF1F5C
+            }
+        );
+    init_hash_data
+        .append_big_endian(
+            u256 {
+                low: 0x00000000000000000000000000000000, high: 0x82621FDC5514A10A1400000000000000
+            }
+        );
+    let span = init_hash_data.span().slice(0, 41);
     let mut arr = ArrayTrait::<u8>::new();
-    let mut i:u32 = 0;
+    let mut i: u32 = 0;
     loop {
         if i == span.len() {
             break;
         }
 
         arr.append(*span.at(i));
-        i+=1;
+        i += 1;
     };
     let init_hash = blake2s(arr).flip_endianness();
     init_hash.print();
+//  correct hash on test data:
+//  0x6ae49da749fbe3fc98f114c0f8342a4d
+//  0x26438c9c119a3b222f70d564d5df2ebc
 
-    //  correct hash on test data:
-    //  0x6ae49da749fbe3fc98f114c0f8342a4d
-    //  0x26438c9c119a3b222f70d564d5df2ebc
+// // Compute Hash(init_hash || nonce   )
+// //              32 bytes  || 8 bytes
+// // Total of 0x28 = 40 bytes.
 
-    // // Compute Hash(init_hash || nonce   )
-    // //              32 bytes  || 8 bytes
-    // // Total of 0x28 = 40 bytes.
+// // init_hash >> 12 -> init_hash << 8 + 4 -> nonce << 4
+// let hash_value: u256 = init_hash / POW_2_12 * POW_2_12 + nonce.into() * POW_2_4;
 
-    // // init_hash >> 12 -> init_hash << 8 + 4 -> nonce << 4
-    // let hash_value: u256 = init_hash / POW_2_12 * POW_2_12 + nonce.into() * POW_2_4;
+// let mut hash_data = ArrayTrait::<u32>::new();
+// hash_data.append_big_endian(hash_value);
+// let hash = blake2s(hash_data);
+// let work_limit = pow(2, 128 - n_bits.into());
 
-    // let mut hash_data = ArrayTrait::<u32>::new();
-    // hash_data.append_big_endian(hash_value);
-    // let hash = blake2s(hash_data);
-    // let work_limit = pow(2, 128 - n_bits.into());
-
-    // assert(
-    //     Into::<u128, u256>::into(hash.high) < Into::<felt252, u256>::into(work_limit),
-    //     'proof of work failed'
-    // )
+// assert(
+//     Into::<u128, u256>::into(hash.high) < Into::<felt252, u256>::into(work_limit),
+//     'proof of work failed'
+// )
 }
