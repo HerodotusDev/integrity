@@ -47,7 +47,7 @@ impl PublicInputImpl of PublicInputTrait {
             i += 1;
         };
 
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::<u8>::new();
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_min).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_max).into());
@@ -85,10 +85,10 @@ impl PublicInputImpl of PublicInputTrait {
 
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data.append(1 + self.continuous_page_headers.len());
+        hash_data.append_big_endian(1 + self.continuous_page_headers.len());
 
         // Main page.
-        hash_data.append(self.main_page.len());
+        hash_data.append_big_endian(self.main_page.len());
         ArrayAppendTrait::<
             _, u256
         >::append_big_endian(ref hash_data, main_page_hash_state.finalize().into());
