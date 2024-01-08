@@ -11,6 +11,7 @@ mod array_split;
 mod consts;
 mod merge_sort;
 mod bit_reverse;
+mod powers_array;
 
 #[cfg(test)]
 mod tests;
