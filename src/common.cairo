@@ -10,6 +10,7 @@ mod array_extend;
 mod array_split;
 mod consts;
 mod merge_sort;
+mod bit_reverse;
 
 #[cfg(test)]
 mod tests;
