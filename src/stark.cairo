@@ -1,12 +1,13 @@
 use cairo_verifier::proof_of_work::config::ProofOfWorkConfigTrait;
 use cairo_verifier::{
     air::{
-        config::TracesConfig, public_input::PublicInput,
+        config::{traces_config_validate, TracesConfig}, public_input::PublicInput,
         traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
-    fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness}},
+    fri::{fri_config::{FriConfig, fri_config_validate}, fri::{FriUnsentCommitment, FriWitness}},
     table_commitment::{TableCommitmentConfig, TableCommitmentWitness, TableDecommitment},
     proof_of_work::{config::ProofOfWorkConfig, proof_of_work::ProofOfWorkUnsentCommitment},
+    vector_commitment::vector_commitment::validate_vector_commitment,
 };
 
 mod stark_commit;
@@ -43,19 +44,19 @@ struct StarkConfig {
 fn stark_config_validate(stark_config: StarkConfig, security_bits: felt252) {
     stark_config.proof_of_work.config_validate();
 
-    // let log_eval_domain_size = stark_config.log_trace_domain_size + stark_config.log_n_cosets;
-    // traces_config_validate(stark_config.traces, log_eval_domain_size, security_bits);
+    let log_eval_domain_size = stark_config.log_trace_domain_size + stark_config.log_n_cosets;
+    traces_config_validate(stark_config.traces, log_eval_domain_size, security_bits);
 
-    // validate_vector_commitment(
-    //     stark_config.composition.vector,
-    //     log_eval_domain_size,
-    //     stark_config.n_verifier_friendly_commitment_layers
-    // );
-    // fri_config_validate(
-    //     stark_config.fri.into(),
-    //     stark_config.log_n_cosets,
-    //     stark_config.n_verifier_friendly_commitment_layers
-    // );
+    validate_vector_commitment(
+        stark_config.composition.vector,
+        log_eval_domain_size,
+        stark_config.n_verifier_friendly_commitment_layers
+    );
+    fri_config_validate(
+        stark_config.fri.into(),
+        stark_config.log_n_cosets,
+        stark_config.n_verifier_friendly_commitment_layers
+    );
 }
 
 #[derive(Drop)]
