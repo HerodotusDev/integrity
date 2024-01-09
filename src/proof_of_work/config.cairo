@@ -1,5 +1,7 @@
-const MIN_PROOF_OF_WORK_BITS: u256 = 30;
-const MAX_PROOF_OF_WORK_BITS: u256 = 50;
+use cairo_verifier::common::asserts::assert_in_range;
+
+const MIN_PROOF_OF_WORK_BITS: felt252 = 30;
+const MAX_PROOF_OF_WORK_BITS: felt252 = 50;
 
 #[derive(Drop, Copy)]
 struct ProofOfWorkConfig {
@@ -10,7 +12,6 @@ struct ProofOfWorkConfig {
 #[generate_trait]
 impl ProofOfWorkConfigImpl of ProofOfWorkConfigTrait {
     fn config_validate(ref self: ProofOfWorkConfig) {
-        assert(self.n_bits.into() >= MIN_PROOF_OF_WORK_BITS, 'value proof of work bits to low');
-        assert(self.n_bits.into() <= MAX_PROOF_OF_WORK_BITS, 'value proof of work bits to big');
+        assert_in_range(self.n_bits.into(), MIN_PROOF_OF_WORK_BITS, MAX_PROOF_OF_WORK_BITS);
     }
 }
