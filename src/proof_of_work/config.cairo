@@ -7,7 +7,10 @@ struct ProofOfWorkConfig {
     n_bits: u8,
 }
 
-fn proof_of_work_config_validate(config: ProofOfWorkConfig) {
-    assert(config.n_bits.into() >= MIN_PROOF_OF_WORK_BITS, 'value proof of work bits to low');
-    assert(config.n_bits.into() <= MIN_PROOF_OF_WORK_BITS, 'value proof of work bits to big');
+#[generate_trait]
+impl ProofOfWorkConfigImpl of ProofOfWorkConfigTrait {
+    fn config_validate(ref self: ProofOfWorkConfig) {
+        assert(self.n_bits.into() >= MIN_PROOF_OF_WORK_BITS, 'value proof of work bits to low');
+        assert(self.n_bits.into() <= MAX_PROOF_OF_WORK_BITS, 'value proof of work bits to big');
+    }
 }
