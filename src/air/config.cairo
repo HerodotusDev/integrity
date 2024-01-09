@@ -40,3 +40,4 @@ impl TracesConfigImpl of TracesConfigTrait {
 // Validates the configuration of the traces.
 // log_eval_domain_size - Log2 of the evaluation domain size.
 
+
