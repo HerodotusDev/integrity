@@ -16,7 +16,7 @@ use cairo_verifier::channel::channel::Channel;
 
 // Commitment values for the Traces component. Used to generate a commitment by "reading" these
 // values from the channel.
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct TracesUnsentCommitment {
     original: TableUnsentCommitment,
     interaction: TableUnsentCommitment,
