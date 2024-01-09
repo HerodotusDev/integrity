@@ -1,3 +1,4 @@
+use cairo_verifier::proof_of_work::config::ProofOfWorkConfigTrait;
 use cairo_verifier::{
     air::{
         config::TracesConfig, public_input::PublicInput,
@@ -37,6 +38,24 @@ struct StarkConfig {
     log_n_cosets: felt252,
     // Number of layers that use a verifier friendly hash in each commitment.
     n_verifier_friendly_commitment_layers: felt252,
+}
+
+fn stark_config_validate(stark_config: StarkConfig, security_bits: felt252) {
+    stark_config.proof_of_work.config_validate();
+
+    // let log_eval_domain_size = stark_config.log_trace_domain_size + stark_config.log_n_cosets;
+    // traces_config_validate(stark_config.traces, log_eval_domain_size, security_bits);
+
+    // validate_vector_commitment(
+    //     stark_config.composition.vector,
+    //     log_eval_domain_size,
+    //     stark_config.n_verifier_friendly_commitment_layers
+    // );
+    // fri_config_validate(
+    //     stark_config.fri.into(),
+    //     stark_config.log_n_cosets,
+    //     stark_config.n_verifier_friendly_commitment_layers
+    // );
 }
 
 #[derive(Drop)]
