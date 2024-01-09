@@ -1,6 +1,7 @@
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::table_commitment::{
-    TableUnsentCommitment, TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
+    TableUnsentCommitment, TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit,
+    table_decommit,
 };
 use cairo_verifier::air::{public_input::PublicInput, config::TracesConfig};
 use cairo_verifier::channel::channel::Channel;
@@ -83,16 +84,6 @@ fn traces_decommit(
     decommitment: TracesDecommitment,
     witness: TracesWitness,
 ) {
-    table_decommit(
-        commitment.original,
-        queries,
-        decommitment.original,
-        witness.original
-    );
-    table_decommit(
-        commitment.interaction,
-        queries,
-        decommitment.interaction,
-        witness.interaction
-    )
+    table_decommit(commitment.original, queries, decommitment.original, witness.original);
+    table_decommit(commitment.interaction, queries, decommitment.interaction, witness.interaction)
 }

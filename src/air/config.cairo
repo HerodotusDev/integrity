@@ -8,5 +8,5 @@ struct TracesConfig {
     original: TableCommitmentConfig,
     interaction: TableCommitmentConfig,
 }
-
 // TODO traces_config_validate
+
