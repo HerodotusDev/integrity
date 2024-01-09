@@ -1,3 +1,15 @@
+use core::array::ArrayTrait;
+use cairo_verifier::{
+    air::{
+        config::TracesConfig, public_input::PublicInput,
+        traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    },
+    fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness, FriLayerWitness}},
+    table_commitment::{TableCommitmentConfig, TableCommitmentWitness, TableDecommitment},
+    proof_of_work::{config::ProofOfWorkConfig, proof_of_work::ProofOfWorkUnsentCommitment},
+    vector_commitment::vector_commitment::VectorCommitmentWitness,
+};
+
 #[derive(Drop, Serde)]
 struct StarkProofWithSerde {
     config: StarkConfigWithSerde,
@@ -146,4 +158,59 @@ struct VectorCommitmentWitnessWithSerde {
 #[derive(Drop, Serde)]
 struct FriWitnessWithSerde {
     layers: Array<felt252>,
+}
+impl IntoFriWitness of Into<FriWitnessWithSerde, FriWitness> {
+    fn into(self: FriWitnessWithSerde) -> FriWitness {
+        let layers_span = self.layers.span();
+        let mut layers = ArrayTrait::<FriLayerWitness>::new();
+        let mut i = 0;
+        loop {
+            if i == layers_span.len() {
+                break;
+            }
+
+            let n = *layers_span[i];
+            i += 1;
+            let mut leaves = ArrayTrait::<felt252>::new();
+            let mut j = 0;
+            loop {
+                if j == n {
+                    break;
+                }
+
+                leaves.append(*layers_span[i]);
+                i += 1;
+                j += 1;
+            };
+
+            let n = *layers_span[i];
+            i += 1;
+            let mut authentications = ArrayTrait::<felt252>::new();
+            let mut j = 0;
+            loop {
+                if j == n {
+                    break;
+                }
+                authentications.append(*layers_span[i]);
+                i += 1;
+                j += 1;
+            };
+
+            layers
+                .append(
+                    FriLayerWitness {
+                        leaves: leaves.span(),
+                        table_witness: TableCommitmentWitness {
+                            vector: VectorCommitmentWitness {
+                                authentications: authentications.span(),
+                            }
+                        },
+                    }
+                );
+
+            i += 1;
+        };
+
+        FriWitness { layers: layers.span(), }
+    }
 }
