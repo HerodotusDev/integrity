@@ -3,3 +3,4 @@ mod pow;
 mod stark;
 mod traces;
 mod vector;
+mod table;

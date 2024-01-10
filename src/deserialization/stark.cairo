@@ -9,6 +9,7 @@ use cairo_verifier::{
             TracesUnsentCommitmentWithSerde, TableCommitmentConfigWithSerde,
             TableCommitmentWitnessWithSerde, TableDecommitmentWithSerde
         },
+        table::{TableUnsentCommitmentWithSerde},
         fri::{FriConfigWithSerde, FriUnsentCommitmentWithSerde, FriWitnessWithSerde},
         pow::{ProofOfWorkConfigWithSerde, ProofOfWorkUnsentCommitmentWithSerde},
     },
@@ -145,7 +146,7 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
 #[derive(Drop, Serde)]
 struct StarkUnsentCommitmentWithSerde {
     traces: TracesUnsentCommitmentWithSerde,
-    composition: felt252,
+    composition: TableUnsentCommitmentWithSerde,
     oods_values: Array<felt252>,
     fri: FriUnsentCommitmentWithSerde,
     proof_of_work: ProofOfWorkUnsentCommitmentWithSerde,
@@ -154,7 +155,7 @@ impl IntoStarkUnsentCommitment of Into<StarkUnsentCommitmentWithSerde, StarkUnse
     fn into(self: StarkUnsentCommitmentWithSerde) -> StarkUnsentCommitment {
         StarkUnsentCommitment {
             traces: self.traces.into(),
-            composition: self.composition,
+            composition: self.composition.into(),
             oods_values: self.oods_values.span(),
             fri: self.fri.into(),
             proof_of_work: self.proof_of_work.into(),
@@ -166,7 +167,6 @@ impl IntoStarkUnsentCommitment of Into<StarkUnsentCommitmentWithSerde, StarkUnse
 struct StarkWitnessWithSerde {
     traces_decommitment: TracesDecommitmentWithSerde,
     traces_witness: TracesWitnessWithSerde,
-    interaction: TableCommitmentWitnessWithSerde,
     composition_decommitment: TableDecommitmentWithSerde,
     composition_witness: TableCommitmentWitnessWithSerde,
     fri_witness: FriWitnessWithSerde,
@@ -176,7 +176,6 @@ impl IntoStarkWitness of Into<StarkWitnessWithSerde, StarkWitness> {
         StarkWitness {
             traces_decommitment: self.traces_decommitment.into(),
             traces_witness: self.traces_witness.into(),
-            interaction: self.interaction.into(),
             composition_decommitment: self.composition_decommitment.into(),
             composition_witness: self.composition_witness.into(),
             fri_witness: self.fri_witness.into(),
