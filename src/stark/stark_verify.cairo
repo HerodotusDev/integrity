@@ -1,9 +1,9 @@
-use cairo_verifier::queries::queries::queries_to_points;
-use cairo_verifier::domains::StarkDomains;
-use cairo_verifier::fri::fri::{FriDecommitment, fri_verify};
-use cairo_verifier::stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment};
-use cairo_verifier::air::traces::traces_decommit;
-use cairo_verifier::table_commitment::table_decommit;
+use cairo_verifier::{
+    queries::queries::queries_to_points, domains::StarkDomains,
+    fri::fri::{FriDecommitment, fri_verify},
+    stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment}, air::traces::traces_decommit,
+    table_commitment::table_decommit,
+};
 
 // STARK decommitment phase.
 fn stark_verify(
