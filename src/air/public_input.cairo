@@ -114,6 +114,11 @@ impl PublicInputImpl of PublicInputTrait {
         memory_index += 2;
 
         // 2.2 Main arguments and return values
+        memory.verify_stack(initial_ap, *public_segments.at(2).begin_addr, builtins.span(), memory_index.into());
+        memory_index += builtins.len();
+
+        memory.verify_stack(final_ap - builtins.len().into(), *public_segments.at(2).stop_ptr, builtins.span(), memory_index.into());
+        memory_index += builtins.len();
 
         (program_hash, 0)
     }

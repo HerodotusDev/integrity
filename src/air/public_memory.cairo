@@ -66,7 +66,7 @@ impl PageImpl of PageTrait {
         self: @Page,
         start_ap: felt252,
         segment_address: felt252,
-        builtins: Array<felt252>,
+        builtins: Span<felt252>,
         memory_index: felt252
     ) {
         let mut i = 0;
