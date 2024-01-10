@@ -10,7 +10,7 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
-use cairo_verifier::deserialization::StarkProofWithSerde;
+use cairo_verifier::deserialization::stark::StarkProofWithSerde;
 
 fn main(x: Array<felt252>) {
     let mut x_span = x.span();
