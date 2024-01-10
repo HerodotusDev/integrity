@@ -75,7 +75,7 @@ impl StarkConfigImpl of StarkConfigTrait {
 struct StarkUnsentCommitment {
     traces: TracesUnsentCommitment,
     composition: felt252,
-    oods_values: Array<felt252>,
+    oods_values: Span<felt252>,
     fri: FriUnsentCommitment,
     proof_of_work: ProofOfWorkUnsentCommitment,
 }
