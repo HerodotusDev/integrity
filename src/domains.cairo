@@ -5,7 +5,7 @@ use cairo_verifier::{
 };
 
 // Information about the domains that are used in the stark proof.
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct StarkDomains {
     // Log2 of the evaluation domain size.
     log_eval_domain_size: felt252,
