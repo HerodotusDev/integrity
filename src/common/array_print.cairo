@@ -13,3 +13,16 @@ impl ArrayPrintTrait<T, +PrintTrait<T>, +Drop<T>, +Copy<T>> of PrintTrait<Array<
         };
     }
 }
+
+impl SpanPrintTrait<T, +PrintTrait<T>, +Drop<T>, +Copy<T>> of PrintTrait<Span<T>> {
+    fn print(self: Span<T>) {
+        let mut i = 0;
+        loop {
+            if i == self.len() {
+                break;
+            };
+            (*self[i]).print();
+            i += 1;
+        };
+    }
+}

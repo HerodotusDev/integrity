@@ -1,4 +1,4 @@
-mod vector_commitment;
+mod queries;
 
 #[cfg(test)]
 mod tests;

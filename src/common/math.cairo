@@ -28,36 +28,42 @@ fn mul_inverse(x: felt252) -> felt252 {
     pow(x, STARK_PRIME_MINUS_TWO)
 }
 
+// Verifies that 0 <= x < RANGE_CHECK_BOUND
+fn assert_range_u128(x: felt252) {
+    assert(TryInto::<felt252, u128>::try_into(x).is_some(), 'range check failed');
+}
+
 impl Felt252Div of Div<felt252> {
     fn div(lhs: felt252, rhs: felt252) -> felt252 {
-        let lhs_u256: u256 = lhs.into();
-        let rhs_u256: u256 = rhs.into();
-        (lhs_u256 / rhs_u256).try_into().unwrap()
+        (Into::<felt252, u256>::into(lhs) / Into::<felt252, u256>::into(rhs)).try_into().unwrap()
+    }
+}
+
+impl DivRemFelt252 of DivRem<felt252> {
+    fn div_rem(lhs: felt252, rhs: NonZero<felt252>) -> (felt252, felt252) {
+        let (q, r) = DivRem::div_rem(
+            Into::<felt252, u256>::into(lhs),
+            TryInto::<u256, NonZero<u256>>::try_into(Into::<felt252, u256>::into(rhs.into()))
+                .unwrap(),
+        );
+        (q.try_into().unwrap(), r.try_into().unwrap())
     }
 }
 
 impl Felt252PartialOrd of PartialOrd<felt252> {
     fn le(lhs: felt252, rhs: felt252) -> bool {
-        let lhs_u256: u256 = lhs.into();
-        let rhs_u256: u256 = rhs.into();
-        lhs <= rhs
+        Into::<felt252, u256>::into(lhs) <= Into::<felt252, u256>::into(rhs)
     }
 
     fn ge(lhs: felt252, rhs: felt252) -> bool {
-        let lhs_u256: u256 = lhs.into();
-        let rhs_u256: u256 = rhs.into();
-        lhs >= rhs
+        Into::<felt252, u256>::into(lhs) >= Into::<felt252, u256>::into(rhs)
     }
 
     fn lt(lhs: felt252, rhs: felt252) -> bool {
-        let lhs_u256: u256 = lhs.into();
-        let rhs_u256: u256 = rhs.into();
-        lhs < rhs
+        Into::<felt252, u256>::into(lhs) < Into::<felt252, u256>::into(rhs)
     }
 
     fn gt(lhs: felt252, rhs: felt252) -> bool {
-        let lhs_u256: u256 = lhs.into();
-        let rhs_u256: u256 = rhs.into();
-        lhs > rhs
+        Into::<felt252, u256>::into(lhs) > Into::<felt252, u256>::into(rhs)
     }
 }
