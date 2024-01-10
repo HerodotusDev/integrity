@@ -1,6 +1,7 @@
+use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
 use cairo_verifier::{
     table_commitment::TableCommitmentConfig,
-    vector_commitment::vector_commitment::{validate_vector_commitment, VectorCommitmentConfig},
+    vector_commitment::vector_commitment::VectorCommitmentConfig,
 };
 
 const MAX_LAST_LAYER_LOG_DEGREE_BOUND: u32 = 15;
@@ -22,46 +23,49 @@ struct FriConfig {
     log_last_layer_degree_bound: felt252,
 }
 
-fn fri_config_validate(
-    config: FriConfig, log_n_cosets: felt252, n_verifier_friendly_commitment_layers: felt252
-) -> felt252 {
-    let n_layers: u32 = config.n_layers.try_into().unwrap();
-    let log_last_layer_degree_bound: u32 = config.log_last_layer_degree_bound.try_into().unwrap();
+#[generate_trait]
+impl FriConfigImpl of FriConfigTrait {
+    fn validate(
+        self: @FriConfig, log_n_cosets: felt252, n_verifier_friendly_commitment_layers: felt252
+    ) -> felt252 {
+        let n_layers: u32 = (*self.n_layers).try_into().unwrap();
+        let log_last_layer_degree_bound: u32 = (*self.log_last_layer_degree_bound)
+            .try_into()
+            .unwrap();
 
-    assert(log_last_layer_degree_bound <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Value too big');
+        assert(log_last_layer_degree_bound <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Value too big');
 
-    assert(*config.fri_step_sizes.at(0) == 0, 'Invalid value');
+        assert(*self.fri_step_sizes[0] == 0, 'Invalid value');
 
-    assert(n_layers >= 2, 'Value too small');
-    assert(n_layers <= MAX_FRI_LAYERS + 1, 'Value too big');
+        assert(n_layers >= 2, 'Value too small');
+        assert(n_layers <= MAX_FRI_LAYERS + 1, 'Value too big');
 
-    let mut i: u32 = 1;
-    let mut sum_of_step_sizes: felt252 = 0;
-    let mut log_input_size = config.log_input_size;
-    loop {
-        if i == n_layers {
-            break;
-        }
+        let mut i: u32 = 1;
+        let mut sum_of_step_sizes: felt252 = 0;
+        let mut log_input_size = *self.log_input_size;
+        loop {
+            if i == n_layers {
+                break;
+            }
 
-        let fri_step: felt252 = *config.fri_step_sizes.at(i);
-        let table_commitment = *config.inner_layers.at(i);
+            let fri_step: felt252 = *self.fri_step_sizes[i];
+            let table_commitment = *self.inner_layers[i];
 
-        let fri_step_u32: u32 = fri_step.try_into().unwrap();
-        assert(fri_step_u32 >= 1, 'Value too small');
-        assert(fri_step_u32 <= MAX_FRI_STEP + 1, 'Value too big');
-        assert(table_commitment.n_columns == fri_step * fri_step, 'Invalid value');
+            let fri_step_u32: u32 = fri_step.try_into().unwrap();
+            assert(fri_step_u32 >= 1, 'Value too small');
+            assert(fri_step_u32 <= MAX_FRI_STEP + 1, 'Value too big');
+            assert(table_commitment.n_columns == fri_step * fri_step, 'Invalid value');
 
-        i += 1;
-        log_input_size -= fri_step;
-        sum_of_step_sizes += fri_step;
+            log_input_size -= fri_step;
+            sum_of_step_sizes += fri_step;
 
-        validate_vector_commitment(
-            table_commitment.vector, log_input_size, n_verifier_friendly_commitment_layers,
-        );
-    };
+            table_commitment.vector.validate(log_input_size, n_verifier_friendly_commitment_layers);
 
-    let log_expected_input_degree = sum_of_step_sizes + config.log_last_layer_degree_bound;
-    assert(log_expected_input_degree + log_n_cosets == config.log_input_size, '');
-    log_expected_input_degree
+            i += 1;
+        };
+
+        let log_expected_input_degree = sum_of_step_sizes + *self.log_last_layer_degree_bound;
+        assert(log_expected_input_degree + log_n_cosets == *self.log_input_size, '');
+        log_expected_input_degree
+    }
 }
-
