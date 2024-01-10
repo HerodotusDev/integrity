@@ -2,6 +2,8 @@ use cairo_verifier::queries::queries::queries_to_points;
 use cairo_verifier::domains::StarkDomains;
 use cairo_verifier::fri::fri::{FriDecommitment, fri_verify};
 use cairo_verifier::stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment};
+use cairo_verifier::air::traces::traces_decommit;
+use cairo_verifier::table_commitment::table_decommit;
 
 // STARK decommitment phase.
 fn stark_verify(
@@ -11,6 +13,16 @@ fn stark_verify(
     stark_domains: StarkDomains,
 ) {
     // First layer decommit.
+    traces_decommit(
+        queries, commitment.traces, witness.traces_decommitment, witness.traces_witness
+    );
+
+    table_decommit(
+        commitment.composition,
+        queries,
+        witness.composition_decommitment,
+        witness.composition_witness,
+    );
 
     // Compute query points.
     let points = queries_to_points(queries, @stark_domains);
