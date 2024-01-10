@@ -5,7 +5,6 @@ use cairo_verifier::{
     },
     air::public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product}
 };
-use cairo_verifier::common::math::{pow, Felt252PartialOrd, Felt252Div};
 use cairo_verifier::common::hash::hash_felts;
 use cairo_verifier::air::constants::{segments, MAX_ADDRESS, get_builtins, INITIAL_PC};
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
@@ -167,7 +166,7 @@ impl PublicInputImpl of PublicInputTrait {
         assert(final_ap < MAX_ADDRESS, 'Invalid final_ap');
 
         // TODO support more pages?
-        assert((*self.continuous_page_headers).len() == 0, 'Invalid continuous_page_headers');
+        assert(self.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
 
         let builtins = get_builtins();
         let memory = self.main_page;
