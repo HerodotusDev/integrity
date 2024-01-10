@@ -135,6 +135,12 @@ impl PublicInputImpl of PublicInputTrait {
         memory_index += (output_stop - output_start).try_into().unwrap();
         let output_hash = hash_felts(output);
 
+        // Check main page len
+        assert(
+            *memory.at(memory_index) == *self.main_page.at(self.main_page.len() - 1),
+            'Invalid main page len'
+        );
+
         (program_hash, output_hash)
     }
 }
