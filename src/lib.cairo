@@ -11,9 +11,11 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
-use cairo_verifier::deserialization::stark::StarkProofWithSerde;
+use cairo_verifier::{deserialization::stark::StarkProofWithSerde, stark::StarkProof,};
 
 fn main(x: Array<felt252>) {
     let mut x_span = x.span();
-    let stark_proof: StarkProofWithSerde = Serde::deserialize(ref x_span).unwrap();
+    let stark_proof: StarkProof = Serde::<StarkProofWithSerde>::deserialize(ref x_span)
+        .unwrap()
+        .into();
 }

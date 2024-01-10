@@ -124,8 +124,6 @@ impl IntoFriWitness of Into<FriWitnessWithSerde, FriWitness> {
                         },
                     }
                 );
-
-            i += 1;
         };
 
         FriWitness { layers: layers.span(), }

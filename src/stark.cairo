@@ -85,7 +85,6 @@ struct StarkUnsentCommitment {
 struct StarkWitness {
     traces_decommitment: TracesDecommitment,
     traces_witness: TracesWitness,
-    interaction: TableCommitmentWitness,
     composition_decommitment: TableDecommitment,
     composition_witness: TableCommitmentWitness,
     fri_witness: FriWitness,

@@ -166,7 +166,6 @@ impl IntoStarkUnsentCommitment of Into<StarkUnsentCommitmentWithSerde, StarkUnse
 struct StarkWitnessWithSerde {
     traces_decommitment: TracesDecommitmentWithSerde,
     traces_witness: TracesWitnessWithSerde,
-    interaction: TableCommitmentWitnessWithSerde,
     composition_decommitment: TableDecommitmentWithSerde,
     composition_witness: TableCommitmentWitnessWithSerde,
     fri_witness: FriWitnessWithSerde,
@@ -176,7 +175,6 @@ impl IntoStarkWitness of Into<StarkWitnessWithSerde, StarkWitness> {
         StarkWitness {
             traces_decommitment: self.traces_decommitment.into(),
             traces_witness: self.traces_witness.into(),
-            interaction: self.interaction.into(),
             composition_decommitment: self.composition_decommitment.into(),
             composition_witness: self.composition_witness.into(),
             fri_witness: self.fri_witness.into(),
