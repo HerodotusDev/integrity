@@ -1,8 +1,10 @@
+use core::traits::Into;
 use core::traits::TryInto;
 use core::array::ArrayTrait;
 use cairo_verifier::{
     air::{
-        config::TracesConfig, public_input::PublicInput,
+        config::TracesConfig, public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
+        public_memory::{AddrValue, Page},
         traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
     fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness, FriLayerWitness}},
@@ -21,51 +23,16 @@ struct StarkProofWithSerde {
     unsent_commitment: StarkUnsentCommitmentWithSerde,
     witness: StarkWitnessWithSerde,
 }
-// impl IntoStarkProof of Into<StarkProofWithSerde, StarkProof> {
-//     fn into(self: StarkProofWithSerde) -> StarkProof {
-//         StarkProof {
-//             config: StarkConfig {
-//                 traces: TracesConfig {
-//                     original: TableCommitmentConfig {
-//                         columns: *self.config.traces.original.columns,
-//                         vector: VectorCommitmentConfig {
-//                             height: *self.config.traces.original.vector.height,
-//                             verifier_friendly_commitment_layers: *self.config.traces.original.vector.verifier_friendly_commitment_layers,
-//                         }
-//                     },
-//                     interaction: TableCommitmentConfig {
-//                         columns: *self.config.traces.interaction.columns,
-//                         vector: VectorCommitmentConfig {
-//                             height: *self.config.traces.interaction.vector.height,
-//                             verifier_friendly_commitment_layers: *self.config.traces.interaction.vector.verifier_friendly_commitment_layers,
-//                         }
-//                     },
-//                 },
-//                 composition: TableCommitmentConfig {
-//                     columns: *self.config.composition.columns,
-//                     vector: VectorCommitmentConfig {
-//                         height: *self.config.composition.vector.height,
-//                         verifier_friendly_commitment_layers: *self.config.composition.vector.verifier_friendly_commitment_layers,
-//                     }
-//                 },
-//                 fri: FriConfig {
-//                     log_input_size: *self.config.fri.log_input_size,
-//                     n_layers: *self.config.fri.n_layers,
-//                     inner_layers: self.config.fri.inner_layers.span().map(|x| *x),
-//                     fri_step_sizes: self.config.fri.fri_step_sizes.span().map(|x| *x),
-//                     log_last_layer_degree_bound: *self.config.fri.log_last_layer_degree_bound,
-//                 },
-//                 proof_of_work: ProofOfWorkConfig {
-//                     n_bits: *self.config.proof_of_work.n_bits,
-//                 },
-//                 log_trace_domain_size: *self.config.log_trace_domain_size,
-//                 n_queries: *self.config.n_queries,
-//                 log_n_cosets: *self.config.log_n_cosets,
-//                 n_verifier_friendly_commitment_layers: *self.config.n_verifier_friendly_commitment_layers,
-//             },
-//         }
-//     }
-// }
+impl IntoStarkProof of Into<StarkProofWithSerde, StarkProof> {
+    fn into(self: StarkProofWithSerde) -> StarkProof {
+        StarkProof {
+            config: self.config.into(),
+            public_input: self.public_input.into(),
+            unsent_commitment: self.unsent_commitment.into(),
+            witness: self.witness.into(),
+        }
+    }
+}
 
 #[derive(Drop, Serde)]
 struct PublicInputWithSerde {
@@ -82,6 +49,67 @@ struct PublicInputWithSerde {
     main_page: Array<felt252>,
     n_continuous_pages: felt252,
     continuous_page_headers: Array<felt252>,
+}
+impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
+    fn into(self: PublicInputWithSerde) -> PublicInput {
+        let mut segments = ArrayTrait::<SegmentInfo>::new();
+        let mut i = 0;
+        loop {
+            if i == self.segments.len() {
+                break;
+            }
+
+            segments
+                .append(
+                    SegmentInfo { begin_addr: *self.segments[i], stop_ptr: *self.segments[i + 1], }
+                );
+            i += 2;
+        };
+
+        let mut page = ArrayTrait::<AddrValue>::new();
+        let mut i = 0;
+        loop {
+            if i == self.main_page.len() {
+                break;
+            }
+
+            page.append(AddrValue { address: *self.main_page[i], value: *self.main_page[i + 1], });
+
+            i += 2;
+        };
+
+        let mut continuous_page_headers = ArrayTrait::<ContinuousPageHeader>::new();
+        let mut i = 0;
+        loop {
+            if i == self.continuous_page_headers.len() {
+                break;
+            }
+
+            continuous_page_headers
+                .append(
+                    ContinuousPageHeader {
+                        start_address: *self.continuous_page_headers[i],
+                        size: *self.continuous_page_headers[i + 1],
+                        hash: (*self.continuous_page_headers[i + 2]).into(),
+                        prod: *self.continuous_page_headers[i + 3],
+                    }
+                );
+
+            i += 4;
+        };
+        PublicInput {
+            log_n_steps: self.log_n_steps,
+            rc_min: self.range_check_min,
+            rc_max: self.range_check_max,
+            layout: self.layout,
+            dynamic_params: self.dynamic_params,
+            segments: segments,
+            padding_addr: self.padding_addr,
+            padding_value: self.padding_value,
+            main_page: page.into(),
+            continuous_page_headers: continuous_page_headers,
+        }
+    }
 }
 
 #[derive(Drop, Serde)]
@@ -100,8 +128,20 @@ struct StarkConfigWithSerde {
     // Number of layers that use a verifier friendly hash in each commitment.
     n_verifier_friendly_commitment_layers: felt252,
 }
-// impl IntoStarkConfig of Into<StarkConfigWithSerde, StarkConfig>
-
+impl IntoStarkConfig of Into<StarkConfigWithSerde, StarkConfig> {
+    fn into(self: StarkConfigWithSerde) -> StarkConfig {
+        StarkConfig {
+            traces: self.traces.into(),
+            composition: self.composition.into(),
+            fri: self.fri.into(),
+            proof_of_work: self.proof_of_work.into(),
+            log_trace_domain_size: self.log_trace_domain_size,
+            n_queries: self.n_queries,
+            log_n_cosets: self.log_n_cosets,
+            n_verifier_friendly_commitment_layers: self.n_verifier_friendly_commitment_layers,
+        }
+    }
+}
 
 #[derive(Drop, Serde)]
 struct TracesConfigWithSerde {
@@ -302,18 +342,18 @@ struct StarkWitnessWithSerde {
     composition_witness: TableCommitmentWitnessWithSerde,
     fri_witness: FriWitnessWithSerde,
 }
-// impl IntoStarkWitness of Into<StarkWitnessWithSerde, StarkWitness> {
-//     fn into(self: StarkWitnessWithSerde) -> StarkWitness {
-//         StarkWitness {
-//             traces_decommitment: self.traces_decommitment.into(),
-//             traces_witness: self.traces_witness.into(),
-//             interaction: self.interaction.into(),
-//             composition_decommitment: self.composition_decommitment.into(),
-//             composition_witness: self.composition_witness.into(),
-//             fri_witness: self.fri_witness.into(),
-//         }
-//     }
-// }
+impl IntoStarkWitness of Into<StarkWitnessWithSerde, StarkWitness> {
+    fn into(self: StarkWitnessWithSerde) -> StarkWitness {
+        StarkWitness {
+            traces_decommitment: self.traces_decommitment.into(),
+            traces_witness: self.traces_witness.into(),
+            interaction: self.interaction.into(),
+            composition_decommitment: self.composition_decommitment.into(),
+            composition_witness: self.composition_witness.into(),
+            fri_witness: self.fri_witness.into(),
+        }
+    }
+}
 
 #[derive(Drop, Serde)]
 struct TracesDecommitmentWithSerde {
@@ -340,6 +380,12 @@ impl IntoTableDecommitment of Into<TableDecommitmentWithSerde, TableDecommitment
 #[derive(Drop, Serde)]
 struct TracesWitnessWithSerde {
     original: TableCommitmentWitnessWithSerde,
+    interaction: TableCommitmentWitnessWithSerde,
+}
+impl IntoTracesWitness of Into<TracesWitnessWithSerde, TracesWitness> {
+    fn into(self: TracesWitnessWithSerde) -> TracesWitness {
+        TracesWitness { original: self.original.into(), interaction: self.interaction.into(), }
+    }
 }
 
 #[derive(Drop, Serde)]
