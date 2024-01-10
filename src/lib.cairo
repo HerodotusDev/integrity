@@ -2,6 +2,7 @@ mod air;
 mod channel;
 mod common;
 mod deserialization;
+mod domains;
 mod fri;
 mod oods;
 mod proof_of_work;

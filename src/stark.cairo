@@ -4,6 +4,7 @@ use cairo_verifier::{
         traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
     fri::{fri_config::{FriConfig, FriConfigTrait}, fri::{FriUnsentCommitment, FriWitness}},
+    domains::StarkDomainsImpl,
     table_commitment::{TableCommitmentConfig, TableCommitmentWitness, TableDecommitment},
     proof_of_work::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
@@ -33,9 +34,9 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof) {
         self.config.validate(SECURITY_BITS);
+        let stark_domains = StarkDomainsImpl::new(self.config);
     }
 }
-
 
 #[derive(Drop, Copy)]
 struct StarkConfig {
