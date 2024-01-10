@@ -1,6 +1,7 @@
 use cairo_verifier::{
     air::{
-        config::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+        traces_config::TracesConfig,
+        traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
     deserialization::{
         vector::{

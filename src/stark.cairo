@@ -1,15 +1,15 @@
-use cairo_verifier::fri::fri_config::FriConfigTrait;
-use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
-use cairo_verifier::air::config::TracesConfigTrait;
-use cairo_verifier::proof_of_work::config::ProofOfWorkConfigTrait;
 use cairo_verifier::{
     air::{
-        config::{TracesConfig}, public_input::PublicInput,
+        traces_config::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
         traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
-    fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness}},
+    fri::{fri_config::{FriConfig, FriConfigTrait}, fri::{FriUnsentCommitment, FriWitness}},
     table_commitment::{TableCommitmentConfig, TableCommitmentWitness, TableDecommitment},
-    proof_of_work::{config::ProofOfWorkConfig, proof_of_work::ProofOfWorkUnsentCommitment},
+    proof_of_work::{
+        config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
+        proof_of_work::ProofOfWorkUnsentCommitment
+    },
+    vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
 };
 
 mod stark_commit;

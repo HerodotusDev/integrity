@@ -3,7 +3,7 @@ use cairo_verifier::table_commitment::{
     TableUnsentCommitment, TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit,
     table_decommit,
 };
-use cairo_verifier::air::{public_input::PublicInput, config::TracesConfig};
+use cairo_verifier::air::{public_input::PublicInput, traces_config::TracesConfig};
 use cairo_verifier::channel::channel::Channel;
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
