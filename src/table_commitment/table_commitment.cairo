@@ -1,13 +1,7 @@
 use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness
+    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
 };
-
-// Commitment values for a table commitment protocol. Used to generate a commitment by "reading"
-// these values from the channel.
-#[derive(Drop, Copy)]
-struct TableUnsentCommitment {
-    vector: felt252,
-}
+use cairo_verifier::channel::channel::Channel;
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.
 #[derive(Drop, Copy)]
@@ -37,18 +31,10 @@ struct TableCommitmentWitness {
 }
 
 fn table_commit(
-    unsent_commitment: TableUnsentCommitment, config: TableCommitmentConfig
+    ref channel: Channel, unsent_commitment: felt252, config: TableCommitmentConfig
 ) -> TableCommitment {
-    TableCommitment {
-        config: TableCommitmentConfig {
-            n_columns: 0,
-            vector: VectorCommitmentConfig { height: 0, n_verifier_friendly_commitment_layers: 0, }
-        },
-        vector_commitment: VectorCommitment {
-            config: VectorCommitmentConfig { height: 0, n_verifier_friendly_commitment_layers: 0, },
-            commitment_hash: 0
-        }
-    }
+    let vector_commitment = vector_commit(ref channel, unsent_commitment, config.vector);
+    TableCommitment { config: config, vector_commitment: vector_commitment, }
 }
 
 // Decommits a TableCommitment at multiple indices.
