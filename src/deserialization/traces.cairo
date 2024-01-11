@@ -10,7 +10,7 @@ use cairo_verifier::{
         }
     },
     table_commitment::table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableUnsentCommitment
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
     },
 };
 
@@ -54,10 +54,7 @@ struct TracesUnsentCommitmentWithSerde {
 }
 impl IntoTracesUnsentCommitment of Into<TracesUnsentCommitmentWithSerde, TracesUnsentCommitment> {
     fn into(self: TracesUnsentCommitmentWithSerde) -> TracesUnsentCommitment {
-        TracesUnsentCommitment {
-            original: TableUnsentCommitment { vector: self.original },
-            interaction: TableUnsentCommitment { vector: self.original },
-        }
+        TracesUnsentCommitment { original: self.original, interaction: self.original, }
     }
 }
 

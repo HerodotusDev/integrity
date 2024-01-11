@@ -1,7 +1,6 @@
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::table_commitment::table_commitment::{
-    TableUnsentCommitment, TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit,
-    table_decommit,
+    TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
 };
 use cairo_verifier::air::{public_input::PublicInput, traces_config::TracesConfig};
 use cairo_verifier::channel::channel::Channel;
@@ -18,8 +17,8 @@ use cairo_verifier::channel::channel::Channel;
 // values from the channel.
 #[derive(Drop, Copy)]
 struct TracesUnsentCommitment {
-    original: TableUnsentCommitment,
-    interaction: TableUnsentCommitment,
+    original: felt252,
+    interaction: felt252,
 }
 
 // Commitment for the Traces component.
@@ -62,11 +61,15 @@ fn traces_commit(
     config: TracesConfig
 ) -> TracesCommitment {
     // Read original commitment.
-    let original_commitment = table_commit(unsent_commitment.original, config.original);
+    let original_commitment = table_commit(
+        ref channel, unsent_commitment.original, config.original
+    );
     // Generate interaction elements for the first interaction.
     let interaction_elements = channel.random_felts_to_prover(n_interaction_elements);
     // Read interaction commitment.
-    let interaction_commitment = table_commit(unsent_commitment.interaction, config.interaction);
+    let interaction_commitment = table_commit(
+        ref channel, unsent_commitment.interaction, config.interaction
+    );
 
     TracesCommitment {
         public_input: public_input,

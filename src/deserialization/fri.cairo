@@ -1,8 +1,6 @@
 use cairo_verifier::{
     fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness, FriLayerWitness}},
-    table_commitment::table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableUnsentCommitment
-    },
+    table_commitment::table_commitment::{TableCommitmentConfig, TableCommitmentWitness},
     vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitmentWitness},
 };
 
@@ -58,13 +56,13 @@ struct FriUnsentCommitmentWithSerde {
 }
 impl IntoFriUnsentCommitment of Into<FriUnsentCommitmentWithSerde, FriUnsentCommitment> {
     fn into(self: FriUnsentCommitmentWithSerde) -> FriUnsentCommitment {
-        let mut inner_layers = ArrayTrait::<TableUnsentCommitment>::new();
+        let mut inner_layers = ArrayTrait::<felt252>::new();
         let mut i = 0;
         loop {
             if i == self.inner_layers.len() {
                 break;
             }
-            inner_layers.append(TableUnsentCommitment { vector: *self.inner_layers[i] });
+            inner_layers.append(*self.inner_layers[i]);
             i += 1;
         };
         FriUnsentCommitment {
