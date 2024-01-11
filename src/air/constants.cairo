@@ -21,12 +21,12 @@ const HAS_EC_OP_BUILTIN: felt252 = 0;
 const HAS_KECCAK_BUILTIN: felt252 = 0;
 const HAS_POSEIDON_BUILTIN: felt252 = 0;
 const LAYOUT_CODE: felt252 = 0x726563757273697665;
-const CONSTRAINT_DEGREE: felt252 = 2;
+const CONSTRAINT_DEGREE: u32 = 2;
 const CPU_COMPONENT_HEIGHT: felt252 = 16;
 const LOG_CPU_COMPONENT_HEIGHT: felt252 = 4;
 const MEMORY_STEP: felt252 = 2;
-const NUM_COLUMNS_FIRST: felt252 = 7;
-const NUM_COLUMNS_SECOND: felt252 = 3;
+const NUM_COLUMNS_FIRST: u32 = 7;
+const NUM_COLUMNS_SECOND: u32 = 3;
 const IS_DYNAMIC_AIR: felt252 = 0;
 
 mod segments {
