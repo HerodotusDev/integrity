@@ -9,7 +9,7 @@ use cairo_verifier::{
             VectorCommitmentWitnessWithSerde
         }
     },
-    table_commitment::{
+    table_commitment::table_commitment::{
         TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableUnsentCommitment
     },
 };

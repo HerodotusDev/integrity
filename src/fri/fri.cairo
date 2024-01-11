@@ -6,7 +6,7 @@ use cairo_verifier::{
         fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer},
         fri_last_layer::verify_last_layer,
     },
-    table_commitment::{
+    table_commitment::table_commitment::{
         TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
         TableUnsentCommitment, table_commit, table_decommit
     }
