@@ -10,3 +10,7 @@ fn assert_range_u128(x: felt252) {
     assert(TryInto::<felt252, u128>::try_into(x).is_some(), 'range check failed');
 }
 
+fn assert_range_u128_le(x: felt252, max: felt252) {
+    assert_range_u128(x);
+    assert(x <= max, 'range check failed');
+}
