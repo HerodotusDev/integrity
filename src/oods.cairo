@@ -5,7 +5,7 @@ use cairo_verifier::air::composition::{eval_composition_polynomial, eval_oods_po
 use cairo_verifier::air::global_values::InteractionElements;
 use cairo_verifier::air::public_input::PublicInput;
 use cairo_verifier::air::traces::TracesDecommitment;
-use cairo_verifier::table_commitment::TableDecommitment;
+use cairo_verifier::table_commitment::table_commitment::TableDecommitment;
 use cairo_verifier::air::constants::CONSTRAINT_DEGREE;
 
 #[derive(Drop)]
