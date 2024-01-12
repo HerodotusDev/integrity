@@ -134,7 +134,7 @@ struct StarkCommitment {
     fri: FriCommitment,
 }
 
-#[derive(Drop)]
+#[derive(Drop, Copy)]
 struct StarkWitness {
     traces_decommitment: TracesDecommitment,
     traces_witness: TracesWitness,
