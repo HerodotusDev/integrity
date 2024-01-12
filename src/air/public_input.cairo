@@ -172,5 +172,10 @@ impl PublicInputImpl of PublicInputTrait {
             - *self.segments.at(constants::segments::PEDERSEN).begin_addr)
             / 3;
         assert_range_u128_le(pedersen_uses, pedersen_copies);
+
+        let range_check_copies = n_steps / constants::RC_BUILTIN_RATIO;
+        let range_check_uses = *self.segments.at(constants::segments::RANGE_CHECK).stop_ptr
+            - *self.segments.at(constants::segments::RANGE_CHECK).begin_addr;
+        assert_range_u128_le(range_check_uses, range_check_copies);
     }
 }
