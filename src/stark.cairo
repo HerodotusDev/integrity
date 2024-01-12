@@ -47,11 +47,7 @@ impl StarkProofImpl of StarkProofTrait {
         let mut channel = ChannelImpl::new(digest);
 
         stark_commit::stark_commit(
-            ref channel,
-            self.public_input,
-            self.unsent_commitment,
-            self.config,
-            @stark_domains,
+            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
         );
     }
 }

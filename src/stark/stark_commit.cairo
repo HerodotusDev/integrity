@@ -6,8 +6,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::{
     air::{
         constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, N_INTERACTION_ELEMENTS, MASK_SIZE},
-        public_input::PublicInput,
-        traces::traces_commit,
+        public_input::PublicInput, traces::traces_commit,
     },
     channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
     fri::fri::fri_commit, stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
