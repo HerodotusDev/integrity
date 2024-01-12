@@ -6,7 +6,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::{
     air::{
         constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, N_INTERACTION_ELEMENTS, MASK_SIZE},
-        public_input::PublicInput, traces::traces_commit,
+        global_values::InteractionElements, public_input::PublicInput, traces::traces_commit,
     },
     channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
     fri::fri::fri_commit, stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
@@ -56,19 +56,25 @@ fn stark_commit(
     let interaction_after_composition = channel.random_felt_to_prover();
 
     let n_oods_values = MASK_SIZE + CONSTRAINT_DEGREE.into();
-    let sent_oods_values = channel.read_felts_from_prover(*unsent_commitment.oods_values);
+    channel.read_felts_from_prover(*unsent_commitment.oods_values);
 
-    // Check that the trace and the composition agree at oods_point.
-    // verify_oods(
-    //     air=air,
-    //     oods_values=sent_oods_values,
-    //     traces_commitment=traces_commitment,
-    //     traces_coefficients=traces_coefficients,
-    //     oods_point=interaction_after_composition.oods_point,
-    //     trace_domain_size=stark_domains.trace_domain_size,
-    //     trace_generator=stark_domains.trace_generator,
-    // );
-    // verify_oods(sent_oods_values);
+    let interaction_elements = InteractionElements {
+        memory_multi_column_perm_perm_interaction_elm: 0,
+        memory_multi_column_perm_hash_interaction_elm0: 0,
+        rc16_perm_interaction_elm: 0,
+        diluted_check_permutation_interaction_elm: 0,
+        diluted_check_interaction_z: 0,
+        diluted_check_interaction_alpha: 0,
+    };
+    verify_oods(
+        *unsent_commitment.oods_values,
+        interaction_elements,
+        public_input,
+        traces_coefficients,
+        interaction_after_composition,
+        *stark_domains.trace_generator,
+        *stark_domains.trace_domain_size
+    );
 
     let oods_alpha = channel.random_felt_to_prover();
     let oods_coefficients = powers_array(1, oods_alpha, n_oods_values.try_into().unwrap());

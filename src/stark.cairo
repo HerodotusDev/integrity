@@ -10,8 +10,10 @@ use cairo_verifier::{
         fri::{FriUnsentCommitment, FriWitness, FriCommitment}
     },
     domains::StarkDomainsImpl,
-    table_commitment::table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
+    oods::OodsValues,
+    table_commitment::{
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableUnsentCommitment,
+        TableCommitment
     },
     proof_of_work::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
