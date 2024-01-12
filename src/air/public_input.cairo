@@ -177,5 +177,11 @@ impl PublicInputImpl of PublicInputTrait {
         let range_check_uses = *self.segments.at(constants::segments::RANGE_CHECK).stop_ptr
             - *self.segments.at(constants::segments::RANGE_CHECK).begin_addr;
         assert_range_u128_le(range_check_uses, range_check_copies);
+
+        let bitwise_copies = n_steps / constants::BITWISE_RATIO;
+        let bitwise_uses = (*self.segments.at(constants::segments::BITWISE).stop_ptr
+            - *self.segments.at(constants::segments::BITWISE).begin_addr)
+            / 5;
+        assert_range_u128_le(bitwise_uses, bitwise_copies);
     }
 }
