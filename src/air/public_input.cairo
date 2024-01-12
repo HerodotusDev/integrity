@@ -160,5 +160,11 @@ impl PublicInputImpl of PublicInputTrait {
             n_steps * constants::CPU_COMPONENT_HEIGHT == domains.trace_domain_size,
             'Wrong trace size'
         );
+
+        assert(0 <= *self.rc_min, 'wrong rc_min');
+        assert(*self.rc_min < *self.rc_max, 'wrong rc range');
+        assert(*self.rc_max <= constants::MAX_RANGE_CHECK, 'wrong rc_max');
+
+        assert(*self.layout == constants::LAYOUT_CODE, 'wrong layout code');
     }
 }
