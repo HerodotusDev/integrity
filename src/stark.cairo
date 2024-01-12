@@ -1,8 +1,11 @@
+use cairo_verifier::air::public_input::PublicInputTrait;
 use cairo_verifier::{
     air::{
+        layout::{AirInstance, AirWithLayout, Layout},
         traces_config::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
         traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness}
     },
+    channel::channel::{Channel, ChannelImpl},
     fri::{
         fri_config::{FriConfig, FriConfigTrait},
         fri::{FriUnsentCommitment, FriWitness, FriCommitment}
@@ -38,8 +41,24 @@ struct StarkProof {
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof) {
+        let air = AirWithLayout {
+            air: AirInstance { n_constraints: 8, constraint_degree: 1, mask_size: 133 },
+            layout: Layout { n_interaction_elements: 8 }
+        };
         self.config.validate(SECURITY_BITS);
         let stark_domains = StarkDomainsImpl::new(self.config);
+
+        let digest = self.public_input.get_public_input_hash();
+        let mut channel = ChannelImpl::new(digest);
+
+        stark_commit::stark_commit(
+            ref channel,
+            @air,
+            self.public_input,
+            self.unsent_commitment,
+            self.config,
+            @stark_domains,
+        );
     }
 }
 
