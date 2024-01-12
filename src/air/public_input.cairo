@@ -1,9 +1,13 @@
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
-        math::{pow, Felt252PartialOrd, Felt252Div}
+        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le
     },
-    air::public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product}
+    air::{
+        public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product},
+        constants
+    },
+    domains::StarkDomains
 };
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 
@@ -147,5 +151,14 @@ impl PublicInputImpl of PublicInputTrait {
         let total_length = (self.main_page.len()).into() + continuous_pages_total_length;
 
         (prod, total_length)
+    }
+
+    fn validate(self: @PublicInput, domains: StarkDomains) {
+        assert_range_u128_le(*self.log_n_steps, constants::MAX_LOG_N_STEPS);
+        let n_steps = pow(2, *self.log_n_steps);
+        assert(
+            n_steps * constants::CPU_COMPONENT_HEIGHT == domains.trace_domain_size,
+            'Wrong trace size'
+        );
     }
 }
