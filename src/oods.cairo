@@ -24,7 +24,7 @@ struct OodsEvaluationInfo {
 }
 
 fn verify_oods(
-    oods: Span<felt252>,
+    oods: OodsValues,
     interaction_elements: InteractionElements,
     public_input: @PublicInput,
     constraint_coefficients: Array<felt252>,
@@ -32,21 +32,10 @@ fn verify_oods(
     trace_domain_size: felt252,
     trace_generator: felt252
 ) {
-    let mut mask_values = array![];
-    let mut i = 0;
-    loop {
-        if i == oods.len() - 2 {
-            break;
-        }
-
-        mask_values.append(*oods.at(i));
-
-        i += 1;
-    };
     let composition_from_trace = eval_composition_polynomial(
         interaction_elements,
         public_input,
-        mask_values,
+        oods.mask_values,
         constraint_coefficients,
         oods_point,
         trace_domain_size,
@@ -54,7 +43,8 @@ fn verify_oods(
     );
 
     // TODO support degree > 2?
-    let claimed_composition = *oods[oods.len() - 2] + *oods[oods.len() - 1] * oods_point;
+    let claimed_composition = *oods.split_polynomials.at(0)
+        + *oods.split_polynomials.at(1) * oods_point;
 
     assert(composition_from_trace == claimed_composition, 'Invalid OODS');
 }

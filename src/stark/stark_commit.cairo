@@ -9,7 +9,8 @@ use cairo_verifier::{
         global_values::InteractionElements, public_input::PublicInput, traces::traces_commit,
     },
     channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
-    fri::fri::fri_commit, stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
+    oods::OodsValues, fri::fri::fri_commit,
+    stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
     proof_of_work::proof_of_work::proof_of_work_commit, table_commitment::table_commit,
     oods::verify_oods,
 };
@@ -66,8 +67,24 @@ fn stark_commit(
         diluted_check_interaction_z: 0,
         diluted_check_interaction_alpha: 0,
     };
+
+    let oods = *unsent_commitment.oods_values;
+    let mut mask_values = array![];
+    let mut i = 0;
+    loop {
+        if i == oods.len() - 2 {
+            break;
+        }
+
+        mask_values.append(*oods.at(i));
+
+        i += 1;
+    };
+    let split_polynomials = array![*oods.at(i), *oods.at(i + 1)];
+    let oods_values = OodsValues { mask_values, split_polynomials };
+
     verify_oods(
-        *unsent_commitment.oods_values,
+        oods_values,
         interaction_elements,
         public_input,
         traces_coefficients,
