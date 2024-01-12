@@ -16,9 +16,9 @@ use cairo_verifier::{
 };
 
 fn main(x: Array<felt252>) {
-    let mut x_span = x.span();
-    let stark_proof: StarkProof = Serde::<StarkProofWithSerde>::deserialize(ref x_span)
-        .unwrap()
-        .into();
-    stark_proof.verify();
+    // let mut x_span = x.span();
+    // let stark_proof: StarkProof = Serde::<StarkProofWithSerde>::deserialize(ref x_span)
+    //     .unwrap()
+    //     .into();
+    // stark_proof.verify();
 }
