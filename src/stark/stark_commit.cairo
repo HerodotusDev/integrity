@@ -90,7 +90,7 @@ fn stark_commit(
         traces: traces_commitment,
         composition: composition_commitment,
         interaction_after_composition: interaction_after_composition,
-        oods_values: array![].span(),
+        oods_values: *unsent_commitment.oods_values,
         interaction_after_oods: interaction_after_oods.coefficients,
         fri: fri_commitment,
     }
