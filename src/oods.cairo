@@ -1,7 +1,4 @@
-use core::clone::Clone;
-use core::array::ArrayTrait;
 use cairo_verifier::common::array_extend::ArrayExtendTrait;
-use core::array::SpanTrait;
 use cairo_verifier::air::composition::{eval_composition_polynomial, eval_oods_polynomial};
 use cairo_verifier::air::global_values::InteractionElements;
 use cairo_verifier::air::public_input::PublicInput;
