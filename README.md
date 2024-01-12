@@ -2,7 +2,7 @@
 
 This document provides steps to build and run the Cairo Verifier.
 
-## Building the Verifier
+# Building the Verifier
 
 To build the latest version of the verifier and create a Sierra file, follow these steps:
 
@@ -18,7 +18,7 @@ cd .
 scarb build
 ```
 
-## Running the Verifier
+# Running the Verifier
 
 ## Getting the Parsed Proof
 
