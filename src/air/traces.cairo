@@ -24,7 +24,7 @@ struct TracesUnsentCommitment {
 // Commitment for the Traces component.
 #[derive(Drop)]
 struct TracesCommitment {
-    public_input: PublicInput,
+    public_input: @PublicInput,
     // Commitment to the first trace.
     original: TableCommitment,
     // The interaction elements that were sent to the prover after the first trace commitment (e.g.
@@ -56,7 +56,7 @@ struct TracesWitness {
 fn traces_commit(
     ref channel: Channel,
     n_interaction_elements: felt252,
-    public_input: PublicInput,
+    public_input: @PublicInput,
     unsent_commitment: TracesUnsentCommitment,
     config: TracesConfig
 ) -> TracesCommitment {
