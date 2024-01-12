@@ -85,7 +85,6 @@ fn table_decommit(
     let montgomery_values = to_montgomery(decommitment.values);
 
     // Generate queries to the underlying vector commitment.
-    // TODO: change n_columns type to u32 in config
     let vector_queries = generate_vector_queries(
         queries,
         montgomery_values.span(),
@@ -124,47 +123,28 @@ fn generate_vector_queries(
         if i == queries_len {
             break;
         }
-        if n_columns == 1 {
-            vector_queries
-                .append(VectorQuery { index: *queries[curr_queries], value: *values[curr_values] });
-            curr_queries += 1;
-            curr_values += 1;
-        } else if is_verifier_friendly == false {
-            let mut data: Array<u32> = ArrayTrait::new();
-
-            // TODO: extract to separate function and use span's slice here
-            let mut j = 0;
-            loop {
-                if j == n_columns {
-                    break;
-                }
-                data.append_big_endian(*values[curr_values]);
-                curr_values += 1;
-                j += 1;
-            };
-
-            let hash = blake2s(data).flip_endianness();
-
-            // Truncate hash - convert value to felt, by taking the 160 least significant bits
-            // TODO: check if we can use truncated_blake2s here
-            let two_pow32: u128 = 0x100000000;
-            let (high_h, high_l) = DivRem::div_rem(hash.high, two_pow32.try_into().unwrap());
-            vector_queries
-                .append(
-                    VectorQuery {
-                        index: *queries[curr_queries],
-                        value: high_l.into() * 0x100000000000000000000000000000000 + hash.low.into()
-                    }
-                );
-            curr_queries += 1;
+        let hash = if n_columns == 1 {
+            *values[curr_values]
         } else {
-            let hash = poseidon_hash_span(values.slice(curr_values, n_columns));
+            let slice = values.slice(curr_values, n_columns);
+            if is_verifier_friendly {
+                poseidon_hash_span(slice)
+            } else {
+                let mut data: Array<u32> = ArrayTrait::new();
+                data.append_big_endian(slice);
 
-            vector_queries.append(VectorQuery { index: *queries[curr_queries], value: hash });
+                // Truncate hash - convert value to felt, by taking the 160 least significant bits
+                let hash: felt252 = (blake2s(data)
+                    .flip_endianness() % 0x10000000000000000000000000000000000000000)
+                    .try_into()
+                    .unwrap();
 
-            curr_values += n_columns;
-            curr_queries += 1;
+                hash
+            }
         };
+        vector_queries.append(VectorQuery { index: *queries[curr_queries], value: hash });
+        curr_values += n_columns;
+        curr_queries += 1;
         i += 1;
     };
     vector_queries
