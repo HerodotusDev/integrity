@@ -1,7 +1,15 @@
+use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
+use cairo_verifier::common::array_append::ArrayAppendTrait;
 use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
+    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit, VectorQuery,
+    vector_commitment_decommit
 };
 use cairo_verifier::channel::channel::Channel;
+use cairo_verifier::common::math::Felt252PartialOrd;
+use cairo_verifier::common::consts::MONTGOMERY_R;
+use cairo_verifier::common::blake2s::blake2s;
+use poseidon::poseidon_hash_span;
+
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.
 #[derive(Drop, Copy)]
@@ -50,5 +58,114 @@ fn table_decommit(
     queries: Span<felt252>,
     decommitment: TableDecommitment,
     witness: TableCommitmentWitness,
-) {}
+) {
+    let n_queries: felt252 = queries.len().into();
 
+    // Determine if the table commitment should use a verifier friendly hash function for the bottom
+    // layer. The other layers' hash function will be determined in the vector_commitment logic.
+    let n_verifier_friendly_layers = commitment
+        .vector_commitment
+        .config
+        .n_verifier_friendly_commitment_layers;
+
+    // An extra layer is added to the height since the table is considered as a layer, which is not
+    // included in vector_commitment.config.
+    let bottom_layer_depth = commitment.vector_commitment.config.height + 1;
+    let is_bottom_layer_verifier_friendly = n_verifier_friendly_layers >= bottom_layer_depth;
+
+    // Must have at least 1 column
+    let n_columns = commitment.config.n_columns;
+    assert(n_columns >= 1, 'Must have at least 1 column');
+
+    assert(
+        decommitment.values.len().into() == n_queries * n_columns, 'Invalid decommitment length'
+    );
+
+    // Convert decommitment values to Montgomery form, since the commitment is in that form.
+    let montgomery_values = to_montgomery(decommitment.values);
+
+    // Generate queries to the underlying vector commitment.
+    // TODO: change n_columns type to u32 in config
+    let vector_queries = generate_vector_queries(
+        queries,
+        montgomery_values.span(),
+        n_columns.try_into().unwrap(),
+        is_bottom_layer_verifier_friendly
+    );
+
+    vector_commitment_decommit(commitment.vector_commitment, vector_queries.span(), witness.vector);
+}
+
+fn to_montgomery(arr: Span<felt252>) -> Array<felt252> {
+    let mut res = ArrayTrait::new();
+    let mut i = 0;
+    loop {
+        if i == arr.len() {
+            break;
+        };
+        res.append((*arr[i]) * MONTGOMERY_R);
+        i += 1;
+    };
+    res
+}
+
+fn generate_vector_queries(
+    queries: Span<felt252>, values: Span<felt252>, n_columns: u32, is_verifier_friendly: bool
+) -> Array<VectorQuery> {
+    let queries_len = queries.len();
+    if queries_len == 0 {
+        return ArrayTrait::new();
+    }
+    let mut i = 0;
+    let mut curr_values = 0;
+    let mut curr_queries = 0;
+    let mut vector_queries = ArrayTrait::new();
+    loop {
+        if i == queries_len {
+            break;
+        }
+        if n_columns == 1 {
+            vector_queries
+                .append(VectorQuery { index: *queries[curr_queries], value: *values[curr_values] });
+            curr_queries += 1;
+            curr_values += 1;
+        } else if is_verifier_friendly == false {
+            let mut data: Array<u32> = ArrayTrait::new();
+
+            // TODO: extract to separate function and use span's slice here
+            let mut j = 0;
+            loop {
+                if j == n_columns {
+                    break;
+                }
+                data.append_big_endian(*values[curr_values]);
+                curr_values += 1;
+                j += 1;
+            };
+
+            let hash = blake2s(data).flip_endianness();
+
+            // Truncate hash - convert value to felt, by taking the 160 least significant bits
+            // TODO: check if we can use truncated_blake2s here
+            let two_pow32: u128 = 0x100000000;
+            let (high_h, high_l) = DivRem::div_rem(hash.high, two_pow32.try_into().unwrap());
+            vector_queries
+                .append(
+                    VectorQuery {
+                        index: *queries[curr_queries],
+                        value: high_l.into() * 0x100000000000000000000000000000000 + hash.low.into()
+                    }
+                );
+            curr_queries += 1;
+        } else {
+            let hash = poseidon_hash_span(values.slice(curr_values, n_columns));
+
+            vector_queries.append(VectorQuery { index: *queries[curr_queries], value: hash });
+
+            curr_values += n_columns;
+            curr_queries += 1;
+        };
+        i += 1;
+    };
+    vector_queries
+}
