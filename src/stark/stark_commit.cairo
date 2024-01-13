@@ -15,17 +15,6 @@ use cairo_verifier::{
     oods::verify_oods,
 };
 
-#[derive(Drop, Copy)]
-struct InteractionValuesAfterTraces {
-    // n_constraints Coefficients for the AIR constraints.
-    coefficients: Span<felt252>,
-}
-
-#[derive(Drop, Copy)]
-struct InteractionValuesAfterOods {
-    // n_oods_values coefficients for the boundary polynomial validating the OODS values.
-    coefficients: Span<felt252>,
-}
 
 // STARK commitment phase.
 fn stark_commit(
@@ -47,10 +36,6 @@ fn stark_commit(
     let traces_coefficients = powers_array(
         1, composition_alpha, N_CONSTRAINTS.try_into().unwrap(),
     );
-
-    let interaction_after_traces = InteractionValuesAfterTraces {
-        coefficients: traces_coefficients.span(),
-    };
 
     let composition_commitment = table_commit(*unsent_commitment.composition, *config.composition,);
 
@@ -95,9 +80,6 @@ fn stark_commit(
 
     let oods_alpha = channel.random_felt_to_prover();
     let oods_coefficients = powers_array(1, oods_alpha, n_oods_values.try_into().unwrap());
-    let interaction_after_oods = InteractionValuesAfterOods {
-        coefficients: oods_coefficients.span()
-    };
 
     let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
 
@@ -108,7 +90,7 @@ fn stark_commit(
         composition: composition_commitment,
         interaction_after_composition: interaction_after_composition,
         oods_values: *unsent_commitment.oods_values,
-        interaction_after_oods: interaction_after_oods.coefficients,
+        interaction_after_oods: oods_coefficients.span(),
         fri: fri_commitment,
     }
 }
