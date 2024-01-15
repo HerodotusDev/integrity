@@ -14,6 +14,9 @@ use cairo_verifier::{
             TableCommitmentWitnessWithSerde, TableUnsentCommitmentWithSerde
         }
     },
+    table_commitment::table_commitment::{
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
+    },
 };
 
 #[derive(Drop, Serde)]
@@ -40,14 +43,12 @@ impl IntoTracesDecommitment of Into<TracesDecommitmentWithSerde, TracesDecommitm
 
 #[derive(Drop, Serde)]
 struct TracesUnsentCommitmentWithSerde {
-    original: TableUnsentCommitmentWithSerde,
-    interaction: TableUnsentCommitmentWithSerde,
+    original: felt252,
+    interaction: felt252,
 }
 impl IntoTracesUnsentCommitment of Into<TracesUnsentCommitmentWithSerde, TracesUnsentCommitment> {
     fn into(self: TracesUnsentCommitmentWithSerde) -> TracesUnsentCommitment {
-        TracesUnsentCommitment {
-            original: self.original.into(), interaction: self.interaction.into(),
-        }
+        TracesUnsentCommitment { original: self.original, interaction: self.original, }
     }
 }
 

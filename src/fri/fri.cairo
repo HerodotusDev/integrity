@@ -6,9 +6,9 @@ use cairo_verifier::{
         fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer},
         fri_last_layer::verify_last_layer,
     },
-    table_commitment::{
+    table_commitment::table_commitment::{
         TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
-        TableUnsentCommitment, table_commit, table_decommit
+        table_commit, table_decommit
     }
 };
 
@@ -17,7 +17,7 @@ use cairo_verifier::{
 #[derive(Drop, Copy)]
 struct FriUnsentCommitment {
     // Array of size n_layers - 1 containing unsent table commitments for each inner layer.
-    inner_layers: Span<TableUnsentCommitment>,
+    inner_layers: Span<felt252>,
     // Array of size 2**log_last_layer_degree_bound containing coefficients for the last layer
     // polynomial.
     last_layer_coefficients: Span<felt252>,
@@ -86,7 +86,7 @@ fn fri_commit_rounds(
     ref channel: Channel,
     n_layers: felt252,
     configs: Span<TableCommitmentConfig>,
-    unsent_commitments: Span<TableUnsentCommitment>,
+    unsent_commitments: Span<felt252>,
     step_sizes: Span<felt252>,
 ) -> (Array<TableCommitment>, Array<felt252>) {
     let mut commitments = ArrayTrait::<TableCommitment>::new();
@@ -99,7 +99,7 @@ fn fri_commit_rounds(
             break;
         }
         // Read commitments.
-        commitments.append(table_commit(*unsent_commitments.at(i), *configs.at(i)));
+        commitments.append(table_commit(ref channel, *unsent_commitments.at(i), *configs.at(i)));
         // Send the next eval_points.
         eval_points.append(channel.random_felt_to_prover());
 

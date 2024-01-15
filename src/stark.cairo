@@ -8,9 +8,8 @@ use cairo_verifier::{
         fri::{FriUnsentCommitment, FriWitness, FriCommitment}
     },
     domains::StarkDomainsImpl,
-    table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableUnsentCommitment,
-        TableCommitment
+    table_commitment::table_commitment::{
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
     },
     proof_of_work::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
@@ -115,7 +114,7 @@ impl StarkConfigImpl of StarkConfigTrait {
 #[derive(Drop)]
 struct StarkUnsentCommitment {
     traces: TracesUnsentCommitment,
-    composition: TableUnsentCommitment,
+    composition: felt252,
     // n_oods_values elements. The i-th value is the evaluation of the i-th mask item polynomial at
     // the OODS point, where the mask item polynomial is the interpolation polynomial of the
     // corresponding column shifted by the corresponding row_offset.

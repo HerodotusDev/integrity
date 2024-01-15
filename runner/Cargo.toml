@@ -1,17 +1,17 @@
 [package]
 name = "runner"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.76"
-cairo-args-runner = "1.0.0"
-clap = { version = "4.4.11", features = ["derive"] }
-lalrpop-util = { version = "0.20.0", features = ["lexer", "unicode"] }
-serde = { version = "1.0.193", features = ["derive"] }
-serde_json = "1.0.108"
+anyhow.workspace = true
+cairo-args-runner.workspace = true
+clap.workspace = true
+lalrpop-util.workspace = true
+serde.workspace = true
+serde_json.workspace = true
 
 [build-dependencies]
-lalrpop = "0.20.0"
+lalrpop.workspace = true

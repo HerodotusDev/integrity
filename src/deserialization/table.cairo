@@ -1,5 +1,5 @@
-use cairo_verifier::table_commitment::{
-    TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableUnsentCommitment
+use cairo_verifier::table_commitment::table_commitment::{
+    TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
 };
 use cairo_verifier::deserialization::vector::{
     VectorCommitmentConfigWithSerde, VectorCommitmentWitnessWithSerde
@@ -42,8 +42,8 @@ impl IntoTableCommitmentWitness of Into<TableCommitmentWitnessWithSerde, TableCo
 struct TableUnsentCommitmentWithSerde {
     vector: felt252,
 }
-impl IntoTableUnsentCommitment of Into<TableUnsentCommitmentWithSerde, TableUnsentCommitment> {
-    fn into(self: TableUnsentCommitmentWithSerde) -> TableUnsentCommitment {
-        TableUnsentCommitment { vector: self.vector }
+impl IntoTableUnsentCommitment of Into<TableUnsentCommitmentWithSerde, felt252> {
+    fn into(self: TableUnsentCommitmentWithSerde) -> felt252 {
+        self.vector
     }
 }
