@@ -37,13 +37,3 @@ impl IntoTableCommitmentWitness of Into<TableCommitmentWitnessWithSerde, TableCo
         TableCommitmentWitness { vector: self.vector.into(), }
     }
 }
-
-#[derive(Drop, Serde)]
-struct TableUnsentCommitmentWithSerde {
-    vector: felt252,
-}
-impl IntoTableUnsentCommitment of Into<TableUnsentCommitmentWithSerde, felt252> {
-    fn into(self: TableUnsentCommitmentWithSerde) -> felt252 {
-        self.vector
-    }
-}

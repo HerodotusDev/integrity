@@ -11,7 +11,7 @@ use cairo_verifier::{
         },
         table::{
             TableCommitmentConfigWithSerde, TableDecommitmentWithSerde,
-            TableCommitmentWitnessWithSerde, TableUnsentCommitmentWithSerde
+            TableCommitmentWitnessWithSerde,
         }
     },
     table_commitment::table_commitment::{

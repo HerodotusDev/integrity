@@ -9,7 +9,6 @@ use cairo_verifier::{
             TracesUnsentCommitmentWithSerde, TableCommitmentConfigWithSerde,
             TableCommitmentWitnessWithSerde, TableDecommitmentWithSerde
         },
-        table::{TableUnsentCommitmentWithSerde},
         fri::{FriConfigWithSerde, FriUnsentCommitmentWithSerde, FriWitnessWithSerde},
         pow::{ProofOfWorkConfigWithSerde, ProofOfWorkUnsentCommitmentWithSerde},
     },
@@ -146,7 +145,7 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
 #[derive(Drop, Serde)]
 struct StarkUnsentCommitmentWithSerde {
     traces: TracesUnsentCommitmentWithSerde,
-    composition: TableUnsentCommitmentWithSerde,
+    composition: felt252,
     oods_values: Array<felt252>,
     fri: FriUnsentCommitmentWithSerde,
     proof_of_work: ProofOfWorkUnsentCommitmentWithSerde,
@@ -155,7 +154,7 @@ impl IntoStarkUnsentCommitment of Into<StarkUnsentCommitmentWithSerde, StarkUnse
     fn into(self: StarkUnsentCommitmentWithSerde) -> StarkUnsentCommitment {
         StarkUnsentCommitment {
             traces: self.traces.into(),
-            composition: self.composition.into(),
+            composition: self.composition,
             oods_values: self.oods_values.span(),
             fri: self.fri.into(),
             proof_of_work: self.proof_of_work.into(),
