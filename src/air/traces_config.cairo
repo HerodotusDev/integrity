@@ -1,5 +1,7 @@
 use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
-use cairo_verifier::{common::asserts::assert_in_range, table_commitment::TableCommitmentConfig};
+use cairo_verifier::{
+    common::asserts::assert_in_range, table_commitment::table_commitment::TableCommitmentConfig
+};
 
 const MAX_N_COLUMNS: felt252 = 128;
 const AIR_LAYOUT_N_ORIGINAL_COLUMNS: felt252 = 12;

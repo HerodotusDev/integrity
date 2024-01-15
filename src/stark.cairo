@@ -5,7 +5,9 @@ use cairo_verifier::{
     },
     fri::{fri_config::{FriConfig, FriConfigTrait}, fri::{FriUnsentCommitment, FriWitness}},
     domains::StarkDomainsImpl,
-    table_commitment::{TableCommitmentConfig, TableCommitmentWitness, TableDecommitment},
+    table_commitment::table_commitment::{
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
+    },
     proof_of_work::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
         proof_of_work::ProofOfWorkUnsentCommitment
