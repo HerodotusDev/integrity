@@ -1,11 +1,16 @@
 use cairo_verifier::{
     air::{
         traces_config::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
-        traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+        traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness}
     },
-    fri::{fri_config::{FriConfig, FriConfigTrait}, fri::{FriUnsentCommitment, FriWitness}},
+    fri::{
+        fri_config::{FriConfig, FriConfigTrait},
+        fri::{FriUnsentCommitment, FriWitness, FriCommitment}
+    },
     domains::StarkDomainsImpl,
-    table_commitment::{TableCommitmentConfig, TableCommitmentWitness, TableDecommitment},
+    table_commitment::table_commitment::{
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
+    },
     proof_of_work::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
         proof_of_work::ProofOfWorkUnsentCommitment
@@ -72,16 +77,63 @@ impl StarkConfigImpl of StarkConfigTrait {
     }
 }
 
+// Protocol components:
+// ======================
+// The verifier is built from protocol components. Each component is responsible for commitment
+// and decommitment phase. The decommitment part can be regarded as proving a statement with certain
+// parameters that are known only after the commitment phase. The XDecommitment struct holds these
+// parameters.
+// The XWitness struct is the witness required to prove this statement.
+//
+// For example, VectorDecommitment holds some indices to the committed vector and the corresponding
+// values.
+// The VectorWitness struct has the authentication paths of the merkle tree, required to prove the
+// validity of the values.
+//
+// The Stark protocol itself is a component, with the statement having no parameters known only
+// after the commitment phase, and thus, there is no StarkDecommitment.
+//
+// The interface of a component named X is:
+//
+// Structs:
+// * XConfig: Configuration for the component.
+// * XUnsentCommitment: Commitment values (e.g. hashes), before sending in the channel.
+//     Those values shouldn't be used directly (only by the channel).
+//     Used by x_commit() to generate a commitment XCommitment.
+// * XCommitment: Represents the commitment after it is read from the channel.
+// * XDecommitment: Responses for queries.
+// * XWitness: Auxiliary information for proving the decommitment.
+//
+// Functions:
+// * x_commit() - The commitment phase. Takes XUnsentCommitment and returns XCommitment.
+// * x_decommit() - The decommitment phase. Verifies a decommitment. Uses the commitment and the
+//     witness.
+
+// n_oods_values := air.mask_size + air.constraint_degree.
+
 #[derive(Drop)]
 struct StarkUnsentCommitment {
     traces: TracesUnsentCommitment,
     composition: felt252,
+    // n_oods_values elements. The i-th value is the evaluation of the i-th mask item polynomial at
+    // the OODS point, where the mask item polynomial is the interpolation polynomial of the
+    // corresponding column shifted by the corresponding row_offset.
     oods_values: Span<felt252>,
     fri: FriUnsentCommitment,
     proof_of_work: ProofOfWorkUnsentCommitment,
 }
 
 #[derive(Drop)]
+struct StarkCommitment {
+    traces: TracesCommitment,
+    composition: TableCommitment,
+    interaction_after_composition: felt252,
+    oods_values: Span<felt252>,
+    interaction_after_oods: Span<felt252>,
+    fri: FriCommitment,
+}
+
+#[derive(Drop, Copy)]
 struct StarkWitness {
     traces_decommitment: TracesDecommitment,
     traces_witness: TracesWitness,
