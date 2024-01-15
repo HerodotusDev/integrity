@@ -29,6 +29,9 @@ const NUM_COLUMNS_FIRST: u32 = 7;
 const NUM_COLUMNS_SECOND: u32 = 3;
 const IS_DYNAMIC_AIR: felt252 = 0;
 
+const MAX_LOG_N_STEPS: felt252 = 50;
+const MAX_RANGE_CHECK: felt252 = 0xffff; // 2 ** 16 - 1
+
 mod segments {
     const PROGRAM: usize = 0;
     const EXECUTION: usize = 1;
