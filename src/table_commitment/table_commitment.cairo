@@ -112,21 +112,19 @@ fn generate_vector_queries(
     queries: Span<felt252>, values: Span<felt252>, n_columns: u32, is_verifier_friendly: bool
 ) -> Array<VectorQuery> {
     let queries_len = queries.len();
+    let mut vector_queries = ArrayTrait::new();
     if queries_len == 0 {
-        return ArrayTrait::new();
+        return vector_queries;
     }
     let mut i = 0;
-    let mut curr_values = 0;
-    let mut curr_queries = 0;
-    let mut vector_queries = ArrayTrait::new();
     loop {
         if i == queries_len {
             break;
         }
         let hash = if n_columns == 1 {
-            *values[curr_values]
+            *values[i * n_columns]
         } else {
-            let slice = values.slice(curr_values, n_columns);
+            let slice = values.slice(i * n_columns, n_columns);
             if is_verifier_friendly {
                 poseidon_hash_span(slice)
             } else {
@@ -142,9 +140,7 @@ fn generate_vector_queries(
                 hash
             }
         };
-        vector_queries.append(VectorQuery { index: *queries[curr_queries], value: hash });
-        curr_values += n_columns;
-        curr_queries += 1;
+        vector_queries.append(VectorQuery { index: *queries[i], value: hash });
         i += 1;
     };
     vector_queries
