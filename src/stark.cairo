@@ -137,7 +137,7 @@ struct StarkCommitment {
     composition: TableCommitment,
     interaction_after_composition: felt252,
     oods_values: Span<felt252>,
-    interaction_after_oods: Array<felt252>,
+    interaction_after_oods: Span<felt252>,
     fri: FriCommitment,
 }
 

@@ -12,7 +12,7 @@ struct OodsEvaluationInfo {
     oods_values: Span<felt252>,
     oods_point: felt252,
     trace_generator: felt252,
-    constraint_coefficients: Array<felt252>,
+    constraint_coefficients: Span<felt252>,
 }
 
 fn verify_oods(
@@ -93,7 +93,7 @@ fn eval_oods_boundary_poly_at_points(
                 eval_oods_polynomial(
                     column_values.span(),
                     eval_info.oods_values,
-                    eval_info.constraint_coefficients.span(),
+                    eval_info.constraint_coefficients,
                     *points.at(i),
                     eval_info.oods_point,
                     eval_info.trace_generator,
