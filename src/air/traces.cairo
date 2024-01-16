@@ -65,14 +65,13 @@ fn traces_commit(
         ref channel, unsent_commitment.original, config.original
     );
     // Generate interaction elements for the first interaction.
-    let interaction_elements_raw = channel.random_felts_to_prover(6);
     let interaction_elements = InteractionElements {
-        memory_multi_column_perm_perm_interaction_elm: *interaction_elements_raw[0],
-        memory_multi_column_perm_hash_interaction_elm0: *interaction_elements_raw[1],
-        rc16_perm_interaction_elm: *interaction_elements_raw[2],
-        diluted_check_permutation_interaction_elm: *interaction_elements_raw[3],
-        diluted_check_interaction_z: *interaction_elements_raw[4],
-        diluted_check_interaction_alpha: *interaction_elements_raw[5],
+        memory_multi_column_perm_perm_interaction_elm: channel.random_felt_to_prover(),
+        memory_multi_column_perm_hash_interaction_elm0: channel.random_felt_to_prover(),
+        rc16_perm_interaction_elm: channel.random_felt_to_prover(),
+        diluted_check_permutation_interaction_elm: channel.random_felt_to_prover(),
+        diluted_check_interaction_z: channel.random_felt_to_prover(),
+        diluted_check_interaction_alpha: channel.random_felt_to_prover(),
     };
     // Read interaction commitment.
     let interaction_commitment = table_commit(
