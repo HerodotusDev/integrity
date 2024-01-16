@@ -111,6 +111,8 @@ fn queries_to_points(queries: Span<felt252>, stark_domains: @StarkDomains) -> Ar
             .append(
                 FIELD_GENERATOR * pow(*stark_domains.eval_generator, index.bit_reverse().into())
             );
+        
+        i += 1;
     };
     points
 }
