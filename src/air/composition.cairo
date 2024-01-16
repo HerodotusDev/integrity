@@ -19,7 +19,7 @@ fn eval_composition_polynomial(
     interaction_elements: InteractionElements,
     public_input: @PublicInput,
     mask_values: Array<felt252>,
-    constraint_coefficients: Array<felt252>,
+    constraint_coefficients: Span<felt252>,
     point: felt252,
     trace_domain_size: felt252,
     trace_generator: felt252

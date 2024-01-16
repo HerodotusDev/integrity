@@ -24,7 +24,7 @@ fn verify_oods(
     oods: OodsValues,
     interaction_elements: InteractionElements,
     public_input: @PublicInput,
-    constraint_coefficients: Array<felt252>,
+    constraint_coefficients: Span<felt252>,
     oods_point: felt252,
     trace_domain_size: felt252,
     trace_generator: felt252
