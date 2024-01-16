@@ -18,7 +18,7 @@ const SHIFT_POINT_Y: felt252 = 0x3ca0cfe4b3bc6ddf346d49d06ea0ed34e621062c0e056c1
 fn eval_composition_polynomial(
     interaction_elements: InteractionElements,
     public_input: @PublicInput,
-    mask_values: Array<felt252>,
+    mask_values: Span<felt252>,
     constraint_coefficients: Span<felt252>,
     point: felt252,
     trace_domain_size: felt252,

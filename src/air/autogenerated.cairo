@@ -5,7 +5,7 @@ use cairo_verifier::air::constants::{
 };
 
 fn eval_composition_polynomial_inner(
-    mask_values: Array<felt252>,
+    mask_values: Span<felt252>,
     constraint_coefficients: Span<felt252>,
     point: felt252,
     trace_generator: felt252,

@@ -46,23 +46,8 @@ fn stark_commit(
     let n_oods_values = MASK_SIZE + CONSTRAINT_DEGREE.into();
     channel.read_felts_from_prover(*unsent_commitment.oods_values);
 
-    let oods = *unsent_commitment.oods_values;
-    let mut mask_values = array![];
-    let mut i = 0;
-    loop {
-        if i == oods.len() - 2 {
-            break;
-        }
-
-        mask_values.append(*oods.at(i));
-
-        i += 1;
-    };
-    let split_polynomials = array![*oods.at(i), *oods.at(i + 1)];
-    let oods_values = OodsValues { mask_values, split_polynomials };
-
     verify_oods(
-        oods_values,
+        *unsent_commitment.oods_values,
         interaction_elements,
         public_input,
         traces_coefficients,
