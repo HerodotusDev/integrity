@@ -1,5 +1,5 @@
 use cairo_verifier::fri::fri::fri_commit;
-use cairo_verifier::fri::fri_config::FriConfig;
+use cairo_verifier::fri::fri_config::{FriConfig, FriConfigTrait};
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::table_commitment::table_commitment::TableCommitmentConfig;
 use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfig;
@@ -7,12 +7,7 @@ use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfig
 // test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
-fn test_fri_commit() {
-    let channel = ChannelTrait::new_with_counter(
-        u256 { low: 0xaddb0b52526024a1fd926e5da9d8d0ec, high: 0x4b7afc7a5bab4c0aab0b403f8daf81cf },
-        0x1
-    );
-
+fn test_fri_config() {
     let fri_config = FriConfig {
         log_input_size: 0x16,
         n_layers: 0x5,
@@ -48,4 +43,16 @@ fn test_fri_commit() {
         fri_step_sizes: array![0x0, 0x4, 0x3, 0x2, 0x2,].span(),
         log_last_layer_degree_bound: 0x7,
     };
+
+    let log_n_cosets = 0x4;
+    let n_verifier_friendly_commitment_layers = 0x16;
+    let log_expected_input_degree = 0x12;
+
+    assert(
+        fri_config
+            .validate(
+                log_n_cosets, n_verifier_friendly_commitment_layers
+            ) == log_expected_input_degree,
+        'Invalid value'
+    );
 }

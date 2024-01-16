@@ -20,6 +20,10 @@ impl ChannelImpl of ChannelTrait {
         Channel { digest: digest, counter: 0 }
     }
 
+    fn new_with_counter(digest: u256, counter: u256) -> Channel {
+        Channel { digest: digest, counter: counter }
+    }
+
     fn random_uint256_to_prover(ref self: Channel) -> u256 {
         let mut hash_data = ArrayTrait::<u32>::new();
         hash_data.append_big_endian(self.digest);
