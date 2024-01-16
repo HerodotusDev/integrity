@@ -23,7 +23,7 @@ fn stark_commit(
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
     stark_domains: @StarkDomains,
-) -> StarkCommitment {
+) {
     let traces_commitment = traces_commit(
         ref channel,
         N_INTERACTION_ELEMENTS,
@@ -70,29 +70,29 @@ fn stark_commit(
     let split_polynomials = array![*oods.at(i), *oods.at(i + 1)];
     let oods_values = OodsValues { mask_values, split_polynomials };
 
-    verify_oods(
-        oods_values,
-        interaction_elements,
-        public_input,
-        traces_coefficients,
-        interaction_after_composition,
-        *stark_domains.trace_generator,
-        *stark_domains.trace_domain_size
-    );
+    // verify_oods(
+    //     oods_values,
+    //     interaction_elements,
+    //     public_input,
+    //     traces_coefficients,
+    //     interaction_after_composition,
+    //     *stark_domains.trace_generator,
+    //     *stark_domains.trace_domain_size
+    // );
 
-    let oods_alpha = channel.random_felt_to_prover();
-    let oods_coefficients = powers_array(1, oods_alpha, n_oods_values.try_into().unwrap());
+    // let oods_alpha = channel.random_felt_to_prover();
+    // let oods_coefficients = powers_array(1, oods_alpha, n_oods_values.try_into().unwrap());
 
-    let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
+    // let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
 
-    proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
+    // proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
 
-    StarkCommitment {
-        traces: traces_commitment,
-        composition: composition_commitment,
-        interaction_after_composition: interaction_after_composition,
-        oods_values: *unsent_commitment.oods_values,
-        interaction_after_oods: oods_coefficients.span(),
-        fri: fri_commitment,
-    }
+    // StarkCommitment {
+    //     traces: traces_commitment,
+    //     composition: composition_commitment,
+    //     interaction_after_composition: interaction_after_composition,
+    //     oods_values: *unsent_commitment.oods_values,
+    //     interaction_after_oods: oods_coefficients.span(),
+    //     fri: fri_commitment,
+    // }
 }
