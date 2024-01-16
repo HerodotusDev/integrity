@@ -4,6 +4,7 @@ use cairo_verifier::table_commitment::table_commitment::{
 };
 use cairo_verifier::air::{public_input::PublicInput, traces_config::TracesConfig};
 use cairo_verifier::channel::channel::Channel;
+use cairo_verifier::air::global_values::InteractionElements;
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
 // of the CPU AIR.
@@ -29,7 +30,7 @@ struct TracesCommitment {
     original: TableCommitment,
     // The interaction elements that were sent to the prover after the first trace commitment (e.g.
     // memory interaction).
-    interaction_elements: Array<felt252>,
+    interaction_elements: InteractionElements,
     // Commitment to the second (interaction) trace.
     interaction: TableCommitment,
 }
@@ -55,7 +56,6 @@ struct TracesWitness {
 // Returns the commitment, along with GlobalValue required to evaluate the constraint polynomial.
 fn traces_commit(
     ref channel: Channel,
-    n_interaction_elements: felt252,
     public_input: @PublicInput,
     unsent_commitment: TracesUnsentCommitment,
     config: TracesConfig
@@ -65,7 +65,15 @@ fn traces_commit(
         ref channel, unsent_commitment.original, config.original
     );
     // Generate interaction elements for the first interaction.
-    let interaction_elements = channel.random_felts_to_prover(n_interaction_elements);
+    let interaction_elements_raw = channel.random_felts_to_prover(6);
+    let interaction_elements = InteractionElements {
+        memory_multi_column_perm_perm_interaction_elm: *interaction_elements_raw[0],
+        memory_multi_column_perm_hash_interaction_elm0: *interaction_elements_raw[1],
+        rc16_perm_interaction_elm: *interaction_elements_raw[2],
+        diluted_check_permutation_interaction_elm: *interaction_elements_raw[3],
+        diluted_check_interaction_z: *interaction_elements_raw[4],
+        diluted_check_interaction_alpha: *interaction_elements_raw[5],
+    };
     // Read interaction commitment.
     let interaction_commitment = table_commit(
         ref channel, unsent_commitment.interaction, config.interaction

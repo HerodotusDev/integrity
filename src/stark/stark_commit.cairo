@@ -6,7 +6,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::{
     air::{
         constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, N_INTERACTION_ELEMENTS, MASK_SIZE},
-        global_values::InteractionElements, public_input::PublicInput, traces::traces_commit,
+        public_input::PublicInput, traces::traces_commit,
     },
     channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
     fri::fri::fri_commit, stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
@@ -18,7 +18,6 @@ use cairo_verifier::{
 // STARK commitment phase.
 fn stark_commit(
     ref channel: Channel,
-    interaction_elements: InteractionElements,
     public_input: @PublicInput,
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
@@ -26,7 +25,6 @@ fn stark_commit(
 ) -> StarkCommitment {
     let traces_commitment = traces_commit(
         ref channel,
-        N_INTERACTION_ELEMENTS,
         public_input,
         *unsent_commitment.traces,
         *config.traces,
@@ -47,7 +45,7 @@ fn stark_commit(
 
     verify_oods(
         *unsent_commitment.oods_values,
-        interaction_elements,
+        traces_commitment.interaction_elements,
         public_input,
         traces_coefficients,
         interaction_after_composition,
