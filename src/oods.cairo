@@ -1,18 +1,11 @@
-use core::array::ArrayTrait;
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
 use core::array::SpanTrait;
+use cairo_verifier::common::array_extend::ArrayExtendTrait;
 use cairo_verifier::air::composition::{eval_composition_polynomial, eval_oods_polynomial};
 use cairo_verifier::air::global_values::InteractionElements;
 use cairo_verifier::air::public_input::PublicInput;
 use cairo_verifier::air::traces::TracesDecommitment;
 use cairo_verifier::table_commitment::table_commitment::TableDecommitment;
 use cairo_verifier::air::constants::CONSTRAINT_DEGREE;
-
-#[derive(Drop)]
-struct OodsValues {
-    mask_values: Array<felt252>,
-    split_polynomials: Array<felt252>
-}
 
 #[derive(Drop)]
 struct OodsEvaluationInfo {
@@ -23,10 +16,10 @@ struct OodsEvaluationInfo {
 }
 
 fn verify_oods(
-    oods: OodsValues,
+    oods: Span<felt252>,
     interaction_elements: InteractionElements,
-    public_input: PublicInput,
-    constraint_coefficients: Array<felt252>,
+    public_input: @PublicInput,
+    constraint_coefficients: Span<felt252>,
     oods_point: felt252,
     trace_domain_size: felt252,
     trace_generator: felt252
@@ -34,7 +27,7 @@ fn verify_oods(
     let composition_from_trace = eval_composition_polynomial(
         interaction_elements,
         public_input,
-        oods.mask_values,
+        oods.slice(0, oods.len() - 2),
         constraint_coefficients,
         oods_point,
         trace_domain_size,
@@ -42,8 +35,7 @@ fn verify_oods(
     );
 
     // TODO support degree > 2?
-    let claimed_composition = *oods.split_polynomials.at(0)
-        + *oods.split_polynomials.at(1) * oods_point;
+    let claimed_composition = *oods[oods.len() - 2] + *oods[oods.len() - 1] * oods_point;
 
     assert(composition_from_trace == claimed_composition, 'Invalid OODS');
 }

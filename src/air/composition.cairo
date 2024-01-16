@@ -17,9 +17,9 @@ const SHIFT_POINT_Y: felt252 = 0x3ca0cfe4b3bc6ddf346d49d06ea0ed34e621062c0e056c1
 
 fn eval_composition_polynomial(
     interaction_elements: InteractionElements,
-    public_input: PublicInput,
-    mask_values: Array<felt252>,
-    constraint_coefficients: Array<felt252>,
+    public_input: @PublicInput,
+    mask_values: Span<felt252>,
+    constraint_coefficients: Span<felt252>,
     point: felt252,
     trace_domain_size: felt252,
     trace_generator: felt252
@@ -41,7 +41,7 @@ fn eval_composition_polynomial(
     );
 
     // Periodic columns
-    let n_steps = pow(2, public_input.log_n_steps);
+    let n_steps = pow(2, *public_input.log_n_steps);
     let n_pedersen_hash_copies = n_steps / (PEDERSEN_BUILTIN_RATIO * PEDERSEN_BUILTIN_REPETITIONS);
     assert_range_u128(n_pedersen_hash_copies);
     let pedersen_point = pow(point, n_pedersen_hash_copies);
@@ -57,8 +57,8 @@ fn eval_composition_polynomial(
         initial_pedersen_addr: *public_input.segments.at(segments::PEDERSEN).begin_addr,
         initial_rc_addr: *public_input.segments.at(segments::RANGE_CHECK).begin_addr,
         initial_bitwise_addr: *public_input.segments.at(segments::BITWISE).begin_addr,
-        rc_min: public_input.rc_min,
-        rc_max: public_input.rc_max,
+        rc_min: *public_input.rc_min,
+        rc_max: *public_input.rc_max,
         offset_size: 0x10000, // 2**16
         half_offset_size: 0x8000,
         pedersen_shift_point: EcPoint { x: SHIFT_POINT_X, y: SHIFT_POINT_Y },
