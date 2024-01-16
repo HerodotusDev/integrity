@@ -806,8 +806,8 @@ fn eval_oods_polynomial_inner(
     trace_generator: felt252,
 ) -> felt252 {
     // Compute powers.
-    let pow0 = pow(trace_generator, 0);
-    let pow1 = pow(trace_generator, 1);
+    let pow0 = 1;
+    let pow1 = trace_generator;
     let pow2 = pow1 * pow1;
     let pow3 = pow1 * pow2;
     let pow4 = pow1 * pow3;
