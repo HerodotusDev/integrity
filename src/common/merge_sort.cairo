@@ -1,13 +1,17 @@
+use cairo_verifier::common::array_extend::ArrayExtendTrait;
 use cairo_verifier::common::array_split::ArraySplitTrait;
 use core::debug::PrintTrait;
 use cairo_verifier::common::array_print::{ArrayPrintTrait, SpanPrintTrait};
 
 // Merge Sort
 /// # Arguments
-/// * `arr` - Array to sort
+/// * `arr` - Span to sort
 /// # Returns
 /// * `Array<T>` - Sorted array
-fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> Array<T> {
+fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Span<T>) -> Array<T> {
+    let mut ret: Array<T> = ArrayTrait::new();
+    ret.extend(arr);
+
     let mut chunk = 1;
     loop {
         if chunk >= arr.len() {
@@ -15,33 +19,33 @@ fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Array<T>) -> Array
         }
         let mut start = 0;
         let mut new_arr: Array<T> = ArrayTrait::new();
-        let arr_span = arr.span();
         loop {
             let start2 = start + chunk;
-            let size2 = if start + 2 * chunk >= arr_span.len() {
-                arr_span.len() - start - chunk
+            let size2 = if start + 2 * chunk >= arr.len() {
+                arr.len() - start - chunk
             } else {
                 chunk
             };
 
-            merge_arrays(arr_span.slice(start, chunk), arr_span.slice(start2, size2), ref new_arr);
+            merge_arrays(arr.slice(start, chunk), arr.slice(start2, size2), ref new_arr);
 
             start += 2 * chunk;
-            if start + chunk >= arr_span.len() {
+            if start + chunk >= arr.len() {
                 break;
             };
         };
         loop {
-            if start >= arr_span.len() {
+            if start >= arr.len() {
                 break;
             };
-            new_arr.append(*arr_span.at(start));
+            new_arr.append(*arr.at(start));
             start += 1;
         };
-        arr = new_arr;
+        arr = new_arr.span();
+        ret = new_arr;
         chunk *= 2;
     };
-    arr
+    ret
 }
 
 fn merge_arrays<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
