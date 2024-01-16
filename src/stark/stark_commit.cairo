@@ -11,7 +11,7 @@ use cairo_verifier::{
     channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
     oods::OodsValues, fri::fri::fri_commit,
     stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
-    proof_of_work::proof_of_work::proof_of_work_commit, table_commitment::table_commit,
+    proof_of_work::proof_of_work::proof_of_work_commit, table_commitment::table_commitment::table_commit,
     oods::verify_oods,
 };
 
@@ -37,7 +37,7 @@ fn stark_commit(
         1, composition_alpha, N_CONSTRAINTS.try_into().unwrap(),
     );
 
-    let composition_commitment = table_commit(*unsent_commitment.composition, *config.composition,);
+    let composition_commitment = table_commit(ref channel, *unsent_commitment.composition, *config.composition,);
 
     let interaction_after_composition = channel.random_felt_to_prover();
 

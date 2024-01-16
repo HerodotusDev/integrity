@@ -10,7 +10,7 @@ use cairo_verifier::{
         fri::{FriUnsentCommitment, FriWitness, FriCommitment}
     },
     domains::StarkDomainsImpl,
-    table_commitment::{
+    table_commitment::table_commitment::{
         TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
     },
     proof_of_work::{
@@ -46,9 +46,9 @@ impl StarkProofImpl of StarkProofTrait {
         let digest = self.public_input.get_public_input_hash();
         let mut channel = ChannelImpl::new(digest);
 
-        stark_commit::stark_commit(
-            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
-        );
+        // stark_commit::stark_commit(
+        //     ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
+        // );
     }
 }
 
