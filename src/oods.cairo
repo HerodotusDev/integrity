@@ -8,12 +8,6 @@ use cairo_verifier::table_commitment::table_commitment::TableDecommitment;
 use cairo_verifier::air::constants::CONSTRAINT_DEGREE;
 
 #[derive(Drop)]
-struct OodsValues {
-    mask_values: Array<felt252>,
-    split_polynomials: Array<felt252>
-}
-
-#[derive(Drop)]
 struct OodsEvaluationInfo {
     oods_values: Span<felt252>,
     oods_point: felt252,

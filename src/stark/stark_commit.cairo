@@ -9,8 +9,7 @@ use cairo_verifier::{
         global_values::InteractionElements, public_input::PublicInput, traces::traces_commit,
     },
     channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
-    oods::OodsValues, fri::fri::fri_commit,
-    stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
+    fri::fri::fri_commit, stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
     proof_of_work::proof_of_work::proof_of_work_commit,
     table_commitment::table_commitment::table_commit, oods::verify_oods,
 };
