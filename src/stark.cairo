@@ -11,8 +11,7 @@ use cairo_verifier::{
     },
     domains::StarkDomainsImpl,
     table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableUnsentCommitment,
-        TableCommitment
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
     },
     proof_of_work::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
