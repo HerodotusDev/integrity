@@ -891,293 +891,407 @@ fn eval_oods_polynomial_inner(
     let column8 = *column_values[8];
     let column9 = *column_values[9];
 
-    let pows = array![
-        pow0,
-        pow1,
-        pow2,
-        pow3,
-        pow4,
-        pow5,
-        pow6,
-        pow7,
-        pow8,
-        pow9,
-        pow10,
-        pow11,
-        pow12,
-        pow13,
-        pow14,
-        pow15,
-        pow0,
-        pow1,
-        pow2,
-        pow4,
-        pow6,
-        pow8,
-        pow10,
-        pow12,
-        pow14,
-        pow16,
-        pow18,
-        pow19,
-        pow20,
-        pow21,
-        pow23,
-        pow25,
-        pow26,
-        pow27,
-        pow28,
-        pow34,
-        pow35,
-        pow39,
-        pow40,
-        pow42,
-        pow43,
-        pow44,
-        pow45,
-        pow47,
-        pow48,
-        pow50,
-        pow51,
-        pow0,
-        pow1,
-        pow0,
-        pow1,
-        pow2,
-        pow3,
-        pow4,
-        pow5,
-        pow8,
-        pow9,
-        pow10,
-        pow11,
-        pow12,
-        pow13,
-        pow16,
-        pow23,
-        pow24,
-        pow29,
-        pow30,
-        pow32,
-        pow36,
-        pow37,
-        pow41,
-        pow48,
-        pow49,
-        pow52,
-        pow53,
-        pow54,
-        pow55,
-        pow68,
-        pow69,
-        pow71,
-        pow0,
-        pow1,
-        pow2,
-        pow3,
-        pow0,
-        pow1,
-        pow2,
-        pow3,
-        pow4,
-        pow5,
-        pow6,
-        pow7,
-        pow8,
-        pow12,
-        pow25,
-        pow31,
-        pow33,
-        pow38,
-        pow42,
-        pow46,
-        pow50,
-        pow62,
-        pow64,
-        pow66,
-        pow67,
-        pow70,
-        pow0,
-        pow1,
-        pow2,
-        pow3,
-        pow4,
-        pow5,
-        pow7,
-        pow9,
-        pow11,
-        pow13,
-        pow17,
-        pow22,
-        pow56,
-        pow57,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow63,
-        pow65,
-        pow0,
-        pow1,
-        pow0,
-        pow1,
-        pow0,
-        pow1,
-        pow2,
-        pow5
-    ];
-
-    let columns = array![
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column0,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column1,
-        column2,
-        column2,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column3,
-        column4,
-        column4,
-        column4,
-        column4,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column5,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column6,
-        column7,
-        column7,
-        column8,
-        column8,
-        column9,
-        column9,
-        column9,
-        column9,
-    ];
-
     // Sum the OODS constraints on the trace polynomials.
-    let mut value = 0;
-    let mut total_sum = 0;
+    let total_sum = 0;
 
-    let mut i = 0;
-    loop {
-        if i == 133 {
-            break;
-        }
+    let value = (column0 - *oods_values[0]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[0] * value;
 
-        value = (*columns[i] - *oods_values[i]) / (point - *pows[i] * oods_point);
-        total_sum = total_sum + *constraint_coefficients[i] * value;
+    let value = (column0 - *oods_values[1]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[1] * value;
 
-        i += 1;
-    };
+    let value = (column0 - *oods_values[2]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[2] * value;
+
+    let value = (column0 - *oods_values[3]) / (point - pow3 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[3] * value;
+
+    let value = (column0 - *oods_values[4]) / (point - pow4 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[4] * value;
+
+    let value = (column0 - *oods_values[5]) / (point - pow5 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[5] * value;
+
+    let value = (column0 - *oods_values[6]) / (point - pow6 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[6] * value;
+
+    let value = (column0 - *oods_values[7]) / (point - pow7 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[7] * value;
+
+    let value = (column0 - *oods_values[8]) / (point - pow8 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[8] * value;
+
+    let value = (column0 - *oods_values[9]) / (point - pow9 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[9] * value;
+
+    let value = (column0 - *oods_values[10]) / (point - pow10 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[10] * value;
+
+    let value = (column0 - *oods_values[11]) / (point - pow11 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[11] * value;
+
+    let value = (column0 - *oods_values[12]) / (point - pow12 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[12] * value;
+
+    let value = (column0 - *oods_values[13]) / (point - pow13 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[13] * value;
+
+    let value = (column0 - *oods_values[14]) / (point - pow14 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[14] * value;
+
+    let value = (column0 - *oods_values[15]) / (point - pow15 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[15] * value;
+
+    let value = (column1 - *oods_values[16]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[16] * value;
+
+    let value = (column1 - *oods_values[17]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[17] * value;
+
+    let value = (column1 - *oods_values[18]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[18] * value;
+
+    let value = (column1 - *oods_values[19]) / (point - pow4 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[19] * value;
+
+    let value = (column1 - *oods_values[20]) / (point - pow6 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[20] * value;
+
+    let value = (column1 - *oods_values[21]) / (point - pow8 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[21] * value;
+
+    let value = (column1 - *oods_values[22]) / (point - pow10 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[22] * value;
+
+    let value = (column1 - *oods_values[23]) / (point - pow12 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[23] * value;
+
+    let value = (column1 - *oods_values[24]) / (point - pow14 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[24] * value;
+
+    let value = (column1 - *oods_values[25]) / (point - pow16 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[25] * value;
+
+    let value = (column1 - *oods_values[26]) / (point - pow18 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[26] * value;
+
+    let value = (column1 - *oods_values[27]) / (point - pow19 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[27] * value;
+
+    let value = (column1 - *oods_values[28]) / (point - pow20 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[28] * value;
+
+    let value = (column1 - *oods_values[29]) / (point - pow21 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[29] * value;
+
+    let value = (column1 - *oods_values[30]) / (point - pow23 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[30] * value;
+
+    let value = (column1 - *oods_values[31]) / (point - pow25 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[31] * value;
+
+    let value = (column1 - *oods_values[32]) / (point - pow26 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[32] * value;
+
+    let value = (column1 - *oods_values[33]) / (point - pow27 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[33] * value;
+
+    let value = (column1 - *oods_values[34]) / (point - pow28 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[34] * value;
+
+    let value = (column1 - *oods_values[35]) / (point - pow34 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[35] * value;
+
+    let value = (column1 - *oods_values[36]) / (point - pow35 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[36] * value;
+
+    let value = (column1 - *oods_values[37]) / (point - pow39 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[37] * value;
+
+    let value = (column1 - *oods_values[38]) / (point - pow40 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[38] * value;
+
+    let value = (column1 - *oods_values[39]) / (point - pow42 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[39] * value;
+
+    let value = (column1 - *oods_values[40]) / (point - pow43 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[40] * value;
+
+    let value = (column1 - *oods_values[41]) / (point - pow44 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[41] * value;
+
+    let value = (column1 - *oods_values[42]) / (point - pow45 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[42] * value;
+
+    let value = (column1 - *oods_values[43]) / (point - pow47 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[43] * value;
+
+    let value = (column1 - *oods_values[44]) / (point - pow48 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[44] * value;
+
+    let value = (column1 - *oods_values[45]) / (point - pow50 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[45] * value;
+
+    let value = (column1 - *oods_values[46]) / (point - pow51 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[46] * value;
+
+    let value = (column2 - *oods_values[47]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[47] * value;
+
+    let value = (column2 - *oods_values[48]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[48] * value;
+
+    let value = (column3 - *oods_values[49]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[49] * value;
+
+    let value = (column3 - *oods_values[50]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[50] * value;
+
+    let value = (column3 - *oods_values[51]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[51] * value;
+
+    let value = (column3 - *oods_values[52]) / (point - pow3 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[52] * value;
+
+    let value = (column3 - *oods_values[53]) / (point - pow4 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[53] * value;
+
+    let value = (column3 - *oods_values[54]) / (point - pow5 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[54] * value;
+
+    let value = (column3 - *oods_values[55]) / (point - pow8 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[55] * value;
+
+    let value = (column3 - *oods_values[56]) / (point - pow9 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[56] * value;
+
+    let value = (column3 - *oods_values[57]) / (point - pow10 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[57] * value;
+
+    let value = (column3 - *oods_values[58]) / (point - pow11 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[58] * value;
+
+    let value = (column3 - *oods_values[59]) / (point - pow12 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[59] * value;
+
+    let value = (column3 - *oods_values[60]) / (point - pow13 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[60] * value;
+
+    let value = (column3 - *oods_values[61]) / (point - pow16 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[61] * value;
+
+    let value = (column3 - *oods_values[62]) / (point - pow23 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[62] * value;
+
+    let value = (column3 - *oods_values[63]) / (point - pow24 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[63] * value;
+
+    let value = (column3 - *oods_values[64]) / (point - pow29 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[64] * value;
+
+    let value = (column3 - *oods_values[65]) / (point - pow30 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[65] * value;
+
+    let value = (column3 - *oods_values[66]) / (point - pow32 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[66] * value;
+
+    let value = (column3 - *oods_values[67]) / (point - pow36 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[67] * value;
+
+    let value = (column3 - *oods_values[68]) / (point - pow37 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[68] * value;
+
+    let value = (column3 - *oods_values[69]) / (point - pow41 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[69] * value;
+
+    let value = (column3 - *oods_values[70]) / (point - pow48 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[70] * value;
+
+    let value = (column3 - *oods_values[71]) / (point - pow49 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[71] * value;
+
+    let value = (column3 - *oods_values[72]) / (point - pow52 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[72] * value;
+
+    let value = (column3 - *oods_values[73]) / (point - pow53 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[73] * value;
+
+    let value = (column3 - *oods_values[74]) / (point - pow54 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[74] * value;
+
+    let value = (column3 - *oods_values[75]) / (point - pow55 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[75] * value;
+
+    let value = (column3 - *oods_values[76]) / (point - pow68 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[76] * value;
+
+    let value = (column3 - *oods_values[77]) / (point - pow69 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[77] * value;
+
+    let value = (column3 - *oods_values[78]) / (point - pow71 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[78] * value;
+
+    let value = (column4 - *oods_values[79]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[79] * value;
+
+    let value = (column4 - *oods_values[80]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[80] * value;
+
+    let value = (column4 - *oods_values[81]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[81] * value;
+
+    let value = (column4 - *oods_values[82]) / (point - pow3 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[82] * value;
+
+    let value = (column5 - *oods_values[83]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[83] * value;
+
+    let value = (column5 - *oods_values[84]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[84] * value;
+
+    let value = (column5 - *oods_values[85]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[85] * value;
+
+    let value = (column5 - *oods_values[86]) / (point - pow3 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[86] * value;
+
+    let value = (column5 - *oods_values[87]) / (point - pow4 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[87] * value;
+
+    let value = (column5 - *oods_values[88]) / (point - pow5 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[88] * value;
+
+    let value = (column5 - *oods_values[89]) / (point - pow6 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[89] * value;
+
+    let value = (column5 - *oods_values[90]) / (point - pow7 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[90] * value;
+
+    let value = (column5 - *oods_values[91]) / (point - pow8 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[91] * value;
+
+    let value = (column5 - *oods_values[92]) / (point - pow12 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[92] * value;
+
+    let value = (column5 - *oods_values[93]) / (point - pow25 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[93] * value;
+
+    let value = (column5 - *oods_values[94]) / (point - pow31 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[94] * value;
+
+    let value = (column5 - *oods_values[95]) / (point - pow33 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[95] * value;
+
+    let value = (column5 - *oods_values[96]) / (point - pow38 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[96] * value;
+
+    let value = (column5 - *oods_values[97]) / (point - pow42 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[97] * value;
+
+    let value = (column5 - *oods_values[98]) / (point - pow46 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[98] * value;
+
+    let value = (column5 - *oods_values[99]) / (point - pow50 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[99] * value;
+
+    let value = (column5 - *oods_values[100]) / (point - pow62 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[100] * value;
+
+    let value = (column5 - *oods_values[101]) / (point - pow64 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[101] * value;
+
+    let value = (column5 - *oods_values[102]) / (point - pow66 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[102] * value;
+
+    let value = (column5 - *oods_values[103]) / (point - pow67 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[103] * value;
+
+    let value = (column5 - *oods_values[104]) / (point - pow70 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[104] * value;
+
+    let value = (column6 - *oods_values[105]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[105] * value;
+
+    let value = (column6 - *oods_values[106]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[106] * value;
+
+    let value = (column6 - *oods_values[107]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[107] * value;
+
+    let value = (column6 - *oods_values[108]) / (point - pow3 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[108] * value;
+
+    let value = (column6 - *oods_values[109]) / (point - pow4 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[109] * value;
+
+    let value = (column6 - *oods_values[110]) / (point - pow5 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[110] * value;
+
+    let value = (column6 - *oods_values[111]) / (point - pow7 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[111] * value;
+
+    let value = (column6 - *oods_values[112]) / (point - pow9 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[112] * value;
+
+    let value = (column6 - *oods_values[113]) / (point - pow11 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[113] * value;
+
+    let value = (column6 - *oods_values[114]) / (point - pow13 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[114] * value;
+
+    let value = (column6 - *oods_values[115]) / (point - pow17 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[115] * value;
+
+    let value = (column6 - *oods_values[116]) / (point - pow22 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[116] * value;
+
+    let value = (column6 - *oods_values[117]) / (point - pow56 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[117] * value;
+
+    let value = (column6 - *oods_values[118]) / (point - pow57 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[118] * value;
+
+    let value = (column6 - *oods_values[119]) / (point - pow58 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[119] * value;
+
+    let value = (column6 - *oods_values[120]) / (point - pow59 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[120] * value;
+
+    let value = (column6 - *oods_values[121]) / (point - pow60 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[121] * value;
+
+    let value = (column6 - *oods_values[122]) / (point - pow61 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[122] * value;
+
+    let value = (column6 - *oods_values[123]) / (point - pow63 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[123] * value;
+
+    let value = (column6 - *oods_values[124]) / (point - pow65 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[124] * value;
+
+    let value = (column7 - *oods_values[125]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[125] * value;
+
+    let value = (column7 - *oods_values[126]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[126] * value;
+
+    let value = (column8 - *oods_values[127]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[127] * value;
+
+    let value = (column8 - *oods_values[128]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[128] * value;
+
+    let value = (column9 - *oods_values[129]) / (point - pow0 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[129] * value;
+
+    let value = (column9 - *oods_values[130]) / (point - pow1 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[130] * value;
+
+    let value = (column9 - *oods_values[131]) / (point - pow2 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[131] * value;
+
+    let value = (column9 - *oods_values[132]) / (point - pow5 * oods_point);
+    let total_sum = total_sum + *constraint_coefficients[132] * value;
 
     // Sum the OODS boundary constraints on the composition polynomials.
     let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());
