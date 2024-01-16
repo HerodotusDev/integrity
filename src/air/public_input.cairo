@@ -1,9 +1,13 @@
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
-        math::{pow, Felt252PartialOrd, Felt252Div}
+        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le
     },
-    air::public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product}
+    air::{
+        public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product},
+        constants
+    },
+    domains::StarkDomains
 };
 use cairo_verifier::common::hash::hash_felts;
 use cairo_verifier::air::constants::{segments, MAX_ADDRESS, get_builtins, INITIAL_PC};
@@ -232,6 +236,38 @@ impl PublicInputImpl of PublicInputTrait {
         );
 
         (program_hash, output_hash)
+    }
+
+    fn validate(self: @PublicInput, domains: StarkDomains) {
+        assert_range_u128_le(*self.log_n_steps, constants::MAX_LOG_N_STEPS);
+        let n_steps = pow(2, *self.log_n_steps);
+        assert(
+            n_steps * constants::CPU_COMPONENT_HEIGHT == domains.trace_domain_size,
+            'Wrong trace size'
+        );
+
+        assert(0 <= *self.rc_min, 'wrong rc_min');
+        assert(*self.rc_min < *self.rc_max, 'wrong rc range');
+        assert(*self.rc_max <= constants::MAX_RANGE_CHECK, 'wrong rc_max');
+
+        assert(*self.layout == constants::LAYOUT_CODE, 'wrong layout code');
+
+        let pedersen_copies = n_steps / constants::PEDERSEN_BUILTIN_RATIO;
+        let pedersen_uses = (*self.segments.at(constants::segments::PEDERSEN).stop_ptr
+            - *self.segments.at(constants::segments::PEDERSEN).begin_addr)
+            / 3;
+        assert_range_u128_le(pedersen_uses, pedersen_copies);
+
+        let range_check_copies = n_steps / constants::RC_BUILTIN_RATIO;
+        let range_check_uses = *self.segments.at(constants::segments::RANGE_CHECK).stop_ptr
+            - *self.segments.at(constants::segments::RANGE_CHECK).begin_addr;
+        assert_range_u128_le(range_check_uses, range_check_copies);
+
+        let bitwise_copies = n_steps / constants::BITWISE_RATIO;
+        let bitwise_uses = (*self.segments.at(constants::segments::BITWISE).stop_ptr
+            - *self.segments.at(constants::segments::BITWISE).begin_addr)
+            / 5;
+        assert_range_u128_le(bitwise_uses, bitwise_copies);
     }
 }
 
