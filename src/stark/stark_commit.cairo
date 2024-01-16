@@ -28,8 +28,7 @@ fn stark_commit(
     );
 
     let composition_alpha = channel.random_felt_to_prover();
-    let traces_coefficients = powers_array(1, composition_alpha, N_CONSTRAINTS.try_into().unwrap(),)
-        .span();
+    let traces_coefficients = powers_array(1, composition_alpha, N_CONSTRAINTS).span();
 
     let composition_commitment = table_commit(
         ref channel, *unsent_commitment.composition, *config.composition,
