@@ -12,6 +12,7 @@ fn test_generate_queries_0() {
         ) == array![0xc53fdd1e, 0x166d56d3d, 0x1e563d10b, 0x2d9a2434f],
         'Invalid value'
     );
+    assert(channel.counter == 1, 'Invalid value');
 }
 
 #[test]
@@ -37,6 +38,7 @@ fn test_generate_queries_1() {
         ],
         'Invalid value'
     );
+    assert(channel.counter == 3, 'Invalid value');
 }
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover
@@ -71,4 +73,5 @@ fn test_generate_queries_2() {
         ],
         'Invalid value'
     );
+    assert(channel.counter == 5, 'Invalid value');
 }
