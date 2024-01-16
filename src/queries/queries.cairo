@@ -3,8 +3,7 @@ use cairo_verifier::{
     common::{
         merge_sort::merge_sort, math::pow, consts::FIELD_GENERATOR, bit_reverse::BitReverseTrait
     },
-    domains::StarkDomains,
-    common::array_print::SpanPrintTrait
+    domains::StarkDomains, common::array_print::SpanPrintTrait
 };
 
 // 2^64 = 18446744073709551616
