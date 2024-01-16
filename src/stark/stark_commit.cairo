@@ -24,10 +24,7 @@ fn stark_commit(
     stark_domains: @StarkDomains,
 ) -> StarkCommitment {
     let traces_commitment = traces_commit(
-        ref channel,
-        public_input,
-        *unsent_commitment.traces,
-        *config.traces,
+        ref channel, public_input, *unsent_commitment.traces, *config.traces,
     );
 
     let composition_alpha = channel.random_felt_to_prover();
