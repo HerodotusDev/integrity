@@ -224,9 +224,9 @@ impl PublicInputImpl of PublicInputTrait {
         memory_index += builtins.len();
 
         // 3. Output segment 
-        let output = memory
-            .extract_range(memory_index.into() + output_start, output_stop - output_start);
-        memory_index += (output_stop - output_start).try_into().unwrap();
+        let output_len = output_stop - output_start;
+        let output = memory.extract_range(memory_index.into() + output_start, output_len);
+        memory_index += (output_len).try_into().unwrap();
         let output_hash = hash_felts(output);
 
         // Check main page len
