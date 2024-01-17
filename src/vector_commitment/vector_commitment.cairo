@@ -61,7 +61,7 @@ struct VectorCommitmentWitness {
 fn vector_commit(
     ref channel: Channel, unsent_commitment: felt252, config: VectorCommitmentConfig
 ) -> VectorCommitment {
-    channel.read_felt_from_prover(unsent_commitment); // commitment is being sent
+    channel.read_truncated_hash_from_prover(unsent_commitment); // commitment is being sent
     VectorCommitment { config: config, commitment_hash: unsent_commitment, }
 }
 
