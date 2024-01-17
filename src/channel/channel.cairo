@@ -63,7 +63,7 @@ impl ChannelImpl of ChannelTrait {
         res
     }
 
-    fn read_felt_from_prover(ref self: Channel, value: felt252) {
+    fn read_truncated_hash_from_prover(ref self: Channel, value: felt252) {
         let mut hash_data = ArrayTrait::<u32>::new();
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
@@ -74,9 +74,26 @@ impl ChannelImpl of ChannelTrait {
         self.counter = 0;
     }
 
+    fn read_felt_from_prover(ref self: Channel, value: felt252) {
+        let mut hash_data = ArrayTrait::<u32>::new();
+
+        assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
+        hash_data.append_big_endian(self.digest + 1);
+        hash_data.append_big_endian(value * MONTGOMERY_R);
+
+        self.digest = blake2s(hash_data).flip_endianness();
+        self.counter = 0;
+    }
+
     fn read_felts_from_prover(ref self: Channel, values: Span<felt252>) {
-        let hashed = poseidon_hash_span(values);
-        self.read_felt_from_prover(hashed);
+        let mut n = 0;
+        loop {
+            if n == values.len() {
+                break;
+            }
+            self.read_felt_from_prover(*values[n]);
+            n += 1;
+        };
     }
 
     fn read_felt_vector_from_prover(ref self: Channel, values: Span<felt252>) {
