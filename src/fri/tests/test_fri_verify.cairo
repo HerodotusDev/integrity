@@ -69,7 +69,7 @@ fn test_fri_verify() {
                 .span(),
             // Array of size n_layers, each entry represents the FRI step size,
             // i.e. the number of FRI-foldings between layer i and i+1.
-            fri_step_sizes: array![0x0, 0x4, 0x3, 0x2, 0x2,].span(),
+            fri_step_sizes: array![0x0, 0x4, 0x3, 0x2, 0x2].span(),
             log_last_layer_degree_bound: 0x7,
         },
         inner_layers: array![
@@ -1539,6 +1539,26 @@ fn test_fri_verify() {
         ]
             .span()
     };
+
+    assert((*witness.layers.at(0)).leaves.len() == 0x10e, 'Invalid length');
+    assert(
+        (*witness.layers.at(0)).table_witness.vector.authentications.len() == 232, 'Invalid length'
+    );
+
+    assert((*witness.layers.at(1)).leaves.len() == 0x7e, 'Invalid length');
+    assert(
+        (*witness.layers.at(1)).table_witness.vector.authentications.len() == 178, 'Invalid length'
+    );
+
+    assert((*witness.layers.at(2)).leaves.len() == 0x36, 'Invalid length');
+    assert(
+        (*witness.layers.at(2)).table_witness.vector.authentications.len() == 142, 'Invalid length'
+    );
+
+    assert((*witness.layers.at(3)).leaves.len() == 0x36, 'Invalid length');
+    assert(
+        (*witness.layers.at(3)).table_witness.vector.authentications.len() == 106, 'Invalid length'
+    );
 
     fri_verify(queries, commitment, decommitment, witness)
 }

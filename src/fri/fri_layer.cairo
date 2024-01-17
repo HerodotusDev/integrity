@@ -1,3 +1,4 @@
+use core::debug::PrintTrait;
 use cairo_verifier::{
     common::{array_extend::ArrayExtendTrait, math::pow}, fri::fri_formula::fri_formula
 };
