@@ -12,11 +12,7 @@ fn blake2s(data: Array<u32>) -> u256 {
 // A 160 LSB truncated version of blake2s.
 // hash:
 //   blake2s(x, y) & ~((1<<96) - 1).
-fn truncated_blake2s(x: felt252, y: felt252) -> felt252 {
-    let mut data = ArrayTrait::<u32>::new();
-    data.append_big_endian(x);
-    data.append_big_endian(y);
-
+fn truncated_blake2s(data: Array<u32>) -> felt252 {
     // Truncate hash - convert value to felt, by taking the least significant 160 bits.
     let hash = blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000;
     hash.try_into().unwrap()
