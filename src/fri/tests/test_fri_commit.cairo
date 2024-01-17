@@ -2,7 +2,9 @@ use cairo_verifier::fri::fri::{fri_commit, FriUnsentCommitment, FriCommitment};
 use cairo_verifier::fri::fri_config::FriConfig;
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment};
-use cairo_verifier::vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment};
+use cairo_verifier::vector_commitment::vector_commitment::{
+    VectorCommitmentConfig, VectorCommitment
+};
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
@@ -191,21 +193,19 @@ fn test_fri_commit() {
     };
 
     let fri_commitment = fri_commit(ref channel, unsent_commitment, fri_config);
-    let fri_commitment_expect = FriCommitment{
+    let fri_commitment_expect = FriCommitment {
         config: fri_config,
         inner_layers: array![
             TableCommitment {
                 config: TableCommitmentConfig {
                     n_columns: 0x10,
                     vector: VectorCommitmentConfig {
-                        height: 0x12,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0x12, n_verifier_friendly_commitment_layers: 0x16,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0x12,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0x12, n_verifier_friendly_commitment_layers: 0x16,
                     },
                     commitment_hash: 0x6288a59e1970d629fdfb5bdea93ad3203511b3c27340db1467a39cf7951de3
                 },
@@ -214,14 +214,12 @@ fn test_fri_commit() {
                 config: TableCommitmentConfig {
                     n_columns: 0x8,
                     vector: VectorCommitmentConfig {
-                        height: 0xf,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xf, n_verifier_friendly_commitment_layers: 0x16,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0xf,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xf, n_verifier_friendly_commitment_layers: 0x16,
                     },
                     commitment_hash: 0x821aaa485d3fbdf7b0a06d773e565370f794c06bbcb4e23279a39544782c1e
                 },
@@ -230,14 +228,12 @@ fn test_fri_commit() {
                 config: TableCommitmentConfig {
                     n_columns: 0x4,
                     vector: VectorCommitmentConfig {
-                        height: 0xd,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xd, n_verifier_friendly_commitment_layers: 0x16,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0xd,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xd, n_verifier_friendly_commitment_layers: 0x16,
                     },
                     commitment_hash: 0x7a73129c87d8a60cb07b26775437ac75790bbd415d47912e5eb1f7c7e11d42f
                 },
@@ -246,25 +242,25 @@ fn test_fri_commit() {
                 config: TableCommitmentConfig {
                     n_columns: 0x4,
                     vector: VectorCommitmentConfig {
-                        height: 0xb,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xb, n_verifier_friendly_commitment_layers: 0x16,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0xb,
-                        n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xb, n_verifier_friendly_commitment_layers: 0x16,
                     },
                     commitment_hash: 0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038
                 },
             },
-        ].span(),
+        ]
+            .span(),
         eval_points: array![
             0xbdb64eae5fbad13b4faf374043e73f68b9c428eb0d6b78097c64539add8c6e,
             0x511356e0c2eca37e8d4ed5d88cabe83b8dfba6e3a9ea0c793b114a5fb0a8147,
             0x73cbfe687c88476eed31b84b03c0027712369d3e2ba6947422c8ea8cb72f2d7,
             0x34b2eb47b0eca404696f00d7bf1cb6238cdc6cd3c3560ba9c532a7fa372fb2f,
-        ].span(),
+        ]
+            .span(),
         last_layer_coefficients: array![
             0x3b844d8df7b26d71ddac95a77283731a044d0817799b93504c961643e7536fa,
             0x6eb1a5ad1749834b2625684ee4f1fe4cdff6a2bef8433e7e4f0796d10c80cbd,
@@ -394,7 +390,8 @@ fn test_fri_commit() {
             0x32d904eca7ea63e7174ab1f19d0430ca1f8daddf03c7b400cee6380c4f4cd8,
             0x5dfb739807b4cb1fe4387475630c52f0b44a2f92bdc2718e872273c4b4fa013,
             0x733caba128dc8696c58e20e8f451c63dc8711ff6d6e4ec498b5de3b07f0bb47,
-        ].span(),
+        ]
+            .span(),
     };
 
     assert(fri_commitment == fri_commitment_expect, 'Invalid value');
