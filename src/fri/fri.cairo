@@ -1,7 +1,7 @@
 use core::debug::PrintTrait;
 use cairo_verifier::{
-    common::array_print::SpanPrintTrait,
-    common::math::pow, channel::channel::{Channel, ChannelTrait},
+    common::array_print::SpanPrintTrait, common::math::pow,
+    channel::channel::{Channel, ChannelTrait},
     fri::{
         fri_config::FriConfig, fri_first_layer::gather_first_layer_queries,
         fri_group::get_fri_group,
@@ -168,26 +168,6 @@ fn fri_verify_layers(
             queries.span(), *layer_witness.at(i).leaves, params
         );
 
-        // verify_indices.span().print();
-
-        // verify_y_values.span().print();
-
-        // all good so far
-
-        // let span = next_queries.span();
-        // let mut i: u32 = 0;
-        // loop {
-        //     if i == span.len() {
-        //         break;
-        //     }
-        //     (*span.at(i)).index.print();
-        //     (*span.at(i)).y_value.print();
-        //     (*span.at(i)).x_inv_value.print();
-
-        //     i += 1;
-        // };
-        // working now correct data
-
         // Table decommitment.
         table_decommit(
             *commitment.at(i),
@@ -231,13 +211,13 @@ fn fri_verify(
         fri_queries,
     );
 
-    // // Last layer.
-    // assert(
-    //     commitment
-    //         .last_layer_coefficients
-    //         .len()
-    //         .into() == pow(2, commitment.config.log_last_layer_degree_bound),
-    //     'Invlid value'
-    // );
-    // verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);
+    // Last layer.
+    assert(
+        commitment
+            .last_layer_coefficients
+            .len()
+            .into() == pow(2, commitment.config.log_last_layer_degree_bound),
+        'Invlid value'
+    );
+    verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);
 }
