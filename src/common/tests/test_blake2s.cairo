@@ -1,6 +1,5 @@
 use cairo_verifier::common::{
-    array_append::ArrayAppendTrait,
-    blake2s::{blake2s, truncated_blake2s, load32}
+    array_append::ArrayAppendTrait, blake2s::{blake2s, truncated_blake2s, load32}
 };
 
 fn get_arr_v1(n: u32) -> Array<u32> {
@@ -91,5 +90,8 @@ fn test_truncated_blake2s() {
     let mut data = ArrayTrait::<u32>::new();
     data.append_big_endian(1157029198022238202306346125123666191662554108005);
     data.append_big_endian(129252051435949032402481343903845417193011527432);
-    assert(truncated_blake2s(data) == 642191007116032514313255519742888271333651019057, 'invalid truncated_blake2s');
+    assert(
+        truncated_blake2s(data) == 642191007116032514313255519742888271333651019057,
+        'invalid truncated_blake2s'
+    );
 }
