@@ -1,14 +1,11 @@
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait,
-        array_append::ArrayAppendTrait,
-        math::Felt252PartialOrd,
-        consts::MONTGOMERY_R,
-        blake2s::truncated_blake2s,
+        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
+        math::Felt252PartialOrd, consts::MONTGOMERY_R, blake2s::truncated_blake2s,
     },
     vector_commitment::vector_commitment::{
-        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit, VectorQuery,
-        vector_commitment_decommit
+        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
+        VectorQuery, vector_commitment_decommit
     },
     channel::channel::Channel
 };
