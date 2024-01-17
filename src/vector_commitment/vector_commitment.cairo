@@ -6,13 +6,13 @@ use cairo_verifier::channel::channel::{Channel, ChannelImpl};
 use poseidon::hades_permutation;
 
 // Commitment for a vector of field elements.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct VectorCommitment {
     config: VectorCommitmentConfig,
     commitment_hash: felt252
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct VectorCommitmentConfig {
     height: felt252,
     n_verifier_friendly_commitment_layers: felt252,

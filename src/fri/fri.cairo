@@ -23,7 +23,7 @@ struct FriUnsentCommitment {
     last_layer_coefficients: Span<felt252>,
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct FriCommitment {
     config: FriConfig,
     // Array of size n_layers - 1 containing table commitments for each inner layer.
@@ -116,7 +116,7 @@ fn fri_commit(
 
     let (commitments, eval_points) = fri_commit_rounds(
         ref channel,
-        config.n_layers,
+        config.n_layers - 1,
         config.inner_layers,
         unsent_commitment.inner_layers,
         config.fri_step_sizes,
