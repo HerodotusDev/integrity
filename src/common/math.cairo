@@ -30,7 +30,7 @@ fn mul_inverse(x: felt252) -> felt252 {
 
 impl Felt252Div of Div<felt252> {
     fn div(lhs: felt252, rhs: felt252) -> felt252 {
-        (Into::<felt252, u256>::into(lhs) / Into::<felt252, u256>::into(rhs)).try_into().unwrap()
+        lhs * mul_inverse(rhs)
     }
 }
 
