@@ -1,1 +1,1 @@
-mod test_table_commitment;
+mod test_table_commitment_decommit;

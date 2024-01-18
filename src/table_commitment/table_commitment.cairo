@@ -1,14 +1,14 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-use cairo_verifier::common::array_append::ArrayAppendTrait;
-use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit, VectorQuery,
-    vector_commitment_decommit
+use cairo_verifier::{
+    common::{
+        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
+        math::Felt252PartialOrd, consts::MONTGOMERY_R, blake2s::truncated_blake2s,
+    },
+    vector_commitment::vector_commitment::{
+        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
+        VectorQuery, vector_commitment_decommit
+    },
+    channel::channel::Channel
 };
-use cairo_verifier::channel::channel::Channel;
-use cairo_verifier::common::math::Felt252PartialOrd;
-use cairo_verifier::common::consts::MONTGOMERY_R;
-use cairo_verifier::common::blake2s::blake2s;
-use poseidon::poseidon_hash_span;
 
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.
@@ -125,20 +125,9 @@ fn generate_vector_queries(
             *values[i * n_columns]
         } else {
             let slice = values.slice(i * n_columns, n_columns);
-            if is_verifier_friendly {
-                poseidon_hash_span(slice)
-            } else {
-                let mut data: Array<u32> = ArrayTrait::new();
-                data.append_big_endian(slice);
-
-                // Truncate hash - convert value to felt, by taking the 160 least significant bits
-                let hash: felt252 = (blake2s(data)
-                    .flip_endianness() % 0x10000000000000000000000000000000000000000)
-                    .try_into()
-                    .unwrap();
-
-                hash
-            }
+            let mut data: Array<u32> = ArrayTrait::new();
+            data.append_big_endian(slice);
+            truncated_blake2s(data)
         };
         vector_queries.append(VectorQuery { index: *queries[i], value: hash });
         i += 1;
