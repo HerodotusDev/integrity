@@ -8,7 +8,7 @@ const MAX_LAST_LAYER_LOG_DEGREE_BOUND: felt252 = 15;
 const MAX_FRI_LAYERS: felt252 = 15;
 const MAX_FRI_STEP: felt252 = 4;
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct FriConfig {
     // Log2 of the size of the input layer to FRI.
     log_input_size: felt252,

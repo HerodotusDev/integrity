@@ -3,6 +3,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
     vector_commitment_decommit,
 };
 
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commitment_decommit_0() {
@@ -152,7 +153,7 @@ fn test_vector_commitment_decommit_0() {
     vector_commitment_decommit(commitment, queries, witness);
 }
 
-
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commitment_decommit_1() {

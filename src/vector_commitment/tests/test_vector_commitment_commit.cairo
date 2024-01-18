@@ -3,7 +3,7 @@ use cairo_verifier::{
     vector_commitment::vector_commitment::{VectorCommitmentConfig, vector_commit}
 };
 
-
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commit() {
