@@ -1,5 +1,6 @@
 use cairo_verifier::channel::channel::ChannelTrait;
 
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_read_felt_from_prover_0() {
@@ -19,6 +20,7 @@ fn test_read_felt_from_prover_0() {
     assert(channel.counter == 0, 'Invalid value');
 }
 
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_read_felt_from_prover_1() {
@@ -38,6 +40,7 @@ fn test_read_felt_from_prover_1() {
     assert(channel.counter == 0, 'Invalid value');
 }
 
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_read_felt_from_prover_2() {

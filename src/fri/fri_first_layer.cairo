@@ -20,8 +20,8 @@ fn gather_first_layer_queries(
         fri_queries
             .append(
                 FriLayerQuery {
-                    index: *(queries.at(i)),
-                    y_value: *(evaluations.at(i)),
+                    index: *queries.at(i),
+                    y_value: *evaluations.at(i),
                     x_inv_value: mul_inverse(shifted_x_value),
                 }
             );

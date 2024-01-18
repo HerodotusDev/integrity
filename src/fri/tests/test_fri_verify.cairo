@@ -1540,26 +1540,6 @@ fn test_fri_verify() {
             .span()
     };
 
-    assert((*witness.layers.at(0)).leaves.len() == 0x10e, 'Invalid length');
-    assert(
-        (*witness.layers.at(0)).table_witness.vector.authentications.len() == 232, 'Invalid length'
-    );
-
-    assert((*witness.layers.at(1)).leaves.len() == 0x7e, 'Invalid length');
-    assert(
-        (*witness.layers.at(1)).table_witness.vector.authentications.len() == 178, 'Invalid length'
-    );
-
-    assert((*witness.layers.at(2)).leaves.len() == 0x36, 'Invalid length');
-    assert(
-        (*witness.layers.at(2)).table_witness.vector.authentications.len() == 142, 'Invalid length'
-    );
-
-    assert((*witness.layers.at(3)).leaves.len() == 0x36, 'Invalid length');
-    assert(
-        (*witness.layers.at(3)).table_witness.vector.authentications.len() == 106, 'Invalid length'
-    );
-
     fri_verify(queries, commitment, decommitment, witness)
 }
 
