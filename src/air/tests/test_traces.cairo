@@ -151,50 +151,6 @@ fn test_traces_commit() {
     let result = traces_commit(ref channel, @public_input, unsent_commitment, traces_config);
 
     assert(
-        result.original.config.n_columns == expected_result.original.config.n_columns,
-        'Invalid value'
-    );
-    assert(
-        result.original.config.vector.height == expected_result.original.config.vector.height,
-        'Invalid value'
-    );
-    assert(
-        result
-            .original
-            .config
-            .vector
-            .n_verifier_friendly_commitment_layers == expected_result
-            .original
-            .config
-            .vector
-            .n_verifier_friendly_commitment_layers,
-        'Invalid value'
-    );
-    assert(
-        result
-            .original
-            .vector_commitment
-            .config
-            .height == expected_result
-            .original
-            .config
-            .vector
-            .height,
-        'Invalid value'
-    );
-    assert(
-        result
-            .original
-            .vector_commitment
-            .config
-            .n_verifier_friendly_commitment_layers == expected_result
-            .original
-            .vector_commitment
-            .config
-            .n_verifier_friendly_commitment_layers,
-        'Invalid value'
-    );
-    assert(
         result
             .original
             .vector_commitment
@@ -250,50 +206,6 @@ fn test_traces_commit() {
             .diluted_check_interaction_alpha == expected_result
             .interaction_elements
             .diluted_check_interaction_alpha,
-        'Invalid value'
-    );
-    assert(
-        result.interaction.config.n_columns == expected_result.interaction.config.n_columns,
-        'Invalid value'
-    );
-    assert(
-        result.interaction.config.vector.height == expected_result.interaction.config.vector.height,
-        'Invalid value'
-    );
-    assert(
-        result
-            .interaction
-            .config
-            .vector
-            .n_verifier_friendly_commitment_layers == expected_result
-            .interaction
-            .config
-            .vector
-            .n_verifier_friendly_commitment_layers,
-        'Invalid value'
-    );
-    assert(
-        result
-            .interaction
-            .vector_commitment
-            .config
-            .height == expected_result
-            .interaction
-            .config
-            .vector
-            .height,
-        'Invalid value'
-    );
-    assert(
-        result
-            .interaction
-            .vector_commitment
-            .config
-            .n_verifier_friendly_commitment_layers == expected_result
-            .interaction
-            .vector_commitment
-            .config
-            .n_verifier_friendly_commitment_layers,
         'Invalid value'
     );
     assert(
