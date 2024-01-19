@@ -1,10 +1,16 @@
+use core::traits::Into;
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::table_commitment::table_commitment::{
     TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
+    TableCommitmentConfig
 };
-use cairo_verifier::air::{public_input::PublicInput, traces_config::TracesConfig};
+use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
+use cairo_verifier::air::{
+    public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
 use cairo_verifier::channel::channel::Channel;
 use cairo_verifier::air::global_values::InteractionElements;
+use cairo_verifier::common::asserts::assert_in_range;
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
 // of the CPU AIR.
@@ -23,7 +29,7 @@ struct TracesUnsentCommitment {
 }
 
 // Commitment for the Traces component.
-#[derive(Drop)]
+#[derive(Drop, PartialEq)]
 struct TracesCommitment {
     public_input: @PublicInput,
     // Commitment to the first trace.
@@ -50,6 +56,38 @@ struct TracesDecommitment {
 struct TracesWitness {
     original: TableCommitmentWitness,
     interaction: TableCommitmentWitness,
+}
+
+const MAX_N_COLUMNS: felt252 = 128;
+const AIR_LAYOUT_N_ORIGINAL_COLUMNS: felt252 = 12;
+const AIR_LAYOUT_N_INTERACTION_COLUMNS: felt252 = 3;
+
+// Configuration for the Traces component.
+#[derive(Drop, Copy)]
+struct TracesConfig {
+    original: TableCommitmentConfig,
+    interaction: TableCommitmentConfig,
+}
+
+#[generate_trait]
+impl TracesConfigImpl of TracesConfigTrait {
+    fn validate(
+        self: @TracesConfig,
+        log_eval_domain_size: felt252,
+        n_verifier_friendly_commitment_layers: felt252,
+    ) {
+        assert_in_range(*self.original.n_columns, 1, MAX_N_COLUMNS + 1);
+        assert_in_range(*self.interaction.n_columns, 1, MAX_N_COLUMNS + 1);
+        assert(*self.original.n_columns == NUM_COLUMNS_FIRST.into(), 'Wrong number of columns');
+        assert(*self.interaction.n_columns == NUM_COLUMNS_SECOND.into(), 'Wrong number of columns');
+
+        self.original.vector.validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
+
+        self
+            .interaction
+            .vector
+            .validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
+    }
 }
 
 // Reads the traces commitment from the channel.
