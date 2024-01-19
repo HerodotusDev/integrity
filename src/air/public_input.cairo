@@ -6,7 +6,9 @@ use cairo_verifier::{
         array_print::SpanPrintTrait
     },
     air::{
-        public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product},
+        public_memory::{
+            Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
+        },
         constants
     },
     domains::StarkDomains
@@ -49,7 +51,8 @@ impl PublicInputImpl of PublicInputTrait {
             main_page_hash_state = main_page_hash_state.update_with(*self.main_page.at(i));
             i += 1;
         };
-        main_page_hash_state = main_page_hash_state.update_with(2 * self.main_page.len());
+        main_page_hash_state = main_page_hash_state
+            .update_with(AddrValueSize * self.main_page.len());
         let main_page_hash = main_page_hash_state.finalize();
 
         let mut hash_data = ArrayTrait::<u32>::new();
