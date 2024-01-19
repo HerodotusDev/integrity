@@ -40,24 +40,16 @@ impl PublicInputImpl of PublicInputTrait {
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
     fn get_public_input_hash(self: @PublicInput) -> u256 {
         // Main page hash.
-        let page = *self.main_page.at(0);
         let mut main_page_hash_state = PedersenTrait::new(0);
-        main_page_hash_state = main_page_hash_state.update_with(page.address);
-        main_page_hash_state = main_page_hash_state.update_with(page.value);
-        let mut i: u32 = 1;
+        let mut i: u32 = 0;
         loop {
             if i == self.main_page.len() {
                 break;
             }
-
-            let page = *self.main_page.at(i);
-            main_page_hash_state = main_page_hash_state.update_with(page.address);
-            main_page_hash_state = main_page_hash_state.update_with(page.value);
-
+            main_page_hash_state = main_page_hash_state.update_with(*self.main_page.at(i));
             i += 1;
         };
         main_page_hash_state = main_page_hash_state.update_with(2 * self.main_page.len());
-
         let main_page_hash = main_page_hash_state.finalize();
 
         let mut hash_data = ArrayTrait::<u32>::new();
