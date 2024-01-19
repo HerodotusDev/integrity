@@ -1,7 +1,7 @@
 use cairo_verifier::air::public_input::PublicInputTrait;
 use cairo_verifier::{
     air::{
-        traces_config::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
+        traces::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
         traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness}
     },
     channel::channel::{Channel, ChannelImpl},
