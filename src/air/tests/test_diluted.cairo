@@ -3,7 +3,7 @@ use debug::PrintTrait;
 
 #[test]
 #[available_gas(9999999999)]
-fn test_diluted_product() {
+fn test_diluted_product_bits_16_spacing_4() {
     let res = array![
         0x77236c66f48bc3c27dd07478f276be52b473a7ecbda1b8e6f672824e4627da9,
         0x54cb3ebd068990e0d154beb88a5c173257eed1b0b5904374300962d72e9b41,
@@ -18,6 +18,63 @@ fn test_diluted_product() {
     ];
 
     helper_test_diluted_product(16, 4, res.span());
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_diluted_product_bits_8_spacing_4() {
+    let res = array![
+        0x18752401e75e69f83fc98b863b3a4c3e5e79f5650182c1df218b3ca29e5835a,
+        0x7ac67e53584f33e2a63d9f4eb31b4c2cbbca8a48c2d750a7048e870ff47fa4c,
+        0x4edc789c011c0a5be01c3bbda29e773917ef31c803bdf5679a7f5046bd97016,
+        0x1c46d92d0b77212e6f5c6fc6d0aa079b467e1cc5c9bc08223ec0e25e3906712,
+        0x5a0d2c17e9cc0b93cdf1a41f1ec3bbd6ce835458a1dabddc93df70ec1748468,
+        0x4b03969520ad63b6dec6fbf0c844dae482e6f8e5b87d4c9fd00ed50de3416fb,
+        0x5a870a34fce641bdd8d4ae06da8dd5f8e98fa368fac48723702d0f9f075208a,
+        0x2dcdc3d2b00261f7a07281b1d79581f4ec070c05efaada09ca56015748dce0c,
+        0x1c2d9212b3808991a61a64de551af75388fa02ab3c5a0293d7471ed4e72837c,
+        0x35a8d259160bb1cc4c124cb81edbd1c77bf008c791b2670dd10014e07ea44fa
+    ];
+
+    helper_test_diluted_product(8, 4, res.span());
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_diluted_product_bits_16_spacing_2() {
+    let res = array![
+        0x2d03b12988705fd15831dde5aa9aa4a79793016bd0a22ebad9211787d0a05b2,
+        0x71e574bac4e58426e5c3537d08b58ee9c99720f816ba2202dd65b0b15fc198a,
+        0xf7da7a7e0c0bfc469c085201489bffbd6c30449b547c6bbefaa7c7b16990eb,
+        0x3785508048c3ef3b8c0bcae5ee6dc10790e186cfa13e52e8ef10c67a0aa91f8,
+        0x64fb1baf4f455b606bfe0adf434bae08340d049c6ef07f17aaf4470e7a112c4,
+        0x34ceb3253d98056fc322a90cf07b655da2e5f4820fdd59e17ed7534015200da,
+        0x7301c7ba9c1772cc2b37fe7cd8553e3c4e88f0ea72713fabaa4de8d04a1e1c,
+        0x2f76d2b3aa3f2a979621db4f06091dae99302193792056f822f5599f54aed17,
+        0x788f2d9a6a5e7fd2d8e352890bf4e89a100ac0b0e37bdcb81f1e30a25d8450e,
+        0x429f627f487f6e7d18c4608f742f72538a6624a356965a5f0820d1a1e7211b6
+    ];
+
+    helper_test_diluted_product(16, 2, res.span());
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_diluted_product_bits_8_spacing_2() {
+    let res = array![
+        0x632b61015fb89ff3c699a6e57045432828c0295d7fe6329b30e720f4248b7ef,
+        0x6ec94cecee4c25df064ddee2a4ffa9d9fea2a17b028ba98edfeedfd3bfba585,
+        0x7703b82deb78228523d930d8168fecc212dea1d38537f5ea62766dbdf11a509,
+        0x6f5bb96c92f66c2f35f9f1eed8cc74762f464ca6c361ade4cc00c6f86d63e43,
+        0x36b2b57f7a8910c8a4f910489e32a4e18266144ca92779fee009a36fabf5419,
+        0x6ee88cc132865b962868973639ce41b7c27d364e4f7e4e5b452c8e0aaa2f188,
+        0x11cce009e17a3386a8d97dd05c2e50d2e17a5b436e6e20c103bee92b47518e8,
+        0x22ed8293552315e78b12aeb70e4ab0eb9c006536ee535c701da9852f0326737,
+        0x42076b59def678a7e34f23343f86684d4fb43a8fce62f003380842bda6377aa,
+        0xd502678c91d8675c7088de077b8bec6a095991fd260e47b39c65f1cfa172fe
+    ];
+
+    helper_test_diluted_product(8, 2, res.span());
 }
 
 fn helper_test_diluted_product(n_bits: felt252, spacing: felt252, res: Span<felt252>) {
