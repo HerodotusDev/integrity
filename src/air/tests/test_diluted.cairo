@@ -4,6 +4,23 @@ use debug::PrintTrait;
 #[test]
 #[available_gas(9999999999)]
 fn test_diluted_product() {
+    let res = array![
+        0x77236c66f48bc3c27dd07478f276be52b473a7ecbda1b8e6f672824e4627da9,
+        0x54cb3ebd068990e0d154beb88a5c173257eed1b0b5904374300962d72e9b41,
+        0x43e08864f8390c13772a7fe22a9d62e8259bf8f99740110c75c8ba803694a6a,
+        0x3027d7f8b063e08733602c352a1b5ce86768bf5b0fc5f48a102e74ec6d98c9b,
+        0x914182d27479fab56632ff69bc8a4ee9b579e7f9c8f84bf0fb58025a3a4b12,
+        0x16751012db74a77b0c4fbd0b4f02f89ec20e7f3b866b354bacb7bd5a0f501ce,
+        0x26d12d247dfe1fdecce2405225db1d18d89def2ca22b1239e79ed710b8990d1,
+        0x60e66d5436985c1e1e1619a0fb319582bd09e38e21bb1da2b31794bd3207d2a,
+        0x7881c5f6b6bfa06a45799dfe315284e8b2a6e450656584889068890bf98f881,
+        0x656bd6a31349997ec60abfd7471725e9f1e3247ef2270a0242e480808d85725
+    ];
+
+    helper_test_diluted_product(16, 4, res.span());
+}
+
+fn helper_test_diluted_product(n_bits: felt252, spacing: felt252, res: Span<felt252>) {
     let z_arr = array![
         0x3c48e3094aeca888fe6781ad7594d14d7f88062bbe320c6d6913f44b116810,
         0x6813bd29a0c6fd6b95d8d73e35419f95acef279e47e4962adb687279763faf6,
@@ -30,23 +47,20 @@ fn test_diluted_product() {
         0x78e6b8c8ac5dc6f4af5280d67d81398cea92d1df8f0230610f2780bbf1784b2
     ];
 
-    let res = array![
-        0x77236c66f48bc3c27dd07478f276be52b473a7ecbda1b8e6f672824e4627da9,
-        0x54cb3ebd068990e0d154beb88a5c173257eed1b0b5904374300962d72e9b41,
-        0x43e08864f8390c13772a7fe22a9d62e8259bf8f99740110c75c8ba803694a6a,
-        0x3027d7f8b063e08733602c352a1b5ce86768bf5b0fc5f48a102e74ec6d98c9b,
-        0x914182d27479fab56632ff69bc8a4ee9b579e7f9c8f84bf0fb58025a3a4b12,
-        0x16751012db74a77b0c4fbd0b4f02f89ec20e7f3b866b354bacb7bd5a0f501ce,
-        0x26d12d247dfe1fdecce2405225db1d18d89def2ca22b1239e79ed710b8990d1,
-        0x60e66d5436985c1e1e1619a0fb319582bd09e38e21bb1da2b31794bd3207d2a,
-        0x7881c5f6b6bfa06a45799dfe315284e8b2a6e450656584889068890bf98f881,
-        0x656bd6a31349997ec60abfd7471725e9f1e3247ef2270a0242e480808d85725
-    ];
-
     assert(z_arr.len() == res.len(), 'Wrong test len');
+    assert(alpha_arr.len() == res.len(), 'Wrong test len');
+
     let mut i = 0;
-    assert(
-        get_diluted_product(16, 4, *z_arr.at(i), *alpha_arr.at(i)) == *res.at(i),
-        'Wrong diluted prod'
-    );
+    loop {
+        if i == res.len() {
+            break;
+        }
+
+        assert(
+            get_diluted_product(n_bits, spacing, *z_arr.at(i), *alpha_arr.at(i)) == *res.at(i),
+            'Wrong diluted prod'
+        );
+
+        i += 1;
+    };
 }
