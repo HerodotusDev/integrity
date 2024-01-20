@@ -1,8 +1,9 @@
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, Hash, PartialEq)]
 struct AddrValue {
     address: felt252,
     value: felt252
 }
+const AddrValueSize: u32 = 2;
 
 type Page = Array<AddrValue>;
 
