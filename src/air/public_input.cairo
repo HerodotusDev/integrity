@@ -15,7 +15,7 @@ use cairo_verifier::{
 };
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {
     // Start address of the memory segment.
     begin_addr: felt252,
@@ -23,7 +23,7 @@ struct SegmentInfo {
     stop_ptr: felt252,
 }
 
-#[derive(Drop)]
+#[derive(Drop, PartialEq)]
 struct PublicInput {
     log_n_steps: felt252,
     rc_min: felt252,

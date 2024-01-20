@@ -1,6 +1,6 @@
 use cairo_verifier::{
     air::{
-        traces_config::TracesConfig, public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
+        traces::TracesConfig, public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
         public_memory::{AddrValue, Page},
     },
     deserialization::{
