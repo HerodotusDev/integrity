@@ -1,10 +1,14 @@
+use core::debug::PrintTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
-        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le
+        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
+        array_print::SpanPrintTrait
     },
     air::{
-        public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product},
+        public_memory::{
+            Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
+        },
         constants
     },
     domains::StarkDomains
@@ -44,12 +48,12 @@ impl PublicInputImpl of PublicInputTrait {
             if i == self.main_page.len() {
                 break;
             }
-
-            let page = *self.main_page.at(i);
-            main_page_hash_state = main_page_hash_state.update_with((page.address, page.value));
-
+            main_page_hash_state = main_page_hash_state.update_with(*self.main_page.at(i));
             i += 1;
         };
+        main_page_hash_state = main_page_hash_state
+            .update_with(AddrValueSize * self.main_page.len());
+        let main_page_hash = main_page_hash_state.finalize();
 
         let mut hash_data = ArrayTrait::<u32>::new();
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
@@ -89,13 +93,12 @@ impl PublicInputImpl of PublicInputTrait {
 
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data.append(1 + self.continuous_page_headers.len());
+        hash_data
+            .append_big_endian(Into::<u32, u256>::into(1 + self.continuous_page_headers.len()));
 
         // Main page.
-        hash_data.append(self.main_page.len());
-        ArrayAppendTrait::<
-            _, u256
-        >::append_big_endian(ref hash_data, main_page_hash_state.finalize().into());
+        hash_data.append_big_endian(Into::<_, u256>::into(self.main_page.len()));
+        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
 
         // Add the rest of the pages.
         let mut i: u32 = 0;
@@ -116,7 +119,7 @@ impl PublicInputImpl of PublicInputTrait {
             i += 1;
         };
 
-        blake2s(hash_data)
+        blake2s(hash_data).flip_endianness()
     }
 
     // Returns the ratio between the product of all public memory cells and z^|public_memory|.
