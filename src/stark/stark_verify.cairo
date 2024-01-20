@@ -1,3 +1,4 @@
+use core::debug::PrintTrait;
 use core::array::ArrayTrait;
 use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains,

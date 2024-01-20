@@ -1,11 +1,12 @@
-use core::array::SpanTrait;
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
-use cairo_verifier::air::composition::{eval_composition_polynomial, eval_oods_polynomial};
-use cairo_verifier::air::global_values::InteractionElements;
-use cairo_verifier::air::public_input::PublicInput;
-use cairo_verifier::air::traces::TracesDecommitment;
-use cairo_verifier::table_commitment::table_commitment::TableDecommitment;
-use cairo_verifier::air::constants::CONSTRAINT_DEGREE;
+use cairo_verifier::{
+    common::array_extend::ArrayExtendTrait,
+    air::{
+        composition::{eval_composition_polynomial, eval_oods_polynomial},
+        global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+        constants::CONSTRAINT_DEGREE,
+    },
+    table_commitment::table_commitment::TableDecommitment
+};
 
 #[derive(Drop)]
 struct OodsEvaluationInfo {
@@ -48,7 +49,9 @@ fn eval_oods_boundary_poly_at_points(
     decommitment: TracesDecommitment,
     composition_decommitment: TableDecommitment,
 ) -> Array<felt252> {
-    assert(n_original_columns == decommitment.original.values.len(), 'Invalid value');
+    assert(
+        decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
+    );
     assert(
         decommitment.interaction.values.len() == points.len() * n_interaction_columns,
         'Invalid value'
@@ -68,24 +71,17 @@ fn eval_oods_boundary_poly_at_points(
         let mut column_values = ArrayTrait::<felt252>::new();
 
         column_values
-            .extend(
-                decommitment
-                    .original
-                    .values
-                    .slice(i * n_original_columns, (i + 1) * n_original_columns)
-            );
+            .extend(decommitment.original.values.slice(i * n_original_columns, n_original_columns));
         column_values
             .extend(
                 decommitment
                     .interaction
                     .values
-                    .slice(i * n_interaction_columns, (i + 1) * n_interaction_columns)
+                    .slice(i * n_interaction_columns, n_interaction_columns)
             );
         column_values
             .extend(
-                composition_decommitment
-                    .values
-                    .slice(i * CONSTRAINT_DEGREE, (i + 1) * CONSTRAINT_DEGREE)
+                composition_decommitment.values.slice(i * CONSTRAINT_DEGREE, CONSTRAINT_DEGREE)
             );
 
         evaluations
