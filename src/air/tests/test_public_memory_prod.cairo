@@ -1,9 +1,8 @@
 use cairo_verifier::air::public_memory::{Page, PageTrait, AddrValue, get_continuous_pages_product};
+use cairo_verifier::air::public_input::{PublicInput, PublicInputTrait, SegmentInfo};
 
-#[test]
-#[available_gas(9999999999)]
-fn test_page_get_product() {
-    let page: Page = array![
+fn helper_get_main_page() -> Page {
+    array![
         AddrValue { address: 0x1, value: 0x40780017fff7fff },
         AddrValue { address: 0x2, value: 0x4 },
         AddrValue { address: 0x3, value: 0x1104800180018000 },
@@ -54,7 +53,13 @@ fn test_page_get_product() {
         AddrValue { address: 0x67, value: 0x9ea },
         AddrValue { address: 0x68, value: 0xa },
         AddrValue { address: 0x69, value: 0x90 }
-    ];
+    ]
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_page_get_product() {
+    let page = helper_get_main_page();
 
     assert(
         page
@@ -73,4 +78,39 @@ fn test_get_continuous_pages_product() {
     let pages = array![].span();
 
     assert(get_continuous_pages_product(pages) == (1, 0), 'Invalid pages prod');
+}
+#[test]
+#[available_gas(9999999999)]
+fn test_public_memory_product() {
+    let public_input = PublicInput {
+        log_n_steps: 0xe,
+        rc_min: 0x7ffa,
+        rc_max: 0x8001,
+        layout: 0x726563757273697665,
+        dynamic_params: array![],
+        segments: array![
+            SegmentInfo { begin_addr: 0x1, stop_ptr: 0x5 },
+            SegmentInfo { begin_addr: 0x25, stop_ptr: 0x68 },
+            SegmentInfo { begin_addr: 0x68, stop_ptr: 0x6a },
+            SegmentInfo { begin_addr: 0x6a, stop_ptr: 0x6a },
+            SegmentInfo { begin_addr: 0x1ea, stop_ptr: 0x1ea },
+            SegmentInfo { begin_addr: 0x9ea, stop_ptr: 0x9ea },
+        ],
+        padding_addr: 0x1,
+        padding_value: 0x40780017fff7fff,
+        main_page: helper_get_main_page(),
+        continuous_page_headers: array![],
+    };
+
+    assert(
+        public_input
+            .get_public_memory_product(
+                0x46ecc57b0b528c3dde60dbb870596694b2879c57d0b0a34ac1122ebea470a8d,
+                0x207a232fb05d8c8261c44be98177c09634d23e7aaaf4838d435a4423e3a025f
+            ) == (
+                0x1ea9b3c4492c868b2fc237cba11b554c71972ba67121a43d203896ac16dc416,
+                public_input.main_page.len().into()
+            ),
+        'Invalid pub mem prod'
+    );
 }
