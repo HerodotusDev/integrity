@@ -1,4 +1,4 @@
-use cairo_verifier::air::public_memory::{Page, PageTrait, AddrValue};
+use cairo_verifier::air::public_memory::{Page, PageTrait, AddrValue, get_continuous_pages_product};
 
 #[test]
 #[available_gas(9999999999)]
@@ -64,4 +64,13 @@ fn test_page_get_product() {
             ) == 0x1ea9b3c4492c868b2fc237cba11b554c71972ba67121a43d203896ac16dc416,
         'Invalid page prod'
     );
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_get_continuous_pages_product() {
+    // TODO test with non empty continuous pages (not supported in cairo-lang verifier)
+    let pages = array![].span();
+
+    assert(get_continuous_pages_product(pages) == (1, 0), 'Invalid pages prod');
 }
