@@ -56,6 +56,28 @@ fn helper_get_main_page() -> Page {
     ]
 }
 
+fn helper_get_public_input() -> PublicInput {
+    PublicInput {
+        log_n_steps: 0xe,
+        rc_min: 0x7ffa,
+        rc_max: 0x8001,
+        layout: 0x726563757273697665,
+        dynamic_params: array![],
+        segments: array![
+            SegmentInfo { begin_addr: 0x1, stop_ptr: 0x5 },
+            SegmentInfo { begin_addr: 0x25, stop_ptr: 0x68 },
+            SegmentInfo { begin_addr: 0x68, stop_ptr: 0x6a },
+            SegmentInfo { begin_addr: 0x6a, stop_ptr: 0x6a },
+            SegmentInfo { begin_addr: 0x1ea, stop_ptr: 0x1ea },
+            SegmentInfo { begin_addr: 0x9ea, stop_ptr: 0x9ea },
+        ],
+        padding_addr: 0x1,
+        padding_value: 0x40780017fff7fff,
+        main_page: helper_get_main_page(),
+        continuous_page_headers: array![],
+    }
+}
+
 #[test]
 #[available_gas(9999999999)]
 fn test_page_get_product() {
@@ -82,25 +104,7 @@ fn test_get_continuous_pages_product() {
 #[test]
 #[available_gas(9999999999)]
 fn test_public_memory_product() {
-    let public_input = PublicInput {
-        log_n_steps: 0xe,
-        rc_min: 0x7ffa,
-        rc_max: 0x8001,
-        layout: 0x726563757273697665,
-        dynamic_params: array![],
-        segments: array![
-            SegmentInfo { begin_addr: 0x1, stop_ptr: 0x5 },
-            SegmentInfo { begin_addr: 0x25, stop_ptr: 0x68 },
-            SegmentInfo { begin_addr: 0x68, stop_ptr: 0x6a },
-            SegmentInfo { begin_addr: 0x6a, stop_ptr: 0x6a },
-            SegmentInfo { begin_addr: 0x1ea, stop_ptr: 0x1ea },
-            SegmentInfo { begin_addr: 0x9ea, stop_ptr: 0x9ea },
-        ],
-        padding_addr: 0x1,
-        padding_value: 0x40780017fff7fff,
-        main_page: helper_get_main_page(),
-        continuous_page_headers: array![],
-    };
+    let public_input = helper_get_public_input();
 
     assert(
         public_input
@@ -112,5 +116,21 @@ fn test_public_memory_product() {
                 public_input.main_page.len().into()
             ),
         'Invalid pub mem prod'
+    );
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_memory_product_ratio() {
+    let public_input = helper_get_public_input();
+
+    assert(
+        public_input
+            .get_public_memory_product_ratio(
+                0x46ecc57b0b528c3dde60dbb870596694b2879c57d0b0a34ac1122ebea470a8d,
+                0x207a232fb05d8c8261c44be98177c09634d23e7aaaf4838d435a4423e3a025f,
+                0x4000
+            ) == 0x222cf8713d938af4954d6e3c98921720e296d5e9d21d5cc9b562245a009af1d,
+        'Invalid pub mem prod rat'
     );
 }
