@@ -44,8 +44,8 @@ fn stark_commit(
         public_input,
         traces_coefficients,
         interaction_after_composition,
+        *stark_domains.trace_domain_size,
         *stark_domains.trace_generator,
-        *stark_domains.trace_domain_size
     );
 
     let oods_alpha = channel.random_felt_to_prover();
