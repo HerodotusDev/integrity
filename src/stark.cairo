@@ -131,7 +131,7 @@ struct StarkUnsentCommitment {
     proof_of_work: ProofOfWorkUnsentCommitment,
 }
 
-#[derive(Drop)]
+#[derive(Drop, PartialEq)]
 struct StarkCommitment {
     traces: TracesCommitment,
     composition: TableCommitment,
