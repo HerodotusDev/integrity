@@ -32,7 +32,7 @@ fn get_diluted_product(n_bits: felt252, spacing: felt252, z: felt252, alpha: fel
 
     let mut i = 0;
     loop {
-        if i == n_bits {
+        if i == n_bits - 1 {
             break p + q * alpha;
         }
 
