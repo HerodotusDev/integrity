@@ -16,6 +16,8 @@ struct OodsEvaluationInfo {
     constraint_coefficients: Span<felt252>,
 }
 
+// Checks that the trace and the compostion agree at oods_point, assuming the prover provided us
+// with the proper evaluations.
 fn verify_oods(
     oods: Span<felt252>,
     interaction_elements: InteractionElements,

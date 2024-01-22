@@ -156,11 +156,11 @@ impl PublicInputImpl of PublicInputTrait {
         (prod, total_length)
     }
 
-    fn validate(self: @PublicInput, domains: StarkDomains) {
+    fn validate(self: @PublicInput, domains: @StarkDomains) {
         assert_range_u128_le(*self.log_n_steps, constants::MAX_LOG_N_STEPS);
         let n_steps = pow(2, *self.log_n_steps);
         assert(
-            n_steps * constants::CPU_COMPONENT_HEIGHT == domains.trace_domain_size,
+            n_steps * constants::CPU_COMPONENT_HEIGHT == *domains.trace_domain_size,
             'Wrong trace size'
         );
 
