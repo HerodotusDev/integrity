@@ -1,3 +1,4 @@
+use core::debug::PrintTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
@@ -16,8 +17,8 @@ struct ProofOfWorkUnsentCommitment {
 fn proof_of_work_commit(
     ref channel: Channel, unsent_commitment: ProofOfWorkUnsentCommitment, config: ProofOfWorkConfig
 ) {
-    channel.read_uint64_from_prover(unsent_commitment.nonce);
     verify_proof_of_work(channel.digest, config.n_bits, unsent_commitment.nonce);
+    channel.read_uint64_from_prover(unsent_commitment.nonce);
 }
 
 fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
