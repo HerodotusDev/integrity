@@ -16,6 +16,7 @@ use cairo_verifier::{
     fri::{fri::{FriCommitment, FriWitness, FriLayerWitness}, fri_config::FriConfig,}
 };
 
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(999999999999)]
 fn test_stark_verify() {
@@ -55,7 +56,6 @@ fn test_stark_verify() {
                 main_page: array![],
                 continuous_page_headers: array![],
             },
-            // Commitment to the first trace.
             original: TableCommitment {
                 config: TableCommitmentConfig {
                     n_columns: 0x7,
@@ -70,8 +70,6 @@ fn test_stark_verify() {
                     commitment_hash: 0xa43e1b3b99d987d63116edc58aa49a7d510a667951852446419df5ede6a1cc,
                 },
             },
-            // The interaction elements that were sent to the prover after the first trace commitment (e.g.
-            // memory interaction).
             interaction_elements: InteractionElements {
                 memory_multi_column_perm_perm_interaction_elm: 0,
                 memory_multi_column_perm_hash_interaction_elm0: 0,
@@ -80,7 +78,6 @@ fn test_stark_verify() {
                 diluted_check_interaction_z: 0,
                 diluted_check_interaction_alpha: 0
             },
-            // Commitment to the second (interaction) trace.
             interaction: TableCommitment {
                 config: TableCommitmentConfig {
                     n_columns: 0x3,
@@ -418,8 +415,6 @@ fn test_stark_verify() {
                     }
                 ]
                     .span(),
-                // Array of size n_layers, each entry represents the FRI step size,
-                // i.e. the number of FRI-foldings between layer i and i+1.
                 fri_step_sizes: array![0x0, 0x4, 0x3, 0x2, 0x2].span(),
                 log_last_layer_degree_bound: 0x7,
             },
@@ -1795,7 +1790,6 @@ fn test_stark_verify() {
         fri_witness: FriWitness {
             layers: array![
                 FriLayerWitness {
-                    // Values for the sibling leaves required for decommitment.
                     leaves: array![
                         0x4d13d818805ede83fe1208349d2d801ce14c7820cbcf579b1f2d78acc73493e,
                         0x193e8e8629042aacf77b7fb86bbc402d5072e967a786132979ac0a12f8b9311,
@@ -2069,7 +2063,6 @@ fn test_stark_verify() {
                         0x62a02c0d86023f5264f9593655712b12862ac1edde55f155d00a1c13e76514a,
                     ]
                         .span(),
-                    // Table commitment witnesses for decommiting all the leaves.
                     table_witness: TableCommitmentWitness {
                         vector: VectorCommitmentWitness {
                             authentications: array![
@@ -2311,7 +2304,6 @@ fn test_stark_verify() {
                     },
                 },
                 FriLayerWitness {
-                    // Values for the sibling leaves required for decommitment.
                     leaves: array![
                         0x51c09f120edc0f269a652e3727e93d8cb872da56e7b75effdb11d4609fbe970,
                         0x28b50bf2c67a6a45735f942ba8f447895326fd67f4863ba8463811fd4225702,
@@ -2441,7 +2433,6 @@ fn test_stark_verify() {
                         0x5561ff8dbaec9c13bba1e440bad5d82159276f8b39a60f744451e395d1af90a,
                     ]
                         .span(),
-                    // Table commitment witnesses for decommiting all the leaves.
                     table_witness: TableCommitmentWitness {
                         vector: VectorCommitmentWitness {
                             authentications: array![
@@ -2629,7 +2620,6 @@ fn test_stark_verify() {
                     },
                 },
                 FriLayerWitness {
-                    // Values for the sibling leaves required for decommitment.
                     leaves: array![
                         0x455da27ef48cb1a1b19aae3d09bd3d76dc7b53b9924c04af05dc8e377bc507d,
                         0x4225a8fea03e50594d7122fda111fa9cad465e7f17c417a324517ac51392ca7,
@@ -2687,7 +2677,6 @@ fn test_stark_verify() {
                         0x3d633a646a00da5b1a93df5cb5be1fd0b46359ae57ce412f26e0d492be1defc,
                     ]
                         .span(),
-                    // Table commitment witnesses for decommiting all the leaves.
                     table_witness: TableCommitmentWitness {
                         vector: VectorCommitmentWitness {
                             authentications: array![
@@ -2839,7 +2828,6 @@ fn test_stark_verify() {
                     },
                 },
                 FriLayerWitness {
-                    // Values for the sibling leaves required for decommitment.
                     leaves: array![
                         0x4bc68e79a50789ef5cff3fbe013b8f846b9a17931fc9cd0416a1ae2c003bfab,
                         0xa5d29975f58add08f21910f1837b842e16f5c4a24e0e38521917526e122026,
@@ -2897,7 +2885,6 @@ fn test_stark_verify() {
                         0x697c74527ed597f12f5a3759100556ea28010f19a67426b16aed384c7c7eebd,
                     ]
                         .span(),
-                    // Table commitment witnesses for decommiting all the leaves.
                     table_witness: TableCommitmentWitness {
                         vector: VectorCommitmentWitness {
                             authentications: array![
@@ -3017,86 +3004,12 @@ fn test_stark_verify() {
         },
     };
 
-    let config = StarkConfig {
-        traces: TracesConfig {
-            original: TableCommitmentConfig {
-                n_columns: 0x7,
-                vector: VectorCommitmentConfig {
-                    height: 0x16, n_verifier_friendly_commitment_layers: 0x16
-                },
-            },
-            interaction: TableCommitmentConfig {
-                n_columns: 0x3,
-                vector: VectorCommitmentConfig {
-                    height: 0x16, n_verifier_friendly_commitment_layers: 0x16
-                },
-            },
-        },
-        composition: TableCommitmentConfig {
-            n_columns: 0x2,
-            vector: VectorCommitmentConfig {
-                height: 0x16, n_verifier_friendly_commitment_layers: 0x16,
-            },
-        },
-        fri: FriConfig {
-            log_input_size: 0x16,
-            n_layers: 0x5,
-            inner_layers: array![
-                TableCommitmentConfig {
-                    n_columns: 0x10,
-                    vector: VectorCommitmentConfig {
-                        height: 0x12, n_verifier_friendly_commitment_layers: 0x16,
-                    },
-                },
-                TableCommitmentConfig {
-                    n_columns: 0x8,
-                    vector: VectorCommitmentConfig {
-                        height: 0xf, n_verifier_friendly_commitment_layers: 0x16,
-                    },
-                },
-                TableCommitmentConfig {
-                    n_columns: 0x4,
-                    vector: VectorCommitmentConfig {
-                        height: 0xd, n_verifier_friendly_commitment_layers: 0x16,
-                    },
-                },
-                TableCommitmentConfig {
-                    n_columns: 0x4,
-                    vector: VectorCommitmentConfig {
-                        height: 0xb, n_verifier_friendly_commitment_layers: 0x16,
-                    },
-                }
-            ]
-                .span(),
-            // Array of size n_layers, each entry represents the FRI step size,
-            // i.e. the number of FRI-foldings between layer i and i+1.
-            fri_step_sizes: array![0x0, 0x4, 0x3, 0x2, 0x2].span(),
-            log_last_layer_degree_bound: 0x7,
-        },
-        proof_of_work: ProofOfWorkConfig { n_bits: 0x1e },
-        // Log2 of the trace domain size.
-        log_trace_domain_size: 0x12,
-        // Number of queries to the last component, FRI.
-        n_queries: 0x12,
-        // Log2 of the number of cosets composing the evaluation domain, where the coset size is the
-        // trace length.
-        log_n_cosets: 0x4,
-        // Number of layers that use a verifier friendly hash in each commitment.
-        n_verifier_friendly_commitment_layers: 0x16,
-    };
-
     let stark_domains = StarkDomains {
-        // Log2 of the evaluation domain size.
         log_eval_domain_size: 0x16,
-        // The evaluation domain size.
         eval_domain_size: 0x400000,
-        // The generator of the evaluation domain (a primitive root of unity of order eval_domain_size).
         eval_generator: 0x3e4383531eeac7c9822fb108d24a344d841544dd6482f17ead331453e3a2f4b,
-        // Log2 of the trace domain size.
         log_trace_domain_size: 0x12,
-        // The trace domain size.
         trace_domain_size: 0x40000,
-        // The generator of the trace domain (a primitive root of unity of order trace_domain_size).
         trace_generator: 0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046,
     };
 
