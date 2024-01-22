@@ -42,12 +42,12 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: StarkProof) {
+    fn verify(self: @StarkProof) {
         // Validate config.
         self.config.validate(SECURITY_BITS);
 
         // Validate the public input.
-        let stark_domains = StarkDomainsImpl::new(@self.config);
+        let stark_domains = StarkDomainsImpl::new(self.config);
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
@@ -57,13 +57,13 @@ impl StarkProofImpl of StarkProofTrait {
 
         // STARK commitment phase.
         let stark_commitment = stark_commit::stark_commit(
-            ref channel, @self.public_input, @self.unsent_commitment, @self.config, @stark_domains,
+            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
         );
 
         // Generate queries.
         let queries = queries::generate_queries(
             ref channel,
-            self.config.n_queries.try_into().unwrap(),
+            (*self.config.n_queries).try_into().unwrap(),
             stark_domains.eval_domain_size.try_into().unwrap()
         );
 
@@ -73,7 +73,7 @@ impl StarkProofImpl of StarkProofTrait {
             NUM_COLUMNS_SECOND,
             queries.span(),
             stark_commitment,
-            self.witness,
+            *self.witness,
             stark_domains
         )
     }
