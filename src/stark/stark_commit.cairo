@@ -49,5 +49,5 @@ fn stark_commit(
     let oods_coefficients = powers_array(1, oods_alpha, n_oods_values);
 
     let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
-    // proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
+    proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
 }
