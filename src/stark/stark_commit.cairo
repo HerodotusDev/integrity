@@ -18,7 +18,7 @@ fn stark_commit(
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
     stark_domains: @StarkDomains,
-) {
+) -> StarkCommitment {
     let traces_commitment = traces_commit(
         ref channel, public_input, *unsent_commitment.traces, *config.traces,
     );
@@ -50,4 +50,13 @@ fn stark_commit(
 
     let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
     proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
+
+    StarkCommitment {
+        traces: traces_commitment,
+        composition: composition_commitment,
+        interaction_after_composition: interaction_after_composition,
+        oods_values: *unsent_commitment.oods_values,
+        interaction_after_oods: oods_coefficients.span(),
+        fri: fri_commitment,
+    }
 }
