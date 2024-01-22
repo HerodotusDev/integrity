@@ -36,7 +36,6 @@ fn stark_commit(
 
     let interaction_after_composition = channel.random_felt_to_prover();
 
-    let n_oods_values = MASK_SIZE + CONSTRAINT_DEGREE;
     channel.read_felts_from_prover(*unsent_commitment.oods_values);
 
     verify_oods(
@@ -50,7 +49,7 @@ fn stark_commit(
     );
 
     let oods_alpha = channel.random_felt_to_prover();
-    let oods_coefficients = powers_array(1, oods_alpha, n_oods_values);
+    let oods_coefficients = powers_array(1, oods_alpha, MASK_SIZE + CONSTRAINT_DEGREE);
 
     let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
 
