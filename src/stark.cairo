@@ -1,7 +1,6 @@
-use cairo_verifier::air::public_input::PublicInputTrait;
 use cairo_verifier::{
     air::{
-        traces::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
+        traces::{TracesConfig, TracesConfigTrait}, public_input::{PublicInput, PublicInputTrait},
         traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness}
     },
     channel::channel::{Channel, ChannelImpl},
@@ -26,7 +25,7 @@ mod stark_verify;
 #[cfg(test)]
 mod tests;
 
-const SECURITY_BITS: felt252 = 9;
+const SECURITY_BITS: felt252 = 22;
 
 
 #[derive(Drop)]
@@ -45,9 +44,9 @@ impl StarkProofImpl of StarkProofTrait {
 
         let digest = self.public_input.get_public_input_hash();
         let mut channel = ChannelImpl::new(digest);
-    // stark_commit::stark_commit(
-    //     ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
-    // );
+        stark_commit::stark_commit(
+            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
+        );
     }
 }
 

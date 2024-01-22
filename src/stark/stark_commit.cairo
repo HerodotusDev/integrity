@@ -1,7 +1,3 @@
-use core::traits::TryInto;
-use core::array::ArrayTrait;
-use core::option::OptionTrait;
-use core::traits::Into;
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::{
     air::{
@@ -22,7 +18,7 @@ fn stark_commit(
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
     stark_domains: @StarkDomains,
-) -> StarkCommitment {
+) {
     let traces_commitment = traces_commit(
         ref channel, public_input, *unsent_commitment.traces, *config.traces,
     );
@@ -45,23 +41,13 @@ fn stark_commit(
         public_input,
         traces_coefficients,
         interaction_after_composition,
+        *stark_domains.trace_domain_size,
         *stark_domains.trace_generator,
-        *stark_domains.trace_domain_size
     );
 
     let oods_alpha = channel.random_felt_to_prover();
     let oods_coefficients = powers_array(1, oods_alpha, n_oods_values);
 
     let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
-
-    proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
-
-    StarkCommitment {
-        traces: traces_commitment,
-        composition: composition_commitment,
-        interaction_after_composition: interaction_after_composition,
-        oods_values: *unsent_commitment.oods_values,
-        interaction_after_oods: oods_coefficients.span(),
-        fri: fri_commitment,
-    }
+    // proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
 }

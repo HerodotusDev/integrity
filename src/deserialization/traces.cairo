@@ -47,7 +47,7 @@ struct TracesUnsentCommitmentWithSerde {
 }
 impl IntoTracesUnsentCommitment of Into<TracesUnsentCommitmentWithSerde, TracesUnsentCommitment> {
     fn into(self: TracesUnsentCommitmentWithSerde) -> TracesUnsentCommitment {
-        TracesUnsentCommitment { original: self.original, interaction: self.original, }
+        TracesUnsentCommitment { original: self.original, interaction: self.interaction, }
     }
 }
 
