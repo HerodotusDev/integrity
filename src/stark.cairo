@@ -41,7 +41,9 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof) {
         self.config.validate(SECURITY_BITS);
-        let stark_domains = StarkDomainsImpl::new(self.config);
+        let stark_domains = StarkDomainsImpl::new(
+            *self.config.log_trace_domain_size, *self.config.log_n_cosets
+        );
 
         let digest = self.public_input.get_public_input_hash();
         let mut channel = ChannelImpl::new(digest);
