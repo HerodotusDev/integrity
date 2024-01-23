@@ -11,8 +11,7 @@ struct ProofOfWorkConfig {
 
 #[generate_trait]
 impl ProofOfWorkConfigImpl of ProofOfWorkConfigTrait {
-    fn config_validate(self: @ProofOfWorkConfig) {
-        let n_bits = *self.n_bits;
-        assert_in_range(n_bits.into(), MIN_PROOF_OF_WORK_BITS, MAX_PROOF_OF_WORK_BITS);
+    fn validate(self: @ProofOfWorkConfig) {
+        assert_in_range((*self.n_bits).into(), MIN_PROOF_OF_WORK_BITS, MAX_PROOF_OF_WORK_BITS);
     }
 }
