@@ -196,13 +196,34 @@ fn test_public_memory_product() {
 fn test_public_memory_product_ratio() {
     let public_input = helper_get_public_input();
 
-    assert(
-        public_input
-            .get_public_memory_product_ratio(
-                0x46ecc57b0b528c3dde60dbb870596694b2879c57d0b0a34ac1122ebea470a8d,
-                0x207a232fb05d8c8261c44be98177c09634d23e7aaaf4838d435a4423e3a025f,
-                0x4000
-            ) == 0x222cf8713d938af4954d6e3c98921720e296d5e9d21d5cc9b562245a009af1d,
-        'Invalid pub mem prod rat'
-    );
+    let (z, alpha) = helper_get_z_alpha();
+
+    let res = array![
+        0x222cf8713d938af4954d6e3c98921720e296d5e9d21d5cc9b562245a009af1d,
+        0x4be7477cb3aef375ba7a19aab6380a0aa55d46afe541631dd07c3e181976702,
+        0x41642f18c8df22596673d4ce5fb18614e3e6734395199b62b62921c637b262f,
+        0x42a98ae4ade3e6e31d85e71d7ebbd6d615410ebfd9c7c6ea5306fa8136c75b9,
+        0x1bd284a7795f57d724dc0fc957b7acd511ffda2dd78b9b89ca3e6479e1215e1,
+        0x7779575492fca29eff5e153dca9580cce1785be772f4d36aed54cd333d6ad6a,
+        0x1458182ed5e5a2b82341360dd385785156acd741041754f6af2ceaee728177f,
+        0x38b2dd01e4d76d056ccc3970767e70cf1e657c105c5c0c1ff72d50182b351b7,
+        0x30f6ef82a1ba854a18b82b1a1b35165444b63c6cab7383026de25a23992489,
+        0x93684e9a5faaaa0429d81601a290bea9ba5cf365165ae5a2916d9beaee1fd2
+    ];
+
+    let mut i = 0;
+    loop {
+        if i == res.len() {
+            break;
+        }
+
+        assert(
+            public_input
+                .get_public_memory_product_ratio(*z.at(i), *alpha.at(i), 0x4000) == *res
+                .at(i),
+            'Invalid pub mem prod rat'
+        );
+
+        i += 1;
+    };
 }
