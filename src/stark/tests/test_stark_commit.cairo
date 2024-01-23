@@ -1,19 +1,17 @@
-use cairo_verifier::stark::stark_commit::stark_commit;
-use cairo_verifier::channel::channel::ChannelTrait;
-use cairo_verifier::air::public_input::PublicInput;
-use cairo_verifier::air::global_values::InteractionElements;
-use cairo_verifier::stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment};
-use cairo_verifier::air::traces::{TracesUnsentCommitment, TracesConfig, TracesCommitment};
-use cairo_verifier::air::public_input::SegmentInfo;
-use cairo_verifier::air::public_memory::AddrValue;
-use cairo_verifier::fri::fri::{FriUnsentCommitment, FriConfig, FriCommitment};
-use cairo_verifier::proof_of_work::proof_of_work::ProofOfWorkUnsentCommitment;
-use cairo_verifier::proof_of_work::config::ProofOfWorkConfig;
-use cairo_verifier::table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment};
-use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitment
+use cairo_verifier::{
+    stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment, stark_commit::stark_commit},
+    channel::channel::ChannelTrait,
+    air::{
+        public_input::{PublicInput, SegmentInfo}, public_memory::AddrValue,
+        global_values::InteractionElements,
+        traces::{TracesUnsentCommitment, TracesConfig, TracesCommitment}
+    },
+    fri::fri::{FriUnsentCommitment, FriConfig, FriCommitment},
+    proof_of_work::{proof_of_work::ProofOfWorkUnsentCommitment, config::ProofOfWorkConfig},
+    table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment},
+    vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment},
+    domains::StarkDomains
 };
-use cairo_verifier::domains::StarkDomains;
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
