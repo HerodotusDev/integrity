@@ -1,3 +1,4 @@
+use core::debug::PrintTrait;
 use core::option::OptionTrait;
 use core::traits::TryInto;
 use cairo_verifier::air::public_input::PublicInputTrait;
@@ -99,16 +100,28 @@ struct StarkConfig {
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
     fn validate(self: @StarkConfig, security_bits: felt252) {
-        self.proof_of_work.config_validate();
+        // Validate Proof of work config.
+        self.proof_of_work.validate();
 
+        // Check security bits.
+        assert(
+            Into::<felt252, u256>::into(security_bits) <= (*self.n_queries).into()
+                * (*self.log_n_cosets).into()
+                + (*self.proof_of_work.n_bits).into(),
+            'Invalid security bits'
+        );
+
+        // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
-        self.traces.validate(log_eval_domain_size, security_bits);
+        self.traces.validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
 
+        // Validate composition config.
         self
             .composition
             .vector
             .validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
 
+        // Validate Fri config.
         self.fri.validate(*self.log_n_cosets, *self.n_verifier_friendly_commitment_layers);
     }
 }

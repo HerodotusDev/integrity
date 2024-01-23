@@ -1,4 +1,3 @@
-use core::traits::Into;
 use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::table_commitment::table_commitment::{
     TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
