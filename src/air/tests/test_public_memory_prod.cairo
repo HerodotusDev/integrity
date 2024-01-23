@@ -157,17 +157,38 @@ fn test_get_continuous_pages_product() {
 fn test_public_memory_product() {
     let public_input = helper_get_public_input();
 
-    assert(
-        public_input
-            .get_public_memory_product(
-                0x46ecc57b0b528c3dde60dbb870596694b2879c57d0b0a34ac1122ebea470a8d,
-                0x207a232fb05d8c8261c44be98177c09634d23e7aaaf4838d435a4423e3a025f
-            ) == (
-                0x1ea9b3c4492c868b2fc237cba11b554c71972ba67121a43d203896ac16dc416,
-                public_input.main_page.len().into()
-            ),
-        'Invalid pub mem prod'
-    );
+    let (z, alpha) = helper_get_z_alpha();
+
+    let res = array![
+        0x1ea9b3c4492c868b2fc237cba11b554c71972ba67121a43d203896ac16dc416,
+        0x5cfb41dd448aa7528024786dfb01822633ae5db7febdd52f3e4b0e57ea41a90,
+        0xbfd4ce49e96443656ab07bae546acdf6b45b8c5bd90cc810526a2ca983359e,
+        0x69e00c709f8fc7cada024c8bb093c8955509c8eb5998651a610caf5fd7fa151,
+        0x1dd74fcdb23f37264c5277947481e6f350e3d05d036b206aebd7d29bceab318,
+        0x6f27ea981803040c6c0c50d9a656edf966783a2d00350b74ad1e0de41c47da9,
+        0x2019d16ccf39d9c225d3395924cdfe1a217558f953f4649f58761269a9bfadf,
+        0x4d1ec1af5da54edacb592ce644b51bd2ddb3427401952654601445451d83c52,
+        0x430908be378a81911a1aaa1a3671729ad8d2860db824699a080509580de7f07,
+        0x425b4a9482939405cc33802ce06ddec70a7ae80b2e54995d2b23b58dda5fc97
+    ];
+
+    assert(res.len() == z.len(), 'Wrong res len');
+
+    let main_page_len: felt252 = public_input.main_page.len().into();
+    let mut i = 0;
+    loop {
+        if i == res.len() {
+            break;
+        }
+
+        assert(
+            public_input
+                .get_public_memory_product(*z.at(i), *alpha.at(i)) == (*res.at(i), main_page_len),
+            'Invalid pub mem prod'
+        );
+
+        i += 1;
+    };
 }
 
 #[test]
