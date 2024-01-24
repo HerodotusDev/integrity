@@ -48,7 +48,9 @@ impl StarkProofImpl of StarkProofTrait {
         self.config.validate(SECURITY_BITS);
 
         // Validate the public input.
-        let stark_domains = StarkDomainsImpl::new(self.config);
+        let stark_domains = StarkDomainsImpl::new(
+            *self.config.log_trace_domain_size, *self.config.log_n_cosets
+        );
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
