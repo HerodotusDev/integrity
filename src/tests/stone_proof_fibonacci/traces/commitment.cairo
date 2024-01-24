@@ -1,19 +1,7 @@
 use cairo_verifier::{
-    channel::channel::{Channel, ChannelImpl},
-    air::{
-        public_input::PublicInput,
-        traces::{
-            traces_commit, traces_decommit, TracesCommitment, TracesDecommitment, TracesWitness,
-            TracesUnsentCommitment, TracesConfig
-        },
-        global_values::InteractionElements, traces::TracesConfigTrait,
-    },
-    table_commitment::table_commitment::{
-        TableCommitment, TableCommitmentConfig, TableDecommitment, TableCommitmentWitness
-    },
-    vector_commitment::vector_commitment::{
-        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness
-    },
+    air::{traces::TracesCommitment, global_values::InteractionElements},
+    table_commitment::table_commitment::TableCommitment,
+    vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment},
     tests::stone_proof_fibonacci,
 };
 

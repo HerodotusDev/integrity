@@ -1,16 +1,8 @@
 use cairo_verifier::{
-    stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment, stark_commit::stark_commit},
-    channel::channel::ChannelTrait,
-    air::{
-        public_input::{PublicInput, SegmentInfo}, public_memory::AddrValue,
-        global_values::InteractionElements,
-        traces::{TracesUnsentCommitment, TracesConfig, TracesCommitment}
-    },
-    fri::fri::{FriUnsentCommitment, FriConfig, FriCommitment},
-    proof_of_work::{proof_of_work::ProofOfWorkUnsentCommitment, config::ProofOfWorkConfig},
+    stark::StarkCommitment,
     table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment},
     vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment},
-    domains::StarkDomains, tests::stone_proof_fibonacci,
+    tests::stone_proof_fibonacci,
 };
 
 fn get() -> StarkCommitment {

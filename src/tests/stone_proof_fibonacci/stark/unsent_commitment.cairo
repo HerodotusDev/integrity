@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    stark::StarkUnsentCommitment, air::traces::TracesUnsentCommitment, tests::stone_proof_fibonacci,
+    stark::StarkUnsentCommitment, tests::stone_proof_fibonacci,
 };
 
 fn get() -> StarkUnsentCommitment {

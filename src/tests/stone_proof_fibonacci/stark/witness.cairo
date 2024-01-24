@@ -1,20 +1,7 @@
 use cairo_verifier::{
-    stark::{StarkCommitment, StarkWitness, StarkConfig, stark_verify::stark_verify},
-    proof_of_work::proof_of_work::ProofOfWorkConfig,
-    air::{
-        public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
-        traces::{TracesCommitment, TracesDecommitment, TracesWitness, TracesConfig},
-        global_values::InteractionElements
-    },
-    table_commitment::table_commitment::{
-        TableCommitment, TableCommitmentConfig, TableDecommitment, TableCommitmentWitness
-    },
-    vector_commitment::vector_commitment::{
-        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness
-    },
-    domains::StarkDomains,
-    fri::{fri::{FriCommitment, FriWitness, FriLayerWitness}, fri_config::FriConfig},
-    tests::stone_proof_fibonacci,
+    stark::StarkWitness,
+    table_commitment::table_commitment::{TableCommitmentWitness, TableDecommitment},
+    vector_commitment::vector_commitment::VectorCommitmentWitness, tests::stone_proof_fibonacci,
 };
 
 fn get() -> StarkWitness {
