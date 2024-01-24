@@ -27,13 +27,9 @@ impl StarkDomainsImpl of StarkDomainsTrait {
         // Compute stark_domains.
         let log_eval_domain_size = log_trace_domain_size + log_n_cosets;
         let eval_domain_size = pow(2, log_eval_domain_size);
-        let eval_generator = pow(
-            FIELD_GENERATOR, STARK_PRIME_MINUS_ONE * 1 / eval_domain_size
-        );
+        let eval_generator = pow(FIELD_GENERATOR, STARK_PRIME_MINUS_ONE * 1 / eval_domain_size);
         let trace_domain_size = pow(2, log_trace_domain_size);
-        let trace_generator = pow(
-            FIELD_GENERATOR, STARK_PRIME_MINUS_ONE * 1 / trace_domain_size
-        );
+        let trace_generator = pow(FIELD_GENERATOR, STARK_PRIME_MINUS_ONE * 1 / trace_domain_size);
 
         StarkDomains {
             log_eval_domain_size,
