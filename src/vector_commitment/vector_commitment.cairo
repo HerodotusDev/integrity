@@ -159,8 +159,7 @@ fn shift_queries(
 
 fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
     if is_verifier_friendly {
-        let hash = PedersenTrait::new(x).update_with(y).finalize();
-        hash
+        PedersenTrait::new(x).update(y).finalize()
     } else {
         let mut data = ArrayTrait::<u32>::new();
         data.append_big_endian(x);
