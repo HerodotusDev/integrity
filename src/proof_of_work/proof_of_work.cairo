@@ -1,4 +1,3 @@
-use core::debug::PrintTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},

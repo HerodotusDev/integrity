@@ -1,7 +1,9 @@
-use cairo_verifier::air::global_values::GlobalValues;
-use cairo_verifier::common::math::{Felt252Div, pow};
-use cairo_verifier::air::constants::{
-    CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE
+use cairo_verifier::{
+    air::{
+        global_values::GlobalValues,
+        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE}
+    },
+    common::math::{Felt252Div, pow},
 };
 
 fn eval_composition_polynomial_inner(

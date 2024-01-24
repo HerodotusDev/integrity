@@ -1,10 +1,6 @@
-use core::debug::PrintTrait;
-use core::option::OptionTrait;
-use core::traits::TryInto;
-use cairo_verifier::air::public_input::PublicInputTrait;
 use cairo_verifier::{
     air::{
-        traces::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
+        traces::{TracesConfig, TracesConfigTrait}, public_input::{PublicInput, PublicInputTrait},
         traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
         constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     },

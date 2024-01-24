@@ -1,4 +1,3 @@
-use core::traits::Into;
 use cairo_verifier::{
     air::{
         traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}

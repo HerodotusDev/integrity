@@ -1,15 +1,11 @@
-use core::traits::TryInto;
-use core::array::ArrayTrait;
-use core::option::OptionTrait;
-use core::traits::Into;
-use cairo_verifier::channel::channel::ChannelTrait;
 use cairo_verifier::{
     air::{
         constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
         traces::traces_commit,
     },
-    channel::channel::Channel, common::powers_array::powers_array, domains::StarkDomains,
-    fri::fri::fri_commit, stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
+    channel::channel::{Channel, ChannelTrait}, common::powers_array::powers_array,
+    domains::StarkDomains, fri::fri::fri_commit,
+    stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
     proof_of_work::proof_of_work::proof_of_work_commit,
     table_commitment::table_commitment::table_commit, oods::verify_oods,
 };

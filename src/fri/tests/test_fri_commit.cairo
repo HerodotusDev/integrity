@@ -1,9 +1,8 @@
-use cairo_verifier::fri::fri::{fri_commit, FriUnsentCommitment, FriCommitment};
-use cairo_verifier::fri::fri_config::FriConfig;
-use cairo_verifier::channel::channel::ChannelTrait;
-use cairo_verifier::table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment};
-use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitment
+use cairo_verifier::{
+    channel::channel::ChannelTrait,
+    fri::{fri::{fri_commit, FriUnsentCommitment, FriCommitment}, fri_config::FriConfig},
+    table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment},
+    vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment}
 };
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover

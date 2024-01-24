@@ -1,4 +1,3 @@
-use core::traits::Div;
 use cairo_verifier::{
     common::{consts::{FIELD_GENERATOR, STARK_PRIME_MINUS_ONE}, math::{pow, Felt252Div}},
     stark::StarkConfig,

@@ -1,4 +1,4 @@
-use core::debug::PrintTrait;
+use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
@@ -13,7 +13,6 @@ use cairo_verifier::{
     },
     domains::StarkDomains
 };
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 
 #[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {

@@ -1,7 +1,7 @@
 use cairo_verifier::common::asserts::assert_in_range;
 
-const MIN_PROOF_OF_WORK_BITS: felt252 = 30;
 const MAX_PROOF_OF_WORK_BITS: felt252 = 50;
+const MIN_PROOF_OF_WORK_BITS: felt252 = 30;
 
 #[derive(Drop, Copy)]
 struct ProofOfWorkConfig {
