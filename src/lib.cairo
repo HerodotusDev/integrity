@@ -11,6 +11,9 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
+#[cfg(test)]
+mod tests;
+
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}
 };
