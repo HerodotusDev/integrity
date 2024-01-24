@@ -1,6 +1,6 @@
-mod queries;
 mod fri;
-mod public_input;
-mod traces;
 mod proof_of_work;
+mod public_input;
+mod queries;
 mod stark;
+mod traces;
