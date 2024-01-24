@@ -4,7 +4,7 @@ use cairo_verifier::air::{
     global_values::{GlobalValues, EcPoint}
 };
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
+// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_eval_composition_polynomial_inner() {
@@ -295,7 +295,7 @@ fn test_eval_composition_polynomial_inner() {
     )
 }
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
+// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_eval_oods_polynomial_inner() {

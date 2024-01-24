@@ -1,6 +1,6 @@
 use cairo_verifier::{queries::queries::queries_to_points, domains::StarkDomains};
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
+// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_queries_to_points_0() {

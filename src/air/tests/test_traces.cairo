@@ -4,7 +4,7 @@ use cairo_verifier::{
     tests::stone_proof_fibonacci,
 };
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
+// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_config() {
@@ -13,7 +13,7 @@ fn test_traces_config() {
     traces_config.validate(0x16, 0x16);
 }
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
+// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_commit() {
@@ -43,7 +43,7 @@ fn test_traces_commit() {
     assert(channel.counter == 0x0, 'Invalid value')
 }
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
+// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_decommit() {
