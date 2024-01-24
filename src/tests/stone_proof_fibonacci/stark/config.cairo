@@ -3,7 +3,6 @@ use cairo_verifier::{
     vector_commitment::vector_commitment::VectorCommitmentConfig, tests::stone_proof_fibonacci,
 };
 
-
 fn get() -> StarkConfig {
     return StarkConfig {
         traces: stone_proof_fibonacci::traces::config::get(),
