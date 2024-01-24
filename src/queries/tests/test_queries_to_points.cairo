@@ -1,42 +1,18 @@
-use cairo_verifier::{queries::queries::queries_to_points, domains::StarkDomains};
+use cairo_verifier::{
+    queries::queries::queries_to_points, domains::StarkDomains, tests::stone_proof_fibonacci
+};
 
 // test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_queries_to_points_0() {
-    let stark_domains = StarkDomains {
-        log_eval_domain_size: 0x16,
-        eval_domain_size: 0,
-        eval_generator: 0x3e4383531eeac7c9822fb108d24a344d841544dd6482f17ead331453e3a2f4b,
-        log_trace_domain_size: 0,
-        trace_domain_size: 0,
-        trace_generator: 0,
-    };
+    let stark_domains = stone_proof_fibonacci::stark::domains::get();
 
-    let queries = array![
-        0x4c3e3,
-        0x53e5f,
-        0x5e7ae,
-        0x6f76e,
-        0xde621,
-        0xe0f5a,
-        0xf5b8c,
-        0x13d133,
-        0x180758,
-        0x1eeb19,
-        0x20d785,
-        0x21f804,
-        0x245054,
-        0x3883ce,
-        0x3970d6,
-        0x3a8f8e,
-        0x3b9258,
-        0x3c7016,
-    ];
+    let queries = stone_proof_fibonacci::queries::get().span();
 
     assert(
         queries_to_points(
-            queries.span(), @stark_domains
+            queries, @stark_domains
         ) == array![
             0x2db7913d585ab151bc2b66c288d0bc9b8c791083d1e4a347f418d499696385a,
             0x13de0c034702b2f857d20f1c4392d7308adf523675a6917ef9b24ffe481b3f3,

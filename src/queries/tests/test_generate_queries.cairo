@@ -1,4 +1,6 @@
-use cairo_verifier::{queries::queries::generate_queries, channel::channel::ChannelTrait};
+use cairo_verifier::{
+    queries::queries::generate_queries, channel::channel::ChannelTrait, tests::stone_proof_fibonacci
+};
 
 #[test]
 #[available_gas(9999999999)]
@@ -49,28 +51,7 @@ fn test_generate_queries_2() {
         u256 { low: 0x2c31f04a6b9c83c2464b2f1688fc719e, high: 0xe631d91ef56f7e4cc7fe09cff2cc4e94 }
     );
     assert(
-        generate_queries(
-            ref channel, 18, 0x400000
-        ) == array![
-            0x4c3e3,
-            0x53e5f,
-            0x5e7ae,
-            0x6f76e,
-            0xde621,
-            0xe0f5a,
-            0xf5b8c,
-            0x13d133,
-            0x180758,
-            0x1eeb19,
-            0x20d785,
-            0x21f804,
-            0x245054,
-            0x3883ce,
-            0x3970d6,
-            0x3a8f8e,
-            0x3b9258,
-            0x3c7016,
-        ],
+        generate_queries(ref channel, 18, 0x400000) == stone_proof_fibonacci::queries::get(),
         'Invalid value'
     );
     assert(channel.counter == 5, 'Invalid value');

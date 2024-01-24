@@ -15,8 +15,8 @@ use cairo_verifier::{
 #[available_gas(9999999999)]
 fn test_eval_composition_polynomial_inner() {
     let oods_values = stone_proof_fibonacci::stark::oods_values::get();
-    let mask_values = oods_values.span().slice(0, oods_values.len()-2);
-    
+    let mask_values = oods_values.span().slice(0, oods_values.len() - 2);
+
     assert(mask_values.len() == MASK_SIZE, 'Invalid value');
 
     let constraint_coefficients = array![
@@ -159,11 +159,7 @@ fn test_eval_composition_polynomial_inner() {
 
     assert(
         eval_composition_polynomial_inner(
-            mask_values,
-            constraint_coefficients.span(),
-            point,
-            trace_generator,
-            global_values,
+            mask_values, constraint_coefficients.span(), point, trace_generator, global_values,
         ) == 0x245c787b658a0461241e840f1ffcf76ca5d29e6571e7a8edd80fdd968fddd45,
         'Invalid value'
     )
