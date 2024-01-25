@@ -2,6 +2,7 @@ use cairo_verifier::air::{
     public_memory::AddrValue, public_input::{PublicInput, SegmentInfo},
     public_input::PublicInputTrait
 };
+use cairo_verifier::domains::{StarkDomains, StarkDomainsTrait};
 
 fn helper_get_public_input() -> PublicInput {
     PublicInput {
@@ -90,4 +91,16 @@ fn test_public_input_hash() {
             },
         'Invalid value'
     )
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_input_validate() {
+    let public_input = helper_get_public_input();
+
+    let log_trace_domain_size = 0x12;
+    let log_n_cosets = 0x4;
+    let domain = StarkDomainsTrait::new(log_trace_domain_size, log_n_cosets);
+
+    public_input.validate(@domain);
 }
