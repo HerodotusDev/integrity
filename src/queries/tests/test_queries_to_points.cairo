@@ -1,5 +1,4 @@
-use cairo_verifier::queries::queries::queries_to_points;
-use cairo_verifier::domains::StarkDomains;
+use cairo_verifier::{queries::queries::queries_to_points, domains::StarkDomains};
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]

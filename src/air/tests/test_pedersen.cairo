@@ -1,5 +1,4 @@
 use cairo_verifier::air::pedersen::{eval_pedersen_x, eval_pedersen_y};
-use debug::PrintTrait;
 
 #[test]
 #[available_gas(9999999999)]

@@ -1,7 +1,5 @@
 use core::integer::u32_wrapping_add;
-use cairo_verifier::common::array_append::ArrayAppendTrait;
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-
+use cairo_verifier::common::{array_append::ArrayAppendTrait, flip_endianness::FlipEndiannessTrait};
 
 fn blake2s(data: Array<u8>) -> u256 {
     let mut state = blake2s_init();

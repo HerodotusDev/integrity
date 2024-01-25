@@ -1,5 +1,4 @@
 use cairo_verifier::air::diluted::get_diluted_product;
-use debug::PrintTrait;
 
 #[test]
 #[available_gas(9999999999)]

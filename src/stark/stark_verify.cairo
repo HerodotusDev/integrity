@@ -1,4 +1,3 @@
-use core::array::ArrayTrait;
 use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains,
     fri::fri::{FriDecommitment, fri_verify},
@@ -7,7 +6,7 @@ use cairo_verifier::{
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
 };
 
-// STARK decommitment phase.
+// STARK verify phase.
 fn stark_verify(
     n_original_columns: u32,
     n_interaction_columns: u32,

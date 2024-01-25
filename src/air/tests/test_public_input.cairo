@@ -1,5 +1,7 @@
-use cairo_verifier::air::public_input::PublicInputTrait;
-use cairo_verifier::air::{public_memory::AddrValue, public_input::{PublicInput, SegmentInfo}};
+use cairo_verifier::air::{
+    public_memory::AddrValue, public_input::{PublicInput, SegmentInfo},
+    public_input::PublicInputTrait
+};
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]

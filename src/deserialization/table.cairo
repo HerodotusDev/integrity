@@ -1,8 +1,8 @@
-use cairo_verifier::table_commitment::table_commitment::{
-    TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
-};
-use cairo_verifier::deserialization::vector::{
-    VectorCommitmentConfigWithSerde, VectorCommitmentWitnessWithSerde
+use cairo_verifier::{
+    table_commitment::table_commitment::{
+        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
+    },
+    deserialization::vector::{VectorCommitmentConfigWithSerde, VectorCommitmentWitnessWithSerde}
 };
 
 #[derive(Drop, Serde)]

@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    common::{math::mul_inverse, consts::FIELD_GENERATOR_INVERSE}, fri::fri_layer::FriLayerQuery,
+    common::{consts::FIELD_GENERATOR_INVERSE, math::Felt252Div}, fri::fri_layer::FriLayerQuery,
 };
 
 fn gather_first_layer_queries(
@@ -22,7 +22,7 @@ fn gather_first_layer_queries(
                 FriLayerQuery {
                     index: *queries.at(i),
                     y_value: *evaluations.at(i),
-                    x_inv_value: mul_inverse(shifted_x_value),
+                    x_inv_value: 1 / shifted_x_value,
                 }
             );
 

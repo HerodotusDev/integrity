@@ -1,16 +1,16 @@
-use core::traits::Into;
-use cairo_verifier::channel::channel::ChannelTrait;
-use cairo_verifier::table_commitment::table_commitment::{
-    TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
-    TableCommitmentConfig
+use cairo_verifier::{
+    air::{
+        public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
+        global_values::InteractionElements,
+    },
+    channel::channel::{Channel, ChannelTrait},
+    table_commitment::table_commitment::{
+        TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
+        TableCommitmentConfig
+    },
+    vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
+    common::asserts::assert_in_range
 };
-use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
-use cairo_verifier::air::{
-    public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
-};
-use cairo_verifier::channel::channel::Channel;
-use cairo_verifier::air::global_values::InteractionElements;
-use cairo_verifier::common::asserts::assert_in_range;
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
 // of the CPU AIR.
