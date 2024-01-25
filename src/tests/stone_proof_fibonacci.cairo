@@ -4,3 +4,4 @@ mod public_input;
 mod queries;
 mod stark;
 mod traces;
+mod interaction_elements;
