@@ -3,11 +3,8 @@ use cairo_verifier::air::{
     public_input::PublicInputTrait
 };
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
-#[test]
-#[available_gas(9999999999)]
-fn test_public_input_hash() {
-    let public_input = PublicInput {
+fn helper_get_public_input() -> PublicInput {
+    PublicInput {
         log_n_steps: 0xe,
         rc_min: 0x7ffa,
         rc_max: 0x8001,
@@ -78,7 +75,13 @@ fn test_public_input_hash() {
             AddrValue { address: 0x69, value: 0x90 },
         ],
         continuous_page_headers: array![],
-    };
+    }
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_input_hash() {
+    let public_input = helper_get_public_input();
 
     assert(
         public_input
