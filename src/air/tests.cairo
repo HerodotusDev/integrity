@@ -4,4 +4,3 @@ mod test_pedersen;
 mod test_public_input;
 mod test_traces;
 mod test_composition;
-
