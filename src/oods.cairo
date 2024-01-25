@@ -103,3 +103,28 @@ fn eval_oods_boundary_poly_at_points(
 
     evaluations
 }
+
+#[cfg(test)]
+mod tests {
+    use cairo_verifier::oods::verify_oods;
+    use cairo_verifier::tests::stone_proof_fibonacci;
+
+    #[test]
+    #[available_gas(9999999999)]
+    fn test_verify_oods() {
+        let public_input = stone_proof_fibonacci::public_input::get();
+        let interaction_elements = stone_proof_fibonacci::interaction_elements::get();
+        let mask_values = stone_proof_fibonacci::stark::oods_values::get();
+        let constraint_coefficients = stone_proof_fibonacci::constraint_coefficients::get();
+
+        verify_oods(
+            mask_values.span(),
+            interaction_elements,
+            @public_input,
+            constraint_coefficients.span(),
+            0x295db9e6b36bd5b5d2591d7d76a57e241821fd478b9f667778f0a09960d3a0f,
+            0x40000,
+            0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
+        );
+    }
+}

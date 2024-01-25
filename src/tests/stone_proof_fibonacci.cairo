@@ -5,3 +5,4 @@ mod queries;
 mod stark;
 mod traces;
 mod interaction_elements;
+mod constraint_coefficients;
