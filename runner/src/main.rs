@@ -2,6 +2,7 @@ mod ast;
 mod vec252;
 
 use std::{
+    collections::HashMap,
     fs,
     io::{stdin, Read},
 };
@@ -11,17 +12,17 @@ use lalrpop_util::lalrpop_mod;
 
 use cairo_felt::Felt252;
 use cairo_lang_runner::{
-    build_hints_dict,
-    casm_run::{build_cairo_runner, RunFunctionContext},
-    initialize_vm, Arg, CairoHintProcessor, SierraCasmRunner, StarknetState,
+    build_hints_dict, casm_run::RunFunctionContext, initialize_vm, Arg, CairoHintProcessor,
+    SierraCasmRunner, StarknetState,
 };
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use cairo_vm::{
-    types::relocatable::MaybeRelocatable,
+    serde::deserialize_program::ReferenceManager,
+    types::{program::Program, relocatable::MaybeRelocatable},
     vm::{
-        errors::cairo_run_errors::CairoRunError, runners::cairo_runner::RunResources,
-        vm_core::VirtualMachine,
+        errors::cairo_run_errors::CairoRunError, runners::cairo_runner::CairoRunner,
+        runners::cairo_runner::RunResources, vm_core::VirtualMachine,
     },
 };
 use itertools::chain;
@@ -89,7 +90,24 @@ fn main() -> anyhow::Result<()> {
         .map(MaybeRelocatable::from)
         .collect();
     let data_len = data.len();
-    let mut cairo_runner = build_cairo_runner(data, builtins, hints_dict)?;
+    println!("{}", data_len);
+
+    let program = Program::new(
+        builtins,
+        data,
+        Some(0),
+        hints_dict,
+        ReferenceManager {
+            references: Vec::new(),
+        },
+        HashMap::new(),
+        vec![],
+        None,
+    )
+    .map_err(CairoRunError::from)?;
+    let mut cairo_runner = CairoRunner::new(&program, "all_cairo", false)
+        .map_err(CairoRunError::from)
+        .map_err(Box::new)?;
 
     let end = cairo_runner
         .initialize(&mut vm)
