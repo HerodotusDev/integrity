@@ -1,10 +1,31 @@
-use std::io::{stdin, Read};
+mod ast;
+mod vec252;
 
-use cairo_args_runner::{run, Arg, VecFelt252};
+use std::{
+    fs,
+    io::{stdin, Read},
+};
+
 use clap::Parser;
 use lalrpop_util::lalrpop_mod;
 
-mod ast;
+use cairo_felt::Felt252;
+use cairo_lang_runner::{
+    build_hints_dict,
+    casm_run::{build_cairo_runner, RunFunctionContext},
+    initialize_vm, Arg, CairoHintProcessor, SierraCasmRunner, StarknetState,
+};
+use cairo_lang_sierra::program::VersionedProgram;
+use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
+use cairo_vm::{
+    types::relocatable::MaybeRelocatable,
+    vm::{
+        errors::cairo_run_errors::CairoRunError, runners::cairo_runner::RunResources,
+        vm_core::VirtualMachine,
+    },
+};
+use itertools::chain;
+use vec252::VecFelt252;
 
 lalrpop_mod!(pub parser);
 
@@ -27,10 +48,70 @@ fn main() -> anyhow::Result<()> {
 
     let target = cli.target;
     let function = "main";
-    let args: VecFelt252 = serde_json::from_str(&result).unwrap();
+    let args: VecFelt252 = serde_json::from_str(&result)?;
 
-    let result = run(&target, function, &[Arg::Array(args.to_vec())])?;
+    let sierra_program =
+        serde_json::from_str::<VersionedProgram>(&fs::read_to_string(target)?)?.into_v1()?;
 
-    println!("{result:?}");
+    let sierra_runner = SierraCasmRunner::new(
+        sierra_program.program.clone(),
+        Some(Default::default()),
+        OrderedHashMap::default(),
+        true,
+    )?;
+
+    let func = sierra_runner.find_function(function)?;
+    let initial_gas = sierra_runner.get_initial_available_gas(func, None)?;
+    let (entry_code, builtins) =
+        sierra_runner.create_entry_code(func, &[Arg::Array(args.to_vec())], initial_gas)?;
+    let footer = SierraCasmRunner::create_code_footer();
+    let (hints_dict, string_to_hint) = build_hints_dict(chain!(
+        entry_code.iter(),
+        sierra_runner.get_casm_program().instructions.iter()
+    ));
+    let assembled_program = sierra_runner
+        .get_casm_program()
+        .assemble_ex(&entry_code, &footer);
+
+    let mut hint_processor = CairoHintProcessor {
+        runner: Some(&sierra_runner),
+        starknet_state: StarknetState::default(),
+        string_to_hint,
+        run_resources: RunResources::default(),
+    };
+
+    let mut vm = VirtualMachine::new(true);
+
+    let data: Vec<MaybeRelocatable> = assembled_program
+        .bytecode
+        .iter()
+        .map(Felt252::from)
+        .map(MaybeRelocatable::from)
+        .collect();
+    let data_len = data.len();
+    let mut cairo_runner = build_cairo_runner(data, builtins, hints_dict)?;
+
+    let end = cairo_runner
+        .initialize(&mut vm)
+        .map_err(CairoRunError::from)?;
+
+    initialize_vm(RunFunctionContext {
+        vm: &mut vm,
+        data_len,
+    })?;
+
+    cairo_runner
+        .run_until_pc(end, &mut vm, &mut hint_processor)
+        .map_err(CairoRunError::from)?;
+    cairo_runner
+        .end_run(true, false, &mut vm, &mut hint_processor)
+        .map_err(CairoRunError::from)?;
+    cairo_runner
+        .relocate(&mut vm, true)
+        .map_err(CairoRunError::from)?;
+
+    let resources = cairo_runner.get_execution_resources(&vm)?;
+    println!("{:#?}", resources);
+
     Ok(())
 }
