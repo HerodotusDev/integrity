@@ -1,3 +1,4 @@
+use core::array::SpanTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
@@ -95,15 +96,13 @@ fn table_decommit(
     vector_commitment_decommit(commitment.vector_commitment, vector_queries.span(), witness.vector);
 }
 
-fn to_montgomery(arr: Span<felt252>) -> Array<felt252> {
+fn to_montgomery(mut arr: Span<felt252>) -> Array<felt252> {
     let mut res = ArrayTrait::new();
-    let mut i = 0;
     loop {
-        if i == arr.len() {
-            break;
-        };
-        res.append((*arr[i]) * MONTGOMERY_R);
-        i += 1;
+        match arr.pop_front() {
+            Option::Some(elem) => { res.append(*elem * MONTGOMERY_R); },
+            Option::None => { break; }
+        }
     };
     res
 }

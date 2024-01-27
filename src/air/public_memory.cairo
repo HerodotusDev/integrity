@@ -46,20 +46,22 @@ impl PageImpl of PageTrait {
     }
 }
 
-fn get_continuous_pages_product(page_headers: Span<ContinuousPageHeader>) -> (felt252, felt252) {
+fn get_continuous_pages_product(
+    mut page_headers: Span<ContinuousPageHeader>
+) -> (felt252, felt252) {
     let mut res = 1;
     let mut total_length = 0;
-    let mut i = 0;
+
     loop {
-        if i == page_headers.len() {
-            break (res, total_length);
+        match page_headers.pop_front() {
+            Option::Some(header) => {
+                res *= *header.prod;
+                total_length += *header.size;
+            },
+            Option::None => { break; }
         }
-        let current = page_headers.at(i);
+    };
 
-        res *= *current.prod;
-        total_length += *current.size;
-
-        i += 1;
-    }
+    (res, total_length)
 }
 
