@@ -26,6 +26,8 @@ use cairo_vm::{
     },
 };
 use itertools::chain;
+
+use crate::vec252::VecFelt252;
 // use vec252::VecFelt252;
 
 lalrpop_mod!(pub parser);
@@ -42,14 +44,14 @@ fn main() -> anyhow::Result<()> {
     let mut input = String::new();
     stdin().read_to_string(&mut input)?;
 
-    // let parsed = parser::CairoParserOutputParser::new()
-    //     .parse(&input)
-    //     .map_err(|e| anyhow::anyhow!("{}", e))?;
-    // let result = parsed.to_string();
+    let parsed = parser::CairoParserOutputParser::new()
+        .parse(&input)
+        .map_err(|e| anyhow::anyhow!("{}", e))?;
+    let result = parsed.to_string();
 
     let target = cli.target;
     let function = "main";
-    // let args: VecFelt252 = serde_json::from_str(&result)?;
+    let args: VecFelt252 = serde_json::from_str(&result)?;
 
     let sierra_program =
         serde_json::from_str::<VersionedProgram>(&fs::read_to_string(target)?)?.into_v1()?;
@@ -64,7 +66,7 @@ fn main() -> anyhow::Result<()> {
     let func = sierra_runner.find_function(function)?;
     let initial_gas = sierra_runner.get_initial_available_gas(func, Some(usize::MAX))?;
     let (entry_code, builtins) =
-        sierra_runner.create_entry_code(func, &[], initial_gas)?;
+        sierra_runner.create_entry_code(func, &[Arg::Array(args.to_vec())], initial_gas)?;
     let footer = SierraCasmRunner::create_code_footer();
     let (hints_dict, string_to_hint) = build_hints_dict(chain!(
         entry_code.iter(),
