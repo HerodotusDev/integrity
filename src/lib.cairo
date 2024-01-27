@@ -11,20 +11,20 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
-#[cfg(test)]
 mod tests;
 
 use cairo_verifier::{
-    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}
+    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    tests::stone_proof_fibonacci,
 };
 
-fn main(serialized_proof: Array<felt252>) {
-    let mut serialized_proof_span = serialized_proof.span();
-    let stark_proof: StarkProof = Serde::<
-        StarkProofWithSerde
-    >::deserialize(ref serialized_proof_span)
-        .unwrap()
-        .into();
+fn main() {
+    let stark_proof = StarkProof {
+        config: stone_proof_fibonacci::stark::config::get(),
+        public_input: stone_proof_fibonacci::public_input::get(),
+        unsent_commitment: stone_proof_fibonacci::stark::unsent_commitment::get(),
+        witness: stone_proof_fibonacci::stark::witness::get(),
+    };
 
     stark_proof.verify();
 }
