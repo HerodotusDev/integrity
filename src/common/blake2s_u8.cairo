@@ -12,8 +12,9 @@ fn blake2s(data: Array<u8>) -> u256 {
 //   blake2s(x, y) & ~((1<<96) - 1).
 fn truncated_blake2s(data: Array<u8>) -> felt252 {
     // Truncate hash - convert value to felt, by taking the least significant 160 bits.
-    let hash = blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000;
-    hash.try_into().unwrap()
+    (blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000)
+        .try_into()
+        .unwrap()
 }
 
 // internals:

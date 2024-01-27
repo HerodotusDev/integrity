@@ -70,10 +70,11 @@ impl ArrayU32AppendFeltsSpan of ArrayAppendTrait<u32, Span<felt252>> {
 impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
     fn append_little_endian(ref self: Array<u32>, mut element: u128) {
         let mut i = 4;
+        let max = U128maxU32.try_into().unwrap();
         loop {
             if i != 0 {
                 i -= 1;
-                let (q, r) = DivRem::div_rem(element, U128maxU32.try_into().unwrap());
+                let (q, r) = DivRem::div_rem(element, max);
                 self.append(r.try_into().unwrap());
                 element = q;
             } else {
@@ -85,13 +86,11 @@ impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
     fn append_big_endian(ref self: Array<u32>, mut element: u128) {
         let mut array = ArrayTrait::<u32>::new();
         array.append_little_endian(element);
-        let mut i = array.len();
+        let mut span = array.span();
         loop {
-            if i != 0 {
-                i -= 1;
-                self.append((*array.at(i)).flip_endianness());
-            } else {
-                break;
+            match span.pop_back() {
+                Option::Some(elem) => { self.append((*elem).flip_endianness()); },
+                Option::None => { break; }
             }
         }
     }
@@ -100,10 +99,11 @@ impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
 impl ArrayU32AppendU64 of ArrayAppendTrait<u32, u64> {
     fn append_little_endian(ref self: Array<u32>, mut element: u64) {
         let mut i = 2;
+        let max = U64maxU32.try_into().unwrap();
         loop {
             if i != 0 {
                 i -= 1;
-                let (q, r) = DivRem::div_rem(element, U64maxU32.try_into().unwrap());
+                let (q, r) = DivRem::div_rem(element, max);
                 self.append(r.try_into().unwrap());
                 element = q;
             } else {
@@ -115,13 +115,11 @@ impl ArrayU32AppendU64 of ArrayAppendTrait<u32, u64> {
     fn append_big_endian(ref self: Array<u32>, mut element: u64) {
         let mut array = ArrayTrait::<u32>::new();
         array.append_little_endian(element);
-        let mut i = array.len();
+        let mut span = array.span();
         loop {
-            if i != 0 {
-                i -= 1;
-                self.append((*array.at(i)).flip_endianness());
-            } else {
-                break;
+            match span.pop_back() {
+                Option::Some(elem) => { self.append((*elem).flip_endianness()); },
+                Option::None => { break; }
             }
         }
     }
@@ -154,10 +152,11 @@ impl ArrayU8AppendFelt of ArrayAppendTrait<u8, felt252> {
 impl ArrayU8AppendU128 of ArrayAppendTrait<u8, u128> {
     fn append_little_endian(ref self: Array<u8>, mut element: u128) {
         let mut i = 16;
+        let max = U128maxU8.try_into().unwrap();
         loop {
             if i != 0 {
                 i -= 1;
-                let (q, r) = DivRem::div_rem(element, U128maxU8.try_into().unwrap());
+                let (q, r) = DivRem::div_rem(element, max);
                 self.append(r.try_into().unwrap());
                 element = q;
             } else {
@@ -169,13 +168,11 @@ impl ArrayU8AppendU128 of ArrayAppendTrait<u8, u128> {
     fn append_big_endian(ref self: Array<u8>, mut element: u128) {
         let mut array = ArrayTrait::<u8>::new();
         array.append_little_endian(element);
-        let mut i = array.len();
+        let mut span = array.span();
         loop {
-            if i != 0 {
-                i -= 1;
-                self.append(*array.at(i));
-            } else {
-                break;
+            match span.pop_back() {
+                Option::Some(elem) => { self.append(*elem); },
+                Option::None => { break; }
             }
         }
     }
@@ -184,10 +181,11 @@ impl ArrayU8AppendU128 of ArrayAppendTrait<u8, u128> {
 impl ArrayU8AppendU64 of ArrayAppendTrait<u8, u64> {
     fn append_little_endian(ref self: Array<u8>, mut element: u64) {
         let mut i = 8;
+        let max = U64maxU8.try_into().unwrap();
         loop {
             if i != 0 {
                 i -= 1;
-                let (q, r) = DivRem::div_rem(element, U64maxU8.try_into().unwrap());
+                let (q, r) = DivRem::div_rem(element, max);
                 self.append(r.try_into().unwrap());
                 element = q;
             } else {
@@ -199,13 +197,11 @@ impl ArrayU8AppendU64 of ArrayAppendTrait<u8, u64> {
     fn append_big_endian(ref self: Array<u8>, mut element: u64) {
         let mut array = ArrayTrait::<u8>::new();
         array.append_little_endian(element);
-        let mut i = array.len();
+        let mut span = array.span();
         loop {
-            if i != 0 {
-                i -= 1;
-                self.append(*array.at(i));
-            } else {
-                break;
+            match span.pop_back() {
+                Option::Some(elem) => { self.append(*elem); },
+                Option::None => { break; }
             }
         }
     }
@@ -214,10 +210,11 @@ impl ArrayU8AppendU64 of ArrayAppendTrait<u8, u64> {
 impl ArrayU8AppendU32 of ArrayAppendTrait<u8, u32> {
     fn append_little_endian(ref self: Array<u8>, mut element: u32) {
         let mut i = 4;
+        let max = U32maxU8.try_into().unwrap();
         loop {
             if i != 0 {
                 i -= 1;
-                let (q, r) = DivRem::div_rem(element, U32maxU8.try_into().unwrap());
+                let (q, r) = DivRem::div_rem(element, max);
                 self.append(r.try_into().unwrap());
                 element = q;
             } else {
@@ -229,13 +226,11 @@ impl ArrayU8AppendU32 of ArrayAppendTrait<u8, u32> {
     fn append_big_endian(ref self: Array<u8>, mut element: u32) {
         let mut array = ArrayTrait::<u8>::new();
         array.append_little_endian(element);
-        let mut i = array.len();
+        let mut span = array.span();
         loop {
-            if i != 0 {
-                i -= 1;
-                self.append(*array.at(i));
-            } else {
-                break;
+            match span.pop_back() {
+                Option::Some(elem) => { self.append(*elem); },
+                Option::None => { break; }
             }
         }
     }
