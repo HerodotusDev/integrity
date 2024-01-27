@@ -92,7 +92,6 @@ fn main() -> anyhow::Result<()> {
         .map(MaybeRelocatable::from)
         .collect();
     let data_len = data.len();
-    println!("{}", data_len);
 
     let program = Program::new(
         builtins,
