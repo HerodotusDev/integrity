@@ -1,13 +1,11 @@
 #[generate_trait]
 impl ArrayExtend<T, +Copy<T>, +Drop<T>> of ArrayExtendTrait<T> {
-    fn extend(ref self: Array<T>, span: Span<T>) {
-        let mut i = 0;
+    fn extend(ref self: Array<T>, mut span: Span<T>) {
         loop {
-            if i == span.len() {
-                break;
-            };
-            self.append(*span.at(i));
-            i += 1;
-        };
+            match span.pop_front() {
+                Option::Some(elem) => { self.append(*elem); },
+                Option::None => { break; }
+            }
+        }
     }
 }
