@@ -12,8 +12,7 @@ use lalrpop_util::lalrpop_mod;
 
 use cairo_felt::Felt252;
 use cairo_lang_runner::{
-    build_hints_dict, casm_run::RunFunctionContext, initialize_vm, Arg, CairoHintProcessor,
-    SierraCasmRunner, StarknetState,
+    build_hints_dict, casm_run::RunFunctionContext, initialize_vm, profiling::ProfilingInfoProcessor, Arg, CairoHintProcessor, RunResult, SierraCasmRunner, StarknetState
 };
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
@@ -83,54 +82,23 @@ fn main() -> anyhow::Result<()> {
         run_resources: RunResources::default(),
     };
 
-    let mut vm = VirtualMachine::new(true);
-
-    let data: Vec<MaybeRelocatable> = assembled_program
-        .bytecode
-        .iter()
-        .map(Felt252::from)
-        .map(MaybeRelocatable::from)
-        .collect();
-    let data_len = data.len();
-
-    let program = Program::new(
-        builtins,
-        data,
-        Some(0),
+    let RunResult { gas_counter, memory, value, profiling_info } = sierra_runner.run_function(
+        func,
+        &mut hint_processor,
         hints_dict,
-        ReferenceManager {
-            references: Vec::new(),
-        },
-        HashMap::new(),
-        vec![],
-        None,
-    )
-    .map_err(CairoRunError::from)?;
-    let mut cairo_runner = CairoRunner::new(&program, "all_cairo", false)
-        .map_err(CairoRunError::from)
-        .map_err(Box::new)?;
+        assembled_program.bytecode.iter(),
+        builtins,
+    )?;
 
-    let end = cairo_runner
-        .initialize(&mut vm)
-        .map_err(CairoRunError::from)?;
+    println!("gas: {}", gas_counter.unwrap());
+    println!("n_steps: {}", memory.len());
+    println!("return: {:#?}", value);
+    // println!("{:#?}", profiling_info);
 
-    initialize_vm(RunFunctionContext {
-        vm: &mut vm,
-        data_len,
-    })?;
+    let profiling_processor = ProfilingInfoProcessor::new(sierra_program.program);
+    let processed_profiling_info = profiling_processor.process(&profiling_info.unwrap());
 
-    cairo_runner
-        .run_until_pc(end, &mut vm, &mut hint_processor)
-        .map_err(CairoRunError::from)?;
-    cairo_runner
-        .end_run(true, false, &mut vm, &mut hint_processor)
-        .map_err(CairoRunError::from)?;
-    cairo_runner
-        .relocate(&mut vm, true)
-        .map_err(CairoRunError::from)?;
-
-    let resources = cairo_runner.get_execution_resources(&vm)?;
-    println!("{:#?}", resources);
+    println!("profiling: {}", processed_profiling_info);
 
     Ok(())
 }
