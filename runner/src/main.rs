@@ -2,7 +2,6 @@ mod ast;
 mod vec252;
 
 use std::{
-    collections::HashMap,
     fs,
     io::{stdin, Read},
 };
@@ -10,24 +9,16 @@ use std::{
 use clap::Parser;
 use lalrpop_util::lalrpop_mod;
 
-use cairo_felt::Felt252;
 use cairo_lang_runner::{
-    build_hints_dict, casm_run::RunFunctionContext, initialize_vm, profiling::ProfilingInfoProcessor, Arg, CairoHintProcessor, RunResult, SierraCasmRunner, StarknetState
+    build_hints_dict, profiling::ProfilingInfoProcessor, Arg, CairoHintProcessor, RunResult,
+    SierraCasmRunner, StarknetState,
 };
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
-use cairo_vm::{
-    serde::deserialize_program::ReferenceManager,
-    types::{program::Program, relocatable::MaybeRelocatable},
-    vm::{
-        errors::cairo_run_errors::CairoRunError, runners::cairo_runner::CairoRunner,
-        runners::cairo_runner::RunResources, vm_core::VirtualMachine,
-    },
-};
+use cairo_vm::vm::runners::cairo_runner::RunResources;
 use itertools::chain;
 
 use crate::vec252::VecFelt252;
-// use vec252::VecFelt252;
 
 lalrpop_mod!(pub parser);
 
@@ -82,7 +73,12 @@ fn main() -> anyhow::Result<()> {
         run_resources: RunResources::default(),
     };
 
-    let RunResult { gas_counter, memory, value, profiling_info } = sierra_runner.run_function(
+    let RunResult {
+        gas_counter,
+        memory,
+        value,
+        profiling_info,
+    } = sierra_runner.run_function(
         func,
         &mut hint_processor,
         hints_dict,
@@ -93,12 +89,11 @@ fn main() -> anyhow::Result<()> {
     println!("gas: {}", gas_counter.unwrap());
     println!("n_steps: {}", memory.len());
     println!("return: {:#?}", value);
-    // println!("{:#?}", profiling_info);
 
     let profiling_processor = ProfilingInfoProcessor::new(sierra_program.program);
     let processed_profiling_info = profiling_processor.process(&profiling_info.unwrap());
 
-    println!("profiling: {}", processed_profiling_info);
+    // println!("profiling: {}", processed_profiling_info);
 
     Ok(())
 }
