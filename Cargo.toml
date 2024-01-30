@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["runner"]
+members = ["runner", "benches"]
 
 [workspace.package]
 edition = "2021"
