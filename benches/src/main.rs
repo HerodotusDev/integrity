@@ -34,10 +34,10 @@ fn main() -> anyhow::Result<()> {
         let result = bench(sierra_program.program.to_owned(), f_name).unwrap();
 
         println!("Function: {f_name}");
-        println!("---------------------------------");
-        println!("Gas Used        : {}", result.gas_counter.unwrap());
+        // println!("---------------------------------");
+        // println!("Gas Used        : {}", result.gas_counter.unwrap());
         println!("Execution Steps : {}", result.memory.len());
-        println!("Return Value    : {:#?}", result.value);
+        // println!("Return Value    : {:#?}", result.value);
         println!("---------------------------------\n");
 
         // let profiling_processor = ProfilingInfoProcessor::new(sierra_program.program);
