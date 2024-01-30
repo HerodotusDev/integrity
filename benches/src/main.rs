@@ -15,6 +15,7 @@ struct Cli {
 }
 
 const BENCH_FUNCTION_LIST: &[&str] = &[
+    "bench_stark_proof_verify",
     "bench_stark_commit",
     "bench_stark_verify",
     "bench_fri_commit",
