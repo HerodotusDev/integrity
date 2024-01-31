@@ -39,7 +39,7 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof) {
+    fn verify(self: @StarkProof) -> (u256, u256) {
         // Validate config.
         self.config.validate(SECURITY_BITS);
 
@@ -74,7 +74,9 @@ impl StarkProofImpl of StarkProofTrait {
             stark_commitment,
             *self.witness,
             stark_domains
-        )
+        );
+
+        (digest, 0)
     }
 }
 

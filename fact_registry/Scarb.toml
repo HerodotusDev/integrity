@@ -1,0 +1,14 @@
+[package]
+name = "fact_registry"
+version = "0.1.0"
+edition = "2023_10"
+
+# See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
+
+[dependencies]
+cairo_verifier = { path = ".." }
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.16.0" }
+starknet = "2.5.1"
+
+[[target.starknet-contract]]
+casm = true

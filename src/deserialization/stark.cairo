@@ -32,6 +32,12 @@ impl IntoStarkProof of Into<StarkProofWithSerde, StarkProof> {
         }
     }
 }
+#[generate_trait]
+impl StarkProofWithSerdeImpl of StarkProofWithSerdeTrait {
+    fn verify(self: @StarkProofWithSerde) -> (u256, u256) {
+        self.into().verify()
+    }
+}
 
 #[derive(Drop, Serde)]
 struct StarkConfigWithSerde {
