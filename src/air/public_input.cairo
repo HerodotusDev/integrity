@@ -188,7 +188,7 @@ impl PublicInputImpl of PublicInputTrait {
         let program_end_pc = initial_fp - 2;
         let program_len = program_end_pc - initial_pc;
         let program = memory.extract_range(initial_pc, program_len);
-        memory_index += program_len.try_into().unwrap();
+        memory_index += program.len().into();
 
         assert(
             *program[0] == 0x40780017fff7fff, 'Invalid program'
