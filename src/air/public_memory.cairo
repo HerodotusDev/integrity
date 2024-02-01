@@ -45,7 +45,7 @@ impl PageImpl of PageTrait {
         }
     }
 
-    fn extract_range(self: @Page, addr: felt252, len: felt252) -> Span<felt252> {
+    fn extract_range(self: @Page, addr: u32, len: usize) -> Span<felt252> {
         let mut arr = ArrayTrait::new();
         let mut i = 0;
 
@@ -54,10 +54,10 @@ impl PageImpl of PageTrait {
                 break arr.span();
             }
 
-            let current = *self.at((addr + i).try_into().unwrap());
+            let current = *self.at(addr + i);
 
             // TODO is this needed? If not we can just use slice directly 
-            assert(current.address == addr + i, 'Invalid address');
+            assert(current.address == (addr + i).into(), 'Invalid address');
             arr.append(current.value);
             i += 1;
         }

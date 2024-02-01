@@ -187,7 +187,8 @@ impl PublicInputImpl of PublicInputTrait {
 
         let program_end_pc = initial_fp - 2;
         let program_len = program_end_pc - initial_pc;
-        let program = memory.extract_range(initial_pc, program_len);
+        let program = memory
+            .extract_range(initial_pc.try_into().unwrap(), program_len.try_into().unwrap());
         memory_index += program.len().into();
 
         assert(
@@ -229,7 +230,10 @@ impl PublicInputImpl of PublicInputTrait {
 
         // 3. Output segment 
         let output_len = output_stop - output_start;
-        let output = memory.extract_range(memory_index.into() + output_start, output_len);
+        let output = memory
+            .extract_range(
+                memory_index + output_start.try_into().unwrap(), output_len.try_into().unwrap()
+            );
         memory_index += output.len().into();
         let output_hash = hash_felts(output);
 
