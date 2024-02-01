@@ -10,7 +10,9 @@ trait IFactRegistry<TContractState> {
 
 #[starknet::contract]
 mod FactRegistry {
-    use cairo_verifier::deserialization::stark::{StarkProofWithSerde, StarkProofWithSerdeTrait};
+    use cairo_verifier::{
+        deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofTrait},
+    };
     use core::keccak::keccak_u256s_be_inputs;
 
     #[storage]
@@ -21,6 +23,7 @@ mod FactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of super::IFactRegistry<ContractState> {
         fn verify_and_register_fact(ref self: ContractState, stark_proof: StarkProofWithSerde) {
+            let stark_proof: StarkProof = stark_proof.into();
             let (program_hash, program_output_hash) = stark_proof.verify();
             self
                 .facts

@@ -12,7 +12,7 @@ use cairo_verifier::{
         fri::{FriConfigWithSerde, FriUnsentCommitmentWithSerde, FriWitnessWithSerde},
         pow::{ProofOfWorkConfigWithSerde, ProofOfWorkUnsentCommitmentWithSerde},
     },
-    stark::{StarkProof, StarkConfig, StarkUnsentCommitment, StarkWitness},
+    stark::{StarkProof, StarkProofTrait, StarkConfig, StarkUnsentCommitment, StarkWitness},
 };
 
 #[derive(Drop, Serde)]
@@ -30,12 +30,6 @@ impl IntoStarkProof of Into<StarkProofWithSerde, StarkProof> {
             unsent_commitment: self.unsent_commitment.into(),
             witness: self.witness.into(),
         }
-    }
-}
-#[generate_trait]
-impl StarkProofWithSerdeImpl of StarkProofWithSerdeTrait {
-    fn verify(self: @StarkProofWithSerde) -> (u256, u256) {
-        self.into().verify()
     }
 }
 
