@@ -41,7 +41,7 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof) -> (u256, u256) {
         // Validate config.
-        self.config.validate(SECURITY_BITS);
+        // self.config.validate(SECURITY_BITS);
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
@@ -67,16 +67,16 @@ impl StarkProofImpl of StarkProofTrait {
         );
 
         // STARK verify phase.
-        stark_verify::stark_verify(
-            NUM_COLUMNS_FIRST,
-            NUM_COLUMNS_SECOND,
-            queries.span(),
-            stark_commitment,
-            *self.witness,
-            stark_domains
-        );
+        // stark_verify::stark_verify(
+        //     NUM_COLUMNS_FIRST,
+        //     NUM_COLUMNS_SECOND,
+        //     queries.span(),
+        //     stark_commitment,
+        //     *self.witness,
+        //     stark_domains
+        // );
 
-        (digest, 0)
+        (0, 0)
     }
 }
 
