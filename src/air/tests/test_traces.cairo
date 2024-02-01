@@ -1,4 +1,3 @@
-use cairo_verifier::air::traces::TracesConfigTrait;
 use cairo_verifier::{
     channel::channel::{Channel, ChannelImpl},
     air::{
@@ -7,7 +6,7 @@ use cairo_verifier::{
             traces_commit, traces_decommit, TracesCommitment, TracesDecommitment, TracesWitness,
             TracesUnsentCommitment, TracesConfig
         },
-        global_values::InteractionElements,
+        global_values::InteractionElements, traces::TracesConfigTrait,
     },
     table_commitment::table_commitment::{
         TableCommitment, TableCommitmentConfig, TableDecommitment, TableCommitmentWitness

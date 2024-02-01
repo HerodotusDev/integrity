@@ -1,13 +1,18 @@
-use cairo_verifier::fri::fri::{
-    fri_verify, FriUnsentCommitment, FriCommitment, FriDecommitment, FriWitness, FriLayerWitness
-};
-use cairo_verifier::fri::fri_config::FriConfig;
-use cairo_verifier::channel::channel::ChannelTrait;
-use cairo_verifier::table_commitment::table_commitment::{
-    TableCommitmentConfig, TableCommitment, TableCommitmentWitness
-};
-use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness
+use cairo_verifier::{
+    channel::channel::ChannelTrait,
+    fri::{
+        fri::{
+            fri_verify, FriUnsentCommitment, FriCommitment, FriDecommitment, FriWitness,
+            FriLayerWitness
+        },
+        fri_config::FriConfig,
+    },
+    table_commitment::table_commitment::{
+        TableCommitmentConfig, TableCommitment, TableCommitmentWitness
+    },
+    vector_commitment::vector_commitment::{
+        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness
+    }
 };
 
 // test generated based on cairo0-verifier run on fib proof from stone-prover

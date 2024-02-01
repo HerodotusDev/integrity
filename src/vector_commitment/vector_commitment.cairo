@@ -1,3 +1,4 @@
+use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait}};
 use cairo_verifier::{
     common::{
         array_append::ArrayAppendTrait, blake2s::blake2s, math::pow, blake2s::truncated_blake2s,
@@ -5,7 +6,6 @@ use cairo_verifier::{
     },
     channel::channel::{Channel, ChannelImpl}
 };
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait}};
 
 // Commitment for a vector of field elements.
 #[derive(Drop, Copy, PartialEq)]

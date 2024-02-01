@@ -1,4 +1,3 @@
-use core::debug::PrintTrait;
 use cairo_verifier::{
     common::array_print::SpanPrintTrait, common::math::pow,
     channel::channel::{Channel, ChannelTrait},

@@ -1,7 +1,4 @@
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
-use cairo_verifier::common::array_split::ArraySplitTrait;
-use core::debug::PrintTrait;
-use cairo_verifier::common::array_print::{ArrayPrintTrait, SpanPrintTrait};
+use cairo_verifier::common::{array_extend::ArrayExtendTrait, array_split::ArraySplitTrait};
 
 // Merge Sort
 /// # Arguments
