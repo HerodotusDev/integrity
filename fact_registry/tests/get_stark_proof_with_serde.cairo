@@ -71,9 +71,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
             layout: 0x726563757273697665,
             dynamic_params: array![],
             n_segments: 6,
-            segments: array![
-                0x1, 0x5, 0x25, 0x68, 0x68, 0x6a, 0x6a, 0x6a, 0x1ea, 0x1e, 0x9ea, 0x9e,
-            ],
+            segments: array![1, 5, 37, 154, 154, 156, 156, 156, 540, 540, 2588, 2588],
             padding_addr: 0x1,
             padding_value: 0x40780017fff7fff,
             main_page_len: 46,
@@ -460,7 +458,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
         witness: StarkWitnessWithSerde {
             traces_decommitment: TracesDecommitmentWithSerde {
                 original: TableDecommitmentWithSerde {
-                    n_values: 0,
+                    n_values: 126,
                     values: array![
                         0xd6d1182fdb84accfe1298ff50bdc6fd07f17c78847cafd33a64b52c2b0056b,
                         0x6f6c3151d5326a38a72804d1f69fa7e308053d4a733aa1cd2a64dd529b6b701,
@@ -591,7 +589,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
                     ],
                 },
                 interaction: TableDecommitmentWithSerde {
-                    n_values: 0,
+                    n_values: 54,
                     values: array![
                         0x3d1317281ba122c899c9768f7cc61b3a31a18638436355308cc161a315959,
                         0x729fa8444aedc7f5dd9c305c989ac3813effc9cf3c81fea1a7eb42a0829dd1f,
@@ -653,7 +651,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
             traces_witness: TracesWitnessWithSerde {
                 original: TableCommitmentWitnessWithSerde {
                     vector: VectorCommitmentWitnessWithSerde {
-                        n_authentications: 0,
+                        n_authentications: 300,
                         authentications: array![
                             0x9e9fbb74918a1121cf33bb728092d339b7d3749c,
                             0x62d01d6188781bab44bd6e352fa8c8d120989ac9,
@@ -964,7 +962,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
                 },
                 interaction: TableCommitmentWitnessWithSerde {
                     vector: VectorCommitmentWitnessWithSerde {
-                        n_authentications: 0,
+                        n_authentications: 300,
                         authentications: array![
                             0x951e4515ee8e7a80d9a9fdb1b200f1858b37bf4a,
                             0x43549ef9474fd86a16a3b97e1ff7ac2d83cf5c57,
@@ -1275,7 +1273,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
                 },
             },
             composition_decommitment: TableDecommitmentWithSerde {
-                n_values: 0,
+                n_values: 36,
                 values: array![
                     0x7d70f9e31a694048895b0e7e55074ed1cfde491c9539e709bf3aed247a9af25,
                     0x5e26502ee71165416146bcc268e03d509fc62d0d38d031c7aeaac22cb72f824,
@@ -1317,7 +1315,7 @@ fn get_stark_proof_with_serde() -> StarkProofWithSerde {
             },
             composition_witness: TableCommitmentWitnessWithSerde {
                 vector: VectorCommitmentWitnessWithSerde {
-                    n_authentications: 0,
+                    n_authentications: 300,
                     authentications: array![
                         0xfbefd6f9b967b98df01050198c1f75daec4a5682,
                         0xfed88642424d3168fecb34e0042548cac7369a21,
