@@ -117,11 +117,7 @@ impl ChannelImpl of ChannelTrait {
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
-
-        let low: u32 = (value % 0x100000000).try_into().unwrap();
-        let high: u32 = (value / 0x100000000).try_into().unwrap();
-        hash_data.append(high.flip_endianness());
-        hash_data.append(low.flip_endianness());
+        hash_data.append_big_endian(value);
 
         self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;
