@@ -12,6 +12,7 @@ mod horner_eval;
 mod math;
 mod merge_sort;
 mod powers_array;
+mod split;
 
 #[cfg(test)]
 mod tests;

@@ -6,15 +6,21 @@ trait FlipEndiannessTrait<F> {
     fn flip_endianness(self: F) -> F;
 }
 
+impl FlipEndiannessU16 of FlipEndiannessTrait<u16> {
+    fn flip_endianness(self: u16) -> u16 {
+        (u128_byte_reverse(self.into()) / 0x10000000000000000000000000000).try_into().unwrap()
+    }
+}
+
 impl FlipEndiannessU32 of FlipEndiannessTrait<u32> {
     fn flip_endianness(self: u32) -> u32 {
-        (u128_byte_reverse(self.into()) / 79228162514264337593543950336).try_into().unwrap()
+        (u128_byte_reverse(self.into()) / 0x1000000000000000000000000).try_into().unwrap()
     }
 }
 
 impl FlipEndiannessU64 of FlipEndiannessTrait<u64> {
     fn flip_endianness(self: u64) -> u64 {
-        (u128_byte_reverse(self.into()) / 18446744073709551616).try_into().unwrap()
+        (u128_byte_reverse(self.into()) / 0x10000000000000000).try_into().unwrap()
     }
 }
 
