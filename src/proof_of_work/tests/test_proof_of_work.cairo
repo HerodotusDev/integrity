@@ -18,3 +18,14 @@ fn test_verify_proof_of_work_1() {
     let n_bits: u8 = 20;
     verify_proof_of_work(digest, n_bits, nonce);
 }
+
+#[test]
+#[available_gas(9999999999)]
+fn test_verify_proof_of_work_2() {
+    let digest: u256 = u256 {
+        low: 0x15aa9b8787d877d61588844c0cfe2fb9, high: 0x7cd36c3da65b8d57331341e661a86574
+    };
+    let nonce: u64 = 0x40719c5;
+    let n_bits: u8 = 0x1e;
+    verify_proof_of_work(digest, n_bits, nonce);
+}

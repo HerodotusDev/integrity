@@ -1,18 +1,20 @@
-use cairo_verifier::common::{
-    array_append::ArrayAppendTrait, blake2s::blake2s, math::pow, blake2s::truncated_blake2s,
-    flip_endianness::FlipEndiannessTrait, math::DivRemFelt252, math::Felt252PartialOrd
+use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait}};
+use cairo_verifier::{
+    common::{
+        array_append::ArrayAppendTrait, blake2s::blake2s, math::pow, blake2s::truncated_blake2s,
+        flip_endianness::FlipEndiannessTrait, math::DivRemFelt252, math::Felt252PartialOrd,
+    },
+    channel::channel::{Channel, ChannelImpl}
 };
-use cairo_verifier::channel::channel::{Channel, ChannelImpl};
-use poseidon::hades_permutation;
 
 // Commitment for a vector of field elements.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct VectorCommitment {
     config: VectorCommitmentConfig,
     commitment_hash: felt252
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct VectorCommitmentConfig {
     height: felt252,
     n_verifier_friendly_commitment_layers: felt252,
@@ -61,7 +63,7 @@ struct VectorCommitmentWitness {
 fn vector_commit(
     ref channel: Channel, unsent_commitment: felt252, config: VectorCommitmentConfig
 ) -> VectorCommitment {
-    channel.read_felt_from_prover(unsent_commitment); // commitment is being sent
+    channel.read_truncated_hash_from_prover(unsent_commitment); // commitment is being sent
     VectorCommitment { config: config, commitment_hash: unsent_commitment, }
 }
 
@@ -110,7 +112,7 @@ fn compute_root_from_queries(
             let next: VectorQueryWithDepth = *queue[start + 1];
             if current.index + 1 == next.index {
                 // next is a sibling of current
-                let hash = hash_blake_or_poseidon(current.value, next.value, is_verifier_friendly);
+                let hash = hash_blake_or_pedersen(current.value, next.value, is_verifier_friendly);
                 queue
                     .append(
                         VectorQueryWithDepth {
@@ -123,10 +125,10 @@ fn compute_root_from_queries(
             }
         }
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_poseidon(current.value, *authentications[auth_start], is_verifier_friendly)
+        hash_blake_or_pedersen(current.value, *authentications[auth_start], is_verifier_friendly)
     } else {
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_poseidon(*authentications[auth_start], current.value, is_verifier_friendly)
+        hash_blake_or_pedersen(*authentications[auth_start], current.value, is_verifier_friendly)
     };
     queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
     compute_root_from_queries(
@@ -155,11 +157,14 @@ fn shift_queries(
     shifted_queries
 }
 
-fn hash_blake_or_poseidon(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
+fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
     if is_verifier_friendly {
-        let (hash, _, _) = hades_permutation(x, y, 2);
+        let hash = PedersenTrait::new(x).update_with(y).finalize();
         hash
     } else {
-        truncated_blake2s(x, y)
+        let mut data = ArrayTrait::<u32>::new();
+        data.append_big_endian(x);
+        data.append_big_endian(y);
+        truncated_blake2s(data)
     }
 }

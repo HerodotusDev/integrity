@@ -51,7 +51,7 @@ fn compute_coset_elements(
         if q.is_some() && *q.unwrap().unbox().index == coset_start_index + offset_within_coset {
             let query = *queries.pop_front().unwrap();
             coset_elements.append(query.y_value);
-            coset_x_inv = (query.x_inv_value) * (*fri_group.at(i));
+            coset_x_inv = query.x_inv_value * (*fri_group.at(i));
         } else {
             coset_elements.append(*sibling_witness.pop_front().unwrap());
         }
@@ -90,10 +90,10 @@ fn compute_next_layer(
             break;
         }
 
-        let index_u256: u256 = (*queries.at(0).index).into();
-        let coset_size_u256: u256 = coset_size.into();
-
-        let coset_index = (index_u256 / coset_size_u256).low.into();
+        let coset_index = (Into::<felt252, u256>::into(*queries.at(0).index)
+            / Into::<felt252, u256>::into(coset_size))
+            .try_into()
+            .unwrap();
 
         verify_indices.append(coset_index);
 
@@ -107,8 +107,7 @@ fn compute_next_layer(
         );
 
         // Verify that at least one query was consumed.
-        let coset_elements_len = coset_elements.len();
-        assert(coset_elements_len > 0, 'Must be non negative value');
+        assert(coset_elements.len() > 0, 'Must be non negative value');
 
         let coset_elements_span = coset_elements.span();
 

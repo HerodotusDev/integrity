@@ -1,9 +1,16 @@
-use cairo_verifier::channel::channel::ChannelTrait;
-use cairo_verifier::table_commitment::table_commitment::{
-    TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
+use cairo_verifier::{
+    air::{
+        public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
+        global_values::InteractionElements,
+    },
+    channel::channel::{Channel, ChannelTrait},
+    table_commitment::table_commitment::{
+        TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
+        TableCommitmentConfig
+    },
+    vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
+    common::asserts::assert_in_range
 };
-use cairo_verifier::air::{public_input::PublicInput, traces_config::TracesConfig};
-use cairo_verifier::channel::channel::Channel;
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
 // of the CPU AIR.
@@ -22,14 +29,14 @@ struct TracesUnsentCommitment {
 }
 
 // Commitment for the Traces component.
-#[derive(Drop)]
+#[derive(Drop, PartialEq)]
 struct TracesCommitment {
-    public_input: PublicInput,
+    public_input: @PublicInput,
     // Commitment to the first trace.
     original: TableCommitment,
     // The interaction elements that were sent to the prover after the first trace commitment (e.g.
     // memory interaction).
-    interaction_elements: Array<felt252>,
+    interaction_elements: InteractionElements,
     // Commitment to the second (interaction) trace.
     interaction: TableCommitment,
 }
@@ -51,12 +58,43 @@ struct TracesWitness {
     interaction: TableCommitmentWitness,
 }
 
+const MAX_N_COLUMNS: felt252 = 128;
+const AIR_LAYOUT_N_ORIGINAL_COLUMNS: felt252 = 12;
+const AIR_LAYOUT_N_INTERACTION_COLUMNS: felt252 = 3;
+
+// Configuration for the Traces component.
+#[derive(Drop, Copy)]
+struct TracesConfig {
+    original: TableCommitmentConfig,
+    interaction: TableCommitmentConfig,
+}
+
+#[generate_trait]
+impl TracesConfigImpl of TracesConfigTrait {
+    fn validate(
+        self: @TracesConfig,
+        log_eval_domain_size: felt252,
+        n_verifier_friendly_commitment_layers: felt252,
+    ) {
+        assert_in_range(*self.original.n_columns, 1, MAX_N_COLUMNS + 1);
+        assert_in_range(*self.interaction.n_columns, 1, MAX_N_COLUMNS + 1);
+        assert(*self.original.n_columns == NUM_COLUMNS_FIRST.into(), 'Wrong number of columns');
+        assert(*self.interaction.n_columns == NUM_COLUMNS_SECOND.into(), 'Wrong number of columns');
+
+        self.original.vector.validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
+
+        self
+            .interaction
+            .vector
+            .validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
+    }
+}
+
 // Reads the traces commitment from the channel.
 // Returns the commitment, along with GlobalValue required to evaluate the constraint polynomial.
 fn traces_commit(
     ref channel: Channel,
-    n_interaction_elements: felt252,
-    public_input: PublicInput,
+    public_input: @PublicInput,
     unsent_commitment: TracesUnsentCommitment,
     config: TracesConfig
 ) -> TracesCommitment {
@@ -65,7 +103,14 @@ fn traces_commit(
         ref channel, unsent_commitment.original, config.original
     );
     // Generate interaction elements for the first interaction.
-    let interaction_elements = channel.random_felts_to_prover(n_interaction_elements);
+    let interaction_elements = InteractionElements {
+        memory_multi_column_perm_perm_interaction_elm: channel.random_felt_to_prover(),
+        memory_multi_column_perm_hash_interaction_elm0: channel.random_felt_to_prover(),
+        rc16_perm_interaction_elm: channel.random_felt_to_prover(),
+        diluted_check_permutation_interaction_elm: channel.random_felt_to_prover(),
+        diluted_check_interaction_z: channel.random_felt_to_prover(),
+        diluted_check_interaction_alpha: channel.random_felt_to_prover(),
+    };
     // Read interaction commitment.
     let interaction_commitment = table_commit(
         ref channel, unsent_commitment.interaction, config.interaction

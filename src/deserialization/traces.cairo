@@ -1,8 +1,6 @@
-use core::traits::Into;
 use cairo_verifier::{
     air::{
-        traces_config::TracesConfig,
-        traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+        traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
     deserialization::{
         vector::{
@@ -26,7 +24,7 @@ struct TracesConfigWithSerde {
 }
 impl IntoTracesConfig of Into<TracesConfigWithSerde, TracesConfig> {
     fn into(self: TracesConfigWithSerde) -> TracesConfig {
-        TracesConfig { original: self.original.into(), interaction: self.interaction.into(), }
+        TracesConfig { original: self.original.into(), interaction: self.interaction.into() }
     }
 }
 
@@ -37,7 +35,7 @@ struct TracesDecommitmentWithSerde {
 }
 impl IntoTracesDecommitment of Into<TracesDecommitmentWithSerde, TracesDecommitment> {
     fn into(self: TracesDecommitmentWithSerde) -> TracesDecommitment {
-        TracesDecommitment { original: self.original.into(), interaction: self.interaction.into(), }
+        TracesDecommitment { original: self.original.into(), interaction: self.interaction.into() }
     }
 }
 
@@ -48,7 +46,7 @@ struct TracesUnsentCommitmentWithSerde {
 }
 impl IntoTracesUnsentCommitment of Into<TracesUnsentCommitmentWithSerde, TracesUnsentCommitment> {
     fn into(self: TracesUnsentCommitmentWithSerde) -> TracesUnsentCommitment {
-        TracesUnsentCommitment { original: self.original, interaction: self.original, }
+        TracesUnsentCommitment { original: self.original, interaction: self.interaction }
     }
 }
 
@@ -59,7 +57,6 @@ struct TracesWitnessWithSerde {
 }
 impl IntoTracesWitness of Into<TracesWitnessWithSerde, TracesWitness> {
     fn into(self: TracesWitnessWithSerde) -> TracesWitness {
-        TracesWitness { original: self.original.into(), interaction: self.interaction.into(), }
+        TracesWitness { original: self.original.into(), interaction: self.interaction.into() }
     }
 }
-

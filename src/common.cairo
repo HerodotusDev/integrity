@@ -3,6 +3,7 @@ mod array_extend;
 mod array_print;
 mod array_split;
 mod asserts;
+mod bit_reverse;
 mod blake2s_u8;
 mod blake2s;
 mod consts;
@@ -12,7 +13,6 @@ mod horner_eval;
 mod math;
 mod hash;
 mod merge_sort;
-mod bit_reverse;
 mod powers_array;
 
 #[cfg(test)]

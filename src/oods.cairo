@@ -1,18 +1,12 @@
-use core::array::ArrayTrait;
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
-use core::array::SpanTrait;
-use cairo_verifier::air::composition::{eval_composition_polynomial, eval_oods_polynomial};
-use cairo_verifier::air::global_values::InteractionElements;
-use cairo_verifier::air::public_input::PublicInput;
-use cairo_verifier::air::traces::TracesDecommitment;
-use cairo_verifier::table_commitment::table_commitment::TableDecommitment;
-use cairo_verifier::air::constants::CONSTRAINT_DEGREE;
-
-#[derive(Drop)]
-struct OodsValues {
-    mask_values: Array<felt252>,
-    split_polynomials: Array<felt252>
-}
+use cairo_verifier::{
+    common::array_extend::ArrayExtendTrait,
+    air::{
+        composition::{eval_composition_polynomial, eval_oods_polynomial},
+        global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+        constants::CONSTRAINT_DEGREE,
+    },
+    table_commitment::table_commitment::TableDecommitment
+};
 
 #[derive(Drop)]
 struct OodsEvaluationInfo {
@@ -22,11 +16,13 @@ struct OodsEvaluationInfo {
     constraint_coefficients: Span<felt252>,
 }
 
+// Checks that the trace and the compostion agree at oods_point, assuming the prover provided us
+// with the proper evaluations.
 fn verify_oods(
-    oods: OodsValues,
+    oods: Span<felt252>,
     interaction_elements: InteractionElements,
-    public_input: PublicInput,
-    constraint_coefficients: Array<felt252>,
+    public_input: @PublicInput,
+    constraint_coefficients: Span<felt252>,
     oods_point: felt252,
     trace_domain_size: felt252,
     trace_generator: felt252
@@ -34,7 +30,7 @@ fn verify_oods(
     let composition_from_trace = eval_composition_polynomial(
         interaction_elements,
         public_input,
-        oods.mask_values,
+        oods.slice(0, oods.len() - 2),
         constraint_coefficients,
         oods_point,
         trace_domain_size,
@@ -42,8 +38,7 @@ fn verify_oods(
     );
 
     // TODO support degree > 2?
-    let claimed_composition = *oods.split_polynomials.at(0)
-        + *oods.split_polynomials.at(1) * oods_point;
+    let claimed_composition = *oods[oods.len() - 2] + *oods[oods.len() - 1] * oods_point;
 
     assert(composition_from_trace == claimed_composition, 'Invalid OODS');
 }
@@ -56,7 +51,9 @@ fn eval_oods_boundary_poly_at_points(
     decommitment: TracesDecommitment,
     composition_decommitment: TableDecommitment,
 ) -> Array<felt252> {
-    assert(n_original_columns == decommitment.original.values.len(), 'Invalid value');
+    assert(
+        decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
+    );
     assert(
         decommitment.interaction.values.len() == points.len() * n_interaction_columns,
         'Invalid value'
@@ -76,24 +73,17 @@ fn eval_oods_boundary_poly_at_points(
         let mut column_values = ArrayTrait::<felt252>::new();
 
         column_values
-            .extend(
-                decommitment
-                    .original
-                    .values
-                    .slice(i * n_original_columns, (i + 1) * n_original_columns)
-            );
+            .extend(decommitment.original.values.slice(i * n_original_columns, n_original_columns));
         column_values
             .extend(
                 decommitment
                     .interaction
                     .values
-                    .slice(i * n_interaction_columns, (i + 1) * n_interaction_columns)
+                    .slice(i * n_interaction_columns, n_interaction_columns)
             );
         column_values
             .extend(
-                composition_decommitment
-                    .values
-                    .slice(i * CONSTRAINT_DEGREE, (i + 1) * CONSTRAINT_DEGREE)
+                composition_decommitment.values.slice(i * CONSTRAINT_DEGREE, CONSTRAINT_DEGREE)
             );
 
         evaluations

@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    common::math::pow, channel::channel::{Channel, ChannelTrait},
+    common::array_print::SpanPrintTrait, common::math::pow,
+    channel::channel::{Channel, ChannelTrait},
     fri::{
         fri_config::FriConfig, fri_first_layer::gather_first_layer_queries,
         fri_group::get_fri_group,
@@ -23,7 +24,7 @@ struct FriUnsentCommitment {
     last_layer_coefficients: Span<felt252>,
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct FriCommitment {
     config: FriConfig,
     // Array of size n_layers - 1 containing table commitments for each inner layer.
@@ -116,7 +117,7 @@ fn fri_commit(
 
     let (commitments, eval_points) = fri_commit_rounds(
         ref channel,
-        config.n_layers,
+        config.n_layers - 1,
         config.inner_layers,
         unsent_commitment.inner_layers,
         config.fri_step_sizes,
@@ -204,7 +205,7 @@ fn fri_verify(
         commitment.config.n_layers - 1,
         commitment.inner_layers,
         witness.layers,
-        commitment.eval_points.slice(1, commitment.eval_points.len() - 1),
+        commitment.eval_points,
         commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
         fri_queries,
     );

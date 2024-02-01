@@ -15,10 +15,13 @@ use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}
 };
 
-fn main(x: Array<felt252>) {
-    let mut x_span = x.span();
-    let stark_proof: StarkProof = Serde::<StarkProofWithSerde>::deserialize(ref x_span)
+fn main(serialized_proof: Array<felt252>) {
+    let mut serialized_proof_span = serialized_proof.span();
+    let stark_proof: StarkProof = Serde::<
+        StarkProofWithSerde
+    >::deserialize(ref serialized_proof_span)
         .unwrap()
         .into();
+
     stark_proof.verify();
 }

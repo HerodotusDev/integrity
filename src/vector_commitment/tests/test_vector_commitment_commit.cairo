@@ -1,10 +1,9 @@
-use cairo_verifier::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
-use cairo_verifier::vector_commitment::vector_commitment::{
-    VectorCommitment, VectorCommitmentConfig, vector_commit
+use cairo_verifier::{
+    channel::channel::Channel,
+    vector_commitment::vector_commitment::{VectorCommitmentConfig, vector_commit}
 };
-use cairo_verifier::channel::channel::Channel;
 
-
+// test generated based on cairo0-verifier run on fib proof from stone-prover
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commit() {
@@ -29,27 +28,4 @@ fn test_vector_commit() {
         res.commitment_hash == 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e,
         'invalid commitment_hash'
     );
-}
-
-#[test]
-#[available_gas(9999999999)]
-fn test_validate_vector_commitment() {
-    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
-    config.validate(21, 7);
-}
-
-#[test]
-#[should_panic]
-#[available_gas(9999999999)]
-fn test_invalid_validate_vector_commitment_1() {
-    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
-    config.validate(21, 8);
-}
-
-#[test]
-#[should_panic]
-#[available_gas(9999999999)]
-fn test_invalid_validate_vector_commitment_2() {
-    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
-    config.validate(22, 7);
 }

@@ -1,19 +1,24 @@
+use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
-        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le
+        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
+        array_print::SpanPrintTrait
     },
     air::{
-        public_memory::{Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product},
+        public_memory::{
+            Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
+        },
         constants
     },
     domains::StarkDomains
 };
+
 use cairo_verifier::common::hash::hash_felts;
 use cairo_verifier::air::constants::{segments, MAX_ADDRESS, get_builtins, INITIAL_PC};
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {
     // Start address of the memory segment.
     begin_addr: felt252,
@@ -21,7 +26,7 @@ struct SegmentInfo {
     stop_ptr: felt252,
 }
 
-#[derive(Drop)]
+#[derive(Drop, PartialEq)]
 struct PublicInput {
     log_n_steps: felt252,
     rc_min: felt252,
@@ -46,12 +51,12 @@ impl PublicInputImpl of PublicInputTrait {
             if i == self.main_page.len() {
                 break;
             }
-
-            let page = *self.main_page.at(i);
-            main_page_hash_state = main_page_hash_state.update_with((page.address, page.value));
-
+            main_page_hash_state = main_page_hash_state.update_with(*self.main_page.at(i));
             i += 1;
         };
+        main_page_hash_state = main_page_hash_state
+            .update_with(AddrValueSize * self.main_page.len());
+        let main_page_hash = main_page_hash_state.finalize();
 
         let mut hash_data = ArrayTrait::<u32>::new();
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
@@ -91,13 +96,12 @@ impl PublicInputImpl of PublicInputTrait {
 
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data.append(1 + self.continuous_page_headers.len());
+        hash_data
+            .append_big_endian(Into::<u32, u256>::into(1 + self.continuous_page_headers.len()));
 
         // Main page.
-        hash_data.append(self.main_page.len());
-        ArrayAppendTrait::<
-            _, u256
-        >::append_big_endian(ref hash_data, main_page_hash_state.finalize().into());
+        hash_data.append_big_endian(Into::<_, u256>::into(self.main_page.len()));
+        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
 
         // Add the rest of the pages.
         let mut i: u32 = 0;
@@ -118,7 +122,7 @@ impl PublicInputImpl of PublicInputTrait {
             i += 1;
         };
 
-        blake2s(hash_data)
+        blake2s(hash_data).flip_endianness()
     }
 
     // Returns the ratio between the product of all public memory cells and z^|public_memory|.
@@ -238,11 +242,11 @@ impl PublicInputImpl of PublicInputTrait {
         (program_hash, output_hash)
     }
 
-    fn validate(self: @PublicInput, domains: StarkDomains) {
+    fn validate(self: @PublicInput, domains: @StarkDomains) {
         assert_range_u128_le(*self.log_n_steps, constants::MAX_LOG_N_STEPS);
         let n_steps = pow(2, *self.log_n_steps);
         assert(
-            n_steps * constants::CPU_COMPONENT_HEIGHT == domains.trace_domain_size,
+            n_steps * constants::CPU_COMPONENT_HEIGHT == *domains.trace_domain_size,
             'Wrong trace size'
         );
 

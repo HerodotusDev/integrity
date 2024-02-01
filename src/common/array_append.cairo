@@ -1,4 +1,3 @@
-use core::traits::Into;
 use cairo_verifier::common::flip_endianness::FlipEndiannessU32;
 
 // 2^8 = 256

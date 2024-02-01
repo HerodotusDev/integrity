@@ -1,1 +1,7 @@
-mod test_channel;
+mod test_random_felts_to_prover;
+mod test_random_uint256_to_prover;
+mod test_read_felt_from_prover;
+mod test_read_felt_vector_from_prover;
+mod test_read_felts_from_prover;
+mod test_read_truncated_hash_from_prover;
+mod test_read_uint64_from_prover;

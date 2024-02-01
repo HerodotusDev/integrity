@@ -1,13 +1,15 @@
 use cairo_verifier::{
     air::{
-        traces_config::{TracesConfig, TracesConfigTrait}, public_input::PublicInput,
-        traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness}
+        traces::{TracesConfig, TracesConfigTrait}, public_input::{PublicInput, PublicInputTrait},
+        traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+        constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     },
+    channel::channel::{Channel, ChannelImpl},
     fri::{
         fri_config::{FriConfig, FriConfigTrait},
         fri::{FriUnsentCommitment, FriWitness, FriCommitment}
     },
-    domains::StarkDomainsImpl,
+    queries::queries, domains::StarkDomainsImpl,
     table_commitment::table_commitment::{
         TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
     },
@@ -24,7 +26,7 @@ mod stark_verify;
 #[cfg(test)]
 mod tests;
 
-const SECURITY_BITS: felt252 = 9;
+const SECURITY_BITS: felt252 = 96;
 
 
 #[derive(Drop)]
@@ -38,8 +40,41 @@ struct StarkProof {
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof) {
+        // Validate config.
         self.config.validate(SECURITY_BITS);
-        let stark_domains = StarkDomainsImpl::new(self.config);
+
+        // Validate the public input.
+        let stark_domains = StarkDomainsImpl::new(
+            *self.config.log_trace_domain_size, *self.config.log_n_cosets
+        );
+        self.public_input.validate(@stark_domains);
+
+        // Compute the initial hash seed for the Fiat-Shamir channel.
+        let digest = self.public_input.get_public_input_hash();
+        // Construct the channel.
+        let mut channel = ChannelImpl::new(digest);
+
+        // STARK commitment phase.
+        let stark_commitment = stark_commit::stark_commit(
+            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
+        );
+
+        // Generate queries.
+        let queries = queries::generate_queries(
+            ref channel,
+            (*self.config.n_queries).try_into().unwrap(),
+            stark_domains.eval_domain_size.try_into().unwrap()
+        );
+
+        // STARK verify phase.
+        stark_verify::stark_verify(
+            NUM_COLUMNS_FIRST,
+            NUM_COLUMNS_SECOND,
+            queries.span(),
+            stark_commitment,
+            *self.witness,
+            stark_domains
+        )
     }
 }
 
@@ -63,16 +98,28 @@ struct StarkConfig {
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
     fn validate(self: @StarkConfig, security_bits: felt252) {
-        self.proof_of_work.config_validate();
+        // Validate Proof of work config.
+        self.proof_of_work.validate();
 
+        // Check security bits.
+        assert(
+            Into::<felt252, u256>::into(security_bits) <= (*self.n_queries).into()
+                * (*self.log_n_cosets).into()
+                + (*self.proof_of_work.n_bits).into(),
+            'Invalid security bits'
+        );
+
+        // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
-        self.traces.validate(log_eval_domain_size, security_bits);
+        self.traces.validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
 
+        // Validate composition config.
         self
             .composition
             .vector
             .validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
 
+        // Validate Fri config.
         self.fri.validate(*self.log_n_cosets, *self.n_verifier_friendly_commitment_layers);
     }
 }
@@ -123,7 +170,7 @@ struct StarkUnsentCommitment {
     proof_of_work: ProofOfWorkUnsentCommitment,
 }
 
-#[derive(Drop)]
+#[derive(Drop, PartialEq)]
 struct StarkCommitment {
     traces: TracesCommitment,
     composition: TableCommitment,

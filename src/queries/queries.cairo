@@ -3,7 +3,7 @@ use cairo_verifier::{
     common::{
         merge_sort::merge_sort, math::pow, consts::FIELD_GENERATOR, bit_reverse::BitReverseTrait
     },
-    domains::StarkDomains
+    domains::StarkDomains, common::array_print::SpanPrintTrait
 };
 
 // 2^64 = 18446744073709551616
@@ -13,7 +13,7 @@ fn generate_queries(
     ref channel: Channel, n_samples: u32, query_upper_bound: u64
 ) -> Array<felt252> {
     let samples = sample_random_queries(ref channel, n_samples, query_upper_bound);
-    usort(samples)
+    usort(samples.span().slice(0, n_samples))
 }
 
 fn sample_random_queries(
@@ -57,7 +57,7 @@ fn sample_random_queries(
 
 // Sorts an array of field elements and removes duplicates.
 // Returns the sorted array.
-fn usort(input: Array<u64>) -> Array<felt252> {
+fn usort(input: Span<u64>) -> Array<felt252> {
     let mut result = ArrayTrait::<felt252>::new();
 
     if input.len() == 0 {
@@ -111,6 +111,8 @@ fn queries_to_points(queries: Span<felt252>, stark_domains: @StarkDomains) -> Ar
             .append(
                 FIELD_GENERATOR * pow(*stark_domains.eval_generator, index.bit_reverse().into())
             );
+
+        i += 1;
     };
     points
 }
