@@ -9,14 +9,14 @@ use cairo_verifier::{
         public_memory::{
             Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
         },
-        constants
+        constants::{
+            segments, MAX_ADDRESS, get_builtins, INITIAL_PC, MAX_LOG_N_STEPS, CPU_COMPONENT_HEIGHT,
+            MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_RATIO, RC_BUILTIN_RATIO, BITWISE_RATIO
+        }
     },
-    domains::StarkDomains
+    domains::StarkDomains, common::hash::hash_felts
 };
 
-use cairo_verifier::common::hash::hash_felts;
-use cairo_verifier::air::constants::{segments, MAX_ADDRESS, get_builtins, INITIAL_PC};
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 
 #[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {
@@ -243,33 +243,30 @@ impl PublicInputImpl of PublicInputTrait {
     }
 
     fn validate(self: @PublicInput, domains: @StarkDomains) {
-        assert_range_u128_le(*self.log_n_steps, constants::MAX_LOG_N_STEPS);
+        assert_range_u128_le(*self.log_n_steps, MAX_LOG_N_STEPS);
         let n_steps = pow(2, *self.log_n_steps);
-        assert(
-            n_steps * constants::CPU_COMPONENT_HEIGHT == *domains.trace_domain_size,
-            'Wrong trace size'
-        );
+        assert(n_steps * CPU_COMPONENT_HEIGHT == *domains.trace_domain_size, 'Wrong trace size');
 
         assert(0 <= *self.rc_min, 'wrong rc_min');
         assert(*self.rc_min < *self.rc_max, 'wrong rc range');
-        assert(*self.rc_max <= constants::MAX_RANGE_CHECK, 'wrong rc_max');
+        assert(*self.rc_max <= MAX_RANGE_CHECK, 'wrong rc_max');
 
-        assert(*self.layout == constants::LAYOUT_CODE, 'wrong layout code');
+        assert(*self.layout == LAYOUT_CODE, 'wrong layout code');
 
-        let pedersen_copies = n_steps / constants::PEDERSEN_BUILTIN_RATIO;
-        let pedersen_uses = (*self.segments.at(constants::segments::PEDERSEN).stop_ptr
-            - *self.segments.at(constants::segments::PEDERSEN).begin_addr)
+        let pedersen_copies = n_steps / PEDERSEN_BUILTIN_RATIO;
+        let pedersen_uses = (*self.segments.at(segments::PEDERSEN).stop_ptr
+            - *self.segments.at(segments::PEDERSEN).begin_addr)
             / 3;
         assert_range_u128_le(pedersen_uses, pedersen_copies);
 
-        let range_check_copies = n_steps / constants::RC_BUILTIN_RATIO;
-        let range_check_uses = *self.segments.at(constants::segments::RANGE_CHECK).stop_ptr
-            - *self.segments.at(constants::segments::RANGE_CHECK).begin_addr;
+        let range_check_copies = n_steps / RC_BUILTIN_RATIO;
+        let range_check_uses = *self.segments.at(segments::RANGE_CHECK).stop_ptr
+            - *self.segments.at(segments::RANGE_CHECK).begin_addr;
         assert_range_u128_le(range_check_uses, range_check_copies);
 
-        let bitwise_copies = n_steps / constants::BITWISE_RATIO;
-        let bitwise_uses = (*self.segments.at(constants::segments::BITWISE).stop_ptr
-            - *self.segments.at(constants::segments::BITWISE).begin_addr)
+        let bitwise_copies = n_steps / BITWISE_RATIO;
+        let bitwise_uses = (*self.segments.at(segments::BITWISE).stop_ptr
+            - *self.segments.at(segments::BITWISE).begin_addr)
             / 5;
         assert_range_u128_le(bitwise_uses, bitwise_copies);
     }

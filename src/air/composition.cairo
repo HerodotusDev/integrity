@@ -12,6 +12,9 @@ use cairo_verifier::{
     common::{math::{Felt252Div, Felt252PartialOrd, pow}, asserts::assert_range_u128},
 };
 
+const SHIFT_POINT_X: felt252 = 0x49ee3eba8c1600700ee1b87eb599f16716b0b1022947733551fde4050ca6804;
+const SHIFT_POINT_Y: felt252 = 0x3ca0cfe4b3bc6ddf346d49d06ea0ed34e621062c0e056c1d0405d266e10268a;
+
 fn eval_composition_polynomial(
     interaction_elements: InteractionElements,
     public_input: @PublicInput,
