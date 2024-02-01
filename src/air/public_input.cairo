@@ -230,7 +230,7 @@ impl PublicInputImpl of PublicInputTrait {
         // 3. Output segment 
         let output_len = output_stop - output_start;
         let output = memory.extract_range(memory_index.into() + output_start, output_len);
-        memory_index += (output_len).try_into().unwrap();
+        memory_index += output.len().into();
         let output_hash = hash_felts(output);
 
         // Check main page len
