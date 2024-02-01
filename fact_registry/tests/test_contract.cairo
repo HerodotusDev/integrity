@@ -45,5 +45,5 @@ fn test_valid_proof_registers_fact() {
     let fact = keccak_u256s_be_inputs(array![program_hash, program_output_hash].span());
 
     let result = dispatcher.is_valid(fact);
-    assert(result == false, 'Fact should not be valid');
+    assert(result == true, 'Fact should not be valid');
 }
