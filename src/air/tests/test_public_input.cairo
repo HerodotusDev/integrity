@@ -2,12 +2,10 @@ use cairo_verifier::air::{
     public_memory::AddrValue, public_input::{PublicInput, SegmentInfo},
     public_input::PublicInputTrait
 };
+use cairo_verifier::domains::{StarkDomains, StarkDomainsTrait};
 
-// test generated based on cairo0-verifier run on fib proof from stone-prover
-#[test]
-#[available_gas(9999999999)]
-fn test_public_input_hash() {
-    let public_input = PublicInput {
+fn helper_get_public_input() -> PublicInput {
+    PublicInput {
         log_n_steps: 0xe,
         rc_min: 0x7ffa,
         rc_max: 0x8001,
@@ -78,7 +76,13 @@ fn test_public_input_hash() {
             AddrValue { address: 0x69, value: 0x90 },
         ],
         continuous_page_headers: array![],
-    };
+    }
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_input_hash() {
+    let public_input = helper_get_public_input();
 
     assert(
         public_input
@@ -87,4 +91,16 @@ fn test_public_input_hash() {
             },
         'Invalid value'
     )
+}
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_input_validate() {
+    let public_input = helper_get_public_input();
+
+    let log_trace_domain_size = 0x12;
+    let log_n_cosets = 0x4;
+    let domain = StarkDomainsTrait::new(log_trace_domain_size, log_n_cosets);
+
+    public_input.validate(@domain);
 }
