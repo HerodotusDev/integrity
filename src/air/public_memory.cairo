@@ -44,6 +44,48 @@ impl PageImpl of PageTrait {
             i += 1;
         }
     }
+
+    fn extract_range(self: @Page, addr: u32, len: usize) -> Span<felt252> {
+        let mut arr = ArrayTrait::new();
+        let mut i = 0;
+
+        loop {
+            if i == len {
+                break arr.span();
+            }
+
+            let current = *self.at(addr + i);
+
+            // TODO is this needed? If not we can just use slice directly 
+            assert(current.address == (addr + i).into(), 'Invalid address');
+            arr.append(current.value);
+            i += 1;
+        }
+    }
+
+    fn verify_stack(
+        self: @Page,
+        start_ap: felt252,
+        segment_address: felt252,
+        builtins: Span<felt252>,
+        memory_index: felt252
+    ) {
+        let mut i = 0;
+
+        // TODO size of SegmentInfo
+        let size = 2;
+        loop {
+            if i == builtins.len() {
+                break;
+            }
+
+            let current = *self.at(memory_index.try_into().unwrap() + i);
+
+            assert(current.address == start_ap + i.into(), 'Invalid address');
+            assert(current.value == segment_address + size * (i.into() + 1), 'Invalid builtin');
+            i += 1;
+        };
+    }
 }
 
 fn get_continuous_pages_product(

@@ -8,6 +8,7 @@ mod blake2s_u8;
 mod blake2s;
 mod consts;
 mod flip_endianness;
+mod hash;
 mod horner_eval;
 mod math;
 mod merge_sort;
