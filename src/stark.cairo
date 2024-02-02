@@ -67,16 +67,16 @@ impl StarkProofImpl of StarkProofTrait {
         );
 
         // STARK verify phase.
-        // stark_verify::stark_verify(
-        //     NUM_COLUMNS_FIRST,
-        //     NUM_COLUMNS_SECOND,
-        //     queries.span(),
-        //     stark_commitment,
-        //     *self.witness,
-        //     stark_domains
-        // );
+        stark_verify::stark_verify(
+            NUM_COLUMNS_FIRST,
+            NUM_COLUMNS_SECOND,
+            queries.span(),
+            stark_commitment,
+            *self.witness,
+            stark_domains
+        );
 
-        (0, 0)
+        (digest, 0)
     }
 }
 
