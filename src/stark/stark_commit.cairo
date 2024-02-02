@@ -18,7 +18,7 @@ fn stark_commit(
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
     stark_domains: @StarkDomains,
-) {
+) -> StarkCommitment {
     // Read the commitment of the 'traces' component.
     let traces_commitment = traces_commit(
         ref channel, public_input, *unsent_commitment.traces, *config.traces,
@@ -37,36 +37,36 @@ fn stark_commit(
     let interaction_after_composition = channel.random_felt_to_prover();
 
     // Read OODS values.
-    // channel.read_felts_from_prover(*unsent_commitment.oods_values);
+    channel.read_felts_from_prover(*unsent_commitment.oods_values);
 
     // Check that the trace and the composition agree at oods_point.
-    // verify_oods(
-    //     *unsent_commitment.oods_values,
-    //     traces_commitment.interaction_elements,
-    //     public_input,
-    //     traces_coefficients,
-    //     interaction_after_composition,
-    //     *stark_domains.trace_domain_size,
-    //     *stark_domains.trace_generator,
-    // );
+    verify_oods(
+        *unsent_commitment.oods_values,
+        traces_commitment.interaction_elements,
+        public_input,
+        traces_coefficients,
+        interaction_after_composition,
+        *stark_domains.trace_domain_size,
+        *stark_domains.trace_generator,
+    );
 
-    // // Generate interaction values after OODS.
-    // let oods_alpha = channel.random_felt_to_prover();
-    // let oods_coefficients = powers_array(1, oods_alpha, MASK_SIZE + CONSTRAINT_DEGREE);
+    // Generate interaction values after OODS.
+    let oods_alpha = channel.random_felt_to_prover();
+    let oods_coefficients = powers_array(1, oods_alpha, MASK_SIZE + CONSTRAINT_DEGREE);
 
-    // // Read fri commitment.
-    // let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
+    // Read fri commitment.
+    let fri_commitment = fri_commit(ref channel, *unsent_commitment.fri, *config.fri);
 
-    // // Proof of work commitment phase.
-    // proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
+    // Proof of work commitment phase.
+    proof_of_work_commit(ref channel, *unsent_commitment.proof_of_work, *config.proof_of_work);
 
-    // // Return commitment.
-    // StarkCommitment {
-    //     traces: traces_commitment,
-    //     composition: composition_commitment,
-    //     interaction_after_composition: interaction_after_composition,
-    //     oods_values: *unsent_commitment.oods_values,
-    //     interaction_after_oods: oods_coefficients.span(),
-    //     fri: fri_commitment,
-    // }
+    // Return commitment.
+    StarkCommitment {
+        traces: traces_commitment,
+        composition: composition_commitment,
+        interaction_after_composition: interaction_after_composition,
+        oods_values: *unsent_commitment.oods_values,
+        interaction_after_oods: oods_coefficients.span(),
+        fri: fri_commitment,
+    }
 }

@@ -31,7 +31,6 @@ fn test_return_false_before_register() {
 }
 
 #[test]
-#[available_gas(99999999999999999)]
 fn test_valid_proof_registers_fact() {
     let contract_address = deploy_contract('FactRegistry');
     let dispatcher = IFactRegistryDispatcher { contract_address };

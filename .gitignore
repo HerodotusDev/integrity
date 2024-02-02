@@ -35,3 +35,6 @@
 
 # Resources
 resources/
+
+# StarkNet Foundry
+starknet-foundry/
