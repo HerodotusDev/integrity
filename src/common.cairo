@@ -11,6 +11,7 @@ mod flip_endianness;
 mod from_span;
 mod horner_eval;
 mod math;
+mod hash;
 mod merge_sort;
 mod powers_array;
 
