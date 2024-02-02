@@ -2,7 +2,7 @@ use cairo_verifier::deserialization::stark::StarkProofWithSerde;
 
 #[starknet::interface]
 trait ICairoVerifier<TContractState> {
-    fn verify_proof(self: @TContractState, stark_proof: StarkProofWithSerde) -> (u256, u256);
+    fn verify_proof(self: @TContractState, stark_proof: StarkProofWithSerde) -> (felt252, felt252);
 }
 
 #[starknet::component]
@@ -20,7 +20,7 @@ mod CairoVerifier {
     > of super::ICairoVerifier<ComponentState<TContractState>> {
         fn verify_proof(
             self: @ComponentState<TContractState>, stark_proof: StarkProofWithSerde
-        ) -> (u256, u256) {
+        ) -> (felt252, felt252) {
             let stark_proof: StarkProof = stark_proof.into();
             stark_proof.verify()
         }

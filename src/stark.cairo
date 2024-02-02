@@ -39,7 +39,7 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof) -> (u256, u256) {
+    fn verify(self: @StarkProof) -> (felt252, felt252) {
         // Validate config.
         self.config.validate(SECURITY_BITS);
 
@@ -48,6 +48,7 @@ impl StarkProofImpl of StarkProofTrait {
             *self.config.log_trace_domain_size, *self.config.log_n_cosets
         );
         self.public_input.validate(@stark_domains);
+        // let (program_hash, program_output_hash) = self.public_input.verify();
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
         let digest = self.public_input.get_public_input_hash();
@@ -76,7 +77,7 @@ impl StarkProofImpl of StarkProofTrait {
             stark_domains
         );
 
-        (digest, 0)
+        (0, 0)
     }
 }
 

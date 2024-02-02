@@ -5,7 +5,7 @@ mod component;
 #[starknet::interface]
 trait IFactRegistry<TContractState> {
     fn verify_and_register_fact(ref self: TContractState, stark_proof: StarkProofWithSerde);
-    fn is_valid(self: @TContractState, fact: u256) -> bool;
+    fn is_valid(self: @TContractState, fact: felt252) -> bool;
 }
 
 #[starknet::contract]
@@ -13,11 +13,11 @@ mod FactRegistry {
     use cairo_verifier::{
         deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofTrait},
     };
-    use core::keccak::keccak_u256s_be_inputs;
+    use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
 
     #[storage]
     struct Storage {
-        facts: LegacyMap<u256, bool>,
+        facts: LegacyMap<felt252, bool>,
     }
 
     #[abi(embed_v0)]
@@ -25,13 +25,13 @@ mod FactRegistry {
         fn verify_and_register_fact(ref self: ContractState, stark_proof: StarkProofWithSerde) {
             let stark_proof: StarkProof = stark_proof.into();
             let (program_hash, program_output_hash) = stark_proof.verify();
-            self
-                .facts
-                .write(
-                    keccak_u256s_be_inputs(array![program_hash, program_output_hash].span()), true
-                );
+            let fact = PoseidonImpl::new()
+                .update(program_hash)
+                .update(program_output_hash)
+                .finalize();
+            self.facts.write(fact, true);
         }
-        fn is_valid(self: @ContractState, fact: u256) -> bool {
+        fn is_valid(self: @ContractState, fact: felt252) -> bool {
             self.facts.read(fact)
         }
     }
