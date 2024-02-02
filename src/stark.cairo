@@ -41,7 +41,7 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof) -> (u256, u256) {
         // Validate config.
-        // self.config.validate(SECURITY_BITS);
+        self.config.validate(SECURITY_BITS);
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
