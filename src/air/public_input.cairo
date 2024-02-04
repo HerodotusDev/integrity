@@ -283,4 +283,3 @@ impl PublicInputImpl of PublicInputTrait {
         assert_range_u128_le(bitwise_uses, bitwise_copies);
     }
 }
-
