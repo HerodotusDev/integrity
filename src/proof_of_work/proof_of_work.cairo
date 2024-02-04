@@ -1,3 +1,4 @@
+use core::traits::Into;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
@@ -26,20 +27,19 @@ fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     //      8 bytes            || 32 bytes || 1 byte
     // Total of 0x29 = 41 bytes.
 
-    let mut init_hash_data = ArrayTrait::<u8>::new();
-    init_hash_data.append_big_endian(MAGIC);
+    let mut init_hash_data = ArrayTrait::<u64>::new();
+    init_hash_data.append(MAGIC.flip_endianness());
     init_hash_data.append_big_endian(digest);
-    init_hash_data.append(n_bits);
-    let init_hash = blake2s(init_hash_data).flip_endianness();
+    let init_hash = keccak::cairo_keccak(ref init_hash_data, n_bits.into(), 1).flip_endianness();
 
     // Compute Hash(init_hash || nonce   )
     //              32 bytes  || 8 bytes
     // Total of 0x28 = 40 bytes.
 
-    let mut hash_data = ArrayTrait::<u8>::new();
+    let mut hash_data = ArrayTrait::<u64>::new();
     hash_data.append_big_endian(init_hash);
-    hash_data.append_big_endian(nonce);
-    let hash = blake2s(hash_data).flip_endianness();
+    hash_data.append(nonce.flip_endianness());
+    let hash = keccak::cairo_keccak(ref hash_data, 0, 0).flip_endianness();
 
     let work_limit = pow(2, 128 - n_bits.into());
     assert(
