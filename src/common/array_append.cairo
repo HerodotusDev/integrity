@@ -37,6 +37,18 @@ impl ArrayU32AppendU256 of ArrayAppendTrait<u32, u256> {
     }
 }
 
+impl ArrayU64AppendU256 of ArrayAppendTrait<u64, u256> {
+    fn append_little_endian(ref self: Array<u64>, element: u256) {
+        self.append_little_endian(element.low);
+        self.append_little_endian(element.high);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, element: u256) {
+        self.append_big_endian(element.high);
+        self.append_big_endian(element.low);
+    }
+}
+
 // input's MSB is padded with 0s
 // (internally felt252 is converted to u256)
 impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
@@ -45,6 +57,16 @@ impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
     }
 
     fn append_big_endian(ref self: Array<u32>, element: felt252) {
+        self.append_big_endian(Into::<felt252, u256>::into(element));
+    }
+}
+
+impl ArrayU64AppendFelt of ArrayAppendTrait<u64, felt252> {
+    fn append_little_endian(ref self: Array<u64>, element: felt252) {
+        self.append_little_endian(Into::<felt252, u256>::into(element));
+    }
+
+    fn append_big_endian(ref self: Array<u64>, element: felt252) {
         self.append_big_endian(Into::<felt252, u256>::into(element));
     }
 }
@@ -177,5 +199,19 @@ impl ArrayU8AppendU16 of ArrayAppendTrait<u8, u16> {
         let (high, low) = u16_split(element);
         self.append(high);
         self.append(low);
+    }
+}
+
+impl ArrayU64AppendU128 of ArrayAppendTrait<u64, u128> {
+    fn append_little_endian(ref self: Array<u64>, mut element: u128) {
+        let (high, low) = u128_split(element);
+        self.append(low);
+        self.append(high);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, mut element: u128) {
+        let (high, low) = u128_split(element);
+        self.append(high.flip_endianness());
+        self.append(low.flip_endianness());
     }
 }
