@@ -22,3 +22,26 @@ fn test_verify_proof_of_work_1() {
     let n_bits: u8 = 0x1e;
     verify_proof_of_work(digest, n_bits, nonce);
 }
+
+#[test]
+#[available_gas(9999999999)]
+fn test_verify_proof_of_work_2() {
+    let digest: u256 = u256 {
+        low: 0xaa161ad28fb8da3ccf6938931e57e7a1, high: 0x35dbd852ffd135485a3376a8187a2aed
+    };
+    let nonce: u64 = 0x544bb355;
+    let n_bits: u8 = 0x1e;
+    verify_proof_of_work(digest, n_bits, nonce);
+}
+
+#[test]
+#[should_panic]
+#[available_gas(9999999999)]
+fn test_verify_proof_of_work_3() {
+    let digest: u256 = u256 {
+        low: 0xaa161ad28fb8da3ccf6938931e57e7a1, high: 0x35dbd852ffd135485a3376a8187a2aed
+    };
+    let nonce: u64 = 0x544bb355-1;
+    let n_bits: u8 = 0x1e;
+    verify_proof_of_work(digest, n_bits, nonce);
+}

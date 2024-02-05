@@ -10,7 +10,7 @@ use cairo_verifier::{
     tests::stone_proof_fibonacci,
 };
 
-// test data from cairo0-verifier run on stone-prover generated proof
+// test data from cairo0-verifier keccak-native run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_eval_composition_polynomial_inner() {
@@ -71,7 +71,7 @@ fn test_eval_composition_polynomial_inner() {
     )
 }
 
-// test data from cairo0-verifier run on stone-prover generated proof
+// test data from cairo0-verifier keccak-native run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_eval_oods_polynomial_inner() {
