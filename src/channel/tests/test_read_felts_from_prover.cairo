@@ -1,6 +1,6 @@
 use cairo_verifier::channel::channel::ChannelTrait;
 
-// test data from cairo0-verifier run on stone-prover generated proof
+// test data from cairo0-verifier keccak-native run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_read_felts_from_prover_0() {
