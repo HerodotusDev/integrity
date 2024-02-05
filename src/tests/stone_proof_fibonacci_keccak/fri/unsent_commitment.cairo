@@ -3,10 +3,10 @@ use cairo_verifier::{fri::fri::FriUnsentCommitment, tests::stone_proof_fibonacci
 fn get() -> FriUnsentCommitment {
     return FriUnsentCommitment {
         inner_layers: array![
-            0x6288a59e1970d629fdfb5bdea93ad3203511b3c27340db1467a39cf7951de3,
-            0x821aaa485d3fbdf7b0a06d773e565370f794c06bbcb4e23279a39544782c1e,
-            0x7a73129c87d8a60cb07b26775437ac75790bbd415d47912e5eb1f7c7e11d42f,
-            0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038,
+            0x3d710625c60c2e534dbb7f0595315750e6b2c5b7ba19be7d6b34a22e1a7dcbc,
+            0x1490a301a131a8887f32c59a8eb9fd702cc2be5dfc0ecfcc461f50d856b657a,
+            0x23c7018a71142c60c465a7fe0169c96c043154d40f6a7dc3196bbf52c20902f,
+            0x3515eb7f5c47a1f199e7089495de38c8dd80223a25c901bc7db5e84061b823c,
         ]
             .span(),
         last_layer_coefficients: stone_proof_fibonacci::fri::last_layer_coefficients::get().span(),

@@ -13,65 +13,65 @@ fn get() -> FriCommitment {
                 config: TableCommitmentConfig {
                     n_columns: 0x10,
                     vector: VectorCommitmentConfig {
-                        height: 0x12, n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0x13, n_verifier_friendly_commitment_layers: 0x64,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0x12, n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0x13, n_verifier_friendly_commitment_layers: 0x64,
                     },
-                    commitment_hash: 0x6288a59e1970d629fdfb5bdea93ad3203511b3c27340db1467a39cf7951de3
+                    commitment_hash: 0x3d710625c60c2e534dbb7f0595315750e6b2c5b7ba19be7d6b34a22e1a7dcbc
                 },
             },
             TableCommitment {
                 config: TableCommitmentConfig {
                     n_columns: 0x8,
                     vector: VectorCommitmentConfig {
-                        height: 0xf, n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0x10, n_verifier_friendly_commitment_layers: 0x64,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0xf, n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0x10, n_verifier_friendly_commitment_layers: 0x64,
                     },
-                    commitment_hash: 0x821aaa485d3fbdf7b0a06d773e565370f794c06bbcb4e23279a39544782c1e
+                    commitment_hash: 0x1490a301a131a8887f32c59a8eb9fd702cc2be5dfc0ecfcc461f50d856b657a
+                },
+            },
+            TableCommitment {
+                config: TableCommitmentConfig {
+                    n_columns: 0x8,
+                    vector: VectorCommitmentConfig {
+                        height: 0xd, n_verifier_friendly_commitment_layers: 0x64,
+                    },
+                },
+                vector_commitment: VectorCommitment {
+                    config: VectorCommitmentConfig {
+                        height: 0xd, n_verifier_friendly_commitment_layers: 0x64,
+                    },
+                    commitment_hash: 0x23c7018a71142c60c465a7fe0169c96c043154d40f6a7dc3196bbf52c20902f
                 },
             },
             TableCommitment {
                 config: TableCommitmentConfig {
                     n_columns: 0x4,
                     vector: VectorCommitmentConfig {
-                        height: 0xd, n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xb, n_verifier_friendly_commitment_layers: 0x64,
                     },
                 },
                 vector_commitment: VectorCommitment {
                     config: VectorCommitmentConfig {
-                        height: 0xd, n_verifier_friendly_commitment_layers: 0x16,
+                        height: 0xb, n_verifier_friendly_commitment_layers: 0x64,
                     },
-                    commitment_hash: 0x7a73129c87d8a60cb07b26775437ac75790bbd415d47912e5eb1f7c7e11d42f
-                },
-            },
-            TableCommitment {
-                config: TableCommitmentConfig {
-                    n_columns: 0x4,
-                    vector: VectorCommitmentConfig {
-                        height: 0xb, n_verifier_friendly_commitment_layers: 0x16,
-                    },
-                },
-                vector_commitment: VectorCommitment {
-                    config: VectorCommitmentConfig {
-                        height: 0xb, n_verifier_friendly_commitment_layers: 0x16,
-                    },
-                    commitment_hash: 0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038
+                    commitment_hash: 0x3515eb7f5c47a1f199e7089495de38c8dd80223a25c901bc7db5e84061b823c
                 },
             },
         ]
             .span(),
         eval_points: array![
-            0xbdb64eae5fbad13b4faf374043e73f68b9c428eb0d6b78097c64539add8c6e,
-            0x511356e0c2eca37e8d4ed5d88cabe83b8dfba6e3a9ea0c793b114a5fb0a8147,
-            0x73cbfe687c88476eed31b84b03c0027712369d3e2ba6947422c8ea8cb72f2d7,
-            0x34b2eb47b0eca404696f00d7bf1cb6238cdc6cd3c3560ba9c532a7fa372fb2f,
+            0x474fa7f71cd9c8819a18fdd0d8dbf5fd0f2b4d4c6f9241e95cbeba7a867d6c4,
+            0x54c4003ddcf9d5f4656fb8fd843449fd55d116780718491881e5691b74ac4c8,
+            0x71e110a4de733d508aacf9378700fe52dbd19fa21a4b3f2b8c66649b80454b2,
+            0x20e183b33eb18832be0054168d747921631c2c58bb18d41e1d4b2f59a0936bb,
         ]
             .span(),
         last_layer_coefficients: stone_proof_fibonacci::fri::last_layer_coefficients::get().span(),
