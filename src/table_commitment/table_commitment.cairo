@@ -123,10 +123,20 @@ fn generate_vector_queries(
         let hash = if n_columns == 1 {
             *values[i * n_columns]
         } else {
-            let slice = values.slice(i * n_columns, n_columns);
-            let mut data: Array<u32> = ArrayTrait::new();
-            data.append_big_endian(slice);
-            truncated_blake2s(data)
+            let mut slice = values.slice(i * n_columns, n_columns);
+            let mut data: Array<u64> = ArrayTrait::new();
+
+            loop {
+                match slice.pop_front() {
+                    Option::Some(element) => { data.append_big_endian(*element); },
+                    Option::None => { break; }
+                }
+            };
+
+            (keccak::cairo_keccak(ref data, 0, 0)
+                .flip_endianness() % 0x10000000000000000000000000000000000000000)
+                .try_into()
+                .unwrap()
         };
         vector_queries.append(VectorQuery { index: *queries[i], value: hash });
         i += 1;

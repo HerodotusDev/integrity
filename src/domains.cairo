@@ -44,7 +44,7 @@ impl StarkDomainsImpl of StarkDomainsTrait {
 #[cfg(test)]
 mod tests {
     use cairo_verifier::{domains::{StarkDomains, StarkDomainsTrait}, tests::stone_proof_fibonacci,};
-    // test data from cairo0-verifier run on stone-prover generated proof
+    // test data from cairo0-verifier keccak-native run on stone-prover generated proof
     #[test]
     #[available_gas(9999999999)]
     fn test_domain_creation() {

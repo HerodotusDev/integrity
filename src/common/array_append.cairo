@@ -1,4 +1,9 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessU32;
+use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
+use core::array::ArrayTrait;
+use cairo_verifier::common::{
+    flip_endianness::FlipEndiannessU32,
+    split::{u16_split, u32_split, u64_split, u128_split, u256_split}
+};
 
 // 2^8 = 256
 const U128maxU8: u128 = 256;
@@ -32,6 +37,18 @@ impl ArrayU32AppendU256 of ArrayAppendTrait<u32, u256> {
     }
 }
 
+impl ArrayU64AppendU256 of ArrayAppendTrait<u64, u256> {
+    fn append_little_endian(ref self: Array<u64>, element: u256) {
+        self.append_little_endian(element.low);
+        self.append_little_endian(element.high);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, element: u256) {
+        self.append_big_endian(element.high);
+        self.append_big_endian(element.low);
+    }
+}
+
 // input's MSB is padded with 0s
 // (internally felt252 is converted to u256)
 impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
@@ -44,84 +61,41 @@ impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
     }
 }
 
-impl ArrayU32AppendFeltsSpan of ArrayAppendTrait<u32, Span<felt252>> {
-    fn append_little_endian(ref self: Array<u32>, element: Span<felt252>) {
-        let mut i = 0;
-        loop {
-            if i == element.len() {
-                break;
-            }
-            self.append_little_endian(*element[i]);
-            i += 1;
-        };
+impl ArrayU64AppendFelt of ArrayAppendTrait<u64, felt252> {
+    fn append_little_endian(ref self: Array<u64>, element: felt252) {
+        self.append_little_endian(Into::<felt252, u256>::into(element));
     }
-    fn append_big_endian(ref self: Array<u32>, element: Span<felt252>) {
-        let mut i = 0;
-        loop {
-            if i == element.len() {
-                break;
-            }
-            self.append_big_endian(*element[i]);
-            i += 1;
-        };
+
+    fn append_big_endian(ref self: Array<u64>, element: felt252) {
+        self.append_big_endian(Into::<felt252, u256>::into(element));
     }
 }
 
 impl ArrayU32AppendU128 of ArrayAppendTrait<u32, u128> {
     fn append_little_endian(ref self: Array<u32>, mut element: u128) {
-        let mut i = 4;
-        let max = U128maxU32.try_into().unwrap();
-        loop {
-            if i != 0 {
-                i -= 1;
-                let (q, r) = DivRem::div_rem(element, max);
-                self.append(r.try_into().unwrap());
-                element = q;
-            } else {
-                break;
-            }
-        }
+        let (high, low) = u128_split(element);
+        self.append_little_endian(low);
+        self.append_little_endian(high);
     }
 
     fn append_big_endian(ref self: Array<u32>, mut element: u128) {
-        let mut array = ArrayTrait::<u32>::new();
-        array.append_little_endian(element);
-        let mut span = array.span();
-        loop {
-            match span.pop_back() {
-                Option::Some(elem) => { self.append((*elem).flip_endianness()); },
-                Option::None => { break; }
-            }
-        }
+        let (high, low) = u128_split(element);
+        self.append_big_endian(high);
+        self.append_big_endian(low);
     }
 }
 
 impl ArrayU32AppendU64 of ArrayAppendTrait<u32, u64> {
     fn append_little_endian(ref self: Array<u32>, mut element: u64) {
-        let mut i = 2;
-        let max = U64maxU32.try_into().unwrap();
-        loop {
-            if i != 0 {
-                i -= 1;
-                let (q, r) = DivRem::div_rem(element, max);
-                self.append(r.try_into().unwrap());
-                element = q;
-            } else {
-                break;
-            }
-        }
+        let (high, low) = u64_split(element);
+        self.append(low);
+        self.append(high);
     }
 
     fn append_big_endian(ref self: Array<u32>, mut element: u64) {
-        let mut array = ArrayTrait::<u32>::new();
-        array.append_little_endian(element);
-        let mut span = array.span();
-        loop {
-            match span.pop_back() {
-                Option::Some(elem) => { self.append((*elem).flip_endianness()); },
-                Option::None => { break; }
-            }
-        }
+        let (high, low) = u64_split(element);
+        self.append(high.flip_endianness());
+        self.append(low.flip_endianness());
     }
 }
 
@@ -151,87 +125,70 @@ impl ArrayU8AppendFelt of ArrayAppendTrait<u8, felt252> {
 
 impl ArrayU8AppendU128 of ArrayAppendTrait<u8, u128> {
     fn append_little_endian(ref self: Array<u8>, mut element: u128) {
-        let mut i = 16;
-        let max = U128maxU8.try_into().unwrap();
-        loop {
-            if i != 0 {
-                i -= 1;
-                let (q, r) = DivRem::div_rem(element, max);
-                self.append(r.try_into().unwrap());
-                element = q;
-            } else {
-                break;
-            }
-        }
+        let (high, low) = u128_split(element);
+        self.append_little_endian(low);
+        self.append_little_endian(high);
     }
 
     fn append_big_endian(ref self: Array<u8>, mut element: u128) {
-        let mut array = ArrayTrait::<u8>::new();
-        array.append_little_endian(element);
-        let mut span = array.span();
-        loop {
-            match span.pop_back() {
-                Option::Some(elem) => { self.append(*elem); },
-                Option::None => { break; }
-            }
-        }
+        let (high, low) = u128_split(element);
+        self.append_big_endian(high);
+        self.append_big_endian(low);
     }
 }
 
 impl ArrayU8AppendU64 of ArrayAppendTrait<u8, u64> {
     fn append_little_endian(ref self: Array<u8>, mut element: u64) {
-        let mut i = 8;
-        let max = U64maxU8.try_into().unwrap();
-        loop {
-            if i != 0 {
-                i -= 1;
-                let (q, r) = DivRem::div_rem(element, max);
-                self.append(r.try_into().unwrap());
-                element = q;
-            } else {
-                break;
-            }
-        }
+        let (high, low) = u64_split(element);
+        self.append_little_endian(low);
+        self.append_little_endian(high);
     }
 
     fn append_big_endian(ref self: Array<u8>, mut element: u64) {
-        let mut array = ArrayTrait::<u8>::new();
-        array.append_little_endian(element);
-        let mut span = array.span();
-        loop {
-            match span.pop_back() {
-                Option::Some(elem) => { self.append(*elem); },
-                Option::None => { break; }
-            }
-        }
+        let (high, low) = u64_split(element);
+        self.append_big_endian(high);
+        self.append_big_endian(low);
     }
 }
 
 impl ArrayU8AppendU32 of ArrayAppendTrait<u8, u32> {
     fn append_little_endian(ref self: Array<u8>, mut element: u32) {
-        let mut i = 4;
-        let max = U32maxU8.try_into().unwrap();
-        loop {
-            if i != 0 {
-                i -= 1;
-                let (q, r) = DivRem::div_rem(element, max);
-                self.append(r.try_into().unwrap());
-                element = q;
-            } else {
-                break;
-            }
-        }
+        let (high, low) = u32_split(element);
+        self.append_little_endian(low);
+        self.append_little_endian(high);
     }
 
     fn append_big_endian(ref self: Array<u8>, mut element: u32) {
-        let mut array = ArrayTrait::<u8>::new();
-        array.append_little_endian(element);
-        let mut span = array.span();
-        loop {
-            match span.pop_back() {
-                Option::Some(elem) => { self.append(*elem); },
-                Option::None => { break; }
-            }
-        }
+        let (high, low) = u32_split(element);
+        self.append_big_endian(high);
+        self.append_big_endian(low);
+    }
+}
+
+impl ArrayU8AppendU16 of ArrayAppendTrait<u8, u16> {
+    fn append_little_endian(ref self: Array<u8>, mut element: u16) {
+        let (high, low) = u16_split(element);
+        self.append(low);
+        self.append(high);
+    }
+
+    fn append_big_endian(ref self: Array<u8>, mut element: u16) {
+        let (high, low) = u16_split(element);
+        self.append(high);
+        self.append(low);
+    }
+}
+
+impl ArrayU64AppendU128 of ArrayAppendTrait<u64, u128> {
+    fn append_little_endian(ref self: Array<u64>, mut element: u128) {
+        let (high, low) = u128_split(element);
+        self.append(low);
+        self.append(high);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, mut element: u128) {
+        let (high, low) = u128_split(element);
+        self.append(high.flip_endianness());
+        self.append(low.flip_endianness());
     }
 }

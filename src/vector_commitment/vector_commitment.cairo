@@ -112,7 +112,7 @@ fn compute_root_from_queries(
             let next: VectorQueryWithDepth = *queue[start + 1];
             if current.index + 1 == next.index {
                 // next is a sibling of current
-                let hash = hash_blake_or_pedersen(current.value, next.value, is_verifier_friendly);
+                let hash = hash_keccak_or_pedersen(current.value, next.value, is_verifier_friendly);
                 queue
                     .append(
                         VectorQueryWithDepth {
@@ -125,10 +125,10 @@ fn compute_root_from_queries(
             }
         }
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_pedersen(current.value, *authentications[auth_start], is_verifier_friendly)
+        hash_keccak_or_pedersen(current.value, *authentications[auth_start], is_verifier_friendly)
     } else {
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_pedersen(*authentications[auth_start], current.value, is_verifier_friendly)
+        hash_keccak_or_pedersen(*authentications[auth_start], current.value, is_verifier_friendly)
     };
     queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
     compute_root_from_queries(
@@ -158,13 +158,16 @@ fn shift_queries(
     shifted_queries
 }
 
-fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
+fn hash_keccak_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
     if is_verifier_friendly {
         PedersenTrait::new(x).update(y).finalize()
     } else {
-        let mut data = ArrayTrait::<u32>::new();
+        let mut data = ArrayTrait::<u64>::new();
         data.append_big_endian(x);
         data.append_big_endian(y);
-        truncated_blake2s(data)
+        (keccak::cairo_keccak(ref data, 0, 0)
+            .flip_endianness() % 0x10000000000000000000000000000000000000000)
+            .try_into()
+            .unwrap()
     }
 }
