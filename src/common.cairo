@@ -4,8 +4,6 @@ mod array_print;
 mod array_split;
 mod asserts;
 mod bit_reverse;
-mod blake2s_u8;
-mod blake2s;
 mod consts;
 mod flip_endianness;
 mod hash;

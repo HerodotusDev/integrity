@@ -7,7 +7,6 @@ use cairo_verifier::{
         TableCommitmentWitness
     }
 };
-
 // test data from cairo0-verifier keccak-native run on stone-prover generated proof
 // #[test]
 // #[available_gas(9999999999)]
@@ -515,3 +514,4 @@ use cairo_verifier::{
 
 //     table_decommit(commitment, queries, decommitment, witness);
 // }
+

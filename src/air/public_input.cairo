@@ -1,7 +1,7 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
         math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
         array_print::SpanPrintTrait, hash::hash_felts,
     },
@@ -95,7 +95,9 @@ impl PublicInputImpl of PublicInputTrait {
 
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, 1 + self.continuous_page_headers.len().into());
+        ArrayAppendTrait::<
+            _, u256
+        >::append_big_endian(ref hash_data, 1 + self.continuous_page_headers.len().into());
 
         // Main page.
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, self.main_page.len().into());

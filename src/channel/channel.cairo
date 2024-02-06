@@ -1,6 +1,6 @@
 use core::array::SpanTrait;
 use cairo_verifier::common::{
-    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
     consts::{
         C_PRIME_AS_UINT256_LOW, C_PRIME_AS_UINT256_HIGH, STARK_PRIME, MONTGOMERY_R,
         MONTGOMERY_R_INVERSE

@@ -1,6 +1,7 @@
 use cairo_verifier::{
     stark::StarkConfig, table_commitment::table_commitment::TableCommitmentConfig,
-    vector_commitment::vector_commitment::VectorCommitmentConfig, tests::stone_proof_fibonacci_keccak,
+    vector_commitment::vector_commitment::VectorCommitmentConfig,
+    tests::stone_proof_fibonacci_keccak,
 };
 
 fn get() -> StarkConfig {
