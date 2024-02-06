@@ -2,7 +2,7 @@ use core::traits::Into;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
-        blake2s_u8::blake2s, array_append::ArrayAppendTrait, math::pow,
+        array_append::ArrayAppendTrait, math::pow,
     },
     channel::channel::{Channel, ChannelTrait}, proof_of_work::config::{ProofOfWorkConfig}
 };

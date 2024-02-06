@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    queries::queries::generate_queries, channel::channel::ChannelTrait, tests::stone_proof_fibonacci_keccak
+    queries::queries::generate_queries, channel::channel::ChannelTrait,
+    tests::stone_proof_fibonacci_keccak
 };
 
 // test data from cairo0-verifier keccak-native run on stone-prover generated proof

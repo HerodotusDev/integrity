@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    stark::stark_commit::stark_commit, channel::channel::ChannelTrait, tests::stone_proof_fibonacci_keccak,
+    stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
+    tests::stone_proof_fibonacci_keccak,
 };
 
 // test data from cairo0-verifier keccak-native run on stone-prover generated proof

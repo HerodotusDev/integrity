@@ -74,6 +74,7 @@ fn get() -> FriCommitment {
             0x77e29eae6c87e2e7924d5d19b857dfe7de9b682aacdd2ed75999cc4272d685c,
         ]
             .span(),
-        last_layer_coefficients: stone_proof_fibonacci_keccak::fri::last_layer_coefficients::get().span(),
+        last_layer_coefficients: stone_proof_fibonacci_keccak::fri::last_layer_coefficients::get()
+            .span(),
     };
 }
