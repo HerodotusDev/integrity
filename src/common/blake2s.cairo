@@ -87,15 +87,7 @@ fn blake2s_init() -> blake2s_state {
         0x1F83D9AB,
         0x5BE0CD19
     ];
-    let mut buf = ArrayTrait::new();
-    let mut i = 0;
-    loop {
-        if i == 16 {
-            break;
-        }
-        buf.append(0);
-        i += 1;
-    };
+    let mut buf = array![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
     blake2s_state { h: blake2s_IV, t0: 0, t1: 0, f0: 0, buf: buf, buflen: 0 }
 }
@@ -132,127 +124,85 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
 
         // ROUND function begin
 
-        let mut a = 0;
-        let mut b = 0;
-        let mut c = 0;
-        let mut d = 0;
-        let mut i = 0;
-        loop {
-            if i == 8 {
-                break;
-            }
-            if i == 0 {
-                a = v0;
-                b = v4;
-                c = v8;
-                d = v12;
-            } else if i == 1 {
-                a = v1;
-                b = v5;
-                c = v9;
-                d = v13;
-            } else if i == 2 {
-                a = v2;
-                b = v6;
-                c = v10;
-                d = v14;
-            } else if i == 3 {
-                a = v3;
-                b = v7;
-                c = v11;
-                d = v15;
-            } else if i == 4 {
-                a = v0;
-                b = v5;
-                c = v10;
-                d = v15;
-            } else if i == 5 {
-                a = v1;
-                b = v6;
-                c = v11;
-                d = v12;
-            } else if i == 6 {
-                a = v2;
-                b = v7;
-                c = v8;
-                d = v13;
-            } else if i == 7 {
-                a = v3;
-                b = v4;
-                c = v9;
-                d = v14;
-            };
+        // 0 - 0,4,8,12
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma[0]));
+        v12 = rotr16(v12 ^ v0);
+        v8 = u32_wrapping_add(v8, v12);
+        v4 = rotr12(v4 ^ v8);
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma[1]));
+        v12 = rotr8(v12 ^ v0);
+        v8 = u32_wrapping_add(v8, v12);
+        v4 = rotr7(v4 ^ v8);
 
-            // G function begin
+        // 1 - 1,5,9,13
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma[2]));
+        v13 = rotr16(v13 ^ v1);
+        v9 = u32_wrapping_add(v9, v13);
+        v5 = rotr12(v5 ^ v9);
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma[3]));
+        v13 = rotr8(v13 ^ v1);
+        v9 = u32_wrapping_add(v9, v13);
+        v5 = rotr7(v5 ^ v9);
 
-            // a = a + b + m[sigma[r][2*i]]
-            a = u32_wrapping_add(u32_wrapping_add(a, b), *m_span.at(*sigma[2 * i]));
+        // 2 - 2,6,10,14
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma[4]));
+        v14 = rotr16(v14 ^ v2);
+        v10 = u32_wrapping_add(v10, v14);
+        v6 = rotr12(v6 ^ v10);
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma[5]));
+        v14 = rotr8(v14 ^ v2);
+        v10 = u32_wrapping_add(v10, v14);
+        v6 = rotr7(v6 ^ v10);
+        
+        // 3 - 3,7,11,15
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[6]));
+        v15 = rotr16(v15 ^ v3);
+        v11 = u32_wrapping_add(v11, v15);
+        v7 = rotr12(v7 ^ v11);
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[7]));
+        v15 = rotr8(v15 ^ v3);
+        v11 = u32_wrapping_add(v11, v15);
+        v7 = rotr7(v7 ^ v11);
 
-            d = rotr16(d ^ a);
+        // 4 - 0,5,10,15
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma[8]));
+        v15 = rotr16(v15 ^ v0);
+        v10 = u32_wrapping_add(v10, v15);
+        v5 = rotr12(v5 ^ v10);
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma[9]));
+        v15 = rotr8(v15 ^ v0);
+        v10 = u32_wrapping_add(v10, v15);
+        v5 = rotr7(v5 ^ v10);
 
-            // c = c + d
-            c = u32_wrapping_add(c, d);
+        // 5 - 1,6,11,12
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma[10]));
+        v12 = rotr16(v12 ^ v1);
+        v11 = u32_wrapping_add(v11, v12);
+        v6 = rotr12(v6 ^ v11);
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma[11]));
+        v12 = rotr8(v12 ^ v1);
+        v11 = u32_wrapping_add(v11, v12);
+        v6 = rotr7(v6 ^ v11);
 
-            b = rotr12(b ^ c);
+        // 6 - 2,7,8,13
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma[12]));
+        v13 = rotr16(v13 ^ v2);
+        v8 = u32_wrapping_add(v8, v13);
+        v7 = rotr12(v7 ^ v8);
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma[13]));
+        v13 = rotr8(v13 ^ v2);
+        v8 = u32_wrapping_add(v8, v13);
+        v7 = rotr7(v7 ^ v8);
 
-            // a = a + b + m[sigma[r][2*i+1]]
-            a = u32_wrapping_add(u32_wrapping_add(a, b), *m_span.at(*sigma[2 * i + 1]));
-
-            d = rotr8(d ^ a);
-
-            // c = c + d
-            c = u32_wrapping_add(c, d);
-
-            b = rotr7(b ^ c);
-
-            // G function end
-
-            if i == 0 {
-                v0 = a;
-                v4 = b;
-                v8 = c;
-                v12 = d;
-            } else if i == 1 {
-                v1 = a;
-                v5 = b;
-                v9 = c;
-                v13 = d;
-            } else if i == 2 {
-                v2 = a;
-                v6 = b;
-                v10 = c;
-                v14 = d;
-            } else if i == 3 {
-                v3 = a;
-                v7 = b;
-                v11 = c;
-                v15 = d;
-            } else if i == 4 {
-                v0 = a;
-                v5 = b;
-                v10 = c;
-                v15 = d;
-            } else if i == 5 {
-                v1 = a;
-                v6 = b;
-                v11 = c;
-                v12 = d;
-            } else if i == 6 {
-                v2 = a;
-                v7 = b;
-                v8 = c;
-                v13 = d;
-            } else if i == 7 {
-                v3 = a;
-                v4 = b;
-                v9 = c;
-                v14 = d;
-            };
-
-            i += 1;
-        };
-
-        // ROUND function end
+        // 7 - 3,4,9,14
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma[14]));
+        v14 = rotr16(v14 ^ v3);
+        v9 = u32_wrapping_add(v9, v14);
+        v4 = rotr12(v4 ^ v9);
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma[15]));
+        v14 = rotr8(v14 ^ v3);
+        v9 = u32_wrapping_add(v9, v14);
+        v4 = rotr7(v4 ^ v9);
 
         r += 1;
     };
@@ -386,18 +336,16 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
     let buf_span = s.buf.span();
     let mut buf = ArrayTrait::new();
     loop {
-        if i == s.buflen {
-            break;
-        }
-        buf.append(*buf_span[i]);
-        i += 1;
+        match buf.pop_front() {
+            Option::Some(x) => { buf.append(x); },
+            Option::None => { break; }
+        };
     };
     loop {
-        if i == 16 {
+        if buf.len() == 16 {
             break;
         }
         buf.append(0);
-        i += 1;
     };
 
     s = blake2s_compress(s, buf);
