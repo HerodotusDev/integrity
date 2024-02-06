@@ -1,8 +1,5 @@
 use cairo_verifier::{
-    channel::channel::Channel,
-    vector_commitment::vector_commitment::{
-        VectorCommitment, VectorCommitmentConfig, vector_commit, VectorCommitmentConfigTrait
-    }
+    vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitmentConfigTrait}
 };
 
 #[test]
