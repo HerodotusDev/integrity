@@ -15,13 +15,13 @@ struct Cli {
 }
 
 const BENCH_FUNCTION_LIST: &[&str] = &[
-    "bench_stark_proof_verify",
-    "bench_stark_commit",
-    "bench_stark_verify",
-    "bench_fri_commit",
-    "bench_fri_verify",
     "bench_air_traces_commit",
     "bench_air_traces_decommit",
+    "bench_fri_commit",
+    "bench_fri_verify",
+    "bench_stark_commit",
+    "bench_stark_proof_verify",
+    "bench_stark_verify",
 ];
 
 fn main() -> anyhow::Result<()> {
