@@ -9,6 +9,7 @@ fn get() -> FriUnsentCommitment {
             0x6fb12bd48b9888a8e658379b2bc292a24683ba58ae04cc3f88ccea065cd1e29,
         ]
             .span(),
-        last_layer_coefficients: stone_proof_fibonacci_keccak::fri::last_layer_coefficients::get().span(),
+        last_layer_coefficients: stone_proof_fibonacci_keccak::fri::last_layer_coefficients::get()
+            .span(),
     };
 }

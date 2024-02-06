@@ -2,7 +2,7 @@ use core::array::SpanTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
-        math::Felt252PartialOrd, consts::MONTGOMERY_R, blake2s::truncated_blake2s,
+        math::Felt252PartialOrd, consts::MONTGOMERY_R,
     },
     vector_commitment::vector_commitment::{
         VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
