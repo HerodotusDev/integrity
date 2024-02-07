@@ -336,16 +336,18 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
     let buf_span = s.buf.span();
     let mut buf = ArrayTrait::new();
     loop {
-        match buf.pop_front() {
-            Option::Some(x) => { buf.append(x); },
-            Option::None => { break; }
-        };
+        if i == s.buflen {
+            break;
+        }
+        buf.append(*buf_span[i]);
+        i += 1;
     };
     loop {
-        if buf.len() == 16 {
+        if i == 16 {
             break;
         }
         buf.append(0);
+        i += 1;
     };
 
     s = blake2s_compress(s, buf);
