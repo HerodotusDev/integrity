@@ -188,9 +188,8 @@ impl PublicInputImpl of PublicInputTrait {
         let program_len = program_end_pc - initial_pc;
         let program = memory
             .extract_range(
-                initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), memory_index
+                initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), ref memory_index
             );
-        memory_index += program.len().into();
 
         assert(
             *program[0] == 0x40780017fff7fff, 'Invalid program'
@@ -228,24 +227,21 @@ impl PublicInputImpl of PublicInputTrait {
 
             i += 1;
         };
-        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, memory_index.into());
-        memory_index += builtins_len;
+        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
         memory
             .verify_stack(
                 final_ap - builtins_len.into(),
                 stop_addresses.span(),
                 builtins_len,
-                memory_index.into()
+                ref memory_index
             );
-        memory_index += builtins_len;
 
         // 3. Output segment 
         let output_len = output_stop - output_start;
         let output = memory
             .extract_range(
-                output_start.try_into().unwrap(), output_len.try_into().unwrap(), memory_index
+                output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
             );
-        memory_index += output.len().into();
         let output_hash = hash_felts(output);
 
         // Check main page len

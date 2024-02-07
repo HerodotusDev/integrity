@@ -45,7 +45,7 @@ impl PageImpl of PageTrait {
         }
     }
 
-    fn extract_range(self: @Page, addr: u32, len: usize, offset: usize) -> Span<felt252> {
+    fn extract_range(self: @Page, addr: u32, len: usize, ref offset: usize) -> Span<felt252> {
         let mut arr = ArrayTrait::new();
         let mut i = 0;
 
@@ -54,12 +54,13 @@ impl PageImpl of PageTrait {
                 break arr.span();
             }
 
-            let current = *self.at(offset + i);
+            let current = *self.at(offset);
 
             // TODO is this needed? If not we can just use slice directly 
             assert(current.address == (addr + i).into(), 'Invalid address');
             arr.append(current.value);
             i += 1;
+            offset += 1;
         }
     }
 
@@ -68,7 +69,7 @@ impl PageImpl of PageTrait {
         start_ap: felt252,
         segment_addresses: Span<felt252>,
         builtins_len: usize,
-        memory_index: felt252
+        ref offset: usize
     ) {
         let mut i = 0;
 
@@ -77,11 +78,12 @@ impl PageImpl of PageTrait {
                 break;
             }
 
-            let current = *self.at(memory_index.try_into().unwrap() + i);
+            let current = *self.at(offset);
 
             assert(current.address == start_ap + i.into(), 'Invalid address');
             assert(current.value == *segment_addresses.at(i), 'Invalid builtin');
             i += 1;
+            offset += 1;
         };
     }
 }
