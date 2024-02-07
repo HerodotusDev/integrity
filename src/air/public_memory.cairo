@@ -66,23 +66,21 @@ impl PageImpl of PageTrait {
     fn verify_stack(
         self: @Page,
         start_ap: felt252,
-        segment_address: felt252,
-        builtins: Span<felt252>,
+        segment_addresses: Span<felt252>,
+        builtins_len: usize,
         memory_index: felt252
     ) {
         let mut i = 0;
 
-        // TODO size of SegmentInfo
-        let size = 2;
         loop {
-            if i == builtins.len() {
+            if i == builtins_len {
                 break;
             }
 
             let current = *self.at(memory_index.try_into().unwrap() + i);
 
             assert(current.address == start_ap + i.into(), 'Invalid address');
-            assert(current.value == segment_address + size * (i.into() + 1), 'Invalid builtin');
+            assert(current.value == *segment_addresses.at(i), 'Invalid builtin');
             i += 1;
         };
     }

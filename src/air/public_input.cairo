@@ -213,20 +213,30 @@ impl PublicInputImpl of PublicInputTrait {
         memory_index += 2;
 
         // 2.2 Main arguments and return values
-        memory
-            .verify_stack(
-                initial_ap, *public_segments.at(2).begin_addr, builtins.span(), memory_index.into()
-            );
-        memory_index += builtins.len();
+        let mut begin_addresses = ArrayTrait::new();
+        let mut stop_addresses = ArrayTrait::new();
+        let mut i = 0;
+        let builtins_len = builtins.len();
+        loop {
+            if i == builtins_len {
+                break;
+            }
 
+            begin_addresses.append(*public_segments.at(2 + i).begin_addr);
+            stop_addresses.append(*public_segments.at(2 + i).stop_ptr);
+
+            i += 1;
+        };
+        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, memory_index.into());
+        memory_index += builtins_len;
         memory
             .verify_stack(
-                final_ap - builtins.len().into(),
-                *public_segments.at(2).stop_ptr,
-                builtins.span(),
+                final_ap - builtins_len.into(),
+                stop_addresses.span(),
+                builtins_len,
                 memory_index.into()
             );
-        memory_index += builtins.len();
+        memory_index += builtins_len;
 
         // 3. Output segment 
         let output_len = output_stop - output_start;
