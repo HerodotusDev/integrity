@@ -54,7 +54,7 @@ impl PageImpl of PageTrait {
                 break arr.span();
             }
 
-            let current = *self.at(addr + i);
+            let current = *self.at(addr + i - 1);
 
             // TODO is this needed? If not we can just use slice directly 
             assert(current.address == (addr + i).into(), 'Invalid address');
