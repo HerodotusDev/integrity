@@ -28,3 +28,11 @@ fn test_public_input_validate() {
 
     public_input.validate(@domain);
 }
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_input_verify() {
+    let public_input = stone_proof_fibonacci::public_input::get();
+    public_input.verify();
+}
+
