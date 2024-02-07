@@ -39,10 +39,10 @@ mod FactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of super::IFactRegistry<ContractState> {
         fn verify_and_register_fact(ref self: ContractState, stark_proof: StarkProofWithSerde) {
-            let (program_hash, program_output_hash) = self.cairo_verifier.verify_proof(stark_proof);
+            let (program_hash, output_hash) = self.cairo_verifier.verify_proof(stark_proof);
             let fact = PoseidonImpl::new()
                 .update(program_hash)
-                .update(program_output_hash)
+                .update(output_hash)
                 .finalize();
             self.emit(Event::FactRegistered(FactRegistered { fact }));
             self.facts.write(fact, true);
