@@ -87,7 +87,7 @@ fn blake2s_init() -> blake2s_state {
         0x1F83D9AB,
         0x5BE0CD19
     ];
-    let mut buf = array![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    let mut buf = array![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     blake2s_state { h: blake2s_IV, t0: 0, t1: 0, f0: 0, buf: buf, buflen: 0 }
 }
@@ -153,7 +153,7 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         v14 = rotr8(v14 ^ v2);
         v10 = u32_wrapping_add(v10, v14);
         v6 = rotr7(v6 ^ v10);
-        
+
         // 3 - 3,7,11,15
         v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[6]));
         v15 = rotr16(v15 ^ v3);
