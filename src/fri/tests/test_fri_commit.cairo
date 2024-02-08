@@ -20,4 +20,13 @@ fn test_fri_commit() {
         ) == stone_proof_fibonacci::fri::commitment::get(),
         'Invalid value'
     );
+
+    assert(
+        channel
+            .digest == u256 {
+                low: 0x15aa9b8787d877d61588844c0cfe2fb9, high: 0x7cd36c3da65b8d57331341e661a86574
+            },
+        'Invalid value'
+    );
+    assert(channel.counter == 0x0, 'Invalid value');
 }
