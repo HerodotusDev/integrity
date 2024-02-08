@@ -28,3 +28,20 @@ fn test_public_input_validate() {
 
     public_input.validate(@domain);
 }
+
+#[test]
+#[available_gas(9999999999)]
+fn test_public_input_verify() {
+    let public_input = stone_proof_fibonacci::public_input::get();
+    let (program_hash, output_hash) = public_input.verify();
+
+    assert(
+        program_hash == 0x9f6693f4a5610a46b5d71ef573c43bef5f0d111fc1c5e506d509c458a29bae,
+        'Wrong program hash'
+    );
+    assert(
+        output_hash == 0x3cff7dfd4138a3c9082a6a768b1c094ae290e2f4705482bf0eb2dbb21c46968,
+        'Wrong output hash'
+    );
+}
+

@@ -17,7 +17,6 @@ use cairo_verifier::{
     domains::StarkDomains
 };
 
-
 #[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {
     // Start address of the memory segment.
@@ -188,8 +187,9 @@ impl PublicInputImpl of PublicInputTrait {
         let program_end_pc = initial_fp - 2;
         let program_len = program_end_pc - initial_pc;
         let program = memory
-            .extract_range(initial_pc.try_into().unwrap(), program_len.try_into().unwrap());
-        memory_index += program.len().into();
+            .extract_range(
+                initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), ref memory_index
+            );
 
         assert(
             *program[0] == 0x40780017fff7fff, 'Invalid program'
@@ -213,33 +213,40 @@ impl PublicInputImpl of PublicInputTrait {
         memory_index += 2;
 
         // 2.2 Main arguments and return values
-        memory
-            .verify_stack(
-                initial_ap, *public_segments.at(2).begin_addr, builtins.span(), memory_index.into()
-            );
-        memory_index += builtins.len();
+        let mut begin_addresses = ArrayTrait::new();
+        let mut stop_addresses = ArrayTrait::new();
+        let mut i = 0;
+        let builtins_len = builtins.len();
+        loop {
+            if i == builtins_len {
+                break;
+            }
 
+            begin_addresses.append(*public_segments.at(2 + i).begin_addr);
+            stop_addresses.append(*public_segments.at(2 + i).stop_ptr);
+
+            i += 1;
+        };
+        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
         memory
             .verify_stack(
-                final_ap - builtins.len().into(),
-                *public_segments.at(2).stop_ptr,
-                builtins.span(),
-                memory_index.into()
+                final_ap - builtins_len.into(),
+                stop_addresses.span(),
+                builtins_len,
+                ref memory_index
             );
-        memory_index += builtins.len();
 
         // 3. Output segment 
         let output_len = output_stop - output_start;
         let output = memory
             .extract_range(
-                memory_index + output_start.try_into().unwrap(), output_len.try_into().unwrap()
+                output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
             );
-        memory_index += output.len().into();
         let output_hash = hash_felts(output);
 
         // Check main page len
         assert(
-            *memory.at(memory_index) == *self.main_page.at(self.main_page.len() - 1),
+            *memory.at(memory_index - 1) == *self.main_page.at(self.main_page.len() - 1),
             'Invalid main page len'
         );
 
