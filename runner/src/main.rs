@@ -18,7 +18,8 @@ fn main() -> anyhow::Result<()> {
     stdin().read_to_string(&mut input)?;
     let exprs = parse(input)?.to_string();
 
-    run(exprs, args.target)?;
+    let result = run(exprs, args.target)?;
+    println!("{result:?}");
 
     Ok(())
 }
