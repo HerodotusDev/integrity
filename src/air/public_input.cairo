@@ -1,4 +1,6 @@
-use core::{keccak::cairo_keccak, pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
+use core::{
+    keccak::cairo_keccak, pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}
+};
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
