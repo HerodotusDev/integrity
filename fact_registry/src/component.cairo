@@ -10,7 +10,8 @@ trait ICairoVerifier<TContractState> {
 #[starknet::component]
 mod CairoVerifier {
     use cairo_verifier::{
-        deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}
+        deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+        air::public_input::PublicInputTrait,
     };
 
     #[storage]
@@ -38,7 +39,8 @@ mod CairoVerifier {
             ref self: ComponentState<TContractState>, stark_proof: StarkProofWithSerde
         ) -> (felt252, felt252) {
             let stark_proof: StarkProof = stark_proof.into();
-            let (program_hash, output_hash) = stark_proof.verify();
+            stark_proof.verify();
+            let (program_hash, output_hash) = stark_proof.public_input.verify();
             self.emit(ProofVerified { program_hash, output_hash });
             (program_hash, output_hash)
         }
