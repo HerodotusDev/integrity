@@ -11,11 +11,15 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
+#[cfg(test)]
+mod tests;
+
 use cairo_verifier::{
-    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}
+    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    air::public_input::PublicInputTrait
 };
 
-fn main(serialized_proof: Array<felt252>) {
+fn main(serialized_proof: Array<felt252>) -> (felt252, felt252) {
     let mut serialized_proof_span = serialized_proof.span();
     let stark_proof: StarkProof = Serde::<
         StarkProofWithSerde
@@ -24,4 +28,7 @@ fn main(serialized_proof: Array<felt252>) {
         .into();
 
     stark_proof.verify();
+    let (program_hash, output_hash) = stark_proof.public_input.verify();
+
+    (program_hash, output_hash)
 }
