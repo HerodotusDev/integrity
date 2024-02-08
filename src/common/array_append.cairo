@@ -50,25 +50,21 @@ impl ArrayU32AppendFelt of ArrayAppendTrait<u32, felt252> {
 }
 
 impl ArrayU32AppendFeltsSpan of ArrayAppendTrait<u32, Span<felt252>> {
-    fn append_little_endian(ref self: Array<u32>, element: Span<felt252>) {
-        let mut i = 0;
+    fn append_little_endian(ref self: Array<u32>, mut element: Span<felt252>) {
         loop {
-            if i == element.len() {
-                break;
+            match element.pop_front() {
+                Option::Some(elem) => self.append_little_endian(*elem),
+                Option::None => { break; }
             }
-            self.append_little_endian(*element[i]);
-            i += 1;
-        };
+        }
     }
-    fn append_big_endian(ref self: Array<u32>, element: Span<felt252>) {
-        let mut i = 0;
+    fn append_big_endian(ref self: Array<u32>, mut element: Span<felt252>) {
         loop {
-            if i == element.len() {
-                break;
+            match element.pop_front() {
+                Option::Some(elem) => self.append_big_endian(*elem),
+                Option::None => { break; }
             }
-            self.append_big_endian(*element[i]);
-            i += 1;
-        };
+        }
     }
 }
 

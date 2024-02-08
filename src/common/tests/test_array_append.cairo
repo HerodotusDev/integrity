@@ -51,3 +51,43 @@ fn test_array_append_le_4() {
     assert((*result[6]) == 0x89ac0246, 'Invalid value');
     assert((*result[7]) == 0x2866b5eb, 'Invalid value');
 }
+
+#[test]
+#[available_gas(9999999999)]
+fn test_array_append_le_5() {
+    let value: Array<felt252> = array![1, 2, 3, 4];
+    let mut result = ArrayTrait::<u32>::new();
+    result.append_little_endian(value.span());
+    assert((*result[0]) == 0x1, 'Invalid value');
+    assert((*result[1]) == 0x0, 'Invalid value');
+    assert((*result[2]) == 0x0, 'Invalid value');
+    assert((*result[3]) == 0x0, 'Invalid value');
+    assert((*result[4]) == 0x0, 'Invalid value');
+    assert((*result[5]) == 0x0, 'Invalid value');
+    assert((*result[6]) == 0x0, 'Invalid value');
+    assert((*result[7]) == 0x0, 'Invalid value');
+    assert((*result[8]) == 0x2, 'Invalid value');
+    assert((*result[9]) == 0x0, 'Invalid value');
+    assert((*result[10]) == 0x0, 'Invalid value');
+    assert((*result[11]) == 0x0, 'Invalid value');
+    assert((*result[12]) == 0x0, 'Invalid value');
+    assert((*result[13]) == 0x0, 'Invalid value');
+    assert((*result[14]) == 0x0, 'Invalid value');
+    assert((*result[15]) == 0x0, 'Invalid value');
+    assert((*result[16]) == 0x3, 'Invalid value');
+    assert((*result[17]) == 0x0, 'Invalid value');
+    assert((*result[18]) == 0x0, 'Invalid value');
+    assert((*result[19]) == 0x0, 'Invalid value');
+    assert((*result[20]) == 0x0, 'Invalid value');
+    assert((*result[21]) == 0x0, 'Invalid value');
+    assert((*result[22]) == 0x0, 'Invalid value');
+    assert((*result[23]) == 0x0, 'Invalid value');
+    assert((*result[24]) == 0x4, 'Invalid value');
+    assert((*result[25]) == 0x0, 'Invalid value');
+    assert((*result[26]) == 0x0, 'Invalid value');
+    assert((*result[27]) == 0x0, 'Invalid value');
+    assert((*result[28]) == 0x0, 'Invalid value');
+    assert((*result[29]) == 0x0, 'Invalid value');
+    assert((*result[30]) == 0x0, 'Invalid value');
+    assert((*result[31]) == 0x0, 'Invalid value');
+}
