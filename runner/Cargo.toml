@@ -1,14 +1,14 @@
 [package]
 name = "runner"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.79"
-cairo-args-runner = "1.0.1"
-clap = { version = "4.4.18", features = ["derive"] }
-cairo-proof-parser = { git = "https://github.com/cartridge-gg/cairo-proof-parser", tag = "v0.1.0" }
-serde = { version = "1.0.196", features = ["derive"] }
-serde_json = "1.0.113"
+anyhow.workspace = true
+cairo-args-runner.workspace = true
+clap.workspace = true
+cairo-proof-parser.workspace = true
+serde.workspace = true
+serde_json.workspace = true
