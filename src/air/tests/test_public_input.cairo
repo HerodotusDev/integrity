@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    tests::stone_proof_fibonacci_keccak, air::{public_input::PublicInputTrait},
+    tests::stone_proof_fibonacci, air::{public_input::PublicInputTrait},
     domains::StarkDomainsTrait
 };
 
@@ -7,7 +7,7 @@ use cairo_verifier::{
 #[test]
 #[available_gas(9999999999)]
 fn test_public_input_hash() {
-    let public_input = stone_proof_fibonacci_keccak::public_input::get();
+    let public_input = stone_proof_fibonacci::public_input::get();
 
     assert(
         public_input
@@ -21,7 +21,7 @@ fn test_public_input_hash() {
 #[test]
 #[available_gas(9999999999)]
 fn test_public_input_validate() {
-    let public_input = stone_proof_fibonacci_keccak::public_input::get();
+    let public_input = stone_proof_fibonacci::public_input::get();
 
     let log_trace_domain_size = 0x12;
     let log_n_cosets = 0x4;
@@ -45,4 +45,3 @@ fn test_public_input_verify() {
         'Wrong output hash'
     );
 }
-
