@@ -25,17 +25,11 @@ impl U256FromSpanU32 of FromSpanTrait<u32, u256> {
 
 impl U128FromSpanU32 of FromSpanTrait<u32, u128> {
     fn from_span_le(self: Span<u32>) -> u128 {
-        let mut out = 0_u128;
-        let mut i = 4;
-        loop {
-            if i != 0 {
-                i -= 1;
-                out = out * U128maxU32;
-                out = out + (*self.at(i)).into();
-            } else {
-                break;
-            }
-        };
-        out
+        ((((Into::<u32, u128>::into(*self.at(3)) * U128maxU32)
+            + Into::<u32, u128>::into(*self.at(2)))
+            * U128maxU32
+            + Into::<u32, u128>::into(*self.at(1)))
+            * U128maxU32)
+            + Into::<u32, u128>::into(*self.at(0))
     }
 }
