@@ -1,31 +1,36 @@
 use cairo_verifier::{
-    channel::channel::Channel,
-    vector_commitment::vector_commitment::{VectorCommitmentConfig, vector_commit}
+    channel::channel::ChannelTrait,
+    vector_commitment::vector_commitment::{VectorCommitment, VectorCommitmentConfig, vector_commit},
 };
 
 // test data from cairo0-verifier keccak-native run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commit() {
-    let mut channel = Channel {
-        digest: 0x0f089f70240c88c355168624ec69ffa679a81fbc7d4d47306edc4b57f2fa327f,
-        counter: 0x1690c7c85c57a4897623c1364852d8df91e4b36675085fddc7d10a7ea946fcbd,
+    let mut channel = ChannelTrait::new_with_counter(
+        u256 { low: 0xba9f6f33755b2ba125243085a495cbce, high: 0xb32be56c99d069ae688842c915c4531c },
+        0x1
+    );
+
+    let unsent_commitment = 0x6fb12bd48b9888a8e658379b2bc292a24683ba58ae04cc3f88ccea065cd1e29;
+
+    let config = VectorCommitmentConfig {
+        height: 0xb, n_verifier_friendly_commitment_layers: 0x64,
     };
-    let unsent_felt: felt252 = 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e;
-    let config = VectorCommitmentConfig { height: 15, n_verifier_friendly_commitment_layers: 5, };
 
-    let res = vector_commit(ref channel, unsent_felt, config);
+    assert(
+        vector_commit(
+            ref channel, unsent_commitment, config
+        ) == VectorCommitment { config: config, commitment_hash: unsent_commitment },
+        'Invalid value'
+    );
 
-    assert(res.config.height == config.height, 'invalid config height');
     assert(
-        res
-            .config
-            .n_verifier_friendly_commitment_layers == config
-            .n_verifier_friendly_commitment_layers,
-        'invalid config n_veri...'
+        channel
+            .digest == u256 {
+                low: 0x5449a9fbc110816097171d407a006747, high: 0xba04b152453e14e6d4cd5bcb9d676a8b
+            },
+        'Invalid value'
     );
-    assert(
-        res.commitment_hash == 0x4b774418541bbe409a801463d95e65b16da2be518ae8c7647867dc57911cd3e,
-        'invalid commitment_hash'
-    );
+    assert(channel.counter == 0x0, 'Invalid value');
 }
