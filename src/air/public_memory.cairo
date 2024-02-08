@@ -45,7 +45,7 @@ impl PageImpl of PageTrait {
         }
     }
 
-    fn extract_range(self: @Page, addr: u32, len: usize) -> Span<felt252> {
+    fn extract_range(self: @Page, addr: u32, len: usize, ref offset: usize) -> Span<felt252> {
         let mut arr = ArrayTrait::new();
         let mut i = 0;
 
@@ -54,54 +54,56 @@ impl PageImpl of PageTrait {
                 break arr.span();
             }
 
-            let current = *self.at(addr + i);
+            let current = *self.at(offset);
 
             // TODO is this needed? If not we can just use slice directly 
             assert(current.address == (addr + i).into(), 'Invalid address');
             arr.append(current.value);
             i += 1;
+            offset += 1;
         }
     }
 
     fn verify_stack(
         self: @Page,
         start_ap: felt252,
-        segment_address: felt252,
-        builtins: Span<felt252>,
-        memory_index: felt252
+        segment_addresses: Span<felt252>,
+        builtins_len: usize,
+        ref offset: usize
     ) {
         let mut i = 0;
 
-        // TODO size of SegmentInfo
-        let size = 2;
         loop {
-            if i == builtins.len() {
+            if i == builtins_len {
                 break;
             }
 
-            let current = *self.at(memory_index.try_into().unwrap() + i);
+            let current = *self.at(offset);
 
             assert(current.address == start_ap + i.into(), 'Invalid address');
-            assert(current.value == segment_address + size * (i.into() + 1), 'Invalid builtin');
+            assert(current.value == *segment_addresses.at(i), 'Invalid builtin');
             i += 1;
+            offset += 1;
         };
     }
 }
 
-fn get_continuous_pages_product(page_headers: Span<ContinuousPageHeader>) -> (felt252, felt252) {
+fn get_continuous_pages_product(
+    mut page_headers: Span<ContinuousPageHeader>
+) -> (felt252, felt252) {
     let mut res = 1;
     let mut total_length = 0;
-    let mut i = 0;
+
     loop {
-        if i == page_headers.len() {
-            break (res, total_length);
+        match page_headers.pop_front() {
+            Option::Some(header) => {
+                res *= *header.prod;
+                total_length += *header.size;
+            },
+            Option::None => { break; }
         }
-        let current = page_headers.at(i);
+    };
 
-        res *= *current.prod;
-        total_length += *current.size;
-
-        i += 1;
-    }
+    (res, total_length)
 }
 

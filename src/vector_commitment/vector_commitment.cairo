@@ -139,28 +139,28 @@ fn compute_root_from_queries(
 // Shifts the query indices by shift=2**height, to convert index representation to heap-like.
 // Validates the query index range.
 fn shift_queries(
-    queries: Span<VectorQuery>, shift: felt252, height: felt252
+    mut queries: Span<VectorQuery>, shift: felt252, height: felt252
 ) -> Array<VectorQueryWithDepth> {
     let mut shifted_queries = ArrayTrait::new();
-    let mut i = 0;
     loop {
-        if i == queries.len() {
-            break;
-        };
-        let q = *queries[i];
-        shifted_queries
-            .append(
-                VectorQueryWithDepth { index: q.index + shift, value: q.value, depth: height, }
-            );
-        i += 1;
+        match queries.pop_front() {
+            Option::Some(query) => {
+                shifted_queries
+                    .append(
+                        VectorQueryWithDepth {
+                            index: *query.index + shift, value: *query.value, depth: height,
+                        }
+                    );
+            },
+            Option::None => { break; }
+        }
     };
     shifted_queries
 }
 
 fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
     if is_verifier_friendly {
-        let hash = PedersenTrait::new(x).update_with(y).finalize();
-        hash
+        PedersenTrait::new(x).update(y).finalize()
     } else {
         let mut data = ArrayTrait::<u32>::new();
         data.append_big_endian(x);

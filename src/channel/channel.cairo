@@ -1,3 +1,4 @@
+use core::array::SpanTrait;
 use cairo_verifier::common::{
     flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
     consts::{
@@ -85,30 +86,26 @@ impl ChannelImpl of ChannelTrait {
         self.counter = 0;
     }
 
-    fn read_felts_from_prover(ref self: Channel, values: Span<felt252>) {
-        let mut n = 0;
+    fn read_felts_from_prover(ref self: Channel, mut values: Span<felt252>) {
         loop {
-            if n == values.len() {
-                break;
+            match values.pop_front() {
+                Option::Some(value) => { self.read_felt_from_prover(*value); },
+                Option::None => { break; }
             }
-            self.read_felt_from_prover(*values[n]);
-            n += 1;
-        };
+        }
     }
 
-    fn read_felt_vector_from_prover(ref self: Channel, values: Span<felt252>) {
+    fn read_felt_vector_from_prover(ref self: Channel, mut values: Span<felt252>) {
         let mut hash_data = ArrayTrait::<u32>::new();
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
 
-        let mut i = 0;
         loop {
-            if i == values.len() {
-                break;
-            };
-            hash_data.append_big_endian(*values[i] * MONTGOMERY_R);
-            i += 1;
+            match values.pop_front() {
+                Option::Some(value) => { hash_data.append_big_endian(*value * MONTGOMERY_R); },
+                Option::None => { break; }
+            }
         };
 
         self.digest = blake2s(hash_data).flip_endianness();
@@ -120,11 +117,7 @@ impl ChannelImpl of ChannelTrait {
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
-
-        let low: u32 = (value % 0x100000000).try_into().unwrap();
-        let high: u32 = (value / 0x100000000).try_into().unwrap();
-        hash_data.append(high.flip_endianness());
-        hash_data.append(low.flip_endianness());
+        hash_data.append_big_endian(value);
 
         self.digest = blake2s(hash_data).flip_endianness();
         self.counter = 0;

@@ -43,24 +43,19 @@ impl StarkDomainsImpl of StarkDomainsTrait {
 
 #[cfg(test)]
 mod tests {
-    use cairo_verifier::domains::{StarkDomains, StarkDomainsTrait};
-    // test generated based on cairo0-verifier run on fib proof from stone-prover
+    use cairo_verifier::{domains::{StarkDomains, StarkDomainsTrait}, tests::stone_proof_fibonacci,};
+    // test data from cairo0-verifier run on stone-prover generated proof
     #[test]
     #[available_gas(9999999999)]
     fn test_domain_creation() {
         let log_trace_domain_size = 0x12;
         let log_n_cosets = 0x4;
-        let expected_result = StarkDomains {
-            log_eval_domain_size: 0x16,
-            eval_domain_size: 0x400000,
-            eval_generator: 0x3e4383531eeac7c9822fb108d24a344d841544dd6482f17ead331453e3a2f4b,
-            log_trace_domain_size: 0x12,
-            trace_domain_size: 0x40000,
-            trace_generator: 0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046,
-        };
 
-        let result = StarkDomainsTrait::new(log_trace_domain_size, log_n_cosets);
-
-        assert(result == expected_result, 'Domain creation failed')
+        assert(
+            StarkDomainsTrait::new(
+                log_trace_domain_size, log_n_cosets
+            ) == stone_proof_fibonacci::stark::domains::get(),
+            'Domain creation failed'
+        )
     }
 }
