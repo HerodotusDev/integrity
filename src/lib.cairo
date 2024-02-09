@@ -11,10 +11,8 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
-#[cfg(test)]
 mod tests;
 
-#[cfg(test)]
 mod benches;
 
 use cairo_verifier::{
