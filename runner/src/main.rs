@@ -1,12 +1,9 @@
 use std::io::{stdin, Read};
 
-use cairo_args_runner::{run, Arg, VecFelt252};
+use cairo_args_runner::{Arg, Felt252, VecFelt252};
 use clap::Parser;
-use lalrpop_util::lalrpop_mod;
 
-mod ast;
-
-lalrpop_mod!(pub parser);
+use cairo_proof_parser::parse;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -16,21 +13,24 @@ struct Cli {
 }
 
 fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+    let args = Cli::parse();
     let mut input = String::new();
     stdin().read_to_string(&mut input)?;
+    let exprs = parse(input)?.to_string();
 
-    let parsed = parser::CairoParserOutputParser::new()
-        .parse(&input)
-        .map_err(|e| anyhow::anyhow!("{}", e))?;
-    let result = parsed.to_string();
-
-    let target = cli.target;
-    let function = "main";
-    let args: VecFelt252 = serde_json::from_str(&result).unwrap();
-
-    let result = run(&target, function, &[Arg::Array(args.to_vec())])?;
-
+    let result = run(exprs, args.target)?;
     println!("{result:?}");
+
     Ok(())
+}
+
+fn run(parsed: String, target: String) -> anyhow::Result<Vec<Felt252>> {
+    let target = target;
+    let function = "main";
+    let args: VecFelt252 = serde_json::from_str(&parsed).unwrap();
+    Ok(cairo_args_runner::run(
+        &target,
+        function,
+        &[Arg::Array(args.to_vec())],
+    )?)
 }
