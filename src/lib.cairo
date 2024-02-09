@@ -1,5 +1,4 @@
 mod air;
-mod benches;
 mod channel;
 mod common;
 mod deserialization;
@@ -14,6 +13,9 @@ mod vector_commitment;
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod benches;
 
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
