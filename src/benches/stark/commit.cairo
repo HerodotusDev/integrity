@@ -1,6 +1,5 @@
 use cairo_verifier::{
-    stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
-    tests::stone_proof_fibonacci,
+    stark::stark_commit::stark_commit, channel::channel::ChannelTrait, tests::stone_proof_fibonacci,
 };
 
 fn bench_stark_commit() {
