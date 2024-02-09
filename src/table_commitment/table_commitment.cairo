@@ -2,7 +2,7 @@ use core::array::SpanTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
-        math::Felt252PartialOrd, consts::MONTGOMERY_R, blake2s::truncated_blake2s,
+        math::Felt252PartialOrd, consts::MONTGOMERY_R, hasher::hash_truncated,
     },
     vector_commitment::vector_commitment::{
         VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
@@ -126,7 +126,7 @@ fn generate_vector_queries(
             let slice = values.slice(i * n_columns, n_columns);
             let mut data: Array<u32> = ArrayTrait::new();
             data.append_big_endian(slice);
-            truncated_blake2s(data)
+            hash_truncated(data)
         };
         vector_queries.append(VectorQuery { index: *queries[i], value: hash });
         i += 1;

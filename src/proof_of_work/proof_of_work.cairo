@@ -1,7 +1,7 @@
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
-        blake2s_u8::blake2s, array_append::ArrayAppendTrait, math::pow,
+        hasher::hash_u8, array_append::ArrayAppendTrait, math::pow,
     },
     channel::channel::{Channel, ChannelTrait}, proof_of_work::config::{ProofOfWorkConfig}
 };
@@ -26,20 +26,20 @@ fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     //      8 bytes            || 32 bytes || 1 byte
     // Total of 0x29 = 41 bytes.
 
-    let mut init_hash_data = ArrayTrait::<u8>::new();
+    let mut init_hash_data = ArrayTrait::new(); // u8 with blake, u64 with keccak
     init_hash_data.append_big_endian(MAGIC);
     init_hash_data.append_big_endian(digest);
     init_hash_data.append(n_bits);
-    let init_hash = blake2s(init_hash_data).flip_endianness();
+    let init_hash = hash_u8(init_hash_data).flip_endianness();
 
     // Compute Hash(init_hash || nonce   )
     //              32 bytes  || 8 bytes
     // Total of 0x28 = 40 bytes.
 
-    let mut hash_data = ArrayTrait::<u8>::new();
+    let mut hash_data = ArrayTrait::new(); // u8 with blake, u64 with keccak
     hash_data.append_big_endian(init_hash);
     hash_data.append_big_endian(nonce);
-    let hash = blake2s(hash_data).flip_endianness();
+    let hash = hash_u8(hash_data).flip_endianness();
 
     let work_limit = pow(2, 128 - n_bits.into());
     assert(

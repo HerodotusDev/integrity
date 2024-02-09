@@ -6,6 +6,7 @@ mod asserts;
 mod bit_reverse;
 mod blake2s_u8;
 mod blake2s;
+mod hasher;
 mod consts;
 mod flip_endianness;
 mod hash;

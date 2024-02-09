@@ -1,7 +1,7 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, hasher::hash,
         math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
         array_print::SpanPrintTrait, hash::hash_felts,
     },
@@ -57,7 +57,7 @@ impl PublicInputImpl of PublicInputTrait {
             .update_with(AddrValueSize * self.main_page.len());
         let main_page_hash = main_page_hash_state.finalize();
 
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::<u32>::new(); // TODO: u64 for keccak
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_min).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_max).into());
@@ -121,7 +121,7 @@ impl PublicInputImpl of PublicInputTrait {
             i += 1;
         };
 
-        blake2s(hash_data).flip_endianness()
+        hash(hash_data).flip_endianness()
     }
 
     // Returns the ratio between the product of all public memory cells and z^|public_memory|.
