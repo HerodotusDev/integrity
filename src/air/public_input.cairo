@@ -57,7 +57,7 @@ impl PublicInputImpl of PublicInputTrait {
             .update_with(AddrValueSize * self.main_page.len());
         let main_page_hash = main_page_hash_state.finalize();
 
-        let mut hash_data = ArrayTrait::<u32>::new(); // TODO: u64 for keccak
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_min).into());
         ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_max).into());

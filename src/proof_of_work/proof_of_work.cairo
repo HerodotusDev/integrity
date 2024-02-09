@@ -1,7 +1,7 @@
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
-        hasher::hash_u8, array_append::ArrayAppendTrait, math::pow,
+        hasher::hash_n_bytes, array_append::ArrayAppendTrait, math::pow,
     },
     channel::channel::{Channel, ChannelTrait}, proof_of_work::config::{ProofOfWorkConfig}
 };
@@ -29,8 +29,7 @@ fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     let mut init_hash_data = ArrayTrait::new(); // u8 with blake, u64 with keccak
     init_hash_data.append_big_endian(MAGIC);
     init_hash_data.append_big_endian(digest);
-    init_hash_data.append(n_bits);
-    let init_hash = hash_u8(init_hash_data).flip_endianness();
+    let init_hash = hash_n_bytes(init_hash_data, n_bits.into(), true).flip_endianness();
 
     // Compute Hash(init_hash || nonce   )
     //              32 bytes  || 8 bytes
@@ -39,7 +38,7 @@ fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     let mut hash_data = ArrayTrait::new(); // u8 with blake, u64 with keccak
     hash_data.append_big_endian(init_hash);
     hash_data.append_big_endian(nonce);
-    let hash = hash_u8(hash_data).flip_endianness();
+    let hash = hash_n_bytes(hash_data, 0, false).flip_endianness();
 
     let work_limit = pow(2, 128 - n_bits.into());
     assert(

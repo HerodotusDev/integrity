@@ -162,7 +162,7 @@ fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) ->
     if is_verifier_friendly {
         PedersenTrait::new(x).update(y).finalize()
     } else {
-        let mut data = ArrayTrait::<u32>::new();
+        let mut data = ArrayTrait::new(); // u32 for blake, u64 for keccak
         data.append_big_endian(x);
         data.append_big_endian(y);
         hash_truncated(data)

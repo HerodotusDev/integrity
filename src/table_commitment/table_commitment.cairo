@@ -124,7 +124,7 @@ fn generate_vector_queries(
             *values[i * n_columns]
         } else {
             let slice = values.slice(i * n_columns, n_columns);
-            let mut data: Array<u32> = ArrayTrait::new();
+            let mut data = ArrayTrait::new(); // u32 for blake, u64 for keccak
             data.append_big_endian(slice);
             hash_truncated(data)
         };
