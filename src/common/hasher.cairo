@@ -42,3 +42,5 @@ fn hash(mut data: Array<u64>) -> u256 {
     keccak::cairo_keccak(ref data, 0, 0)
 }
 // === KECCAK ONLY END ===
+
+
