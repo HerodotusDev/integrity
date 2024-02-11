@@ -65,7 +65,7 @@ impl ChannelImpl of ChannelTrait {
     }
 
     fn read_truncated_hash_from_prover(ref self: Channel, value: felt252) {
-        let mut hash_data = ArrayTrait::<u64>::new(); // u32 for blake, u64 for keccak
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
