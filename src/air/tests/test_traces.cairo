@@ -9,10 +9,10 @@ use cairo_verifier::{
 // #[available_gas(9999999999)]
 // fn test_traces_config() {
 //     let traces_config = stone_proof_fibonacci::traces::config::get();
-
+// 
 //     traces_config.validate(0x16, 0x16);
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_traces_commit() {
@@ -23,14 +23,14 @@ use cairo_verifier::{
 //     let public_input = @stone_proof_fibonacci::public_input::get();
 //     let unsent_commitment = stone_proof_fibonacci::traces::unsent_commitment::get();
 //     let traces_config = stone_proof_fibonacci::traces::config::get();
-
+// 
 //     assert(
 //         traces_commit(
 //             ref channel, public_input, unsent_commitment, traces_config
 //         ) == stone_proof_fibonacci::traces::commitment::get(),
 //         'Invalid value'
 //     );
-
+// 
 //     assert(
 //         channel
 //             .digest == u256 {
@@ -38,10 +38,10 @@ use cairo_verifier::{
 //             },
 //         'Invalid value'
 //     );
-
+// 
 //     assert(channel.counter == 0x0, 'Invalid value')
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_traces_decommit() {
@@ -49,7 +49,7 @@ use cairo_verifier::{
 //     let commitment = stone_proof_fibonacci::traces::commitment::get();
 //     let decommitment = stone_proof_fibonacci::traces::decommitment::get();
 //     let witness = stone_proof_fibonacci::traces::witness::get();
-
+// 
 //     traces_decommit(queries, commitment, decommitment, witness);
 // }
 // === BLAKE ONLY END ===

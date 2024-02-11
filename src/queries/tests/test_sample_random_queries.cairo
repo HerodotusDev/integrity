@@ -13,7 +13,7 @@ use cairo_verifier::{queries::queries::sample_random_queries, channel::channel::
 //     assert(*queries.at(2) == 0x1e563d10b, 'Invalid value');
 //     assert(*queries.at(3) == 0x2d9a2434f, 'Invalid value');
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_sample_random_queries_1() {

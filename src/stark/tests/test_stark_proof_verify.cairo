@@ -13,7 +13,7 @@ use cairo_verifier::{
 //         unsent_commitment: stone_proof_fibonacci::stark::unsent_commitment::get(),
 //         witness: stone_proof_fibonacci::stark::witness::get(),
 //     };
-
+// 
 //     stark_proof.verify();
 // }
 // === BLAKE ONLY END ===

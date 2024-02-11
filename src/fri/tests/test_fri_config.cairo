@@ -8,7 +8,7 @@ use cairo_verifier::{fri::fri_config::FriConfigTrait, tests::stone_proof_fibonac
 //     let log_n_cosets = 0x4;
 //     let n_verifier_friendly_commitment_layers = 0x16;
 //     let log_expected_input_degree = 0x12;
-
+// 
 //     assert(
 //         fri_config
 //             .validate(

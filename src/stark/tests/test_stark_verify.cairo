@@ -11,7 +11,7 @@ use cairo_verifier::{
 //     let commitment = stone_proof_fibonacci::stark::commitment::get();
 //     let witness = stone_proof_fibonacci::stark::witness::get();
 //     let stark_domains = stone_proof_fibonacci::stark::domains::get();
-
+// 
 //     stark_verify(
 //         NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, queries, commitment, witness, stark_domains,
 //     )

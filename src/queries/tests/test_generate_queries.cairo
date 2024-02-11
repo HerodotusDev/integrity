@@ -18,7 +18,7 @@ use cairo_verifier::{
 //     );
 //     assert(channel.counter == 1, 'Invalid value');
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_generate_queries_1() {
@@ -44,7 +44,7 @@ use cairo_verifier::{
 //     );
 //     assert(channel.counter == 3, 'Invalid value');
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_generate_queries_2() {

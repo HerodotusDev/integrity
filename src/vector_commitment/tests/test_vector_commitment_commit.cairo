@@ -18,14 +18,14 @@ use cairo_verifier::{
 //     };
 //     let unsent_commitment: felt252 =
 //         0xa43e1b3b99d987d63116edc58aa49a7d510a667951852446419df5ede6a1cc;
-
+// 
 //     assert(
 //         vector_commit(
 //             ref channel, unsent_commitment, config
 //         ) == VectorCommitment { config: config, commitment_hash: unsent_commitment },
 //         'Invalid value'
 //     );
-
+// 
 //     assert(
 //         channel
 //             .digest == u256 {
@@ -35,7 +35,7 @@ use cairo_verifier::{
 //     );
 //     assert(channel.counter == 0x0, 'Invalid value');
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_vector_commit_1() {
@@ -50,14 +50,14 @@ use cairo_verifier::{
 //     };
 //     let unsent_commitment: felt252 =
 //         0xa43e1b3b99d987d63116edc58aa49a7d510a667951852446419df5ede6a1cc;
-
+// 
 //     assert(
 //         vector_commit(
 //             ref channel, unsent_commitment, config
 //         ) == VectorCommitment { config: config, commitment_hash: unsent_commitment },
 //         'Invalid value'
 //     );
-
+// 
 //     assert(
 //         channel
 //             .digest == u256 {

@@ -13,9 +13,9 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         },
 //         commitment_hash: 0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038
 //     };
-
+// 
 //     //n_columns 0x4
-
+// 
 //     let queries = array![
 //         VectorQuery { index: 0x98, value: 0x67406d6bb8db3de41d8b7dd9896c85e6d69e951d },
 //         VectorQuery { index: 0xa7, value: 0xa04e05c094e8ff020674895a8e87f2e9cfe3bc5c },
@@ -37,7 +37,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         VectorQuery { index: 0x78e, value: 0xd6ba0eee61fc3a2c0d901e56e5a2539e7c38d1d5 },
 //     ]
 //         .span();
-
+// 
 //     let witness = VectorCommitmentWitness {
 //         authentications: array![
 //             0xe676ff357a733da543bb3d81e3aa60ca9f1063e1,
@@ -149,10 +149,10 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         ]
 //             .span(),
 //     };
-
+// 
 //     vector_commitment_decommit(commitment, queries, witness);
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_vector_commitment_decommit_1() {
@@ -162,9 +162,9 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         },
 //         commitment_hash: 0x821aaa485d3fbdf7b0a06d773e565370f794c06bbcb4e23279a39544782c1e
 //     };
-
+// 
 //     //n_columns 0x8
-
+// 
 //     let queries = array![
 //         VectorQuery { index: 0x987, value: 0x52dd8c0a5ccccb7794f19f0ab5970fcd9f1ac0f3 },
 //         VectorQuery { index: 0xa7c, value: 0xe2d57dc4618b581f90656bc2d52e5d8dea486803 },
@@ -186,7 +186,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         VectorQuery { index: 0x78e0, value: 0xd8805cdc4b3b0e8a5b4840c64644abbfef95c57d },
 //     ]
 //         .span();
-
+// 
 //     let witness = VectorCommitmentWitness {
 //         authentications: array![
 //             0xb0a447b02e1b4a1b347bc55447dccb3e5de98ca0,
@@ -370,7 +370,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         ]
 //             .span(),
 //     };
-
+// 
 //     vector_commitment_decommit(commitment, queries, witness);
 // }
 // === BLAKE ONLY END ===

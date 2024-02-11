@@ -27,7 +27,7 @@ use cairo_verifier::{
 //             commitment_hash: 0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038,
 //         },
 //     };
-
+// 
 //     let queries = array![
 //         0x98,
 //         0xa7,
@@ -49,7 +49,7 @@ use cairo_verifier::{
 //         0x78e,
 //     ]
 //         .span();
-
+// 
 //     let decommitment = TableDecommitment {
 //         values: array![
 //             0x4bc68e79a50789ef5cff3fbe013b8f846b9a17931fc9cd0416a1ae2c003bfab,
@@ -127,7 +127,7 @@ use cairo_verifier::{
 //         ]
 //             .span()
 //     };
-
+// 
 //     let witness = TableCommitmentWitness {
 //         vector: VectorCommitmentWitness {
 //             authentications: array![
@@ -241,11 +241,10 @@ use cairo_verifier::{
 //                 .span()
 //         }
 //     };
-
+// 
 //     table_decommit(commitment, queries, decommitment, witness);
 // }
-
-// // test data from cairo0-verifier run on stone-prover generated proof
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_table_commitment_decommit_1() {
@@ -263,7 +262,7 @@ use cairo_verifier::{
 //             commitment_hash: 0x7a73129c87d8a60cb07b26775437ac75790bbd415d47912e5eb1f7c7e11d42f,
 //         },
 //     };
-
+// 
 //     let queries = array![
 //         0x261,
 //         0x29f,
@@ -285,7 +284,7 @@ use cairo_verifier::{
 //         0x1e38,
 //     ]
 //         .span();
-
+// 
 //     let decommitment = TableDecommitment {
 //         values: array![
 //             0x455da27ef48cb1a1b19aae3d09bd3d76dc7b53b9924c04af05dc8e377bc507d,
@@ -363,7 +362,7 @@ use cairo_verifier::{
 //         ]
 //             .span()
 //     };
-
+// 
 //     let witness = TableCommitmentWitness {
 //         vector: VectorCommitmentWitness {
 //             authentications: array![
@@ -513,7 +512,7 @@ use cairo_verifier::{
 //                 .span()
 //         }
 //     };
-
+// 
 //     table_decommit(commitment, queries, decommitment, witness);
 // }
 // === BLAKE ONLY END ===

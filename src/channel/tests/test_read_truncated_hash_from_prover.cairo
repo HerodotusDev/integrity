@@ -21,7 +21,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 //     );
 //     assert(channel.counter == 0, 'Invalid value');
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_read_truncated_hash_from_prover_1() {
@@ -42,7 +42,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 //     );
 //     assert(channel.counter == 0, 'Invalid value');
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_read_truncated_hash_from_prover_2() {

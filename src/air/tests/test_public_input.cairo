@@ -8,7 +8,7 @@ use cairo_verifier::{
 // #[available_gas(9999999999)]
 // fn test_public_input_hash() {
 //     let public_input = stone_proof_fibonacci::public_input::get();
-
+// 
 //     assert(
 //         public_input
 //             .get_public_input_hash() == u256 {
@@ -17,25 +17,25 @@ use cairo_verifier::{
 //         'Invalid value'
 //     )
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_public_input_validate() {
 //     let public_input = stone_proof_fibonacci::public_input::get();
-
+// 
 //     let log_trace_domain_size = 0x12;
 //     let log_n_cosets = 0x4;
 //     let domain = StarkDomainsTrait::new(log_trace_domain_size, log_n_cosets);
-
+// 
 //     public_input.validate(@domain);
 // }
-
+// 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_public_input_verify() {
 //     let public_input = stone_proof_fibonacci::public_input::get();
 //     let (program_hash, output_hash) = public_input.verify();
-
+// 
 //     assert(
 //         program_hash == 0x9f6693f4a5610a46b5d71ef573c43bef5f0d111fc1c5e506d509c458a29bae,
 //         'Wrong program hash'
