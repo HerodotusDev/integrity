@@ -39,3 +39,4 @@ fn test_read_uint64_from_prover_0() {
     assert(channel.counter == 0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

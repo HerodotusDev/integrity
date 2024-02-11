@@ -55,3 +55,4 @@ fn test_random_felts_to_prover() {
     assert(channel.counter == 0x6, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

@@ -1,6 +1,6 @@
 use cairo_verifier::{
     stark::stark_verify::stark_verify, air::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
-    tests::{stone_proof_fibonacci,stone_proof_fibonacci_keccak}
+    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
 // === BLAKE ONLY BEGIN ===
@@ -32,3 +32,4 @@ fn test_stark_verify() {
     )
 }
 // === KECCAK ONLY END ===
+

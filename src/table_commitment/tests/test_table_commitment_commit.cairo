@@ -133,3 +133,4 @@ fn test_table_commitment_commit() {
     assert(channel.counter == 0x0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    channel::channel::ChannelTrait, fri::fri::fri_commit, tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
+    channel::channel::ChannelTrait, fri::fri::fri_commit,
+    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
 };
 
 // === BLAKE ONLY BEGIN ===
@@ -52,3 +53,4 @@ fn test_fri_commit() {
     );
 }
 // === KECCAK ONLY END ===
+

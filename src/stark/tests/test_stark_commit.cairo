@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    stark::stark_commit::stark_commit, channel::channel::ChannelTrait, tests::{stone_proof_fibonacci,stone_proof_fibonacci_keccak}
+    stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
+    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
 // === BLAKE ONLY BEGIN ===
@@ -65,3 +66,4 @@ fn test_stark_commit() {
     assert(channel.counter == 0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

@@ -1,4 +1,7 @@
-use cairo_verifier::common::{blake2s::blake2s, blake2s::truncated_blake2s, blake2s_u8::blake2s as blake2s_u8, flip_endianness::FlipEndiannessTrait};
+use cairo_verifier::common::{
+    blake2s::blake2s, blake2s::truncated_blake2s, blake2s_u8::blake2s as blake2s_u8,
+    flip_endianness::FlipEndiannessTrait
+};
 
 // blake hasher
 

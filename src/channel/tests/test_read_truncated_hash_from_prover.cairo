@@ -129,3 +129,4 @@ fn test_read_truncated_hash_from_prover_2() {
     assert(channel.counter == 0x0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    queries::queries::generate_queries, channel::channel::ChannelTrait, tests::{stone_proof_fibonacci,stone_proof_fibonacci_keccak}
+    queries::queries::generate_queries, channel::channel::ChannelTrait,
+    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
 // === BLAKE ONLY BEGIN ===
@@ -72,3 +73,4 @@ fn test_generate_queries_0() {
     assert(channel.counter == 5, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

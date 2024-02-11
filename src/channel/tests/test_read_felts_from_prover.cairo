@@ -918,3 +918,4 @@ fn test_read_felts_from_prover_0() {
     assert(channel.counter == 0x0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

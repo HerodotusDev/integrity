@@ -105,3 +105,4 @@ fn test_traces_decommit() {
     traces_decommit(queries, commitment, decommitment, witness);
 }
 // === KECCAK ONLY END ===
+

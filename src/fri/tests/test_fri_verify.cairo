@@ -1,4 +1,6 @@
-use cairo_verifier::{fri::fri::fri_verify, tests::{stone_proof_fibonacci,stone_proof_fibonacci_keccak}};
+use cairo_verifier::{
+    fri::fri::fri_verify, tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
+};
 
 // === BLAKE ONLY BEGIN ===
 // #[test]
@@ -25,3 +27,4 @@ fn test_fri_verify() {
     fri_verify(queries, commitment, decommitment, witness)
 }
 // === KECCAK ONLY END ===
+

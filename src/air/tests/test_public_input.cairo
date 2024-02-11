@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}, air::{public_input::PublicInputTrait}, domains::StarkDomainsTrait
+    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
+    air::{public_input::PublicInputTrait}, domains::StarkDomainsTrait
 };
 
 // === BLAKE ONLY BEGIN ===
@@ -73,3 +74,4 @@ fn test_public_input_validate() {
     public_input.validate(@domain);
 }
 // === KECCAK ONLY END ===
+

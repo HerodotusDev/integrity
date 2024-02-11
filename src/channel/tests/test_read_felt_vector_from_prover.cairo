@@ -305,3 +305,4 @@ fn test_read_felt_vector_from_prover_0() {
     assert(channel.counter == 0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

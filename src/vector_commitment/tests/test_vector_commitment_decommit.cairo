@@ -519,3 +519,4 @@ fn test_vector_commitment_decommit() {
     vector_commitment_decommit(commitment, queries, witness);
 }
 // === KECCAK ONLY END ===
+

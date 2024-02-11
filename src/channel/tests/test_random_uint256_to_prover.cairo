@@ -150,3 +150,4 @@ fn test_random_uint256_to_prover_2() {
     assert(channel.counter == 0x4, 'Invalid value');
 }
 // === KECCAK ONLY END ===
+

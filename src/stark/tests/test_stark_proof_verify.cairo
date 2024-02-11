@@ -1,4 +1,7 @@
-use cairo_verifier::{stark::{StarkProof, StarkProofTrait}, tests::{stone_proof_fibonacci,stone_proof_fibonacci_keccak}};
+use cairo_verifier::{
+    stark::{StarkProof, StarkProofTrait},
+    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
+};
 
 // === BLAKE ONLY BEGIN ===
 // #[test]
@@ -29,3 +32,4 @@ fn test_stark_proof_fibonacci_verify() {
     stark_proof.verify();
 }
 // === KECCAK ONLY END ===
+

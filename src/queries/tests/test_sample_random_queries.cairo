@@ -1,5 +1,4 @@
 use cairo_verifier::{queries::queries::sample_random_queries, channel::channel::ChannelTrait};
-
 // === BLAKE ONLY BEGIN ===
 // #[test]
 // #[available_gas(9999999999)]
@@ -37,3 +36,4 @@ use cairo_verifier::{queries::queries::sample_random_queries, channel::channel::
 //     assert(*queries.at(11) == 0x8cf7e0675, 'Invalid value');
 // }
 // === BLAKE ONLY END ===
+
