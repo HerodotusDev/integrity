@@ -1,4 +1,5 @@
 # Cairo Verifier
+![Cairo Verifier](https://github.com/HerodotusDev/cairo-verifier/assets/46165861/8692dfc1-f267-4c7e-9af0-4ceaeec84207)
 
 This document provides steps to build and run the Cairo Verifier.
 
