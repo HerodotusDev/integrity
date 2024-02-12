@@ -1,7 +1,7 @@
 #!/bin/bash
 
 find ./src -type f | while read file; do
-    sed -i '' '/\/\/ === KECCAK ONLY BEGIN ===/,/\/\/ === KECCAK ONLY END ===/ {
+    sed -i '/\/\/ === KECCAK ONLY BEGIN ===/,/\/\/ === KECCAK ONLY END ===/ {
         /\/\/ === KECCAK ONLY BEGIN ===/! {
             /\/\/ === KECCAK ONLY END ===/! {
                 s/^/\/\/ /
@@ -9,7 +9,7 @@ find ./src -type f | while read file; do
         }
     }' "$file"
 
-    sed -i '' '/\/\/ === BLAKE ONLY BEGIN ===/,/\/\/ === BLAKE ONLY END ===/ {
+    sed -i '/\/\/ === BLAKE ONLY BEGIN ===/,/\/\/ === BLAKE ONLY END ===/ {
         /\/\/ === BLAKE ONLY BEGIN ===/! {
             /\/\/ === BLAKE ONLY END ===/! {
                 s/^\/\/ //
