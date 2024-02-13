@@ -12,35 +12,13 @@ use cairo_verifier::{
         layouts::recursive::constants::{
             segments, MAX_ADDRESS, get_builtins, INITIAL_PC, MAX_LOG_N_STEPS, CPU_COMPONENT_HEIGHT,
             MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_RATIO, RC_BUILTIN_RATIO, BITWISE_RATIO
-        }
+        },
+        public_input::{PublicInput, PublicInputTrait}
     },
     domains::StarkDomains
 };
 
-#[derive(Drop, Copy, PartialEq)]
-struct SegmentInfo {
-    // Start address of the memory segment.
-    begin_addr: felt252,
-    // Stop pointer of the segment - not necessarily the end of the segment.
-    stop_ptr: felt252,
-}
-
-#[derive(Drop, PartialEq)]
-struct PublicInput {
-    log_n_steps: felt252,
-    rc_min: felt252,
-    rc_max: felt252,
-    layout: felt252,
-    dynamic_params: Array<felt252>,
-    segments: Array<SegmentInfo>,
-    padding_addr: felt252,
-    padding_value: felt252,
-    main_page: Page,
-    continuous_page_headers: Array<ContinuousPageHeader>
-}
-
-#[generate_trait]
-impl PublicInputImpl of PublicInputTrait {
+impl PublicInputRecursiveImpl of PublicInputTrait {
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
     fn get_public_input_hash(self: @PublicInput) -> u256 {
         // Main page hash.
