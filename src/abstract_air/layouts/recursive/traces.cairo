@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    air::{
+    abstract_air::layouts::recursive::{
         public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
         global_values::InteractionElements,
     },
