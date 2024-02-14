@@ -6,12 +6,10 @@ use cairo_verifier::{
 };
 
 fn get() -> TracesCommitment {
-    let public_input = stone_proof_fibonacci::public_input::get();
     let unsent_commitment = stone_proof_fibonacci::traces::unsent_commitment::get();
     let traces_config = stone_proof_fibonacci::traces::config::get();
 
     return TracesCommitment {
-        public_input: @public_input,
         original: TableCommitment {
             config: traces_config.original,
             vector_commitment: VectorCommitment {

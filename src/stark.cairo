@@ -78,7 +78,7 @@ impl StarkProofImpl of StarkProofTrait {
     }
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct StarkConfig {
     traces: TracesConfig,
     composition: TableCommitmentConfig,
@@ -158,7 +158,7 @@ impl StarkConfigImpl of StarkConfigTrait {
 
 // n_oods_values := air.mask_size + air.constraint_degree.
 
-#[derive(Drop)]
+#[derive(Drop, Serde)]
 struct StarkUnsentCommitment {
     traces: TracesUnsentCommitment,
     composition: felt252,
@@ -170,7 +170,7 @@ struct StarkUnsentCommitment {
     proof_of_work: ProofOfWorkUnsentCommitment,
 }
 
-#[derive(Drop, PartialEq)]
+#[derive(Drop, PartialEq, Serde)]
 struct StarkCommitment {
     traces: TracesCommitment,
     composition: TableCommitment,

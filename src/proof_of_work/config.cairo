@@ -3,7 +3,7 @@ use cairo_verifier::common::asserts::assert_in_range;
 const MAX_PROOF_OF_WORK_BITS: felt252 = 50;
 const MIN_PROOF_OF_WORK_BITS: felt252 = 30;
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct ProofOfWorkConfig {
     // Proof of work difficulty (number of bits required to be 0).
     n_bits: u8,

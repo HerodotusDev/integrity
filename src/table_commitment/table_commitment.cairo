@@ -13,13 +13,13 @@ use cairo_verifier::{
 
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct TableCommitment {
     config: TableCommitmentConfig,
     vector_commitment: VectorCommitment,
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct TableCommitmentConfig {
     n_columns: felt252,
     vector: VectorCommitmentConfig,

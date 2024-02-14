@@ -42,7 +42,7 @@ struct GlobalValues {
 
 // Elements that are sent from the prover after the commitment on the original trace.
 // Used for components after the first interaction, e.g., memory and range check.
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct InteractionElements {
     memory_multi_column_perm_perm_interaction_elm: felt252,
     memory_multi_column_perm_hash_interaction_elm0: felt252,

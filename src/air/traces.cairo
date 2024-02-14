@@ -22,16 +22,15 @@ use cairo_verifier::{
 
 // Commitment values for the Traces component. Used to generate a commitment by "reading" these
 // values from the channel.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct TracesUnsentCommitment {
     original: felt252,
     interaction: felt252,
 }
 
 // Commitment for the Traces component.
-#[derive(Drop, PartialEq)]
+#[derive(Drop, PartialEq, Serde)]
 struct TracesCommitment {
-    public_input: @PublicInput,
     // Commitment to the first trace.
     original: TableCommitment,
     // The interaction elements that were sent to the prover after the first trace commitment (e.g.
@@ -63,7 +62,7 @@ const AIR_LAYOUT_N_ORIGINAL_COLUMNS: felt252 = 12;
 const AIR_LAYOUT_N_INTERACTION_COLUMNS: felt252 = 3;
 
 // Configuration for the Traces component.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct TracesConfig {
     original: TableCommitmentConfig,
     interaction: TableCommitmentConfig,
@@ -94,7 +93,6 @@ impl TracesConfigImpl of TracesConfigTrait {
 // Returns the commitment, along with GlobalValue required to evaluate the constraint polynomial.
 fn traces_commit(
     ref channel: Channel,
-    public_input: @PublicInput,
     unsent_commitment: TracesUnsentCommitment,
     config: TracesConfig
 ) -> TracesCommitment {
@@ -117,7 +115,6 @@ fn traces_commit(
     );
 
     TracesCommitment {
-        public_input: public_input,
         original: original_commitment,
         interaction_elements: interaction_elements,
         interaction: interaction_commitment,

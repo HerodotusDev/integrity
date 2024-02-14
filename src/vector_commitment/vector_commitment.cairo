@@ -8,13 +8,13 @@ use cairo_verifier::{
 };
 
 // Commitment for a vector of field elements.
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct VectorCommitment {
     config: VectorCommitmentConfig,
     commitment_hash: felt252
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct VectorCommitmentConfig {
     height: felt252,
     n_verifier_friendly_commitment_layers: felt252,

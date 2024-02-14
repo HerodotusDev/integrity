@@ -15,7 +15,7 @@ use cairo_verifier::{
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriUnsentCommitment {
     // Array of size n_layers - 1 containing unsent table commitments for each inner layer.
     inner_layers: Span<felt252>,
@@ -24,7 +24,7 @@ struct FriUnsentCommitment {
     last_layer_coefficients: Span<felt252>,
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct FriCommitment {
     config: FriConfig,
     // Array of size n_layers - 1 containing table commitments for each inner layer.

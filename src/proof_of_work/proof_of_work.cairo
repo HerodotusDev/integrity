@@ -8,7 +8,7 @@ use cairo_verifier::{
 
 const MAGIC: u64 = 0x0123456789abcded;
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct ProofOfWorkUnsentCommitment {
     nonce: u64,
 }
