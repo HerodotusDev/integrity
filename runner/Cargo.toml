@@ -8,10 +8,8 @@ edition.workspace = true
 [dependencies]
 anyhow.workspace = true
 cairo-args-runner.workspace = true
+cairo-proof-parser.workspace = true
 clap.workspace = true
-lalrpop-util.workspace = true
+num-bigint.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-
-[build-dependencies]
-lalrpop.workspace = true
