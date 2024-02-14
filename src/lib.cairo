@@ -20,7 +20,7 @@ use cairo_verifier::{
     air::public_input::PublicInputTrait
 };
 
-fn main(serialized_proof: StarkProofWithSerde) -> (felt252, felt252) {
+fn main(serialized_proof: StarkProof) -> (felt252, felt252) {
     
     (0, 0)
 }

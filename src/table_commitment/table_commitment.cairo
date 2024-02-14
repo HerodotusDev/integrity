@@ -30,6 +30,7 @@ struct TableCommitmentConfig {
 #[derive(Drop, Copy, Serde)]
 struct TableDecommitment {
     // n_columns * n_queries values to decommit.
+    n_values: u32,
     values: Span<felt252>,
 }
 

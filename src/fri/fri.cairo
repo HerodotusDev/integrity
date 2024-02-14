@@ -171,7 +171,7 @@ fn fri_verify_layers(
         table_decommit(
             *commitment.at(i),
             verify_indices.span(),
-            TableDecommitment { values: verify_y_values.span() },
+            TableDecommitment { n_values: verify_y_values.len(), values: verify_y_values.span() },
             *layer_witness.at(i).table_witness
         );
 

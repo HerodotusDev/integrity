@@ -1,3 +1,4 @@
+use core::array::ArrayTrait;
 use cairo_verifier::vector_commitment::vector_commitment::{
     VectorCommitmentConfig, VectorCommitmentWitness
 };
@@ -25,6 +26,6 @@ impl IntoVectorCommitmentWitness of Into<
     VectorCommitmentWitnessWithSerde, VectorCommitmentWitness
 > {
     fn into(self: VectorCommitmentWitnessWithSerde) -> VectorCommitmentWitness {
-        VectorCommitmentWitness { authentications: self.authentications.span(), }
+        VectorCommitmentWitness { n_authentications: self.authentications.len(), authentications: self.authentications.span(), }
     }
 }

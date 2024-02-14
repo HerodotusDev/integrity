@@ -24,7 +24,7 @@ struct TableDecommitmentWithSerde {
 }
 impl IntoTableDecommitment of Into<TableDecommitmentWithSerde, TableDecommitment> {
     fn into(self: TableDecommitmentWithSerde) -> TableDecommitment {
-        TableDecommitment { values: self.values.span(), }
+        TableDecommitment { n_values: self.values.len(), values: self.values.span(), }
     }
 }
 

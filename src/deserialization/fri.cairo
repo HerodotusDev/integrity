@@ -12,42 +12,42 @@ struct FriConfigWithSerde {
     n_layers: felt252,
     // Array of size n_layers - 1, each entry is a configuration of a table commitment for the
     // corresponding inner layer.
-    inner_layers: Array<felt252>,
+    inner_layers: Array<TableCommitmentConfig>,
     // Array of size n_layers, each entry represents the FRI step size,
     // i.e. the number of FRI-foldings between layer i and i+1.
     fri_step_sizes: Array<felt252>,
     log_last_layer_degree_bound: felt252,
 }
-impl IntoFriConfig of Into<FriConfigWithSerde, FriConfig> {
-    fn into(self: FriConfigWithSerde) -> FriConfig {
-        let mut inner_layers = ArrayTrait::<TableCommitmentConfig>::new();
-        let mut i = 0;
-        loop {
-            if i == self.inner_layers.len() {
-                break;
-            }
+// impl IntoFriConfig of Into<FriConfigWithSerde, FriConfig> {
+//     fn into(self: FriConfigWithSerde) -> FriConfig {
+//         let mut inner_layers = ArrayTrait::<TableCommitmentConfig>::new();
+//         let mut i = 0;
+//         loop {
+//             if i == self.inner_layers.len() {
+//                 break;
+//             }
 
-            inner_layers
-                .append(
-                    TableCommitmentConfig {
-                        n_columns: *self.inner_layers.at(i),
-                        vector: VectorCommitmentConfig {
-                            height: *self.inner_layers.at(i + 1),
-                            n_verifier_friendly_commitment_layers: *self.inner_layers.at(i + 2),
-                        }
-                    }
-                );
-            i += 3;
-        };
-        FriConfig {
-            log_input_size: self.log_input_size,
-            n_layers: self.n_layers,
-            inner_layers: inner_layers.span(),
-            fri_step_sizes: self.fri_step_sizes.span(),
-            log_last_layer_degree_bound: self.log_last_layer_degree_bound,
-        }
-    }
-}
+//             inner_layers
+//                 .append(
+//                     TableCommitmentConfig {
+//                         n_columns: *self.inner_layers.at(i),
+//                         vector: VectorCommitmentConfig {
+//                             height: *self.inner_layers.at(i + 1),
+//                             n_verifier_friendly_commitment_layers: *self.inner_layers.at(i + 2),
+//                         }
+//                     }
+//                 );
+//             i += 3;
+//         };
+//         FriConfig {
+//             log_input_size: self.log_input_size,
+//             n_layers: self.n_layers,
+//             inner_layers: inner_layers.span(),
+//             fri_step_sizes: self.fri_step_sizes.span(),
+//             log_last_layer_degree_bound: self.log_last_layer_degree_bound,
+//         }
+//     }
+// }
 
 #[derive(Drop, Serde)]
 struct FriUnsentCommitmentWithSerde {
@@ -119,6 +119,7 @@ impl IntoFriWitness of Into<FriWitnessWithSerde, FriWitness> {
                         leaves: leaves.span(),
                         table_witness: TableCommitmentWitness {
                             vector: VectorCommitmentWitness {
+                                n_authentications: authentications.len(),
                                 authentications: authentications.span(),
                             }
                         },

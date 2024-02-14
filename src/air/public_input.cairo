@@ -32,10 +32,13 @@ struct PublicInput {
     rc_max: felt252,
     layout: felt252,
     dynamic_params: Array<felt252>,
+    n_segments: u32,
     segments: Array<SegmentInfo>,
     padding_addr: felt252,
     padding_value: felt252,
+    main_page_len: u32,
     main_page: Page,
+    n_continuous_pages: u32,
     continuous_page_headers: Array<ContinuousPageHeader>
 }
 

@@ -1,3 +1,4 @@
+use core::array::ArrayTrait;
 use cairo_verifier::{
     air::{
         traces::TracesConfig, public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
@@ -22,16 +23,16 @@ struct StarkProofWithSerde {
     unsent_commitment: StarkUnsentCommitmentWithSerde,
     witness: StarkWitnessWithSerde,
 }
-impl IntoStarkProof of Into<StarkProofWithSerde, StarkProof> {
-    fn into(self: StarkProofWithSerde) -> StarkProof {
-        StarkProof {
-            config: self.config.into(),
-            public_input: self.public_input.into(),
-            unsent_commitment: self.unsent_commitment.into(),
-            witness: self.witness.into(),
-        }
-    }
-}
+// impl IntoStarkProof of Into<StarkProofWithSerde, StarkProof> {
+//     fn into(self: StarkProofWithSerde) -> StarkProof {
+//         StarkProof {
+//             config: self.config.into(),
+//             public_input: self.public_input.into(),
+//             unsent_commitment: self.unsent_commitment.into(),
+//             witness: self.witness.into(),
+//         }
+//     }
+// }
 
 #[derive(Drop, Serde)]
 struct StarkConfigWithSerde {
@@ -49,20 +50,20 @@ struct StarkConfigWithSerde {
     // Number of layers that use a verifier friendly hash in each commitment.
     n_verifier_friendly_commitment_layers: felt252,
 }
-impl IntoStarkConfig of Into<StarkConfigWithSerde, StarkConfig> {
-    fn into(self: StarkConfigWithSerde) -> StarkConfig {
-        StarkConfig {
-            traces: self.traces.into(),
-            composition: self.composition.into(),
-            fri: self.fri.into(),
-            proof_of_work: self.proof_of_work.into(),
-            log_trace_domain_size: self.log_trace_domain_size,
-            n_queries: self.n_queries,
-            log_n_cosets: self.log_n_cosets,
-            n_verifier_friendly_commitment_layers: self.n_verifier_friendly_commitment_layers,
-        }
-    }
-}
+// impl IntoStarkConfig of Into<StarkConfigWithSerde, StarkConfig> {
+//     fn into(self: StarkConfigWithSerde) -> StarkConfig {
+//         StarkConfig {
+//             traces: self.traces.into(),
+//             composition: self.composition.into(),
+//             fri: self.fri.into(),
+//             proof_of_work: self.proof_of_work.into(),
+//             log_trace_domain_size: self.log_trace_domain_size,
+//             n_queries: self.n_queries,
+//             log_n_cosets: self.log_n_cosets,
+//             n_verifier_friendly_commitment_layers: self.n_verifier_friendly_commitment_layers,
+//         }
+//     }
+// }
 
 #[derive(Drop, Serde)]
 struct PublicInputWithSerde {
@@ -133,10 +134,13 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
             rc_max: self.range_check_max,
             layout: self.layout,
             dynamic_params: self.dynamic_params,
+            n_segments: segments.len(),
             segments: segments,
             padding_addr: self.padding_addr,
             padding_value: self.padding_value,
+            main_page_len: page.len(),
             main_page: page.into(),
+            n_continuous_pages: continuous_page_headers.len(),
             continuous_page_headers: continuous_page_headers,
         }
     }
