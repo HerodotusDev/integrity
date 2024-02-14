@@ -27,14 +27,14 @@ struct TableCommitmentConfig {
 
 // Responses for queries to the table commitment.
 // Each query corresponds to a full row of the table.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct TableDecommitment {
     // n_columns * n_queries values to decommit.
     values: Span<felt252>,
 }
 
 // Witness for a decommitment over queries.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct TableCommitmentWitness {
     vector: VectorCommitmentWitness,
 }

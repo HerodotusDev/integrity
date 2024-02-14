@@ -29,7 +29,7 @@ mod tests;
 const SECURITY_BITS: felt252 = 96;
 
 
-#[derive(Drop)]
+#[derive(Drop, Serde)]
 struct StarkProof {
     config: StarkConfig,
     public_input: PublicInput,
@@ -180,7 +180,7 @@ struct StarkCommitment {
     fri: FriCommitment,
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct StarkWitness {
     traces_decommitment: TracesDecommitment,
     traces_witness: TracesWitness,

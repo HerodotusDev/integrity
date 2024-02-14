@@ -46,7 +46,7 @@ struct FriDecommitment {
 }
 
 // A witness for the decommitment of the FRI layers over queries.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriWitness {
     // An array of size n_layers - 1, containing a witness for each inner layer.
     layers: Span<FriLayerWitness>,
@@ -54,7 +54,7 @@ struct FriWitness {
 
 // A witness for a single FRI layer. This witness is required to verify the transition from an
 // inner layer to the following layer.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriLayerWitness {
     // Values for the sibling leaves required for decommitment.
     leaves: Span<felt252>,

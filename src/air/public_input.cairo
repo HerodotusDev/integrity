@@ -17,7 +17,7 @@ use cairo_verifier::{
     domains::StarkDomains
 };
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct SegmentInfo {
     // Start address of the memory segment.
     begin_addr: felt252,
@@ -25,7 +25,7 @@ struct SegmentInfo {
     stop_ptr: felt252,
 }
 
-#[derive(Drop, PartialEq)]
+#[derive(Drop, PartialEq, Serde)]
 struct PublicInput {
     log_n_steps: felt252,
     rc_min: felt252,
