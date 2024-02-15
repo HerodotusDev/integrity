@@ -11,5 +11,3 @@ cairo-args-runner.workspace = true
 cairo-proof-parser.workspace = true
 clap.workspace = true
 num-bigint.workspace = true
-serde.workspace = true
-serde_json.workspace = true

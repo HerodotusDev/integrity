@@ -1,8 +1,12 @@
-use std::{io::{stdin, Read}, str::FromStr};
+use std::{
+    io::{stdin, Read},
+    str::FromStr,
+};
 
 use cairo_args_runner::{run, Arg, Felt252};
 use cairo_proof_parser::{parse, Expr};
 use clap::Parser;
+use num_bigint::BigUint;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -20,26 +24,28 @@ fn main() -> anyhow::Result<()> {
     let target = cli.target;
     let function = "main";
 
-    let args: Vec<Arg> = parsed.iter().map(|x| {
-        match x {
+    let args: Vec<Arg> = parsed
+        .iter()
+        .map(|x| match x {
             Expr::Value(v) => {
-                let v = num_bigint::BigUint::from_str(v).unwrap();
+                let v = BigUint::from_str(v).unwrap();
                 Arg::Value(Felt252::from_bytes_be(&v.to_bytes_be()))
             }
             Expr::Array(v) => {
-                let v = v.into_iter().map(|x| {
-                    match x {
+                let v = v
+                    .into_iter()
+                    .map(|x| match x {
                         Expr::Value(v) => {
-                            let v = num_bigint::BigUint::from_str(v).unwrap();
+                            let v = BigUint::from_str(v).unwrap();
                             Felt252::from_bytes_be(&v.to_bytes_be())
                         }
-                        _ => panic!("Invalid array element")
-                    }
-                }).collect();
+                        _ => panic!("Invalid array element"),
+                    })
+                    .collect();
                 Arg::Array(v)
             }
-        }
-    }).collect();
+        })
+        .collect();
 
     let result = run(&target, function, &args)?;
 
