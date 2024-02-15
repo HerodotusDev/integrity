@@ -92,9 +92,7 @@ impl TracesConfigImpl of TracesConfigTrait {
 // Reads the traces commitment from the channel.
 // Returns the commitment, along with GlobalValue required to evaluate the constraint polynomial.
 fn traces_commit(
-    ref channel: Channel,
-    unsent_commitment: TracesUnsentCommitment,
-    config: TracesConfig
+    ref channel: Channel, unsent_commitment: TracesUnsentCommitment, config: TracesConfig
 ) -> TracesCommitment {
     // Read original commitment.
     let original_commitment = table_commit(
