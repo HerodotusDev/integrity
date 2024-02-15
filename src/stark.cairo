@@ -59,14 +59,14 @@ impl StarkProofImpl of StarkProofTrait {
             ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
         );
 
-        // Generate queries.
+        // // Generate queries.
         let queries = queries::generate_queries(
             ref channel,
             (*self.config.n_queries).try_into().unwrap(),
             stark_domains.eval_domain_size.try_into().unwrap()
         );
 
-        // STARK verify phase.
+        // // STARK verify phase.
         stark_verify::stark_verify(
             NUM_COLUMNS_FIRST,
             NUM_COLUMNS_SECOND,

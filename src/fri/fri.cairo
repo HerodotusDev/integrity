@@ -10,7 +10,8 @@ use cairo_verifier::{
     table_commitment::table_commitment::{
         TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
         table_commit, table_decommit
-    }
+    },
+    vector_commitment::vector_commitment::VectorCommitmentWitness,
 };
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
@@ -49,7 +50,7 @@ struct FriDecommitment {
 #[derive(Drop, Copy, Serde)]
 struct FriWitness {
     // An array of size n_layers - 1, containing a witness for each inner layer.
-    layers: Span<FriLayerWitness>,
+    layers: Span<felt252>,
 }
 
 // A witness for a single FRI layer. This witness is required to verify the transition from an
@@ -199,12 +200,14 @@ fn fri_verify(
     // Compute fri_group.
     let fri_group = get_fri_group();
 
+    let layers = fri_witness_deserialization(witness);
+
     // Verify inner layers.
     let last_queries = fri_verify_layers(
         fri_group.span(),
         commitment.config.n_layers - 1,
         commitment.inner_layers,
-        witness.layers,
+        layers.span(),
         commitment.eval_points,
         commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
         fri_queries,
@@ -219,4 +222,57 @@ fn fri_verify(
         'Invlid value'
     );
     verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);
+}
+
+fn fri_witness_deserialization(fri_witness: FriWitness) -> Array<FriLayerWitness> {
+    let layers_span = fri_witness.layers;
+    let mut layers = ArrayTrait::<FriLayerWitness>::new();
+    let mut i = 0;
+    loop {
+        if i == layers_span.len() {
+            break;
+        }
+
+        let n = *layers_span[i];
+        i += 1;
+        let mut leaves = ArrayTrait::<felt252>::new();
+        let mut j = 0;
+        loop {
+            if j == n {
+                break;
+            }
+
+            leaves.append(*layers_span[i]);
+            i += 1;
+            j += 1;
+        };
+
+        let n = *layers_span[i];
+        i += 1;
+        let mut authentications = ArrayTrait::<felt252>::new();
+        let mut j = 0;
+        loop {
+            if j == n {
+                break;
+            }
+            authentications.append(*layers_span[i]);
+            i += 1;
+            j += 1;
+        };
+
+        layers
+            .append(
+                FriLayerWitness {
+                    leaves: leaves.span(),
+                    table_witness: TableCommitmentWitness {
+                        vector: VectorCommitmentWitness {
+                            n_authentications: authentications.len(),
+                            authentications: authentications.span(),
+                        }
+                    },
+                }
+            );
+    };
+
+    layers
 }

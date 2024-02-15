@@ -50,6 +50,7 @@ fn test_table_commitment_decommit_0() {
         .span();
 
     let decommitment = TableDecommitment {
+        n_values: 0,
         values: array![
             0x4bc68e79a50789ef5cff3fbe013b8f846b9a17931fc9cd0416a1ae2c003bfab,
             0x450cde24550a8bdb560a32385cdb4d15e0c04308af61671ae9f9ffb49f9cf6c,
@@ -129,6 +130,7 @@ fn test_table_commitment_decommit_0() {
 
     let witness = TableCommitmentWitness {
         vector: VectorCommitmentWitness {
+            n_authentications: 0,
             authentications: array![
                 0xe676ff357a733da543bb3d81e3aa60ca9f1063e1,
                 0xffc663afe730d87e8c5b65ff1c4e02bebfb45c5,
@@ -286,6 +288,7 @@ fn test_table_commitment_decommit_1() {
         .span();
 
     let decommitment = TableDecommitment {
+        n_values: 0,
         values: array![
             0x455da27ef48cb1a1b19aae3d09bd3d76dc7b53b9924c04af05dc8e377bc507d,
             0x4225a8fea03e50594d7122fda111fa9cad465e7f17c417a324517ac51392ca7,
@@ -365,6 +368,7 @@ fn test_table_commitment_decommit_1() {
 
     let witness = TableCommitmentWitness {
         vector: VectorCommitmentWitness {
+            n_authentications: 0,
             authentications: array![
                 0xc3e94514aa77a36f6a9f41813af8126ac136b4aa,
                 0x49f8b8b10637afb7a1ab9e16e4947f2ee50925f7,

@@ -9,6 +9,7 @@ fn get() -> StarkWitness {
         traces_decommitment: stone_proof_fibonacci::traces::decommitment::get(),
         traces_witness: stone_proof_fibonacci::traces::witness::get(),
         composition_decommitment: TableDecommitment {
+            n_values: 0,
             values: array![
                 0x7d70f9e31a694048895b0e7e55074ed1cfde491c9539e709bf3aed247a9af25,
                 0x5e26502ee71165416146bcc268e03d509fc62d0d38d031c7aeaac22cb72f824,
@@ -51,6 +52,7 @@ fn get() -> StarkWitness {
         },
         composition_witness: TableCommitmentWitness {
             vector: VectorCommitmentWitness {
+                n_authentications: 0,
                 authentications: array![
                     0xfbefd6f9b967b98df01050198c1f75daec4a5682,
                     0xfed88642424d3168fecb34e0042548cac7369a21,

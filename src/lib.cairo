@@ -2,7 +2,7 @@ mod abstract_air;
 mod air;
 mod channel;
 mod common;
-mod deserialization;
+// mod deserialization;
 mod domains;
 mod fri;
 mod oods;
@@ -16,11 +16,12 @@ mod vector_commitment;
 mod tests;
 
 use cairo_verifier::{
-    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
-    air::public_input::PublicInputTrait
+    stark::{StarkProof, StarkProofImpl},
+    air::public_input::PublicInputTrait,
 };
 
-fn main(serialized_proof: StarkProof) -> (felt252, felt252) {
-    
+fn main(proof: StarkProof) -> (felt252, felt252) {
+    proof.verify();
+    // proof.public_input.verify()
     (0, 0)
 }

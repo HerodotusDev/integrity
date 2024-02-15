@@ -41,8 +41,6 @@ fn main() -> anyhow::Result<()> {
         }
     }).collect();
 
-    println!("{args:?}");
-
     let result = run(&target, function, &args)?;
 
     println!("{result:?}");

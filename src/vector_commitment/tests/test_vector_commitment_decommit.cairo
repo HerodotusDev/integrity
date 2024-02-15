@@ -39,6 +39,7 @@ fn test_vector_commitment_decommit_0() {
         .span();
 
     let witness = VectorCommitmentWitness {
+        n_authentications: 0,
         authentications: array![
             0xe676ff357a733da543bb3d81e3aa60ca9f1063e1,
             0xffc663afe730d87e8c5b65ff1c4e02bebfb45c5,
@@ -189,6 +190,7 @@ fn test_vector_commitment_decommit_1() {
         .span();
 
     let witness = VectorCommitmentWitness {
+        n_authentications: 0,
         authentications: array![
             0xb0a447b02e1b4a1b347bc55447dccb3e5de98ca0,
             0x892a03c1eeacd2c6d25d95029ff19797bb4e68ac,

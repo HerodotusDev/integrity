@@ -7,6 +7,7 @@ fn get() -> TracesWitness {
     return TracesWitness {
         original: TableCommitmentWitness {
             vector: VectorCommitmentWitness {
+                n_authentications: 0,
                 authentications: array![
                     0x9e9fbb74918a1121cf33bb728092d339b7d3749c,
                     0x62d01d6188781bab44bd6e352fa8c8d120989ac9,
@@ -318,6 +319,7 @@ fn get() -> TracesWitness {
         },
         interaction: TableCommitmentWitness {
             vector: VectorCommitmentWitness {
+                n_authentications: 0,
                 authentications: array![
                     0x951e4515ee8e7a80d9a9fdb1b200f1858b37bf4a,
                     0x43549ef9474fd86a16a3b97e1ff7ac2d83cf5c57,

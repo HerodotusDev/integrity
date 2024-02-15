@@ -6,6 +6,7 @@ use cairo_verifier::{
 fn get() -> TracesDecommitment {
     return TracesDecommitment {
         original: TableDecommitment {
+            n_values: 0,
             values: array![
                 0xd6d1182fdb84accfe1298ff50bdc6fd07f17c78847cafd33a64b52c2b0056b,
                 0x6f6c3151d5326a38a72804d1f69fa7e308053d4a733aa1cd2a64dd529b6b701,
@@ -137,6 +138,7 @@ fn get() -> TracesDecommitment {
                 .span(),
         },
         interaction: TableDecommitment {
+            n_values: 0,
             values: array![
                 0x3d1317281ba122c899c9768f7cc61b3a31a18638436355308cc161a315959,
                 0x729fa8444aedc7f5dd9c305c989ac3813effc9cf3c81fea1a7eb42a0829dd1f,
