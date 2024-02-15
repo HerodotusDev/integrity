@@ -2,7 +2,6 @@ mod abstract_air;
 mod air;
 mod channel;
 mod common;
-// mod deserialization;
 mod domains;
 mod fri;
 mod oods;
