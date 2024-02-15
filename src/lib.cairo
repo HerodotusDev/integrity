@@ -15,13 +15,10 @@ mod vector_commitment;
 #[cfg(test)]
 mod tests;
 
-use cairo_verifier::{
-    stark::{StarkProof, StarkProofImpl},
-    air::public_input::PublicInputTrait,
-};
+use cairo_verifier::{stark::{StarkProof, StarkProofImpl}, air::public_input::PublicInputTrait,};
 
 fn main(proof: StarkProof) -> (felt252, felt252) {
     proof.verify();
-    // proof.public_input.verify()
-    (0, 0)
+    let (program_hash, output_hash) = proof.public_input.verify();
+    (program_hash, output_hash)
 }
