@@ -7,6 +7,7 @@ fn get() -> PublicInput {
         rc_max: 0x8001,
         layout: 0x726563757273697665,
         dynamic_params: array![],
+        n_segments: 0x6,
         segments: array![
             SegmentInfo { begin_addr: 0x1, stop_ptr: 0x5 },
             SegmentInfo { begin_addr: 0x25, stop_ptr: 0x68 },
@@ -17,6 +18,7 @@ fn get() -> PublicInput {
         ],
         padding_addr: 0x1,
         padding_value: 0x40780017fff7fff,
+        main_page_len: 0x6a,
         main_page: array![
             AddrValue { address: 0x1, value: 0x40780017fff7fff },
             AddrValue { address: 0x2, value: 0x4 },
@@ -71,6 +73,7 @@ fn get() -> PublicInput {
             AddrValue { address: 0x68, value: 0xa },
             AddrValue { address: 0x69, value: 0x90 },
         ],
+        n_continuous_pages: 0x0,
         continuous_page_headers: array![],
     };
 }
