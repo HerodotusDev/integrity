@@ -224,6 +224,7 @@ fn fri_verify(
     verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);
 }
 
+// TODO: remove this function when compiler supports nested arrays
 fn fri_witness_deserialization(fri_witness: FriWitness) -> Array<FriLayerWitness> {
     let layers_span = fri_witness.layers;
     let mut layers = ArrayTrait::<FriLayerWitness>::new();
