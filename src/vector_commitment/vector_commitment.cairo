@@ -1,7 +1,7 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait}};
 use cairo_verifier::{
     common::{
-        array_append::ArrayAppendTrait, blake2s::blake2s, math::pow, blake2s::truncated_blake2s,
+        array_append::ArrayAppendTrait, math::pow, hasher::hash_truncated,
         flip_endianness::FlipEndiannessTrait, math::DivRemFelt252, math::Felt252PartialOrd,
     },
     channel::channel::{Channel, ChannelImpl}
@@ -162,9 +162,9 @@ fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) ->
     if is_verifier_friendly {
         PedersenTrait::new(x).update(y).finalize()
     } else {
-        let mut data = ArrayTrait::<u32>::new();
+        let mut data = ArrayTrait::new(); // u32 for blake, u64 for keccak
         data.append_big_endian(x);
         data.append_big_endian(y);
-        truncated_blake2s(data)
+        hash_truncated(data)
     }
 }

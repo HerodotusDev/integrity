@@ -175,3 +175,69 @@ impl ArrayU8AppendU16 of ArrayAppendTrait<u8, u16> {
         self.append(low);
     }
 }
+
+impl ArrayU64AppendU256 of ArrayAppendTrait<u64, u256> {
+    fn append_little_endian(ref self: Array<u64>, element: u256) {
+        self.append_little_endian(element.low);
+        self.append_little_endian(element.high);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, element: u256) {
+        self.append_big_endian(element.high);
+        self.append_big_endian(element.low);
+    }
+}
+
+impl ArrayU64AppendU128 of ArrayAppendTrait<u64, u128> {
+    fn append_little_endian(ref self: Array<u64>, mut element: u128) {
+        let (high, low) = u128_split(element);
+        self.append(low);
+        self.append(high);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, mut element: u128) {
+        let (high, low) = u128_split(element);
+        self.append(high.flip_endianness());
+        self.append(low.flip_endianness());
+    }
+}
+
+impl ArrayU64AppendU64 of ArrayAppendTrait<u64, u64> {
+    fn append_little_endian(ref self: Array<u64>, mut element: u64) {
+        self.append(element);
+    }
+
+    fn append_big_endian(ref self: Array<u64>, mut element: u64) {
+        self.append(element.flip_endianness());
+    }
+}
+
+impl ArrayU64AppendFelt of ArrayAppendTrait<u64, felt252> {
+    fn append_little_endian(ref self: Array<u64>, element: felt252) {
+        self.append_little_endian(Into::<felt252, u256>::into(element));
+    }
+
+    fn append_big_endian(ref self: Array<u64>, element: felt252) {
+        self.append_big_endian(Into::<felt252, u256>::into(element));
+    }
+}
+
+impl ArrayU64AppendFeltSpan of ArrayAppendTrait<u64, Span<felt252>> {
+    fn append_little_endian(ref self: Array<u64>, mut element: Span<felt252>) {
+        loop {
+            match element.pop_front() {
+                Option::Some(element) => { self.append_big_endian(*element); },
+                Option::None => { break; }
+            }
+        };
+    }
+
+    fn append_big_endian(ref self: Array<u64>, mut element: Span<felt252>) {
+        loop {
+            match element.pop_front() {
+                Option::Some(element) => { self.append_big_endian(*element); },
+                Option::None => { break; }
+            }
+        };
+    }
+}

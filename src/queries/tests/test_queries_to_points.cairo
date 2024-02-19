@@ -2,7 +2,6 @@ use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains, tests::stone_proof_fibonacci
 };
 
-// test data from cairo0-verifier run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_queries_to_points_0() {

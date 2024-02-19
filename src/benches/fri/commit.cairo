@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    channel::channel::ChannelTrait, fri::fri::fri_commit, tests::stone_proof_fibonacci,
+    channel::channel::ChannelTrait, fri::fri::fri_commit, tests::stone_proof_fibonacci_keccak,
 };
 
 fn bench_fri_commit() {
@@ -8,8 +8,8 @@ fn bench_fri_commit() {
         0x0,
     );
 
-    let fri_config = stone_proof_fibonacci::fri::config::get();
-    let unsent_commitment = stone_proof_fibonacci::fri::unsent_commitment::get();
+    let fri_config = stone_proof_fibonacci_keccak::fri::config::get();
+    let unsent_commitment = stone_proof_fibonacci_keccak::fri::unsent_commitment::get();
 
     fri_commit(ref channel, unsent_commitment, fri_config);
 }

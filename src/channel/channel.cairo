@@ -1,6 +1,6 @@
 use core::array::SpanTrait;
 use cairo_verifier::common::{
-    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
+    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, hasher::hash,
     consts::{
         C_PRIME_AS_UINT256_LOW, C_PRIME_AS_UINT256_HIGH, STARK_PRIME, MONTGOMERY_R,
         MONTGOMERY_R_INVERSE
@@ -26,11 +26,11 @@ impl ChannelImpl of ChannelTrait {
     }
 
     fn random_uint256_to_prover(ref self: Channel) -> u256 {
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
         hash_data.append_big_endian(self.digest);
         hash_data.append_big_endian(self.counter);
         self.counter += 1;
-        blake2s(hash_data).flip_endianness()
+        hash(hash_data).flip_endianness()
     }
 
     fn random_felt_to_prover(ref self: Channel) -> felt252 {
@@ -65,24 +65,24 @@ impl ChannelImpl of ChannelTrait {
     }
 
     fn read_truncated_hash_from_prover(ref self: Channel, value: felt252) {
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
         hash_data.append_big_endian(value);
 
-        self.digest = blake2s(hash_data).flip_endianness();
+        self.digest = hash(hash_data).flip_endianness();
         self.counter = 0;
     }
 
     fn read_felt_from_prover(ref self: Channel, value: felt252) {
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
         hash_data.append_big_endian(value * MONTGOMERY_R);
 
-        self.digest = blake2s(hash_data).flip_endianness();
+        self.digest = hash(hash_data).flip_endianness();
         self.counter = 0;
     }
 
@@ -96,7 +96,7 @@ impl ChannelImpl of ChannelTrait {
     }
 
     fn read_felt_vector_from_prover(ref self: Channel, mut values: Span<felt252>) {
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
@@ -108,18 +108,18 @@ impl ChannelImpl of ChannelTrait {
             }
         };
 
-        self.digest = blake2s(hash_data).flip_endianness();
+        self.digest = hash(hash_data).flip_endianness();
         self.counter = 0;
     }
 
     fn read_uint64_from_prover(ref self: Channel, value: u64) {
-        let mut hash_data = ArrayTrait::<u32>::new();
+        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
 
         assert(self.digest.low != BoundedU128::max(), 'digest low is 2^128-1');
         hash_data.append_big_endian(self.digest + 1);
         hash_data.append_big_endian(value);
 
-        self.digest = blake2s(hash_data).flip_endianness();
+        self.digest = hash(hash_data).flip_endianness();
         self.counter = 0;
     }
 }
