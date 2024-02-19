@@ -63,7 +63,6 @@ fn test_traces_config() {
     traces_config.validate(0x16, 0x64);
 }
 
-// test data from cairo0-verifier keccak-native run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_commit() {
@@ -93,7 +92,6 @@ fn test_traces_commit() {
     assert(channel.counter == 0x0, 'Invalid value')
 }
 
-// test data from cairo0-verifier keccak-native run on stone-prover generated proof
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_decommit() {
