@@ -35,6 +35,7 @@ fn sample_random_queries(
             break;
         }
 
+        // TODO: (hashing) fix this
         let res = channel.random_uint256_to_prover();
 
         let (hh, hl) = DivRem::div_rem(res.high, u64_modulus_nonzero);
