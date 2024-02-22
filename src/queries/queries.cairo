@@ -37,7 +37,7 @@ fn sample_random_queries(
         }
 
         let res = channel.random_felt_to_prover();
-        let low128 = Into::<felt252,u256>::into(res).low;
+        let low128 = Into::<felt252, u256>::into(res).low;
         let (_, sample) = DivRem::div_rem(low128, query_upper_bound_nonzero);
         result.append(sample.try_into().unwrap());
 

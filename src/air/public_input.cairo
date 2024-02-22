@@ -1,10 +1,9 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
-        array_extend::ArrayExtend,
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, hasher::hash,
-        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
-        array_print::SpanPrintTrait, hash::hash_felts,
+        array_extend::ArrayExtend, flip_endianness::FlipEndiannessTrait,
+        array_append::ArrayAppendTrait, hasher::hash, math::{pow, Felt252PartialOrd, Felt252Div},
+        asserts::assert_range_u128_le, array_print::SpanPrintTrait, hash::hash_felts,
     },
     air::{
         public_memory::{
