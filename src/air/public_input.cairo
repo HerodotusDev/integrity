@@ -94,7 +94,7 @@ impl PublicInputImpl of PublicInputTrait {
                 Option::Some(continuous_page) => {
                     hash_data.append(*continuous_page.start_address);
                     hash_data.append(*continuous_page.size);
-                    hash_data.append((*continuous_page.hash).try_into().unwrap()); // TODO: IMPORANT change hash to felt
+                    hash_data.append(*continuous_page.hash);
                 },
                 Option::None => { break; }
             }
