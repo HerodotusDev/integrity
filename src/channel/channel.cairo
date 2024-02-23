@@ -1,13 +1,4 @@
-use core::array::SpanTrait;
-use cairo_verifier::common::{
-    flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, hasher::hash,
-    consts::{
-        C_PRIME_AS_UINT256_LOW, C_PRIME_AS_UINT256_HIGH, STARK_PRIME, MONTGOMERY_R,
-        MONTGOMERY_R_INVERSE
-    }
-};
 use poseidon::{hades_permutation, poseidon_hash_span};
-use core::integer::BoundedU128;
 
 #[derive(Drop)]
 struct Channel {
