@@ -9,13 +9,7 @@ use cairo_verifier::{
 // fn test_public_input_hash() {
 //     let public_input = stone_proof_fibonacci::public_input::get();
 // 
-//     assert(
-//         public_input
-//             .get_public_input_hash() == u256 {
-//                 low: 0xba9d17a3ebd900899148b125421c118f, high: 0x87433b8dd90acbfe5abea8474d795191
-//             },
-//         'Invalid value'
-//     )
+//     assert(public_input.get_public_input_hash() == 0x0, 'Invalid value')
 // }
 // 
 // #[test]
@@ -53,13 +47,7 @@ use cairo_verifier::{
 fn test_public_input_hash() {
     let public_input = stone_proof_fibonacci_keccak::public_input::get();
 
-    assert(
-        public_input
-            .get_public_input_hash() == u256 {
-                low: 0x22b3f4d7841a28271009bef644a84a5e, high: 0x8f17c0c0dcde2144cd36213ab3aaff1b
-            },
-        'Invalid value'
-    )
+    assert(public_input.get_public_input_hash() == 0x0, 'Invalid value')
 }
 
 #[test]

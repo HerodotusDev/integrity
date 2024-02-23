@@ -8,12 +8,8 @@ use cairo_verifier::{
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_table_commit_0() {
-//     let mut channel = Channel {
-//         digest: u256 {
-//             low: 0x158e1d17e5d7ab440767c172f7c82b88, high: 0x2c002c69395245b6186a155edd381cd7
-//         },
-//         counter: 0x1,
-//     };
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
+//     //
 //     let config = TableCommitmentConfig {
 //         n_columns: 0x8,
 //         vector: VectorCommitmentConfig {
@@ -38,25 +34,15 @@ use cairo_verifier::{
 //         'Invalid value'
 //     );
 // 
-//     assert(
-//         channel
-//             .digest == u256 {
-//                 low: 0x98cbce1a1c901460027570bd9aa93ccb, high: 0x2581182ce5a51e9dd0810917ad7250ab
-//             },
-//         'Invalid value'
-//     );
+//     assert(channel.digest == 0x0, 'Invalid value');
 //     assert(channel.counter == 0x0, 'Invalid value');
 // }
 // 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_table_commit_1() {
-//     let mut channel = Channel {
-//         digest: u256 {
-//             low: 0x98cbce1a1c901460027570bd9aa93ccb, high: 0x2581182ce5a51e9dd0810917ad7250ab
-//         },
-//         counter: 0x1,
-//     };
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
+// 
 //     let config = TableCommitmentConfig {
 //         n_columns: 0x4,
 //         vector: VectorCommitmentConfig {
@@ -81,13 +67,7 @@ use cairo_verifier::{
 //         'Invalid value'
 //     );
 // 
-//     assert(
-//         channel
-//             .digest == u256 {
-//                 low: 0x8a067e49d4c4f2bf2ca4e499d36bd71a, high: 0x4548bed8d91372df1a7674e0471e76e3
-//             },
-//         'Invalid value'
-//     );
+//     assert(channel.digest == 0x0, 'Invalid value');
 //     assert(channel.counter == 0x0, 'Invalid value');
 // }
 // === BLAKE ONLY END ===
@@ -96,10 +76,7 @@ use cairo_verifier::{
 #[test]
 #[available_gas(9999999999)]
 fn test_table_commitment_commit() {
-    let mut channel = ChannelTrait::new_with_counter(
-        u256 { low: 0x22b3f4d7841a28271009bef644a84a5e, high: 0x8f17c0c0dcde2144cd36213ab3aaff1b },
-        0x0
-    );
+    let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 
     let unsent_commitment = 0x61cb9987d55c793fdb238238311dcea46c75cd8698e52f1d01cf74cd25dc797;
 
@@ -122,13 +99,7 @@ fn test_table_commitment_commit() {
         'Invalid value'
     );
 
-    assert(
-        channel
-            .digest == u256 {
-                low: 0x7bf7f5f2fcd827533f816f0f31bd2b54, high: 0xefa8681c3f5a52d031dceb1423a8d8ec
-            },
-        'Invalid value'
-    );
+    assert(channel.digest == 0x0, 'Invalid value');
     assert(channel.counter == 0x0, 'Invalid value');
 }
 // === KECCAK ONLY END ===

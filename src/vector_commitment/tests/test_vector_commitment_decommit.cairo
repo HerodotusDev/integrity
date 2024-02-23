@@ -14,8 +14,6 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         commitment_hash: 0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038
 //     };
 // 
-//     //n_columns 0x4
-// 
 //     let queries = array![
 //         VectorQuery { index: 0x98, value: 0x67406d6bb8db3de41d8b7dd9896c85e6d69e951d },
 //         VectorQuery { index: 0xa7, value: 0xa04e05c094e8ff020674895a8e87f2e9cfe3bc5c },
@@ -162,8 +160,6 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         },
 //         commitment_hash: 0x821aaa485d3fbdf7b0a06d773e565370f794c06bbcb4e23279a39544782c1e
 //     };
-// 
-//     //n_columns 0x8
 // 
 //     let queries = array![
 //         VectorQuery { index: 0x987, value: 0x52dd8c0a5ccccb7794f19f0ab5970fcd9f1ac0f3 },

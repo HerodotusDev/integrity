@@ -4,10 +4,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_read_felt_vector_from_prover_0() {
-//     let mut channel = ChannelTrait::new_with_counter(
-//         u256 { low: 0x37c8da2f7715c81ecf0b49fa893caf44, high: 0xc02e765597000eceec5ae618a43c0a82 },
-//         0x1
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     channel
 //         .read_felt_vector_from_prover(
 //             array![
@@ -142,13 +139,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 //             ]
 //                 .span()
 //         );
-//     assert(
-//         channel
-//             .digest == u256 {
-//                 low: 0x15aa9b8787d877d61588844c0cfe2fb9, high: 0x7cd36c3da65b8d57331341e661a86574
-//             },
-//         'Invalid value'
-//     );
+//     assert(channel.digest == 0x0, 'Invalid value');
 //     assert(channel.counter == 0, 'Invalid value');
 // }
 // === BLAKE ONLY END ===
@@ -157,10 +148,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 #[test]
 #[available_gas(9999999999)]
 fn test_read_felt_vector_from_prover_0() {
-    let mut channel = ChannelTrait::new_with_counter(
-        u256 { low: 0x8e4cee6aca99678b0c48b0c760f65a0f, high: 0x9cbd8bef901d845a9c1322e1d1875440 },
-        0x1
-    );
+    let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
     channel
         .read_felt_vector_from_prover(
             array![
@@ -295,13 +283,7 @@ fn test_read_felt_vector_from_prover_0() {
             ]
                 .span()
         );
-    assert(
-        channel
-            .digest == u256 {
-                low: 0x6308b38ae2841c18fb8c06c9acc9bcd5, high: 0x5d35fab3c11198da5f6fe41666993b16
-            },
-        'Invalid value'
-    );
+    assert(channel.digest == 0x0, 'Invalid value');
     assert(channel.counter == 0, 'Invalid value');
 }
 // === KECCAK ONLY END ===

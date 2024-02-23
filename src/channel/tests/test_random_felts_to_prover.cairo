@@ -4,9 +4,7 @@ use cairo_verifier::channel::channel::ChannelTrait;
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_random_felts_to_prover() {
-//     let mut channel = ChannelTrait::new(
-//         u256 { low: 0xf7685ebd40e852b164633a4acbd3244c, high: 0xe8e77626586f73b955364c7b4bbf0bb7 }
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     let random = channel.random_felts_to_prover(3);
 //     assert(
 //         *random[0] == 3199910790894706855027093840383592257502485581126271436027309705477370004002,
@@ -27,10 +25,8 @@ use cairo_verifier::channel::channel::ChannelTrait;
 #[test]
 #[available_gas(9999999999)]
 fn test_random_felts_to_prover() {
-    let mut channel = ChannelTrait::new_with_counter(
-        u256 { low: 0x31221b7950614c65772c2993e6727561, high: 0xfaa5d980c70cbe78934e534c13eaf18a },
-        0x0
-    );
+    let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
+
     assert(
         channel
             .random_felts_to_prover(
@@ -45,13 +41,7 @@ fn test_random_felts_to_prover() {
             ],
         'invalid random felts'
     );
-    assert(
-        channel
-            .digest == u256 {
-                low: 0x31221b7950614c65772c2993e6727561, high: 0xfaa5d980c70cbe78934e534c13eaf18a
-            },
-        'Invalid value'
-    );
+    assert(channel.digest == 0x0, 'Invalid value');
     assert(channel.counter == 0x6, 'Invalid value');
 }
 // === KECCAK ONLY END ===

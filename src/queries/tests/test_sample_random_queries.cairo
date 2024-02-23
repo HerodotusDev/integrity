@@ -3,9 +3,7 @@ use cairo_verifier::{queries::queries::sample_random_queries, channel::channel::
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_sample_random_queries_0() {
-//     let mut channel = ChannelTrait::new(
-//         u256 { low: 0xf7685ebd40e852b164633a4acbd3244c, high: 0xe8e77626586f73b955364c7b4bbf0bb7 }
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     let queries = sample_random_queries(ref channel, 1, 12389012333);
 //     assert(queries.len() == 4, 'Invalid value');
 //     assert(*queries.at(0) == 0xc53fdd1e, 'Invalid value');
@@ -17,9 +15,7 @@ use cairo_verifier::{queries::queries::sample_random_queries, channel::channel::
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_sample_random_queries_1() {
-//     let mut channel = ChannelTrait::new(
-//         u256 { low: 0xf7685ebd40e852b164633a4acbd3244c, high: 0xe8e77626586f73b955364c7b4bbf0bb7 }
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     let queries = sample_random_queries(ref channel, 10, 99809818624);
 //     assert(queries.len() == 12, 'Invalid value');
 //     assert(*queries.at(0) == 0x1405a07e8c, 'Invalid value');
