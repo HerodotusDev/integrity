@@ -87,7 +87,6 @@ impl PublicInputImpl of PublicInputTrait {
 
         // Add the rest of the pages.
         let mut continuous_page_headers = self.continuous_page_headers.span();
-        let mut i: u32 = 0;
         loop {
             match continuous_page_headers.pop_front() {
                 Option::Some(continuous_page) => {

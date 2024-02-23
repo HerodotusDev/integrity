@@ -27,7 +27,6 @@ fn sample_random_queries(
         n_quad += 1;
     }
 
-    let u64_modulus_nonzero: NonZero<u128> = U128maxU64.try_into().unwrap();
     let query_upper_bound_u128: u128 = query_upper_bound.into();
     let query_upper_bound_nonzero: NonZero<u128> = query_upper_bound_u128.try_into().unwrap();
 
