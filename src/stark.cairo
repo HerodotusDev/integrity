@@ -26,7 +26,7 @@ mod stark_verify;
 #[cfg(test)]
 mod tests;
 
-const SECURITY_BITS: felt252 = 96;
+const SECURITY_BITS: felt252 = 30;
 
 
 #[derive(Drop)]
