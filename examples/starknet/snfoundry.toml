@@ -1,0 +1,4 @@
+[sncast.testnet]
+account = "testnet"
+accounts-file = "~/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "https://free-rpc.nethermind.io/goerli-juno/"

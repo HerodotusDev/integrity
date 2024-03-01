@@ -2,71 +2,75 @@
 
 ![Cairo Verifier](https://github.com/HerodotusDev/cairo-verifier/assets/46165861/8692dfc1-f267-4c7e-9af0-4ceaeec84207)
 
-This document provides steps to build and run the Cairo Verifier.
+Welcome to the Cairo Verifier repository! This document provides instructions for building and running the Cairo Verifier.
 
-# Building the Verifier
+## Building the Verifier
 
-To build the latest version of the verifier and create a Sierra file, follow these steps:
+To build the Cairo Verifier, follow these steps:
 
-1. Navigate to the project root directory:
-
-```bash
-cd .
-```
-
-2. Build the project:
+1. Build the project by running the following command in your terminal:
 
 ```bash
 scarb build
 ```
 
-# Running the Verifier
+2. Test the project to ensure everything works correctly:
 
-## Getting the Parsed Proof
-
-To obtain the parsed proof, follow these steps:
-
-### 1. Download Source Code
-
--   Access the source code at [Cairo1 Parser Repository](https://github.com/neotheprogramist/cairo-lang/tree/parser).
-
-### 2. Install Dependencies
-
--   Execute the command: `pipenv install`.
-
-### 3. Activate Virtual Environment
-
--   Activate the virtual environment with: `pipenv shell`.
-
-### 4. Run the Parser
-
--   Use the parser by running:
-    ```
-    python src/main.py -l starknet_with_keccak < src/starkware/cairo/stark_verifier/air/example_proof.json > out.txt
-    ```
-
-### 5. Access Output File
-
--   The output will be available in the `out.txt` file.
-
-## Using the Parsed Proof
-
-Once you have the parsed proof, you can use it as follows:
-
-### 1. Copy Proof to Input File
-
--   Copy the entire content or a consistent section of `out.txt` to `./resources/in.txt`.
-
-### 3. Execute the Runner Script
-
--   Run: `cargo run --release -- ./target/dev/cairo_verifier.sierra.json < ./resources/in.txt`
-
--   Or run the script using: `./run.sh`.
-
-## Changing hasher
-
-By default, verifier uses pedersen for verifier friendly layers and keccak for unfriendly layers. Hasher for unfriendly layers can be changed to blake2s by running the python script with
-
+```bash
+scarb test
 ```
+
+## Running the Verifier
+
+### Local Proof Verification
+
+For local proof verification, perform the following steps:
+
+1. Build the verifier:
+
+```bash
+scarb build
+```
+
+2. Run the verifier locally using the following command:
+
+```bash
+cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/fibonacci_proof.json
+```
+
+### Starknet Proof Verification
+
+To verify proofs on Starknet, follow these steps:
+
+1. Prepare calldata for sncast:
+
+```bash
+cargo run --release --bin snfoundry_proof_serializer < examples/proofs/fibonacci_proof.json > examples/starknet/calldata
+```
+
+2. Call the function with calldata on the Starknet contract:
+
+```bash
+cd examples/starknet
+./call_contract.sh calldata
+```
+
+## Changing the Hasher
+
+By default, the verifier uses Pedersen for verifier-friendly layers and Keccak for unfriendly layers. You can change the hasher for unfriendly layers by running the provided Python script:
+
+### Change to Blake2s
+
+To change the hasher for unfriendly layers to Blake2s, run the following command:
+
+```bash
 python3 change_hasher.py -t blake
+```
+
+### Change to Keccak256
+
+To change the hasher for unfriendly layers to Keccak256, run the following command:
+
+```bash
+python3 change_hasher.py -t keccak
 ```
