@@ -24,13 +24,7 @@ scarb test
 
 For local proof verification, follow these steps:
 
-1. Build the verifier:
-
-```bash
-scarb build
-```
-
-2. Run the verifier locally using the following command:
+1. Run the verifier locally on example proof using the following command:
 
 ```bash
 cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/example_proof.json
@@ -40,7 +34,7 @@ cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < exam
 
 To verify proofs on Starknet, proceed with the following steps:
 
-1. Prepare calldata for sncast:
+1. Prepare calldata of example proof for sncast:
 
 ```bash
 cargo run --release --bin snfoundry_proof_serializer < examples/proofs/example_proof.json > examples/starknet/calldata
