@@ -103,7 +103,8 @@ cpu_air_prover \
     --private_input_file=fibonacci_private_input.json \
     --public_input_file=fibonacci_public_input.json \
     --prover_config_file=cpu_air_prover_config.json \
-    --parameter_file=cpu_air_params.json
+    --parameter_file=cpu_air_params.json \
+    --generate_annotations
 ```
 
 You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` contract by specifying the path `examples/proofs/fibonacci_proof.json` to the newly generated proof.

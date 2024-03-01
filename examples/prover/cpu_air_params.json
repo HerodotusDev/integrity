@@ -19,7 +19,7 @@
             "n_queries": 5,
             "proof_of_work_bits": 30
         },
-        "log_n_cosets": 4
+        "log_n_cosets": 2
     },
 
     "use_extension_field": false
