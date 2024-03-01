@@ -6,11 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1"
-cairo-felt = "0.9"
-cairo-proof-parser = { git = "https://github.com/Okm165/cairo-proof-parser" }
-itertools = "0.12.0"
-num-bigint = "0.4"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-thiserror = "1.0"
+anyhow.workspace = true
+cairo-args-runner.workspace = true
+clap.workspace = true
+cairo-proof-parser.workspace = true
+serde.workspace = true
+serde_json.workspace = true
