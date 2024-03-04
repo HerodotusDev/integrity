@@ -3,7 +3,8 @@ use cairo_verifier::{
     common::{
         array_extend::ArrayExtend, flip_endianness::FlipEndiannessTrait,
         array_append::ArrayAppendTrait, hasher::hash, math::{pow, Felt252PartialOrd, Felt252Div},
-        asserts::assert_range_u128_le, array_print::SpanPrintTrait, hash::hash_felts,
+        asserts::{assert_range_u128_le, assert_range_u128}, array_print::SpanPrintTrait,
+        hash::hash_felts,
     },
     air::{
         public_memory::{
@@ -11,7 +12,8 @@ use cairo_verifier::{
         },
         constants::{
             segments, MAX_ADDRESS, get_builtins, INITIAL_PC, MAX_LOG_N_STEPS, CPU_COMPONENT_HEIGHT,
-            MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_RATIO, RC_BUILTIN_RATIO, BITWISE_RATIO
+            MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO,
+            BITWISE_ROW_RATIO, CPU_COMPONENT_STEP
         }
     },
     domains::StarkDomains
@@ -29,8 +31,8 @@ struct SegmentInfo {
 #[derive(Drop, PartialEq)]
 struct PublicInput {
     log_n_steps: felt252,
-    rc_min: felt252,
-    rc_max: felt252,
+    range_check_min: felt252,
+    range_check_max: felt252,
     layout: felt252,
     dynamic_params: Array<felt252>,
     segments: Array<SegmentInfo>,
@@ -60,8 +62,8 @@ impl PublicInputImpl of PublicInputTrait {
 
         let mut hash_data = ArrayTrait::<felt252>::new();
         hash_data.append(*self.log_n_steps);
-        hash_data.append(*self.rc_min);
-        hash_data.append(*self.rc_max);
+        hash_data.append(*self.range_check_min);
+        hash_data.append(*self.range_check_max);
         hash_data.append(*self.layout);
         hash_data.extend(self.dynamic_params.span());
 
@@ -230,29 +232,36 @@ impl PublicInputImpl of PublicInputTrait {
         (program_hash, output_hash)
     }
 
-    fn validate(self: @PublicInput, domains: @StarkDomains) {
+    fn validate(self: @PublicInput, stark_domains: @StarkDomains) {
         assert_range_u128_le(*self.log_n_steps, MAX_LOG_N_STEPS);
         let n_steps = pow(2, *self.log_n_steps);
-        assert(n_steps * CPU_COMPONENT_HEIGHT == *domains.trace_domain_size, 'Wrong trace size');
+        let trace_length = *stark_domains.trace_domain_size;
+        assert(
+            n_steps * CPU_COMPONENT_HEIGHT * CPU_COMPONENT_STEP == trace_length, 'Wrong trace size'
+        );
 
-        assert(0 <= *self.rc_min, 'wrong rc_min');
-        assert(*self.rc_min < *self.rc_max, 'wrong rc range');
-        assert(*self.rc_max <= MAX_RANGE_CHECK, 'wrong rc_max');
+        assert(0 <= *self.range_check_min, 'wrong rc_min');
+        assert(*self.range_check_min < *self.range_check_max, 'wrong rc range');
+        assert(*self.range_check_max <= MAX_RANGE_CHECK, 'wrong rc_max');
 
         assert(*self.layout == LAYOUT_CODE, 'wrong layout code');
 
-        let pedersen_copies = n_steps / PEDERSEN_BUILTIN_RATIO;
+        let n_output_uses = (*self.segments.at(segments::OUTPUT).stop_ptr
+            - *self.segments.at(segments::OUTPUT).begin_addr);
+        assert_range_u128(n_output_uses);
+
+        let pedersen_copies = trace_length / PEDERSEN_BUILTIN_ROW_RATIO;
         let pedersen_uses = (*self.segments.at(segments::PEDERSEN).stop_ptr
             - *self.segments.at(segments::PEDERSEN).begin_addr)
             / 3;
         assert_range_u128_le(pedersen_uses, pedersen_copies);
 
-        let range_check_copies = n_steps / RC_BUILTIN_RATIO;
+        let range_check_copies = trace_length / RANGE_CHECK_BUILTIN_ROW_RATIO;
         let range_check_uses = *self.segments.at(segments::RANGE_CHECK).stop_ptr
             - *self.segments.at(segments::RANGE_CHECK).begin_addr;
         assert_range_u128_le(range_check_uses, range_check_copies);
 
-        let bitwise_copies = n_steps / BITWISE_RATIO;
+        let bitwise_copies = trace_length / BITWISE_ROW_RATIO;
         let bitwise_uses = (*self.segments.at(segments::BITWISE).stop_ptr
             - *self.segments.at(segments::BITWISE).begin_addr)
             / 5;
