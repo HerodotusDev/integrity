@@ -1,6 +1,6 @@
 use std::io::{stdin, Read};
 
-use cairo_args_runner::{Arg, Felt252, VecFelt252};
+use cairo_args_runner::{Arg, VecFelt252};
 use clap::Parser;
 
 use cairo_proof_parser::parse;
@@ -34,16 +34,10 @@ fn main() -> anyhow::Result<()> {
     )
     .collect_vec();
 
-    // println!("{:?}", unsent_commitment);
-
     let target = args.target;
     let function = "main";
-    
-    let result = cairo_args_runner::run(
-        &target,
-        function,
-        &[Arg::Array(proof)],
-    );
+
+    let result = cairo_args_runner::run(&target, function, &[Arg::Array(proof)]);
 
     println!("{result:?}");
 
