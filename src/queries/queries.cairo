@@ -17,21 +17,15 @@ fn generate_queries(
 }
 
 fn sample_random_queries(
-    ref channel: Channel, n_samples: u32, query_upper_bound: u64
+    ref channel: Channel, mut n_samples: u32, query_upper_bound: u64
 ) -> Array<u64> {
     let mut result = ArrayTrait::<u64>::new();
-
-    // Samples are generated in quadruplets. We generate ceil(n_samples / 4) samples
-    let (mut n_quad, rem) = DivRem::div_rem(n_samples, 4_u32.try_into().unwrap());
-    if rem != 0 {
-        n_quad += 1;
-    }
 
     let query_upper_bound_u128: u128 = query_upper_bound.into();
     let query_upper_bound_nonzero: NonZero<u128> = query_upper_bound_u128.try_into().unwrap();
 
     loop {
-        if n_quad == 0 {
+        if n_samples == 0 {
             break;
         }
 
@@ -40,7 +34,7 @@ fn sample_random_queries(
         let (_, sample) = DivRem::div_rem(low128, query_upper_bound_nonzero);
         result.append(sample.try_into().unwrap());
 
-        n_quad -= 1;
+        n_samples -= 1;
     };
 
     result
