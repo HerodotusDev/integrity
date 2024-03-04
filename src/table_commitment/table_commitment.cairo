@@ -10,6 +10,7 @@ use cairo_verifier::{
     },
     channel::channel::Channel
 };
+use poseidon::poseidon_hash_span;
 
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.
@@ -121,7 +122,10 @@ fn generate_vector_queries(
             break;
         }
         let hash = if n_columns == 1 {
-            *values[i * n_columns]
+            *values[i]
+        } else if is_verifier_friendly {
+            let slice = values.slice(i * n_columns, n_columns);
+            poseidon_hash_span(slice)
         } else {
             let slice = values.slice(i * n_columns, n_columns);
             let mut data = ArrayTrait::new(); // u32 for blake, u64 for keccak

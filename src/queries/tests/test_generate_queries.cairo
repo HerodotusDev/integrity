@@ -7,9 +7,7 @@ use cairo_verifier::{
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_generate_queries_0() {
-//     let mut channel = ChannelTrait::new(
-//         u256 { low: 0xf7685ebd40e852b164633a4acbd3244c, high: 0xe8e77626586f73b955364c7b4bbf0bb7 }
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     assert(
 //         generate_queries(
 //             ref channel, 4, 12389012333
@@ -22,9 +20,7 @@ use cairo_verifier::{
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_generate_queries_1() {
-//     let mut channel = ChannelTrait::new(
-//         u256 { low: 0xf7685ebd40e852b164633a4acbd3244c, high: 0xe8e77626586f73b955364c7b4bbf0bb7 }
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     assert(
 //         generate_queries(
 //             ref channel, 10, 99809818624
@@ -48,9 +44,7 @@ use cairo_verifier::{
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_generate_queries_2() {
-//     let mut channel = ChannelTrait::new(
-//         u256 { low: 0x2c31f04a6b9c83c2464b2f1688fc719e, high: 0xe631d91ef56f7e4cc7fe09cff2cc4e94 }
-//     );
+//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
 //     assert(
 //         generate_queries(ref channel, 18, 0x400000) == stone_proof_fibonacci::queries::get(),
 //         'Invalid value'
@@ -63,9 +57,7 @@ use cairo_verifier::{
 #[test]
 #[available_gas(9999999999)]
 fn test_generate_queries_0() {
-    let mut channel = ChannelTrait::new(
-        u256 { low: 0x210c99e614db21dcd882b7f3734a477b, high: 0x29786ad320869955ebf8c196e16009e1 }
-    );
+    let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
     assert(
         generate_queries(ref channel, 18, 0x400000) == stone_proof_fibonacci_keccak::queries::get(),
         'Invalid value'

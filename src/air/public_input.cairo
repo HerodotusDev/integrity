@@ -1,9 +1,9 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, hasher::hash,
-        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
-        array_print::SpanPrintTrait, hash::hash_felts,
+        array_extend::ArrayExtend, flip_endianness::FlipEndiannessTrait,
+        array_append::ArrayAppendTrait, hasher::hash, math::{pow, Felt252PartialOrd, Felt252Div},
+        asserts::assert_range_u128_le, array_print::SpanPrintTrait, hash::hash_felts,
     },
     air::{
         public_memory::{
@@ -16,6 +16,7 @@ use cairo_verifier::{
     },
     domains::StarkDomains
 };
+use poseidon::poseidon_hash_span;
 
 #[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {
@@ -42,7 +43,7 @@ struct PublicInput {
 #[generate_trait]
 impl PublicInputImpl of PublicInputTrait {
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
-    fn get_public_input_hash(self: @PublicInput) -> u256 {
+    fn get_public_input_hash(self: @PublicInput) -> felt252 {
         // Main page hash.
         let mut main_page_hash_state = PedersenTrait::new(0);
         let mut i: u32 = 0;
@@ -57,71 +58,47 @@ impl PublicInputImpl of PublicInputTrait {
             .update_with(AddrValueSize * self.main_page.len());
         let main_page_hash = main_page_hash_state.finalize();
 
-        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_min).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_max).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.layout).into());
-
-        // Dynamic params.
-        let mut i: u32 = 0;
-        loop {
-            if i == self.dynamic_params.len() {
-                break;
-            }
-
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, (*self.dynamic_params.at(i)).into());
-
-            i += 1;
-        };
+        let mut hash_data = ArrayTrait::<felt252>::new();
+        hash_data.append(*self.log_n_steps);
+        hash_data.append(*self.rc_min);
+        hash_data.append(*self.rc_max);
+        hash_data.append(*self.layout);
+        hash_data.extend(self.dynamic_params.span());
 
         // Segments.
-        let mut i: u32 = 0;
+        let mut segments = self.segments.span();
         loop {
-            if i == self.segments.len() {
-                break;
+            match segments.pop_front() {
+                Option::Some(seg) => {
+                    hash_data.append(*seg.begin_addr);
+                    hash_data.append(*seg.stop_ptr);
+                },
+                Option::None => { break; }
             }
-
-            let segment = *self.segments.at(i);
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, segment.begin_addr.into());
-            ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, segment.stop_ptr.into());
-
-            i += 1;
         };
 
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data
-            .append_big_endian(Into::<u32, u256>::into(1 + self.continuous_page_headers.len()));
+        hash_data.append(*self.padding_addr);
+        hash_data.append(*self.padding_value);
+        hash_data.append(1 + self.continuous_page_headers.len().into());
 
         // Main page.
-        hash_data.append_big_endian(Into::<_, u256>::into(self.main_page.len()));
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
+        hash_data.append(self.main_page.len().into());
+        hash_data.append(main_page_hash);
 
         // Add the rest of the pages.
-        let mut i: u32 = 0;
+        let mut continuous_page_headers = self.continuous_page_headers.span();
         loop {
-            if i == self.continuous_page_headers.len() {
-                break;
+            match continuous_page_headers.pop_front() {
+                Option::Some(continuous_page) => {
+                    hash_data.append(*continuous_page.start_address);
+                    hash_data.append(*continuous_page.size);
+                    hash_data.append(*continuous_page.hash);
+                },
+                Option::None => { break; }
             }
-
-            let continuous_page = *self.continuous_page_headers.at(i);
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, continuous_page.start_address.into());
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, continuous_page.size.into());
-            ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, continuous_page.hash);
-
-            i += 1;
         };
 
-        hash(hash_data).flip_endianness()
+        poseidon_hash_span(hash_data.span())
     }
 
     // Returns the ratio between the product of all public memory cells and z^|public_memory|.

@@ -27,27 +27,18 @@ fn sample_random_queries(
         n_quad += 1;
     }
 
-    let u64_modulus_nonzero: NonZero<u128> = U128maxU64.try_into().unwrap();
-    let query_upper_bound_nonzero: NonZero<u64> = query_upper_bound.try_into().unwrap();
+    let query_upper_bound_u128: u128 = query_upper_bound.into();
+    let query_upper_bound_nonzero: NonZero<u128> = query_upper_bound_u128.try_into().unwrap();
 
     loop {
         if n_quad == 0 {
             break;
         }
 
-        let res = channel.random_uint256_to_prover();
-
-        let (hh, hl) = DivRem::div_rem(res.high, u64_modulus_nonzero);
-        let (lh, ll) = DivRem::div_rem(res.low, u64_modulus_nonzero);
-        let (_, r0) = DivRem::div_rem(hh.try_into().unwrap(), query_upper_bound_nonzero);
-        let (_, r1) = DivRem::div_rem(hl.try_into().unwrap(), query_upper_bound_nonzero);
-        let (_, r2) = DivRem::div_rem(lh.try_into().unwrap(), query_upper_bound_nonzero);
-        let (_, r3) = DivRem::div_rem(ll.try_into().unwrap(), query_upper_bound_nonzero);
-
-        result.append(r0);
-        result.append(r1);
-        result.append(r2);
-        result.append(r3);
+        let res = channel.random_felt_to_prover();
+        let low128 = Into::<felt252, u256>::into(res).low;
+        let (_, sample) = DivRem::div_rem(low128, query_upper_bound_nonzero);
+        result.append(sample.try_into().unwrap());
 
         n_quad -= 1;
     };
