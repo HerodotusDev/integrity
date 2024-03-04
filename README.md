@@ -12,7 +12,7 @@ To build the Cairo Verifier, follow these steps:
 scarb build
 ```
 
-2. Test the project to ensure everything works correctly:
+2. (Optional) Test the project to ensure everything works correctly:
 
 ```bash
 scarb test
