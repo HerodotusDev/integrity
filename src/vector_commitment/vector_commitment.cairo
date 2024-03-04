@@ -6,6 +6,7 @@ use cairo_verifier::{
     },
     channel::channel::{Channel, ChannelImpl}
 };
+use poseidon::hades_permutation;
 
 // Commitment for a vector of field elements.
 #[derive(Drop, Copy, PartialEq)]
@@ -112,7 +113,7 @@ fn compute_root_from_queries(
             let next: VectorQueryWithDepth = *queue[start + 1];
             if current.index + 1 == next.index {
                 // next is a sibling of current
-                let hash = hash_blake_or_pedersen(current.value, next.value, is_verifier_friendly);
+                let hash = hash_blake_or_poseidon(current.value, next.value, is_verifier_friendly);
                 queue
                     .append(
                         VectorQueryWithDepth {
@@ -125,10 +126,10 @@ fn compute_root_from_queries(
             }
         }
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_pedersen(current.value, *authentications[auth_start], is_verifier_friendly)
+        hash_blake_or_poseidon(current.value, *authentications[auth_start], is_verifier_friendly)
     } else {
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_pedersen(*authentications[auth_start], current.value, is_verifier_friendly)
+        hash_blake_or_poseidon(*authentications[auth_start], current.value, is_verifier_friendly)
     };
     queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
     compute_root_from_queries(
@@ -158,9 +159,10 @@ fn shift_queries(
     shifted_queries
 }
 
-fn hash_blake_or_pedersen(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
+fn hash_blake_or_poseidon(x: felt252, y: felt252, is_verifier_friendly: bool) -> felt252 {
     if is_verifier_friendly {
-        PedersenTrait::new(x).update(y).finalize()
+        let (hash, _, _) = hades_permutation(x, y, 2);
+        hash
     } else {
         let mut data = ArrayTrait::new(); // u32 for blake, u64 for keccak
         data.append_big_endian(x);
