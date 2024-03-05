@@ -14,10 +14,10 @@ struct GlobalValues {
     initial_ap: felt252,
     final_ap: felt252,
     initial_pedersen_addr: felt252,
-    initial_rc_addr: felt252,
+    initial_range_check_addr: felt252,
     initial_bitwise_addr: felt252,
-    rc_min: felt252,
-    rc_max: felt252,
+    range_check_min: felt252,
+    range_check_max: felt252,
     // Constants.
     offset_size: felt252,
     half_offset_size: felt252,
@@ -28,13 +28,13 @@ struct GlobalValues {
     // Interaction elements.
     memory_multi_column_perm_perm_interaction_elm: felt252,
     memory_multi_column_perm_hash_interaction_elm0: felt252,
-    rc16_perm_interaction_elm: felt252,
+    range_check16_perm_interaction_elm: felt252,
     diluted_check_permutation_interaction_elm: felt252,
     diluted_check_interaction_z: felt252,
     diluted_check_interaction_alpha: felt252,
     // Permutation products.
     memory_multi_column_perm_perm_public_memory_prod: felt252,
-    rc16_perm_public_memory_prod: felt252,
+    range_check16_perm_public_memory_prod: felt252,
     diluted_check_first_elm: felt252,
     diluted_check_permutation_public_memory_prod: felt252,
     diluted_check_final_cum_val: felt252
@@ -46,7 +46,7 @@ struct GlobalValues {
 struct InteractionElements {
     memory_multi_column_perm_perm_interaction_elm: felt252,
     memory_multi_column_perm_hash_interaction_elm0: felt252,
-    rc16_perm_interaction_elm: felt252,
+    range_check16_perm_interaction_elm: felt252,
     diluted_check_permutation_interaction_elm: felt252,
     diluted_check_interaction_z: felt252,
     diluted_check_interaction_alpha: felt252

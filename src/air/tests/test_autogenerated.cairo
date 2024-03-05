@@ -34,10 +34,10 @@ fn test_eval_composition_polynomial_inner() {
         initial_ap: 0x25,
         final_ap: 0x68,
         initial_pedersen_addr: 0x6a,
-        initial_rc_addr: 0x1ea,
+        initial_range_check_addr: 0x1ea,
         initial_bitwise_addr: 0x9ea,
-        rc_min: 0x7ffa,
-        rc_max: 0x8001,
+        range_check_min: 0x7ffa,
+        range_check_max: 0x8001,
         // Constants.
         offset_size: 0x10000,
         half_offset_size: 0x8000,
@@ -51,13 +51,13 @@ fn test_eval_composition_polynomial_inner() {
         // Interaction elements.
         memory_multi_column_perm_perm_interaction_elm: 0x46ecc57b0b528c3dde60dbb870596694b2879c57d0b0a34ac1122ebea470a8d,
         memory_multi_column_perm_hash_interaction_elm0: 0x207a232fb05d8c8261c44be98177c09634d23e7aaaf4838d435a4423e3a025f,
-        rc16_perm_interaction_elm: 0x2984c71a0d0a47b1d9a406f6c7be890100941f67f5db0656970832e51d48ca6,
+        range_check16_perm_interaction_elm: 0x2984c71a0d0a47b1d9a406f6c7be890100941f67f5db0656970832e51d48ca6,
         diluted_check_permutation_interaction_elm: 0x7793f70cbb5b4ae3ac72e5bce7cd46d62cbe169227257e6925e5564e595ff88,
         diluted_check_interaction_z: 0x3c48e3094aeca888fe6781ad7594d14d7f88062bbe320c6d6913f44b116810,
         diluted_check_interaction_alpha: 0x1d7304763d588fc98a927959788ad2f21d76121918994f14fc417617e6e9747,
         // Permutation products.
         memory_multi_column_perm_perm_public_memory_prod: 0x222cf8713d938af4954d6e3c98921720e296d5e9d21d5cc9b562245a009af1d,
-        rc16_perm_public_memory_prod: 0x1,
+        range_check16_perm_public_memory_prod: 0x1,
         diluted_check_first_elm: 0x0,
         diluted_check_permutation_public_memory_prod: 0x1,
         diluted_check_final_cum_val: 0x77236c66f48bc3c27dd07478f276be52b473a7ecbda1b8e6f672824e4627da9
