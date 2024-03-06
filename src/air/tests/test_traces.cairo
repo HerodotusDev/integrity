@@ -10,13 +10,13 @@ use cairo_verifier::{
 // fn test_traces_config() {
 //     let traces_config = stone_proof_fibonacci::traces::config::get();
 // 
-//     traces_config.validate(0x16, 0x16);
+//     traces_config.validate(0x14, 0x16);
 // }
 // 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_traces_commit() {
-//     let mut channel = ChannelImpl::new_with_counter(0x0, 0x0);
+//     let mut channel = ChannelImpl::new_with_counter(0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0);
 //     let public_input = @stone_proof_fibonacci::public_input::get();
 //     let unsent_commitment = stone_proof_fibonacci::traces::unsent_commitment::get();
 //     let traces_config = stone_proof_fibonacci::traces::config::get();
@@ -28,7 +28,7 @@ use cairo_verifier::{
 //         'Invalid value'
 //     );
 // 
-//     assert(channel.digest == 0x0, 'Invalid value');
+//     assert(channel.digest == 0x39d06a4cd9e64c43aaec44a5415c4cbdf530040b2fc82308ceddb5f2be39dd5, 'Invalid value');
 //     assert(channel.counter == 0x0, 'Invalid value')
 // }
 // 
@@ -50,13 +50,15 @@ use cairo_verifier::{
 fn test_traces_config() {
     let traces_config = stone_proof_fibonacci_keccak::traces::config::get();
 
-    traces_config.validate(0x16, 0x64);
+    traces_config.validate(0x14, 0x64);
 }
 
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_commit() {
-    let mut channel = ChannelImpl::new_with_counter(0x0, 0x0);
+    let mut channel = ChannelImpl::new_with_counter(
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
+    );
     let public_input = @stone_proof_fibonacci_keccak::public_input::get();
     let unsent_commitment = stone_proof_fibonacci_keccak::traces::unsent_commitment::get();
     let traces_config = stone_proof_fibonacci_keccak::traces::config::get();
@@ -68,8 +70,10 @@ fn test_traces_commit() {
         'Invalid value'
     );
 
-    assert(channel.digest == 0x0, 'Invalid value');
-
+    assert(
+        channel.digest == 0x39d06a4cd9e64c43aaec44a5415c4cbdf530040b2fc82308ceddb5f2be39dd5,
+        'Invalid value'
+    );
     assert(channel.counter == 0x0, 'Invalid value')
 }
 
