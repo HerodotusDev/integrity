@@ -178,7 +178,7 @@ impl PublicInputImpl of PublicInputTrait {
         assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
         assert(*program[5] == 0x0, 'Invalid program');
 
-        let program_hash = hash_felts(program);
+        let program_hash = poseidon_hash_span(program);
 
         // 2. Execution segment
         // 2.1 Initial_fp, initial_pc
@@ -221,7 +221,7 @@ impl PublicInputImpl of PublicInputTrait {
             .extract_range(
                 output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
             );
-        let output_hash = hash_felts(output);
+        let output_hash = poseidon_hash_span(output);
 
         // Check main page len
         assert(
