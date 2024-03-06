@@ -28,7 +28,9 @@ use cairo_verifier::{
 #[test]
 #[available_gas(9999999999)]
 fn test_fri_commit() {
-    let mut channel = ChannelTrait::new_with_counter(0x3612d68f9f68b263d83b0854b812018fd1b7ba0359d7514fffdabd44f0696e6, 0x1);
+    let mut channel = ChannelTrait::new_with_counter(
+        0x3612d68f9f68b263d83b0854b812018fd1b7ba0359d7514fffdabd44f0696e6, 0x1
+    );
 
     let fri_config = stone_proof_fibonacci_keccak::fri::config::get();
     let unsent_commitment = stone_proof_fibonacci_keccak::fri::unsent_commitment::get();
