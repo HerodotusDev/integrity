@@ -76,15 +76,15 @@ use cairo_verifier::{
 #[test]
 #[available_gas(9999999999)]
 fn test_table_commitment_commit() {
-    let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
+    let mut channel = ChannelTrait::new_with_counter(
+        0x1b9182dce9dc1169fcd00c1f8c0b6acd6baad99ce578370ead5ca230b8fb8c6, 0x1
+    );
 
-    let unsent_commitment = 0x61cb9987d55c793fdb238238311dcea46c75cd8698e52f1d01cf74cd25dc797;
+    let unsent_commitment = 0x1e9b0fa29ebe52b9c9a43a1d44e555ce42da3199370134d758735bfe9f40269;
 
     let config = TableCommitmentConfig {
-        n_columns: 0x7,
-        vector: VectorCommitmentConfig {
-            height: 0x16, n_verifier_friendly_commitment_layers: 0x64,
-        }
+        n_columns: 0x4,
+        vector: VectorCommitmentConfig { height: 0x9, n_verifier_friendly_commitment_layers: 0x64, }
     };
 
     assert(
@@ -99,7 +99,10 @@ fn test_table_commitment_commit() {
         'Invalid value'
     );
 
-    assert(channel.digest == 0x0, 'Invalid value');
+    assert(
+        channel.digest == 0x1abd607dab09dede570ed131d9df0a1997e33735b11933c45dc84353df84259,
+        'Invalid value'
+    );
     assert(channel.counter == 0x0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
