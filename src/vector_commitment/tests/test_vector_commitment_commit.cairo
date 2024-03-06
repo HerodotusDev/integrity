@@ -3,53 +3,6 @@ use cairo_verifier::{
     vector_commitment::vector_commitment::{VectorCommitmentConfig, vector_commit, VectorCommitment}
 };
 
-// === BLAKE ONLY BEGIN ===
-// #[test]
-// #[available_gas(9999999999)]
-// fn test_vector_commit_0() {
-//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
-// 
-//     let config = VectorCommitmentConfig {
-//         height: 0x16, n_verifier_friendly_commitment_layers: 0x16,
-//     };
-//     let unsent_commitment: felt252 =
-//         0xa43e1b3b99d987d63116edc58aa49a7d510a667951852446419df5ede6a1cc;
-// 
-//     assert(
-//         vector_commit(
-//             ref channel, unsent_commitment, config
-//         ) == VectorCommitment { config: config, commitment_hash: unsent_commitment },
-//         'Invalid value'
-//     );
-// 
-//     assert(channel.digest == 0x0, 'Invalid value');
-//     assert(channel.counter == 0x0, 'Invalid value');
-// }
-// 
-// #[test]
-// #[available_gas(9999999999)]
-// fn test_vector_commit_1() {
-//     let mut channel = ChannelTrait::new_with_counter(0x0, 0x0);
-// 
-//     let config = VectorCommitmentConfig {
-//         height: 0x16, n_verifier_friendly_commitment_layers: 0x16,
-//     };
-//     let unsent_commitment: felt252 =
-//         0xa43e1b3b99d987d63116edc58aa49a7d510a667951852446419df5ede6a1cc;
-// 
-//     assert(
-//         vector_commit(
-//             ref channel, unsent_commitment, config
-//         ) == VectorCommitment { config: config, commitment_hash: unsent_commitment },
-//         'Invalid value'
-//     );
-// 
-//     assert(channel.digest == 0x0, 'Invalid value');
-//     assert(channel.counter == 0x0, 'Invalid value');
-// }
-// === BLAKE ONLY END ===
-
-// === KECCAK ONLY BEGIN ===
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commit() {
@@ -76,6 +29,3 @@ fn test_vector_commit() {
     );
     assert(channel.counter == 0x0, 'Invalid value');
 }
-// === KECCAK ONLY END ===
-
-
