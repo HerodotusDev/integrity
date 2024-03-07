@@ -1,0 +1,26 @@
+{
+    "field": "PrimeField0",
+    "channel_hash": "keccak256",
+    "commitment_hash": "keccak256_masked160_lsb",
+    "verifier_friendly_commitment_hash": "pedersen",
+    "n_verifier_friendly_commitment_layers": 100,
+    "statement": {
+        "page_hash": "pedersen"
+    },
+    "stark": {
+        "fri": {
+            "fri_step_list": [
+                0,
+                4,
+                4,
+                3
+            ],
+            "last_layer_degree_bound": 128,
+            "n_queries": 5,
+            "proof_of_work_bits": 30
+        },
+        "log_n_cosets": 2
+    },
+
+    "use_extension_field": false
+}

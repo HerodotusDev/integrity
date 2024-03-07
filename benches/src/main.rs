@@ -30,7 +30,7 @@ fn main() -> anyhow::Result<()> {
     let sierra_program =
         serde_json::from_str::<VersionedProgram>(&fs::read_to_string(cli.target)?)?.into_v1()?;
 
-    BENCH_FUNCTION_LIST.into_iter().for_each(|f_name| {
+    BENCH_FUNCTION_LIST.iter().for_each(|f_name| {
         let result = bench(sierra_program.program.to_owned(), f_name).unwrap();
 
         println!("Function: {f_name}");

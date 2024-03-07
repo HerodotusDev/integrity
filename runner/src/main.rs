@@ -13,7 +13,7 @@ use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::{ordered_hash_map::OrderedHashMap, unordered_hash_map::UnorderedHashMap};
 use cairo_vm::vm::runners::cairo_runner::RunResources;
 use clap::Parser;
-
+use std::io::{stdin, Read};
 use cairo_proof_parser::parse;
 use itertools::{chain, Itertools};
 
