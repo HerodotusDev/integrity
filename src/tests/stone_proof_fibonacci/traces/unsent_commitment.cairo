@@ -2,7 +2,7 @@ use cairo_verifier::air::traces::TracesUnsentCommitment;
 
 fn get() -> TracesUnsentCommitment {
     return TracesUnsentCommitment {
-        original: 0xa43e1b3b99d987d63116edc58aa49a7d510a667951852446419df5ede6a1cc,
-        interaction: 0x32b3d365d461b6c12ab7d3396b5225903bd17bc85216f300472afea65cab39a,
+        original: 0x2a588e8517b956684162e05e373dc6891146c1853c82d3984fbc707ae937972,
+        interaction: 0x7171ffc67e24fcbb2a7d1acd6244fa91c54dff15c96ca26d193907b716ce2c5,
     };
 }

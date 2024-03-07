@@ -8,13 +8,13 @@ fn get() -> TracesConfig {
         original: TableCommitmentConfig {
             n_columns: 0x7,
             vector: VectorCommitmentConfig {
-                height: 0x16, n_verifier_friendly_commitment_layers: 0x16
+                height: 0x14, n_verifier_friendly_commitment_layers: 0x64
             },
         },
         interaction: TableCommitmentConfig {
             n_columns: 0x3,
             vector: VectorCommitmentConfig {
-                height: 0x16, n_verifier_friendly_commitment_layers: 0x16
+                height: 0x14, n_verifier_friendly_commitment_layers: 0x64
             },
         },
     };

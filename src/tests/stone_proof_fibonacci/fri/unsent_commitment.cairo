@@ -1,14 +1,15 @@
-use cairo_verifier::{fri::fri::FriUnsentCommitment, tests::stone_proof_fibonacci,};
+use cairo_verifier::{fri::fri::FriUnsentCommitment, tests::stone_proof_fibonacci};
 
 fn get() -> FriUnsentCommitment {
     return FriUnsentCommitment {
         inner_layers: array![
-            0x6288a59e1970d629fdfb5bdea93ad3203511b3c27340db1467a39cf7951de3,
-            0x821aaa485d3fbdf7b0a06d773e565370f794c06bbcb4e23279a39544782c1e,
-            0x7a73129c87d8a60cb07b26775437ac75790bbd415d47912e5eb1f7c7e11d42f,
-            0x3ce8c532eab6fcbf597abd8817cc406cc884f6000ab2d79c9a9ea3a12b4c038,
+            0x137de087f31f4e6f54222fc3cebb3c162469083196999e6ee4bb8ceb4d6b786,
+            0x3bb3c75d228842edce6f6bf6fd6706ce51f5d83c6842a3ab4b4d89fad6f07b,
+            0xb606d3c2b341ff9de5ead44f00121fdc4113f3720feb162eeaecb511e73d4f,
+            0x787b0937a4cd02e0143e93979bb79139ca9546fc1654b4f755f8642c989ba20,
         ]
             .span(),
-        last_layer_coefficients: stone_proof_fibonacci::fri::last_layer_coefficients::get().span(),
+        last_layer_coefficients: stone_proof_fibonacci::fri::last_layer_coefficients::get()
+            .span(),
     };
 }
