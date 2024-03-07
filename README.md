@@ -101,6 +101,14 @@ cpu_air_prover \
 
 You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` contract by specifying the path `examples/proofs/fibonacci_proof.json` to the newly generated proof.
 
+## Benchmarking
+
+In order to lunch benchmarking just run this:
+
+```bash
+cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
+```
+
 ## Changing the Hasher
 
 By default, the verifier uses Pedersen for verifier-friendly layers and Keccak for unfriendly layers. To change the hasher for unfriendly layers, use the provided Python script:
