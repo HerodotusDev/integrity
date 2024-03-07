@@ -36,14 +36,9 @@ fn main() -> anyhow::Result<()> {
         println!("Function: {f_name}");
         // println!("---------------------------------");
         // println!("Gas Used        : {}", result.gas_counter.unwrap());
-        println!("Execution Steps : {}", result.memory.len());
+        println!("Number of steps : {}", result.memory.len());
         // println!("Return Value    : {:#?}", result.value);
         println!("---------------------------------\n");
-
-        // let profiling_processor = ProfilingInfoProcessor::new(sierra_program.program);
-        // let processed_profiling_info = profiling_processor.process(&profiling_info.unwrap());
-
-        // println!("profiling: {}", processed_profiling_info);
     });
 
     Ok(())

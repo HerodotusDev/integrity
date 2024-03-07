@@ -5,8 +5,7 @@ use cairo_verifier::{
 
 fn bench_stark_commit() {
     let mut channel = ChannelTrait::new_with_counter(
-        u256 { low: 0x22b3f4d7841a28271009bef644a84a5e, high: 0x8f17c0c0dcde2144cd36213ab3aaff1b },
-        0x0
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
     );
 
     let public_input = stone_proof_fibonacci_keccak::public_input::get();
