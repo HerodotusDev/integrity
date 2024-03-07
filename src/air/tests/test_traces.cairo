@@ -16,7 +16,9 @@ fn test_traces_config() {
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_commit() {
-    let mut channel = ChannelImpl::new_with_counter(0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0);
+    let mut channel = ChannelImpl::new_with_counter(
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
+    );
     let public_input = @stone_proof_fibonacci::public_input::get();
     let unsent_commitment = stone_proof_fibonacci::traces::unsent_commitment::get();
     let traces_config = stone_proof_fibonacci::traces::config::get();
@@ -28,7 +30,10 @@ fn test_traces_commit() {
         'Invalid value'
     );
 
-    assert(channel.digest == 0x484f5da62866b3e2a0d4ceb5e00cf7ba33ec5c57ce032df6ca74a40cc6015a0, 'Invalid value');
+    assert(
+        channel.digest == 0x484f5da62866b3e2a0d4ceb5e00cf7ba33ec5c57ce032df6ca74a40cc6015a0,
+        'Invalid value'
+    );
     assert(channel.counter == 0x0, 'Invalid value')
 }
 

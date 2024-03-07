@@ -17,7 +17,7 @@ fn test_table_commitment_decommit() {
     let queries = stone_proof_fibonacci::queries::get().span();
     let decommitment = stone_proof_fibonacci::traces::decommitment::get().original;
     let witness = stone_proof_fibonacci::traces::witness::get().original;
-//
+    //
     table_decommit(commitment, queries, decommitment, witness);
 }
 // === BLAKE ONLY END ===

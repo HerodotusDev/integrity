@@ -26,7 +26,6 @@ fn test_eval_composition_polynomial() {
         trace_generator: 0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
     );
     assert(
-        res == 0x511668bf439c0999c57d3c05c9f1bcf12095ef76d5a032985bd2350f1731604,
-        'invalid value'
+        res == 0x511668bf439c0999c57d3c05c9f1bcf12095ef76d5a032985bd2350f1731604, 'invalid value'
     );
 }
