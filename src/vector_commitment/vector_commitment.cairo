@@ -33,7 +33,7 @@ impl VectorCommitmentConfigImpl of VectorCommitmentConfigTrait {
         // all Merkle layers use the verifier-friendly hash).
         assert(
             *self.n_verifier_friendly_commitment_layers == n_verifier_friendly_commitment_layers,
-            'n_verifier_friendly... mismatch'
+            'n_verifier_friendly mismatch'
         );
     }
 }

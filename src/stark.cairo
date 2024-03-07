@@ -26,9 +26,6 @@ mod stark_verify;
 #[cfg(test)]
 mod tests;
 
-const SECURITY_BITS: felt252 = 96;
-
-
 #[derive(Drop)]
 struct StarkProof {
     config: StarkConfig,
@@ -39,9 +36,9 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof) {
+    fn verify(self: @StarkProof, security_bits: felt252) {
         // Validate config.
-        self.config.validate(SECURITY_BITS);
+        self.config.validate(security_bits);
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
