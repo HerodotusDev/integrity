@@ -2,11 +2,11 @@ use cairo_verifier::air::global_values::InteractionElements;
 
 fn get() -> InteractionElements {
     InteractionElements {
-        memory_multi_column_perm_perm_interaction_elm: 0x33dd9c083eee682a168398d8189bf14bc503febe8d298c7b254ff5d74868c39,
-        memory_multi_column_perm_hash_interaction_elm0: 0x6a7aed3206de9c6a434484cc1f499801fc2df433783aef27b67ee8010b9a6c5,
-        range_check16_perm_interaction_elm: 0x645541a20083f184215fcb20d8014bed0546f6ae292f9eb7ee3de254117c597,
-        diluted_check_permutation_interaction_elm: 0x11d978931f41d88e9e8930b42c84b6471782ca8c565464dd6f468c2b4804a22,
-        diluted_check_interaction_z: 0x1e22e58ff299d68ff2d5823796c232bd70a8e700d70379417849503417a478a,
-        diluted_check_interaction_alpha: 0x3b74ba4892c5814cd3d16f5f28df48e8a6dc70a3d67f18b1b4921510fe88278
+        memory_multi_column_perm_perm_interaction_elm: 0x4e0295d5d071e74058eef68f686aac70757fbe53d10971f6187a0e76ff440c1,
+        memory_multi_column_perm_hash_interaction_elm0: 0x2f73db13acfcad0387e92ccd565128e7e2c24026015ed4c0ef8619a213019cc,
+        range_check16_perm_interaction_elm: 0x7ea83ddd48c6068a1a11f3a107ada2da689636c6028061ff7fb8ef8f2a18bef,
+        diluted_check_permutation_interaction_elm: 0x4bc33ab9e5b3855f07ad50717b923e4f8bea45737b6462fa60c27e32b315d95,
+        diluted_check_interaction_z: 0x1c695cf20c4393e7ffe8d8c7efcce3797f0744aa575c58b99728a573ef96529,
+        diluted_check_interaction_alpha: 0x163023769a9ccfc222f8cb9a71a4630d400cd89c34dc14718e907fadc66877f
     }
 }

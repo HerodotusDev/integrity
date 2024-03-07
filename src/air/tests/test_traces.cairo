@@ -10,7 +10,7 @@ use cairo_verifier::{
 fn test_traces_config() {
     let traces_config = stone_proof_fibonacci::traces::config::get();
 
-    traces_config.validate(0x14, 0x16);
+    traces_config.validate(0x16, 0x64);
 }
 
 #[test]
@@ -28,7 +28,7 @@ fn test_traces_commit() {
         'Invalid value'
     );
 
-    assert(channel.digest == 0x39d06a4cd9e64c43aaec44a5415c4cbdf530040b2fc82308ceddb5f2be39dd5, 'Invalid value');
+    assert(channel.digest == 0x484f5da62866b3e2a0d4ceb5e00cf7ba33ec5c57ce032df6ca74a40cc6015a0, 'Invalid value');
     assert(channel.counter == 0x0, 'Invalid value')
 }
 
