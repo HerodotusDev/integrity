@@ -1,3 +1,4 @@
+use core::array::SpanTrait;
 use core::array::ArrayTrait;
 use cairo_verifier::{
     air::{
@@ -15,14 +16,10 @@ use cairo_verifier::{
 #[available_gas(9999999999)]
 fn test_eval_composition_polynomial_inner() {
     let oods_values = stone_proof_fibonacci::stark::oods_values::get();
-    let mask_values = oods_values.span().slice(0, oods_values.len() - 2);
-
-    assert(mask_values.len() == MASK_SIZE, 'Invalid value');
-
-    let constraint_coefficients = stone_proof_fibonacci::constraint_coefficients::get();
-
-    assert(constraint_coefficients.len() == N_CONSTRAINTS, 'Invalid value');
-
+    let mask_values = oods_values.span().slice(0, MASK_SIZE);
+    let constraint_coefficients = stone_proof_fibonacci::constraint_coefficients::get()
+        .span()
+        .slice(0, N_CONSTRAINTS);
     let point = 0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8;
     let trace_generator = 0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046;
 
@@ -60,7 +57,7 @@ fn test_eval_composition_polynomial_inner() {
 
     assert(
         eval_composition_polynomial_inner(
-            mask_values, constraint_coefficients.span(), point, trace_generator, global_values,
+            mask_values, constraint_coefficients, point, trace_generator, global_values,
         ) == 0x511668bf439c0999c57d3c05c9f1bcf12095ef76d5a032985bd2350f1731604,
         'Invalid value'
     )
