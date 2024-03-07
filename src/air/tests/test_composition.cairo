@@ -21,12 +21,12 @@ fn test_eval_composition_polynomial() {
         @public_input,
         mask_values.span(),
         constraint_coefficients.span(),
-        point: 0x295db9e6b36bd5b5d2591d7d76a57e241821fd478b9f667778f0a09960d3a0f,
+        point: 0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8,
         trace_domain_size: 0x40000,
         trace_generator: 0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
     );
     assert(
-        res == 0x245c787b658a0461241e840f1ffcf76ca5d29e6571e7a8edd80fdd968fddd45,
-        'invalid composition_polynomial'
+        res == 0x511668bf439c0999c57d3c05c9f1bcf12095ef76d5a032985bd2350f1731604,
+        'invalid value'
     );
 }

@@ -122,7 +122,7 @@ mod tests {
             interaction_elements,
             @public_input,
             constraint_coefficients.span(),
-            0x295db9e6b36bd5b5d2591d7d76a57e241821fd478b9f667778f0a09960d3a0f,
+            0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8,
             0x40000,
             0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
         );
