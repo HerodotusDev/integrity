@@ -103,7 +103,7 @@ You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` co
 
 ## Benchmarking
 
-In order to lunch benchmarking just run this:
+In order to launch benchmarking just run this:
 
 ```bash
 cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
