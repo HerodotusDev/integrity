@@ -3,7 +3,7 @@ use cairo_verifier::{
         public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
         public_memory::{AddrValue, Page},
     },
-    air::layouts::recursive::traces::TracesConfig, 
+    air::layouts::recursive::traces::TracesConfig,
     deserialization::{
         traces::{
             TracesConfigWithSerde, TracesDecommitmentWithSerde, TracesWitnessWithSerde,

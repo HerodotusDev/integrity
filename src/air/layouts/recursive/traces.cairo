@@ -1,7 +1,6 @@
 use cairo_verifier::{
     air::layouts::recursive::{
-        public_input::PublicInput, constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
-        global_values::InteractionElements,
+        constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
     },
     channel::channel::{Channel, ChannelTrait},
     table_commitment::table_commitment::{

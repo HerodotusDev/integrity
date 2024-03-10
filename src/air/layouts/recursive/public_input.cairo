@@ -1,15 +1,10 @@
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, blake2s::blake2s,
         math::{pow, Felt252PartialOrd, Felt252Div},
-        asserts::{assert_range_u128_le, assert_range_u128}, array_print::SpanPrintTrait,
-        hash::hash_felts,
+        asserts::{assert_range_u128_le, assert_range_u128},
     },
     air::{
-        public_memory::{
-            Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
-        },
+        public_memory::{Page, PageTrait,},
         layouts::recursive::constants::{
             segments, MAX_ADDRESS, get_builtins, INITIAL_PC, MAX_LOG_N_STEPS, CPU_COMPONENT_HEIGHT,
             CPU_COMPONENT_STEP, MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_ROW_RATIO,
@@ -19,6 +14,8 @@ use cairo_verifier::{
     },
     domains::StarkDomains
 };
+
+use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 
 impl RecursivePublicInputImpl of PublicInputTrait {
