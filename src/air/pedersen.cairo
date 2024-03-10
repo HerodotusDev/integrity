@@ -1039,4 +1039,3 @@ fn eval_pedersen_y(point: felt252) -> felt252 {
     res = res * point + (0x3c782f4a1a6d94adf1448fd7feef975f47af9c79bbf7e2d74940673704b828a);
     res
 }
-

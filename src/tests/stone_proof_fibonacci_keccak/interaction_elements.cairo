@@ -1,4 +1,4 @@
-use cairo_verifier::air::global_values::InteractionElements;
+use cairo_verifier::air::layouts::recursive::global_values::InteractionElements;
 
 fn get() -> InteractionElements {
     InteractionElements {

@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    stark::stark_verify::stark_verify, air::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
+    stark::stark_verify::stark_verify, air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 

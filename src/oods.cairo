@@ -1,7 +1,7 @@
 use cairo_verifier::{
     common::array_extend::ArrayExtendTrait,
-    air::{
-        composition::{eval_composition_polynomial, eval_oods_polynomial},
+    air::layouts::recursive::{
+        AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
         global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
         constants::CONSTRAINT_DEGREE,
     },
@@ -27,7 +27,7 @@ fn verify_oods(
     trace_domain_size: felt252,
     trace_generator: felt252
 ) {
-    let composition_from_trace = eval_composition_polynomial(
+    let composition_from_trace = AIRComposition::eval_composition_polynomial(
         interaction_elements,
         public_input,
         oods.slice(0, oods.len() - 2),
@@ -88,7 +88,7 @@ fn eval_oods_boundary_poly_at_points(
 
         evaluations
             .append(
-                eval_oods_polynomial(
+                AIROods::eval_oods_polynomial(
                     column_values.span(),
                     eval_info.oods_values,
                     eval_info.constraint_coefficients,

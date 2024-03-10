@@ -14,13 +14,13 @@ use poseidon::poseidon_hash_span;
 
 
 // Commitment for a table (n_rows x n_columns) of field elements in montgomery form.
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct TableCommitment {
     config: TableCommitmentConfig,
     vector_commitment: VectorCommitment,
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct TableCommitmentConfig {
     n_columns: felt252,
     vector: VectorCommitmentConfig,
@@ -28,14 +28,14 @@ struct TableCommitmentConfig {
 
 // Responses for queries to the table commitment.
 // Each query corresponds to a full row of the table.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct TableDecommitment {
     // n_columns * n_queries values to decommit.
     values: Span<felt252>,
 }
 
 // Witness for a decommitment over queries.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct TableCommitmentWitness {
     vector: VectorCommitmentWitness,
 }

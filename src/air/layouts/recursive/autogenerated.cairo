@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    air::{
+    air::layouts::recursive::{
         global_values::GlobalValues,
         constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE}
     },

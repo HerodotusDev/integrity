@@ -1,26 +1,19 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
+    air::public_memory::{
+        Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
+    },
+    domains::StarkDomains,
     common::{
         array_extend::ArrayExtend, flip_endianness::FlipEndiannessTrait,
-        array_append::ArrayAppendTrait, hasher::hash, math::{pow, Felt252PartialOrd, Felt252Div},
-        asserts::{assert_range_u128_le, assert_range_u128}, array_print::SpanPrintTrait,
-        hash::hash_felts,
+        array_append::ArrayAppendTrait, blake2s::blake2s,
+        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
+        array_print::SpanPrintTrait, hash::hash_felts,
     },
-    air::{
-        public_memory::{
-            Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
-        },
-        constants::{
-            segments, MAX_ADDRESS, get_builtins, INITIAL_PC, MAX_LOG_N_STEPS, CPU_COMPONENT_HEIGHT,
-            MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO,
-            BITWISE_ROW_RATIO, CPU_COMPONENT_STEP
-        }
-    },
-    domains::StarkDomains
 };
 use poseidon::poseidon_hash_span;
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct SegmentInfo {
     // Start address of the memory segment.
     begin_addr: felt252,
@@ -28,7 +21,7 @@ struct SegmentInfo {
     stop_ptr: felt252,
 }
 
-#[derive(Drop, PartialEq)]
+#[derive(Drop, PartialEq, Serde)]
 struct PublicInput {
     log_n_steps: felt252,
     range_check_min: felt252,
@@ -42,230 +35,100 @@ struct PublicInput {
     continuous_page_headers: Array<ContinuousPageHeader>
 }
 
-#[generate_trait]
-impl PublicInputImpl of PublicInputTrait {
-    // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
-    fn get_public_input_hash(self: @PublicInput) -> felt252 {
-        // Main page hash.
-        let mut main_page_hash_state = PedersenTrait::new(0);
-        let mut i: u32 = 0;
-        loop {
-            if i == self.main_page.len() {
-                break;
-            }
-            main_page_hash_state = main_page_hash_state.update_with(*self.main_page.at(i));
-            i += 1;
-        };
-        main_page_hash_state = main_page_hash_state
-            .update_with(AddrValueSize * self.main_page.len());
-        let main_page_hash = main_page_hash_state.finalize();
-
-        let mut hash_data = ArrayTrait::<felt252>::new();
-        hash_data.append(*self.log_n_steps);
-        hash_data.append(*self.range_check_min);
-        hash_data.append(*self.range_check_max);
-        hash_data.append(*self.layout);
-        hash_data.extend(self.dynamic_params.span());
-
-        // Segments.
-        let mut segments = self.segments.span();
-        loop {
-            match segments.pop_front() {
-                Option::Some(seg) => {
-                    hash_data.append(*seg.begin_addr);
-                    hash_data.append(*seg.stop_ptr);
-                },
-                Option::None => { break; }
-            }
-        };
-
-        hash_data.append(*self.padding_addr);
-        hash_data.append(*self.padding_value);
-        hash_data.append(1 + self.continuous_page_headers.len().into());
-
-        // Main page.
-        hash_data.append(self.main_page.len().into());
-        hash_data.append(main_page_hash);
-
-        // Add the rest of the pages.
-        let mut continuous_page_headers = self.continuous_page_headers.span();
-        loop {
-            match continuous_page_headers.pop_front() {
-                Option::Some(continuous_page) => {
-                    hash_data.append(*continuous_page.start_address);
-                    hash_data.append(*continuous_page.size);
-                    hash_data.append(*continuous_page.hash);
-                },
-                Option::None => { break; }
-            }
-        };
-
-        poseidon_hash_span(hash_data.span())
-    }
-
-    // Returns the ratio between the product of all public memory cells and z^|public_memory|.
-    // This is the value that needs to be at the memory__multi_column_perm__perm__public_memory_prod
-    // member expression.
-    fn get_public_memory_product_ratio(
-        self: @PublicInput, z: felt252, alpha: felt252, public_memory_column_size: felt252
-    ) -> felt252 {
-        let (pages_product, total_length) = self.get_public_memory_product(z, alpha);
-
-        // Pad and divide
-        let numerator = pow(z, public_memory_column_size);
-        let padded = z - (*self.padding_addr + alpha * *self.padding_value);
-
-        assert(total_length <= public_memory_column_size, 'Invalid length');
-        let denominator_pad = pow(padded, public_memory_column_size - total_length);
-
-        numerator / pages_product / denominator_pad
-    }
-
-    // Returns the product of all public memory cells.
-    fn get_public_memory_product(
-        self: @PublicInput, z: felt252, alpha: felt252
-    ) -> (felt252, felt252) {
-        let main_page_prod = self.main_page.get_product(z, alpha);
-
-        let (continuous_pages_prod, continuous_pages_total_length) = get_continuous_pages_product(
-            self.continuous_page_headers.span(),
-        );
-
-        let prod = main_page_prod * continuous_pages_prod;
-        let total_length = (self.main_page.len()).into() + continuous_pages_total_length;
-
-        (prod, total_length)
-    }
-
-    fn verify(self: @PublicInput) -> (felt252, felt252) {
-        let public_segments = self.segments;
-
-        let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
-        let final_pc = *public_segments.at(segments::PROGRAM).stop_ptr;
-        let initial_ap = *public_segments.at(segments::EXECUTION).begin_addr;
-        let initial_fp = initial_ap;
-        let final_ap = *public_segments.at(segments::EXECUTION).stop_ptr;
-        let output_start = *public_segments.at(segments::OUTPUT).begin_addr;
-        let output_stop = *public_segments.at(segments::OUTPUT).stop_ptr;
-
-        assert(initial_ap < MAX_ADDRESS, 'Invalid initial_ap');
-        assert(final_ap < MAX_ADDRESS, 'Invalid final_ap');
-
-        // TODO support more pages?
-        assert(self.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
-
-        let builtins = get_builtins();
-        let memory = self.main_page;
-
-        // 1. Program segment
-        assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
-        assert(final_pc == INITIAL_PC + 4, 'Invalid final_pc');
-
-        let mut memory_index: usize = 0;
-
-        let program_end_pc = initial_fp - 2;
-        let program_len = program_end_pc - initial_pc;
-        let program = memory
-            .extract_range(
-                initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), ref memory_index
-            );
-
-        assert(
-            *program[0] == 0x40780017fff7fff, 'Invalid program'
-        ); // Instruction: ap += N_BUILTINS.
-        assert(*program[1] == builtins.len().into(), 'Invalid program');
-        assert(*program[2] == 0x1104800180018000, 'Invalid program'); // Instruction: call rel ?.
-        assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
-        assert(*program[5] == 0x0, 'Invalid program');
-
-        let program_hash = poseidon_hash_span(program);
-
-        // 2. Execution segment
-        // 2.1 Initial_fp, initial_pc
-        let fp2 = *memory.at(memory_index);
-        assert(fp2.address == initial_fp - 2, 'Invalid fp2 addr');
-        assert(fp2.value == initial_fp, 'Invalid fp2 val');
-
-        let fp1 = *memory.at(memory_index + 1);
-        assert(fp1.address == initial_fp - 1, 'Invalid fp1 addr');
-        assert(fp1.value == 0, 'Invalid fp1 val');
-        memory_index += 2;
-
-        // 2.2 Main arguments and return values
-        let mut begin_addresses = ArrayTrait::new();
-        let mut stop_addresses = ArrayTrait::new();
-        let mut i = 0;
-        let builtins_len = builtins.len();
-        loop {
-            if i == builtins_len {
-                break;
-            }
-
-            begin_addresses.append(*public_segments.at(2 + i).begin_addr);
-            stop_addresses.append(*public_segments.at(2 + i).stop_ptr);
-
-            i += 1;
-        };
-        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
-        memory
-            .verify_stack(
-                final_ap - builtins_len.into(),
-                stop_addresses.span(),
-                builtins_len,
-                ref memory_index
-            );
-
-        // 3. Output segment 
-        let output_len = output_stop - output_start;
-        let output = memory
-            .extract_range(
-                output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
-            );
-        let output_hash = poseidon_hash_span(output);
-
-        // Check main page len
-        assert(
-            *memory.at(memory_index - 1) == *self.main_page.at(self.main_page.len() - 1),
-            'Invalid main page len'
-        );
-
-        (program_hash, output_hash)
-    }
-
-    fn validate(self: @PublicInput, stark_domains: @StarkDomains) {
-        assert_range_u128_le(*self.log_n_steps, MAX_LOG_N_STEPS);
-        let n_steps = pow(2, *self.log_n_steps);
-        let trace_length = *stark_domains.trace_domain_size;
-        assert(
-            n_steps * CPU_COMPONENT_HEIGHT * CPU_COMPONENT_STEP == trace_length, 'Wrong trace size'
-        );
-
-        assert(0 <= *self.range_check_min, 'wrong rc_min');
-        assert(*self.range_check_min < *self.range_check_max, 'wrong rc range');
-        assert(*self.range_check_max <= MAX_RANGE_CHECK, 'wrong rc_max');
-
-        assert(*self.layout == LAYOUT_CODE, 'wrong layout code');
-
-        let n_output_uses = (*self.segments.at(segments::OUTPUT).stop_ptr
-            - *self.segments.at(segments::OUTPUT).begin_addr);
-        assert_range_u128(n_output_uses);
-
-        let pedersen_copies = trace_length / PEDERSEN_BUILTIN_ROW_RATIO;
-        let pedersen_uses = (*self.segments.at(segments::PEDERSEN).stop_ptr
-            - *self.segments.at(segments::PEDERSEN).begin_addr)
-            / 3;
-        assert_range_u128_le(pedersen_uses, pedersen_copies);
-
-        let range_check_copies = trace_length / RANGE_CHECK_BUILTIN_ROW_RATIO;
-        let range_check_uses = *self.segments.at(segments::RANGE_CHECK).stop_ptr
-            - *self.segments.at(segments::RANGE_CHECK).begin_addr;
-        assert_range_u128_le(range_check_uses, range_check_copies);
-
-        let bitwise_copies = trace_length / BITWISE_ROW_RATIO;
-        let bitwise_uses = (*self.segments.at(segments::BITWISE).stop_ptr
-            - *self.segments.at(segments::BITWISE).begin_addr)
-            / 5;
-        assert_range_u128_le(bitwise_uses, bitwise_copies);
-    }
+trait PublicInputTrait {
+    fn verify(self: @PublicInput) -> (felt252, felt252);
+    fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
 
+// Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
+fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
+    // Main page hash.
+    let mut main_page_hash_state = PedersenTrait::new(0);
+    let mut i: u32 = 0;
+    loop {
+        if i == public_input.main_page.len() {
+            break;
+        }
+        main_page_hash_state = main_page_hash_state.update_with(*public_input.main_page.at(i));
+        i += 1;
+    };
+    main_page_hash_state = main_page_hash_state
+        .update_with(AddrValueSize * public_input.main_page.len());
+    let main_page_hash = main_page_hash_state.finalize();
+
+    let mut hash_data = ArrayTrait::<felt252>::new();
+    hash_data.append(*public_input.log_n_steps);
+    hash_data.append(*public_input.range_check_min);
+    hash_data.append(*public_input.range_check_max);
+    hash_data.append(*public_input.layout);
+    hash_data.extend(public_input.dynamic_params.span());
+
+    // Segments.
+    let mut segments = public_input.segments.span();
+    loop {
+        match segments.pop_front() {
+            Option::Some(seg) => {
+                hash_data.append(*seg.begin_addr);
+                hash_data.append(*seg.stop_ptr);
+            },
+            Option::None => { break; }
+        }
+    };
+
+    hash_data.append(*public_input.padding_addr);
+    hash_data.append(*public_input.padding_value);
+    hash_data.append(1 + public_input.continuous_page_headers.len().into());
+
+    // Main page.
+    hash_data.append(public_input.main_page.len().into());
+    hash_data.append(main_page_hash);
+
+    // Add the rest of the pages.
+    let mut continuous_page_headers = public_input.continuous_page_headers.span();
+    loop {
+        match continuous_page_headers.pop_front() {
+            Option::Some(continuous_page) => {
+                hash_data.append(*continuous_page.start_address);
+                hash_data.append(*continuous_page.size);
+                hash_data.append(*continuous_page.hash);
+            },
+            Option::None => { break; }
+        }
+    };
+
+    poseidon_hash_span(hash_data.span())
+}
+
+// Returns the ratio between the product of all public memory cells and z^|public_memory|.
+// This is the value that needs to be at the memory__multi_column_perm__perm__public_memory_prod
+// member expression.
+fn get_public_memory_product_ratio(
+    public_input: @PublicInput, z: felt252, alpha: felt252, public_memory_column_size: felt252
+) -> felt252 {
+    let (pages_product, total_length) = get_public_memory_product(public_input, z, alpha);
+
+    // Pad and divide
+    let numerator = pow(z, public_memory_column_size);
+    let padded = z - (*public_input.padding_addr + alpha * *public_input.padding_value);
+
+    assert(total_length <= public_memory_column_size, 'Invalid length');
+    let denominator_pad = pow(padded, public_memory_column_size - total_length);
+
+    numerator / pages_product / denominator_pad
+}
+
+// Returns the product of all public memory cells.
+fn get_public_memory_product(
+    public_input: @PublicInput, z: felt252, alpha: felt252
+) -> (felt252, felt252) {
+    let main_page_prod = public_input.main_page.get_product(z, alpha);
+
+    let (continuous_pages_prod, continuous_pages_total_length) = get_continuous_pages_product(
+        public_input.continuous_page_headers.span(),
+    );
+
+    let prod = main_page_prod * continuous_pages_prod;
+    let total_length = (public_input.main_page.len()).into() + continuous_pages_total_length;
+
+    (prod, total_length)
+}

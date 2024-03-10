@@ -17,7 +17,7 @@ mod benches;
 
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
-    air::public_input::PublicInputTrait
+    air::layouts::recursive::public_input::RecursivePublicInputImpl,
 };
 
 const SECURITY_BITS: felt252 = 96;

@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    air::{
+    air::layouts::recursive::{
         traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     },
     deserialization::{
