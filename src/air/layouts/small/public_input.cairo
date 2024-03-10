@@ -6,9 +6,9 @@ use cairo_verifier::{
     air::{
         public_memory::{Page, PageTrait},
         constants::{MAX_ADDRESS, INITIAL_PC, MAX_LOG_N_STEPS, MAX_RANGE_CHECK},
-        layouts::recursive::constants::{
+        layouts::small::constants::{
             segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
-            PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO
+            PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, ECDSA_BUILTIN_ROW_RATIO
         },
         public_input::{PublicInput, PublicInputTrait}
     },
@@ -18,7 +18,7 @@ use cairo_verifier::{
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 
-impl RecursivePublicInputImpl of PublicInputTrait {
+impl SmallPublicInputImpl of PublicInputTrait {
     fn verify(self: @PublicInput) -> (felt252, felt252) {
         let public_segments = self.segments;
 
@@ -143,11 +143,11 @@ impl RecursivePublicInputImpl of PublicInputTrait {
             - *self.segments.at(segments::RANGE_CHECK).begin_addr;
         assert_range_u128_le(range_check_uses, range_check_copies);
 
-        let bitwise_copies = trace_length / BITWISE_ROW_RATIO;
-        let bitwise_uses = (*self.segments.at(segments::BITWISE).stop_ptr
-            - *self.segments.at(segments::BITWISE).begin_addr)
-            / 5;
-        assert_range_u128_le(bitwise_uses, bitwise_copies);
+        let n_ecdsa_copies = trace_length / ECDSA_BUILTIN_ROW_RATIO;
+        let n_ecdsa_uses = (*self.segments.at(segments::ECDSA).stop_ptr
+            - *self.segments.at(segments::ECDSA).begin_addr)
+            / 2;
+        assert_range_u128_le(n_ecdsa_uses, n_ecdsa_copies);
     }
 }
 
