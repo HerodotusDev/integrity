@@ -1,5 +1,3 @@
-use core::option::OptionTrait;
-use cairo_verifier::common::array_append::ArrayAppendTrait;
 use core::integer::u128_byte_reverse;
 
 trait FlipEndiannessTrait<F> {

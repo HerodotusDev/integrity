@@ -1,8 +1,7 @@
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait}};
 use cairo_verifier::{
     common::{
-        array_append::ArrayAppendTrait, math::pow, hasher::hash_truncated,
-        flip_endianness::FlipEndiannessTrait, math::DivRemFelt252, math::Felt252PartialOrd,
+        array_append::ArrayAppendTrait, math::pow, hasher::hash_truncated, math::DivRemFelt252,
+        math::Felt252PartialOrd,
     },
     channel::channel::{Channel, ChannelImpl}
 };

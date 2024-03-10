@@ -1,5 +1,3 @@
-use cairo_verifier::common::consts::STARK_PRIME_MINUS_TWO;
-
 fn pow(base: felt252, exp: felt252) -> felt252 {
     if exp == 0 {
         return 1;

@@ -1,4 +1,3 @@
-use core::array::SpanTrait;
 use cairo_verifier::{
     common::{
         flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,

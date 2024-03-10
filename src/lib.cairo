@@ -1,4 +1,5 @@
 mod air;
+mod benches;
 mod channel;
 mod common;
 mod deserialization;
@@ -13,14 +14,12 @@ mod vector_commitment;
 
 mod tests;
 
-mod benches;
-
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
     air::layouts::recursive::public_input::RecursivePublicInputImpl,
 };
 
-const SECURITY_BITS: felt252 = 96;
+const SECURITY_BITS: felt252 = 50;
 
 fn main(serialized_proof: Array<felt252>) -> (felt252, felt252) {
     let mut serialized_proof_span = serialized_proof.span();

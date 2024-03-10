@@ -1,6 +1,5 @@
-use core::array::SpanTrait;
-use pedersen::PedersenTrait;
 use hash::HashStateTrait;
+use pedersen::PedersenTrait;
 
 fn hash_felts(mut elements: Span<felt252>) -> felt252 {
     let mut hash_state = PedersenTrait::new(0);

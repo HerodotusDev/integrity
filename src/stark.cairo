@@ -1,3 +1,9 @@
+mod stark_commit;
+mod stark_verify;
+
+#[cfg(test)]
+mod tests;
+
 use cairo_verifier::{
     air::{
         public_input::{PublicInput, get_public_input_hash},
@@ -22,12 +28,6 @@ use cairo_verifier::{
     },
     vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
 };
-
-mod stark_commit;
-mod stark_verify;
-
-#[cfg(test)]
-mod tests;
 
 #[derive(Drop)]
 struct StarkProof {
