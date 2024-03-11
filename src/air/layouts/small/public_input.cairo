@@ -128,9 +128,9 @@ impl SmallPublicInputImpl of PublicInputTrait {
 
         assert(*self.layout == LAYOUT_CODE, 'wrong layout code');
 
-        let n_output_uses = (*self.segments.at(segments::OUTPUT).stop_ptr
+        let output_uses = (*self.segments.at(segments::OUTPUT).stop_ptr
             - *self.segments.at(segments::OUTPUT).begin_addr);
-        assert_range_u128(n_output_uses);
+        assert_range_u128(output_uses);
 
         let pedersen_copies = trace_length / PEDERSEN_BUILTIN_ROW_RATIO;
         let pedersen_uses = (*self.segments.at(segments::PEDERSEN).stop_ptr

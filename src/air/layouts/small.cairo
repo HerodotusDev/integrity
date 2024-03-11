@@ -79,8 +79,8 @@ impl SmallAIRCompositionImpl of AIRComposition<InteractionElements, PublicInput>
             },
             pedersen_points_x,
             pedersen_points_y,
-            ecdsa_generator_points_x: ecdsa_generator_points_x,
-            ecdsa_generator_points_y: ecdsa_generator_points_y,
+            ecdsa_generator_points_x,
+            ecdsa_generator_points_y,
             memory_multi_column_perm_perm_interaction_elm: memory_z,
             memory_multi_column_perm_hash_interaction_elm0: memory_alpha,
             range_check16_perm_interaction_elm: interaction_elements
