@@ -1569,3 +1569,168 @@ fn eval_ecdsa_y(point: felt252) -> felt252 {
     let res = res * point + (0x562f636b49796e469dfe9e6748c4468f340e8f69e3f79cfe6925a261198dbb3);
     res
 }
+
+// Evaluates a periodic column at a point.
+// A periodic column of N values yields these values on the subgroup of size N.
+// To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
+// instead.
+fn eval_poseidon_poseidon_full_round_key0(point: felt252) -> felt252 {
+    let res = 0;
+    let res = res * point + (0x7ed6ec4a18e23340489e4e36db8f4fcebf6b6ebd56185c29397344c5deea4c8);
+    let res = res * point + (0x5f3e9a55edfd3f6abac770ff5606fca5aaf7074bedae94ade74395453235e8e);
+    let res = res * point + (0x11eaccb2939fb9e21a2a44d6f1e0608aac4248f817bc9458cce8a56077a22b1);
+    let res = res * point + (0x1b8c9c9cfe3c81279569f1130da6064cbf12c4b828d7e0cf60735514cf96c22);
+    let res = res * point + (0x7865d89fa1e9dce49da0ac14d7437366bd450fb823a4fd3d2d8b1726f924c8f);
+    let res = res * point + (0x712a2cab5d2a48c76a95de8f29a898d655cc216172a400ca054d6eb9950d698);
+    let res = res * point + (0x2574ea7cc37bd716e0ec143a2420103589ba7b2af9d6b07569af3b108450a90);
+    let res = res * point + (0x47da67f078d657e777a79423be81a5d41f445f9455b207ec9768858cfd134f1);
+    res
+}
+
+// Evaluates a periodic column at a point.
+// A periodic column of N values yields these values on the subgroup of size N.
+// To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
+// instead.
+fn eval_poseidon_poseidon_full_round_key1(point: felt252) -> felt252 {
+    let res = 0;
+    let res = res * point + (0x143ce163d9e857b549efa236512d839954411bc04e888aa114215f991ee8a57);
+    let res = res * point + (0x4430620ab3eb75b8b2c3ee9c8bafd3408efbe93661f670002b3f96d354c2bc0);
+    let res = res * point + (0x16ba64f5ffc9bcb3a71b49f79a1c26ce608e33f1b6ce5fdfeae1c732b5d0b5);
+    let res = res * point + (0x26315e8a17d10270d98790f94772ab99b185baeab1e0ec64e783de5c5b35859);
+    let res = res * point + (0x21052369229137423604dbda64cdab20290c4da86882c0444750eaf0687d1c8);
+    let res = res * point + (0x67fa64d83009acfaae5a7a0e910d322b5d4dbc825090c1239dc68cd18338ed4);
+    let res = res * point + (0x17190a2c4fe2fb2a1c4061a3aaa8d89e8a363f653a905e43ab819ff47516c67);
+    let res = res * point + (0x587584d86e310744ac2167594e87c72847cc1018d766c61b29b572ba4552a80);
+    res
+}
+
+// Evaluates a periodic column at a point.
+// A periodic column of N values yields these values on the subgroup of size N.
+// To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
+// instead.
+fn eval_poseidon_poseidon_full_round_key2(point: felt252) -> felt252 {
+    let res = 0;
+    let res = res * point + (0x565a88ff293c0a9c48cb67be157ad800604990d390e1b173e9bdc09abf9f788);
+    let res = res * point + (0x6217cc4bd0f62fec8a25f305b3914f3c6c2df7701aee105c60cd37ef815239a);
+    let res = res * point + (0x27a6021b1b06d9adf868d5ba9b068ecdee5e65fe62163095b96f7f4c2fa6c3e);
+    let res = res * point + (0x71273291cc9fb7c500b008872a8890e1e3917ea2b954d1f4a9af67427323126);
+    let res = res * point + (0x2fa9daffc6ffa8c6dd8cf633aa7c2d2a113a885f4ba935ff7f0198a4ea056cf);
+    let res = res * point + (0x71a637fccbfdcc8da4828cb4734b6887fe9ebd78725ceb92d2756ea4e4c86fb);
+    let res = res * point + (0x646004831088eedddafcec3518108e2033e3e613eb2b2b0ca972f75946901ba);
+    let res = res * point + (0x7d384f90e1f21f53dbafb1648ecdb97d8c020dbad501b0d79a491587484fefa);
+    res
+}
+
+// Evaluates a periodic column at a point.
+// A periodic column of N values yields these values on the subgroup of size N.
+// To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
+// instead.
+fn eval_poseidon_poseidon_partial_round_key0(point: felt252) -> felt252 {
+    let res = 0;
+    let res = res * point + (0x3413bee8966e47edad4d25455e74664d547713650ae8ef6f7f4bd1d56077b55);
+    let res = res * point + (0x624b1ba9e7d45d86f0a2ef7896a159e8e3d418234f3950ae2c1a1106b4d8e64);
+    let res = res * point + (0xaba2f20ea6ee9cae2a9a5ffab6bb531cae756025a2039dbb3fdc7f6a7ea66a);
+    let res = res * point + (0x18e5bd14d527406ed33ef180f4351d66ba350fd42a210f14b13774666960edd);
+    let res = res * point + (0x6fba7ab30e117b743f154c4c1ef96007fbbff3b8cddbffbaa3cf1620dad0df2);
+    let res = res * point + (0x641cd514114aa297433e1ebb6f6fe8cf4c5b3816df09b39b38bf3851328781b);
+    let res = res * point + (0x52208d8264d42061c7107f7945857541692a87bb1b4b4307c17d43193be3ad);
+    let res = res * point + (0x44e2813694e35f41733099371352f930e87366ded64841028c54de5ae0cf86e);
+    let res = res * point + (0x58372f1bada3f7d38dee566363d48fc45a542d57a2357a00006f8c4508f3858);
+    let res = res * point + (0x592bcd7384ba517197075eca669701a6d8eac3bdf21af499e3defd891fc8787);
+    let res = res * point + (0xaa7db6d9cd63141d64bc671099b444013d3ac056afb7223fdf97319f7bd76f);
+    let res = res * point + (0x1e8db0feaf54299f9e0daa802e5a00c5b43dc189f622dc9d0d8039fc8f4eb16);
+    let res = res * point + (0x1125b5ff47f1e0c4105a6b62e2a6dcf3d71812409c77b4c708825299e70bcfd);
+    let res = res * point + (0x7fdffd1f06d45f58c50609eddb9e4dcdf9845c3e13ae29fa3e6a4134615463a);
+    let res = res * point + (0x770f2c3dcb1befd2dbdd3e874a40ec38860828877139317823bc60ed3b69be4);
+    let res = res * point + (0x54beab500732d6102d1d501adac8f41fd04cf465e580d8664009c12e28fc5ed);
+    let res = res * point + (0xc1e6049a1a088b613f8cb972734a8c4ee6d4bc5a359d5ebf272eff71312c01);
+    let res = res * point + (0x24c477665b5e4b3843749877bcce106ac76c085f15b0759fe9d8f1d04b723be);
+    let res = res * point + (0x4d2b779ec13ff444eafa96e2e505999c3f79b06939f6ec492378d2ccb49c3dc);
+    let res = res * point + (0x6429e4ca7107ea29d85b4c45f4926f82d9d72206fdf33d7e499243b6a9ca81f);
+    let res = res * point + (0x42240cb9baca23c27a0eb13e654a5af7a490b95b51a152b8a2da5f0752226);
+    let res = res * point + (0x3c53eb4b33fc6cd4e86c4f3fbe866d358233a54b0f7c626f0ef3164ac48b189);
+    let res = res * point + (0x5cd8a4ce2b3274c77469ce2c328d9f56ed2bafe7992707f64ce99d42968f648);
+    let res = res * point + (0x2b23cce09410c815c33da25e53f0204d5d6f474f5f784647a19e9114e4cf753);
+    let res = res * point + (0x398c6094de25847f31d6458f8bb9c6952ba9092ba7abc54d08050017ae2db64);
+    let res = res * point + (0x3a8053abe10aed5567dd7d40517596eb747cb829760fbc06f5bc322a0911c84);
+    let res = res * point + (0x324ea07796ce3412e6f938ef1a2974abcb3f8ff7114fef8e0fef438b6e69b89);
+    let res = res * point + (0x4d5422ca4881cbaf9e99fe864068190670a6a1074e21de1382759182177eaf1);
+    let res = res * point + (0x6db31dad71bfece85b88afc622cfdeaa557d4bfb3d3a313eaa4235dc7ec4ac9);
+    let res = res * point + (0xb375c79888613ea49838515cb5f6842dea48d273b9699855c67d0978f13925);
+    let res = res * point + (0x2a584b677c86b2a15d48c57df9dad7188545a3a994fef603e86ac16ce1facfa);
+    let res = res * point + (0x4291c5f5cb048e49b20c5b3caa1fa12b99ef81488aa83663110b12abfe704d8);
+    let res = res * point + (0x6f2eda70c3c0c744df7d7bdc1ded3d80f290f951649456874904374564edf90);
+    let res = res * point + (0x489dffafde7fd6ef39e1542159c9d49bfdefe802fe6b358d6ddd1f28942ba69);
+    let res = res * point + (0x163df55208e1561da127d03f6b63d46e0aa05a1ef3321cfd5711eb4d3fb3ff1);
+    let res = res * point + (0x293681f3dfad87cd19bd1cdf5c6244a5f943e411d7a035121621f8692fa77f9);
+    let res = res * point + (0x50c9a8d62edbd150d6090cf1f0831c066282b324ca794df5aca0fbc9e71714d);
+    let res = res * point + (0x18e0bd645ba4fec89f9991a934891217ba872651494fc08589186d6e6dda88d);
+    let res = res * point + (0x8bce38b2895c04a0c7620adef3a51a8319fc4e151359a52809b1509f48f662);
+    let res = res * point + (0x5add69d3f68df10a5d626eed04e8c34e83780c2c3eb9e07bc49ce7f1fe9f618);
+    let res = res * point + (0x90916a638846883fc6bbc6c241dd630e4346567e5520bffeb17d0b05a17cbc);
+    let res = res * point + (0x6ec11adaf8da159cac400a273fdd7765371056001451e6441a6cc9da18beb31);
+    let res = res * point + (0x58e3b2dc12d9ffe27bf5dc6c28a216e5612a7a0775f902c537806d2f60f4226);
+    let res = res * point + (0x3b09364e6fc149b3063a5442b78165712343e075297108206e246e0de596874);
+    let res = res * point + (0x2a05aa150252d7f810276589f79dbd0aa619289cd283f72ae0d34f141635a13);
+    let res = res * point + (0x7e9c35a05ef0ccb7cfe93272e0b46324e97e1512fa4c6e1d30ca2c00dc207b8);
+    let res = res * point + (0x4a2ae027e432c0863e1749b62e8533e649ed78091e11155d341cfe47168bb0);
+    let res = res * point + (0x7f610dcb987484937a18dbae85c5b46f0bbc5f2cd845487501b2f1f7bf9357c);
+    let res = res * point + (0x41b07a5f9241075a4ff1b76a9a529c9315f2435f79bab965fce61c8f616badd);
+    let res = res * point + (0x301f8e1e5f31d9f0546da692c88e007789002e56c4ccf68f3bd5fba12db838f);
+    let res = res * point + (0x410d9eaa6c615c482f890e4c738e555ac3e4892272617bc7a0ca80613e27fc9);
+    let res = res * point + (0x583d1f426394c7610a252cae8485a3e6fe2f5fcadc19fb5097a5c55c0787fd4);
+    let res = res * point + (0x5bd0655433a76820184b6dd6fa4f3a67ebc321c75d1f9bc7422fac69074e2ff);
+    let res = res * point + (0x74155a89a923ea1e2a23985156091d435b5b815ae1e9fa573330f01d880e52f);
+    let res = res * point + (0x7523eb70ea4b345b7be4f151bfff9cdbfd589120b63d0b7a21a5cdc3d36aed9);
+    let res = res * point + (0x4dda9dce889ee4e52e93f3ccd9f32bbfbad5a8e1768aecab88170f78d5f0de1);
+    let res = res * point + (0x1cdad5777ab21cdea2c8f5994456ce2253e8b020ef32d4d12714106b7d2f632);
+    let res = res * point + (0x1871b013899aedb3e2551a73c9f7f4189e86dddd5dfb8db56965e67812ace0a);
+    let res = res * point + (0x4eecc6622ccb897afcd651f5bb655b47101430a53a29bf743f5b1041ac8ff13);
+    let res = res * point + (0x5432e64cc316b7f386cf5467af442acb9d986873c5c513bdbdd133259ad54e3);
+    let res = res * point + (0x1da26a447725d6a61f31012a81300349baf580ddfaada24630d03ed293da28a);
+    let res = res * point + (0x3bd2aeed72b102694fc4a99c25a5250c234c91b03680ef4212885989ba9267f);
+    let res = res * point + (0x4ddf2d7e380560d571e765deec379fec8ae4d909848b18b5389ec295140687d);
+    let res = res * point + (0x47237ffdabc0cba010385bf48714bb06a6a2b9316394603c450330e743124ce);
+    res
+}
+
+// Evaluates a periodic column at a point.
+// A periodic column of N values yields these values on the subgroup of size N.
+// To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
+// instead.
+fn eval_poseidon_poseidon_partial_round_key1(point: felt252) -> felt252 {
+    let res = 0;
+    let res = res * point + (0x26f2aa4059eb10ba60302d001cdf4a5482d43e2d7d05bd2b5486cd8c52ab9be);
+    let res = res * point + (0x722090545903a2f0b654199a04a5db8fc128eb36cbad8255818bf1d5db2736d);
+    let res = res * point + (0x7510614da9b9ad318575990ca2107d7b8b4e66622a28b08499b7444a86e0d37);
+    let res = res * point + (0x7658d45c2170beb301fdad273c8aea07d4add3b02890567fa38c0f6b5c1689e);
+    let res = res * point + (0x38ea9c051a4621f17bf1d34344272953018e378f8b587aabac79157963d7a11);
+    let res = res * point + (0x794689eb6cd1d1acb82b7d5741d61a961b28a3f5468403a1981ddbc21eca96d);
+    let res = res * point + (0x4883c98a63a118749cc26ac47607af9d17fb8fd36ccb743e2b6dc13f202a42f);
+    let res = res * point + (0x8729cd967a805126fa9fd4136a390051c690dfc413f1de62f6fc13123f9586);
+    let res = res * point + (0x17dae5cd6089cc03cafa39762a14985af1e7a05e9bbf55d3952c86839098c06);
+    let res = res * point + (0x7406ca984b25f47732349b87565103d2bbf220ebab93085c063ce5ef28e7337);
+    let res = res * point + (0x30e1c6b719648866af8220a2220904dd632b089e54ca459dcab5d853043fc25);
+    let res = res * point + (0x26993661e64b45b5787fd8b923ecfb6f681b554191429fbfd96f7010aba3115);
+    let res = res * point + (0x57455541d2426a546ddc818e996e5e4120a233416ce5da3422b065b60c287d3);
+    let res = res * point + (0x6ae8114b8a4b0e360f3108b4c4679c6e51d7870c05c3cc5504007a29c118b53);
+    let res = res * point + (0x5acb7c9ee9cc689cf9ed6c611a1bd730f43c4ea34b94e07ed804fb6d2bb8d4f);
+    let res = res * point + (0x29a15985dd04254ad523298f35de868c8f4538f2d800d6005634b3a32bb00f2);
+    let res = res * point + (0x292b8bad037db0033c816ef6752c1bb9d551215a498452832f721cd95519372);
+    let res = res * point + (0x31a3edaa5ab567b05861b16a6e0da76ea8e159108d2fe83eb73ad7b8f86ef7a);
+    let res = res * point + (0x2d35fd2bf29729904a91cc5ebd7d79362c34828e0c37e09aa4907de26a45fb3);
+    let res = res * point + (0x3b1f311a53410f51c90fd8a9189465059ef46149b8fb7930963ead8eabaf53a);
+    let res = res * point + (0x230279d6296ebacdcc9cfa5bf60e5a1d4ebe3ff0ac8f8bf8318c988f5c99bf8);
+    let res = res * point + (0x2369e96b64fea009a1f66290a5dfe08010918b4ce3bfc9066739a4dbe133a0d);
+    let res = res * point + (0x13816f7acb88c6bf0356430faf0c4fed6972a9498b29919af38d9d5f5ae440a);
+    let res = res * point + (0x787d78882592b85f1de17e47bad43712e69d0899fc94beff77d62d2c4a1375c);
+    let res = res * point + (0x1619514ce1cabc2996036ec8d3e3476a8a2d9e83be3e8aa7a020ad11b548622);
+    let res = res * point + (0x176e131cb6830fe0570f692f5cce9f3f37d3444e647a318f35d1138bb580133);
+    let res = res * point + (0x4a300aa8b63feafeec79c07fe87991c0e85737ae1fbe3aa7f60d285bcf89cf3);
+    let res = res * point + (0x7845d76e25e1fe6f884a162b379bad9bd7e421befbd911bfd1810a6973ca552);
+    let res = res * point + (0x32e59ba3c11289dfbca64ae5646d50270c6f78f070e0ed6f1b24f45ce6832a6);
+    let res = res * point + (0x3779baab792c4c306342b4e6640c4a1c315ff9d08e0fcc97576ef889dd657b6);
+    let res = res * point + (0x6712fc14a35a8b515bfc975d8cf356c749b04d5d7abc78ba6b2aa0924d6146f);
+    let res = res * point + (0x4b7fdbd1ae93d05ecb29e4702e1715f462cce519dba31b9f4b87107ada27016);
+    res
+}

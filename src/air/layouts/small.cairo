@@ -17,7 +17,7 @@ use cairo_verifier::{
             },
         },
         air::{AIRComposition, AIROods}, diluted::get_diluted_product,
-        pedersen::{eval_pedersen_x, eval_pedersen_y, eval_ecdsa_x, eval_ecdsa_y},
+        periodic_columns::{eval_pedersen_x, eval_pedersen_y, eval_ecdsa_x, eval_ecdsa_y},
         public_input::{PublicInput, get_public_memory_product_ratio}
     },
     common::{math::{Felt252Div, Felt252PartialOrd, pow}, asserts::assert_range_u128}
