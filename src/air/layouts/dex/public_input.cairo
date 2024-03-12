@@ -6,7 +6,7 @@ use cairo_verifier::{
     air::{
         public_memory::{Page, PageTrait},
         constants::{MAX_ADDRESS, INITIAL_PC, MAX_LOG_N_STEPS, MAX_RANGE_CHECK},
-        layouts::small::constants::{
+        layouts::dex::constants::{
             segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, ECDSA_BUILTIN_ROW_RATIO
         },
@@ -18,7 +18,7 @@ use cairo_verifier::{
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 
-impl SmallPublicInputImpl of PublicInputTrait {
+impl DexPublicInputImpl of PublicInputTrait {
     fn verify(self: @PublicInput) -> (felt252, felt252) {
         let public_segments = self.segments;
 
