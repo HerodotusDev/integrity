@@ -19,6 +19,6 @@ calldata=$(<$1)
 sncast --profile testnet \
   --wait \
   invoke \
-  --contract-address 0x3ba45c52dfa67d8c85f75001706f9fd5e34ab582b87d7f536f347ce35584ffc \
+  --contract-address 0x314277dca0fdac09e92f63c244d2b35d5d6efb2c32cf71289029bc5d8310ae5 \
   --function "verify_and_register_fact" \
   --calldata $calldata
