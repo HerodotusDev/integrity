@@ -20,7 +20,7 @@ use cairo_verifier::{
     air::public_input::PublicInputTrait
 };
 
-const SECURITY_BITS: felt252 = 96;
+const SECURITY_BITS: felt252 = 50;
 
 fn main(serialized_proof: Array<felt252>) -> (felt252, felt252) {
     let mut serialized_proof_span = serialized_proof.span();
