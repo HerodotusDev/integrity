@@ -1,5 +1,5 @@
 mod verifier;
-
+mod bootloader;
 use cairo_verifier::StarkProofWithSerde;
 use starknet::ContractAddress;
 
