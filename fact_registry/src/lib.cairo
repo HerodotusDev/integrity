@@ -1,6 +1,7 @@
-mod component;
+mod verifier;
+mod bootloader;
 
-use component::StarkProofWithSerde;
+use cairo_verifier::StarkProofWithSerde;
 use starknet::ContractAddress;
 
 #[starknet::interface]
@@ -8,6 +9,9 @@ trait IFactRegistry<TContractState> {
     fn verify_and_register_fact(ref self: TContractState, stark_proof: StarkProofWithSerde);
     fn verify_and_register_fact_from_contract(
         ref self: TContractState, contract_address: ContractAddress
+    );
+    fn verify_and_register_fact_append_bootloader(
+        ref self: TContractState, stark_proof: StarkProofWithSerde
     );
     fn is_valid(self: @TContractState, fact: felt252) -> bool;
 }
@@ -19,22 +23,27 @@ trait ISmartProof<TContractState> {
 
 #[starknet::contract]
 mod FactRegistry {
+    use cairo_verifier::StarkProofWithSerde;
     use starknet::ContractAddress;
     use core::{
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
     use fact_registry::{
-        component::{CairoVerifier, ICairoVerifier, StarkProofWithSerde}, IFactRegistry
+        verifier::{CairoVerifier, ICairoVerifier, StarkProof}, IFactRegistry,
+        bootloader::{Bootloader, IBootloader}
     };
     use super::{ISmartProofDispatcher, ISmartProofDispatcherTrait};
 
     component!(path: CairoVerifier, storage: cairo_verifier, event: CairoVerifierEvent);
+    component!(path: Bootloader, storage: bootloader, event: BootloaderEvent);
 
     #[storage]
     struct Storage {
         #[substorage(v0)]
         cairo_verifier: CairoVerifier::Storage,
+        #[substorage(v0)]
+        bootloader: Bootloader::Storage,
         facts: LegacyMap<felt252, bool>,
     }
 
@@ -43,6 +52,7 @@ mod FactRegistry {
     enum Event {
         #[flat]
         CairoVerifierEvent: CairoVerifier::Event,
+        BootloaderEvent: Bootloader::Event,
         FactRegistered: FactRegistered,
     }
 
@@ -55,11 +65,8 @@ mod FactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn verify_and_register_fact(ref self: ContractState, stark_proof: StarkProofWithSerde) {
-            let (program_hash, output_hash) = self.cairo_verifier.verify_proof(stark_proof);
-            let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
-
-            self.emit(Event::FactRegistered(FactRegistered { fact }));
-            self.facts.write(fact, true);
+            let (program_hash, output_hash) = self.cairo_verifier.verify_proof(stark_proof.into());
+            self._register_fact(program_hash, output_hash);
         }
 
         fn verify_and_register_fact_from_contract(
@@ -72,8 +79,35 @@ mod FactRegistry {
                 );
         }
 
+        fn verify_and_register_fact_append_bootloader(
+            ref self: ContractState, stark_proof: StarkProofWithSerde
+        ) {
+            let (program_hash, output_hash) = self
+                .cairo_verifier
+                .verify_proof(
+                    StarkProof {
+                        config: stark_proof.config.into(),
+                        public_input: self
+                            .bootloader
+                            .add_to_public_input(stark_proof.public_input.into()),
+                        unsent_commitment: stark_proof.unsent_commitment.into(),
+                        witness: stark_proof.witness.into(),
+                    }
+                );
+            self._register_fact(program_hash, output_hash);
+        }
+
         fn is_valid(self: @ContractState, fact: felt252) -> bool {
             self.facts.read(fact)
+        }
+    }
+
+    #[generate_trait]
+    impl InternalFactRegistry of InternalFactRegistryTrait {
+        fn _register_fact(ref self: ContractState, program_hash: felt252, output_hash: felt252,) {
+            let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
+            self.emit(Event::FactRegistered(FactRegistered { fact }));
+            self.facts.write(fact, true);
         }
     }
 }
