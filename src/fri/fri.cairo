@@ -14,7 +14,7 @@ use cairo_verifier::{
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriUnsentCommitment {
     // Array of size n_layers - 1 containing unsent table commitments for each inner layer.
     inner_layers: Span<felt252>,
@@ -23,7 +23,7 @@ struct FriUnsentCommitment {
     last_layer_coefficients: Span<felt252>,
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct FriCommitment {
     config: FriConfig,
     // Array of size n_layers - 1 containing table commitments for each inner layer.
@@ -35,7 +35,7 @@ struct FriCommitment {
     last_layer_coefficients: Span<felt252>,
 }
 
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriDecommitment {
     // Array of size n_values, containing the values of the input layer at query indices.
     values: Span<felt252>,
@@ -45,7 +45,7 @@ struct FriDecommitment {
 }
 
 // A witness for the decommitment of the FRI layers over queries.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriWitness {
     // An array of size n_layers - 1, containing a witness for each inner layer.
     layers: Span<FriLayerWitness>,
@@ -53,7 +53,7 @@ struct FriWitness {
 
 // A witness for a single FRI layer. This witness is required to verify the transition from an
 // inner layer to the following layer.
-#[derive(Drop, Copy)]
+#[derive(Drop, Copy, Serde)]
 struct FriLayerWitness {
     // Values for the sibling leaves required for decommitment.
     leaves: Span<felt252>,
