@@ -8,8 +8,7 @@ use cairo_verifier::{
 // #[available_gas(9999999999)]
 // fn test_stark_commit() {
 //     let mut channel = ChannelTrait::new_with_counter(
-//         u256 { low: 0xba9d17a3ebd900899148b125421c118f, high: 0x87433b8dd90acbfe5abea8474d795191 },
-//         0x0
+//         0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
 //     );
 // 
 //     let public_input = stone_proof_fibonacci::public_input::get();
@@ -25,13 +24,10 @@ use cairo_verifier::{
 //     );
 // 
 //     assert(
-//         channel
-//             .digest == u256 {
-//                 low: 0x2c31f04a6b9c83c2464b2f1688fc719e, high: 0xe631d91ef56f7e4cc7fe09cff2cc4e94
-//             },
+//         channel.digest == 0x9c769c7e0797cf043b06b980072a798b141f2bc41b14e85ad93ba178b13de7,
 //         'Invalid value'
 //     );
-//     assert(channel.counter == 0, 'Invalid value');
+//     assert(channel.counter == 0x0, 'Invalid value');
 // }
 // === BLAKE ONLY END ===
 
@@ -40,8 +36,7 @@ use cairo_verifier::{
 #[available_gas(9999999999)]
 fn test_stark_commit() {
     let mut channel = ChannelTrait::new_with_counter(
-        u256 { low: 0x22b3f4d7841a28271009bef644a84a5e, high: 0x8f17c0c0dcde2144cd36213ab3aaff1b },
-        0x0
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
     );
 
     let public_input = stone_proof_fibonacci_keccak::public_input::get();
@@ -57,13 +52,10 @@ fn test_stark_commit() {
     );
 
     assert(
-        channel
-            .digest == u256 {
-                low: 0x210c99e614db21dcd882b7f3734a477b, high: 0x29786ad320869955ebf8c196e16009e1
-            },
+        channel.digest == 0x28f12249c8cba51796d59e7573019ce2b4608c9a8cdeee26e821b0763c69229,
         'Invalid value'
     );
-    assert(channel.counter == 0, 'Invalid value');
+    assert(channel.counter == 0x0, 'Invalid value');
 }
 // === KECCAK ONLY END ===
 

@@ -1,7 +1,7 @@
 use cairo_verifier::{
     channel::channel::ChannelImpl,
     air::{traces::{traces_commit, traces_decommit}, traces::TracesConfigTrait},
-    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
+    tests::{stone_proof_fibonacci_keccak, stone_proof_fibonacci}
 };
 
 // === BLAKE ONLY BEGIN ===
@@ -10,15 +10,14 @@ use cairo_verifier::{
 // fn test_traces_config() {
 //     let traces_config = stone_proof_fibonacci::traces::config::get();
 // 
-//     traces_config.validate(0x16, 0x16);
+//     traces_config.validate(0x16, 0x64);
 // }
 // 
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_traces_commit() {
 //     let mut channel = ChannelImpl::new_with_counter(
-//         u256 { low: 0xba9d17a3ebd900899148b125421c118f, high: 0x87433b8dd90acbfe5abea8474d795191 },
-//         0x0,
+//         0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
 //     );
 //     let public_input = @stone_proof_fibonacci::public_input::get();
 //     let unsent_commitment = stone_proof_fibonacci::traces::unsent_commitment::get();
@@ -32,13 +31,9 @@ use cairo_verifier::{
 //     );
 // 
 //     assert(
-//         channel
-//             .digest == u256 {
-//                 low: 0x8823a41f7994f81c6453f4bc3cad1c10, high: 0x75f85ae3fd3ff6b5f63029a51040037e
-//             },
+//         channel.digest == 0x484f5da62866b3e2a0d4ceb5e00cf7ba33ec5c57ce032df6ca74a40cc6015a0,
 //         'Invalid value'
 //     );
-// 
 //     assert(channel.counter == 0x0, 'Invalid value')
 // }
 // 
@@ -60,15 +55,14 @@ use cairo_verifier::{
 fn test_traces_config() {
     let traces_config = stone_proof_fibonacci_keccak::traces::config::get();
 
-    traces_config.validate(0x16, 0x64);
+    traces_config.validate(0x14, 0x64);
 }
 
 #[test]
 #[available_gas(9999999999)]
 fn test_traces_commit() {
     let mut channel = ChannelImpl::new_with_counter(
-        u256 { low: 0x22b3f4d7841a28271009bef644a84a5e, high: 0x8f17c0c0dcde2144cd36213ab3aaff1b },
-        0x0,
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
     );
     let public_input = @stone_proof_fibonacci_keccak::public_input::get();
     let unsent_commitment = stone_proof_fibonacci_keccak::traces::unsent_commitment::get();
@@ -82,13 +76,9 @@ fn test_traces_commit() {
     );
 
     assert(
-        channel
-            .digest == u256 {
-                low: 0xa1a3e0273721e6961814f180b2d8caeb, high: 0x6f68726d3fdeb87e6c9b3d3072531b07
-            },
+        channel.digest == 0x39d06a4cd9e64c43aaec44a5415c4cbdf530040b2fc82308ceddb5f2be39dd5,
         'Invalid value'
     );
-
     assert(channel.counter == 0x0, 'Invalid value')
 }
 

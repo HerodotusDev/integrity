@@ -16,7 +16,7 @@ fn get() -> TracesCommitment {
             config: traces_config.original,
             vector_commitment: VectorCommitment {
                 config: VectorCommitmentConfig {
-                    height: 0x16, n_verifier_friendly_commitment_layers: 0x16
+                    height: 0x16, n_verifier_friendly_commitment_layers: 0x64
                 },
                 commitment_hash: unsent_commitment.original,
             },
@@ -26,7 +26,7 @@ fn get() -> TracesCommitment {
             config: traces_config.interaction,
             vector_commitment: VectorCommitment {
                 config: VectorCommitmentConfig {
-                    height: 0x16, n_verifier_friendly_commitment_layers: 0x16
+                    height: 0x16, n_verifier_friendly_commitment_layers: 0x64
                 },
                 commitment_hash: unsent_commitment.interaction,
             },

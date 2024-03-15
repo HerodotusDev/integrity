@@ -1,9 +1,10 @@
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait, hasher::hash,
-        math::{pow, Felt252PartialOrd, Felt252Div}, asserts::assert_range_u128_le,
-        array_print::SpanPrintTrait, hash::hash_felts,
+        array_extend::ArrayExtend, flip_endianness::FlipEndiannessTrait,
+        array_append::ArrayAppendTrait, hasher::hash, math::{pow, Felt252PartialOrd, Felt252Div},
+        asserts::{assert_range_u128_le, assert_range_u128}, array_print::SpanPrintTrait,
+        hash::hash_felts,
     },
     air::{
         public_memory::{
@@ -11,11 +12,13 @@ use cairo_verifier::{
         },
         constants::{
             segments, MAX_ADDRESS, get_builtins, INITIAL_PC, MAX_LOG_N_STEPS, CPU_COMPONENT_HEIGHT,
-            MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_RATIO, RC_BUILTIN_RATIO, BITWISE_RATIO
+            MAX_RANGE_CHECK, LAYOUT_CODE, PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO,
+            BITWISE_ROW_RATIO, CPU_COMPONENT_STEP
         }
     },
     domains::StarkDomains
 };
+use poseidon::poseidon_hash_span;
 
 #[derive(Drop, Copy, PartialEq)]
 struct SegmentInfo {
@@ -28,8 +31,8 @@ struct SegmentInfo {
 #[derive(Drop, PartialEq)]
 struct PublicInput {
     log_n_steps: felt252,
-    rc_min: felt252,
-    rc_max: felt252,
+    range_check_min: felt252,
+    range_check_max: felt252,
     layout: felt252,
     dynamic_params: Array<felt252>,
     segments: Array<SegmentInfo>,
@@ -42,7 +45,7 @@ struct PublicInput {
 #[generate_trait]
 impl PublicInputImpl of PublicInputTrait {
     // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
-    fn get_public_input_hash(self: @PublicInput) -> u256 {
+    fn get_public_input_hash(self: @PublicInput) -> felt252 {
         // Main page hash.
         let mut main_page_hash_state = PedersenTrait::new(0);
         let mut i: u32 = 0;
@@ -57,71 +60,47 @@ impl PublicInputImpl of PublicInputTrait {
             .update_with(AddrValueSize * self.main_page.len());
         let main_page_hash = main_page_hash_state.finalize();
 
-        let mut hash_data = ArrayTrait::new(); // u32 for blake, u64 for keccak
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.log_n_steps).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_min).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.rc_max).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.layout).into());
-
-        // Dynamic params.
-        let mut i: u32 = 0;
-        loop {
-            if i == self.dynamic_params.len() {
-                break;
-            }
-
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, (*self.dynamic_params.at(i)).into());
-
-            i += 1;
-        };
+        let mut hash_data = ArrayTrait::<felt252>::new();
+        hash_data.append(*self.log_n_steps);
+        hash_data.append(*self.range_check_min);
+        hash_data.append(*self.range_check_max);
+        hash_data.append(*self.layout);
+        hash_data.extend(self.dynamic_params.span());
 
         // Segments.
-        let mut i: u32 = 0;
+        let mut segments = self.segments.span();
         loop {
-            if i == self.segments.len() {
-                break;
+            match segments.pop_front() {
+                Option::Some(seg) => {
+                    hash_data.append(*seg.begin_addr);
+                    hash_data.append(*seg.stop_ptr);
+                },
+                Option::None => { break; }
             }
-
-            let segment = *self.segments.at(i);
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, segment.begin_addr.into());
-            ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, segment.stop_ptr.into());
-
-            i += 1;
         };
 
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_addr).into());
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, (*self.padding_value).into());
-        hash_data
-            .append_big_endian(Into::<u32, u256>::into(1 + self.continuous_page_headers.len()));
+        hash_data.append(*self.padding_addr);
+        hash_data.append(*self.padding_value);
+        hash_data.append(1 + self.continuous_page_headers.len().into());
 
         // Main page.
-        hash_data.append_big_endian(Into::<_, u256>::into(self.main_page.len()));
-        ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, main_page_hash.into());
+        hash_data.append(self.main_page.len().into());
+        hash_data.append(main_page_hash);
 
         // Add the rest of the pages.
-        let mut i: u32 = 0;
+        let mut continuous_page_headers = self.continuous_page_headers.span();
         loop {
-            if i == self.continuous_page_headers.len() {
-                break;
+            match continuous_page_headers.pop_front() {
+                Option::Some(continuous_page) => {
+                    hash_data.append(*continuous_page.start_address);
+                    hash_data.append(*continuous_page.size);
+                    hash_data.append(*continuous_page.hash);
+                },
+                Option::None => { break; }
             }
-
-            let continuous_page = *self.continuous_page_headers.at(i);
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, continuous_page.start_address.into());
-            ArrayAppendTrait::<
-                _, u256
-            >::append_big_endian(ref hash_data, continuous_page.size.into());
-            ArrayAppendTrait::<_, u256>::append_big_endian(ref hash_data, continuous_page.hash);
-
-            i += 1;
         };
 
-        hash(hash_data).flip_endianness()
+        poseidon_hash_span(hash_data.span())
     }
 
     // Returns the ratio between the product of all public memory cells and z^|public_memory|.
@@ -199,7 +178,7 @@ impl PublicInputImpl of PublicInputTrait {
         assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
         assert(*program[5] == 0x0, 'Invalid program');
 
-        let program_hash = hash_felts(program);
+        let program_hash = poseidon_hash_span(program);
 
         // 2. Execution segment
         // 2.1 Initial_fp, initial_pc
@@ -242,7 +221,7 @@ impl PublicInputImpl of PublicInputTrait {
             .extract_range(
                 output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
             );
-        let output_hash = hash_felts(output);
+        let output_hash = poseidon_hash_span(output);
 
         // Check main page len
         assert(
@@ -253,29 +232,36 @@ impl PublicInputImpl of PublicInputTrait {
         (program_hash, output_hash)
     }
 
-    fn validate(self: @PublicInput, domains: @StarkDomains) {
+    fn validate(self: @PublicInput, stark_domains: @StarkDomains) {
         assert_range_u128_le(*self.log_n_steps, MAX_LOG_N_STEPS);
         let n_steps = pow(2, *self.log_n_steps);
-        assert(n_steps * CPU_COMPONENT_HEIGHT == *domains.trace_domain_size, 'Wrong trace size');
+        let trace_length = *stark_domains.trace_domain_size;
+        assert(
+            n_steps * CPU_COMPONENT_HEIGHT * CPU_COMPONENT_STEP == trace_length, 'Wrong trace size'
+        );
 
-        assert(0 <= *self.rc_min, 'wrong rc_min');
-        assert(*self.rc_min < *self.rc_max, 'wrong rc range');
-        assert(*self.rc_max <= MAX_RANGE_CHECK, 'wrong rc_max');
+        assert(0 <= *self.range_check_min, 'wrong rc_min');
+        assert(*self.range_check_min < *self.range_check_max, 'wrong rc range');
+        assert(*self.range_check_max <= MAX_RANGE_CHECK, 'wrong rc_max');
 
         assert(*self.layout == LAYOUT_CODE, 'wrong layout code');
 
-        let pedersen_copies = n_steps / PEDERSEN_BUILTIN_RATIO;
+        let n_output_uses = (*self.segments.at(segments::OUTPUT).stop_ptr
+            - *self.segments.at(segments::OUTPUT).begin_addr);
+        assert_range_u128(n_output_uses);
+
+        let pedersen_copies = trace_length / PEDERSEN_BUILTIN_ROW_RATIO;
         let pedersen_uses = (*self.segments.at(segments::PEDERSEN).stop_ptr
             - *self.segments.at(segments::PEDERSEN).begin_addr)
             / 3;
         assert_range_u128_le(pedersen_uses, pedersen_copies);
 
-        let range_check_copies = n_steps / RC_BUILTIN_RATIO;
+        let range_check_copies = trace_length / RANGE_CHECK_BUILTIN_ROW_RATIO;
         let range_check_uses = *self.segments.at(segments::RANGE_CHECK).stop_ptr
             - *self.segments.at(segments::RANGE_CHECK).begin_addr;
         assert_range_u128_le(range_check_uses, range_check_copies);
 
-        let bitwise_copies = n_steps / BITWISE_RATIO;
+        let bitwise_copies = trace_length / BITWISE_ROW_RATIO;
         let bitwise_uses = (*self.segments.at(segments::BITWISE).stop_ptr
             - *self.segments.at(segments::BITWISE).begin_addr)
             / 5;

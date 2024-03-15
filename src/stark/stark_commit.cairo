@@ -37,7 +37,7 @@ fn stark_commit(
     let interaction_after_composition = channel.random_felt_to_prover();
 
     // Read OODS values.
-    channel.read_felts_from_prover(*unsent_commitment.oods_values);
+    channel.read_felt_vector_from_prover(*unsent_commitment.oods_values);
 
     // Check that the trace and the composition agree at oods_point.
     verify_oods(

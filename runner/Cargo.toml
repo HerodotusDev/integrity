@@ -7,8 +7,16 @@ edition.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-cairo-args-runner.workspace = true
-clap.workspace = true
+cairo-felt.workspace = true
+cairo-lang-casm.workspace = true
+cairo-lang-runner.workspace = true
+cairo-lang-sierra.workspace = true
+cairo-lang-utils.workspace = true
 cairo-proof-parser.workspace = true
-serde.workspace = true
+cairo-vm.workspace = true
+clap.workspace = true
+itertools.workspace = true
+num-bigint.workspace = true
 serde_json.workspace = true
+serde.workspace = true
+thiserror.workspace = true

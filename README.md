@@ -54,9 +54,12 @@ To create a proof, perform the following steps:
 1. Install stone-prover (restart your shell after installation):
 
 ```bash
-git clone --recurse-submodules https://github.com/Moonsong-Labs/stone-prover-sdk.git
-cd stone-prover-sdk
-bash scripts/install-stone.sh
+git clone https://github.com/starkware-libs/stone-prover.git
+cd stone-prover
+docker build --tag prover .
+container_id=$(docker create prover)
+docker cp -L ${container_id}:/bin/cpu_air_prover ../examples/prover
+docker cp -L ${container_id}:/bin/cpu_air_verifier ../examples/prover
 ```
 
 2. Install cairo-lang:
@@ -90,7 +93,7 @@ cairo-run \
 5. Prove the Cairo program:
 
 ```bash
-cpu_air_prover \
+./cpu_air_prover \
     --out_file=../proofs/fibonacci_proof.json \
     --private_input_file=fibonacci_private_input.json \
     --public_input_file=fibonacci_public_input.json \
@@ -100,6 +103,14 @@ cpu_air_prover \
 ```
 
 You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` contract by specifying the path `examples/proofs/fibonacci_proof.json` to the newly generated proof.
+
+## Benchmarking
+
+In order to launch benchmarking just run this:
+
+```bash
+cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
+```
 
 ## Changing the Hasher
 

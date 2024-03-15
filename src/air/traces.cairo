@@ -59,8 +59,6 @@ struct TracesWitness {
 }
 
 const MAX_N_COLUMNS: felt252 = 128;
-const AIR_LAYOUT_N_ORIGINAL_COLUMNS: felt252 = 12;
-const AIR_LAYOUT_N_INTERACTION_COLUMNS: felt252 = 3;
 
 // Configuration for the Traces component.
 #[derive(Drop, Copy)]
@@ -106,7 +104,7 @@ fn traces_commit(
     let interaction_elements = InteractionElements {
         memory_multi_column_perm_perm_interaction_elm: channel.random_felt_to_prover(),
         memory_multi_column_perm_hash_interaction_elm0: channel.random_felt_to_prover(),
-        rc16_perm_interaction_elm: channel.random_felt_to_prover(),
+        range_check16_perm_interaction_elm: channel.random_felt_to_prover(),
         diluted_check_permutation_interaction_elm: channel.random_felt_to_prover(),
         diluted_check_interaction_z: channel.random_felt_to_prover(),
         diluted_check_interaction_alpha: channel.random_felt_to_prover(),

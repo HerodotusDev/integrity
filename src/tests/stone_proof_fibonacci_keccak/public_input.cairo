@@ -3,8 +3,8 @@ use cairo_verifier::air::{public_memory::AddrValue, public_input::{PublicInput, 
 fn get() -> PublicInput {
     return PublicInput {
         log_n_steps: 0xe,
-        rc_min: 0x7ffa,
-        rc_max: 0x8001,
+        range_check_min: 0x7ffa,
+        range_check_max: 0x8001,
         layout: 0x726563757273697665,
         dynamic_params: array![],
         segments: array![

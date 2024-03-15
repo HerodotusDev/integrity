@@ -16,7 +16,7 @@ struct ProofOfWorkUnsentCommitment {
 fn proof_of_work_commit(
     ref channel: Channel, unsent_commitment: ProofOfWorkUnsentCommitment, config: ProofOfWorkConfig
 ) {
-    verify_proof_of_work(channel.digest, config.n_bits, unsent_commitment.nonce);
+    verify_proof_of_work(channel.digest.into(), config.n_bits, unsent_commitment.nonce);
     channel.read_uint64_from_prover(unsent_commitment.nonce);
 }
 

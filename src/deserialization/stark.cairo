@@ -129,8 +129,8 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
         };
         PublicInput {
             log_n_steps: self.log_n_steps,
-            rc_min: self.range_check_min,
-            rc_max: self.range_check_max,
+            range_check_min: self.range_check_min,
+            range_check_max: self.range_check_max,
             layout: self.layout,
             dynamic_params: self.dynamic_params,
             segments: segments,
