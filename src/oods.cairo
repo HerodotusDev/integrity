@@ -1,18 +1,18 @@
 use cairo_verifier::{
     common::array_extend::ArrayExtendTrait,
 // === DEX BEGIN ===
-    air::layouts::dex::{
-        AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,
-        global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-        constants::CONSTRAINT_DEGREE,
-    },
-// === DEX END ===
-// === RECURSIVE BEGIN ===
-//     air::layouts::recursive::{
-//         AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
+//     air::layouts::dex::{
+//         AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,
 //         global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
 //         constants::CONSTRAINT_DEGREE,
 //     },
+// === DEX END ===
+// === RECURSIVE BEGIN ===
+    air::layouts::recursive::{
+        AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
+        global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+        constants::CONSTRAINT_DEGREE,
+    },
 // === RECURSIVE END ===
 // === RECURSIVE_WITH_POSEIDON BEGIN ===
 //     air::layouts::recursive_with_poseidon::{

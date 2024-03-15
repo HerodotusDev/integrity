@@ -10,8 +10,10 @@ HASH_TYPES = ("KECCAK", "BLAKE")
 
 def select_types() -> str:
     """Prompts the user to select a type."""
-    questions = [inquirer.List("layout_type", message="Select layout", choices=LAYOUT_TYPES)]
-    questions = [inquirer.List("hash_type", message="Select hash", choices=HASH_TYPES)]
+    questions = [
+        inquirer.List("layout_type", message="Select layout", choices=LAYOUT_TYPES),
+        inquirer.List("hash_type", message="Select hash", choices=HASH_TYPES)
+    ]
     answers = inquirer.prompt(questions)
     return (answers["layout_type"], answers["hash_type"])
 
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         "-l", "--layout_type", type=str, help=f"Type of layouts {LAYOUT_TYPES}"
     )
     parser.add_argument(
-        "-h", "--hash_type", type=str, help=f"Type of hashes {HASH_TYPES}"
+        "-s", "--hash_type", type=str, help=f"Type of hashes {HASH_TYPES}"
     )
     args = parser.parse_args()
 

@@ -17,10 +17,10 @@ mod tests;
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
 // === DEX BEGIN ===
-    air::layouts::dex::public_input::DexPublicInputImpl,
+//     air::layouts::dex::public_input::DexPublicInputImpl,
 // === DEX END ===
 // === RECURSIVE BEGIN ===
-//     air::layouts::recursive::public_input::RecursivePublicInputImpl,
+    air::layouts::recursive::public_input::RecursivePublicInputImpl,
 // === RECURSIVE END ===
 // === RECURSIVE_WITH_POSEIDON BEGIN ===
 //     air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl,
