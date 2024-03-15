@@ -1,15 +1,14 @@
 import re
-import inquirer
 
 
-def process_block(lines: list[str], type: str):
-    """Processes a block of lines based on the given type."""
+def process_block(lines: list[str], types: list[str]):
+    """Processes a block of lines based on the given types."""
     in_block = False
     modified_lines = []
 
     for line in lines:
-        begin_match = re.match(r"^// === ([A-Z]+) BEGIN ===", line)
-        end_match = re.match(r"^// === ([A-Z]+) END ===", line)
+        begin_match = re.match(r"^// === ([A-Z_]+) BEGIN ===", line)
+        end_match = re.match(r"^// === ([A-Z_]+) END ===", line)
 
         if begin_match:
             in_block = True
@@ -22,7 +21,7 @@ def process_block(lines: list[str], type: str):
             continue
 
         if in_block:
-            if current_block_type == type:
+            if current_block_type in types:
                 modified_lines.append(line[3:] if line.startswith("// ") else line)
             else:
                 modified_lines.append(
@@ -32,13 +31,6 @@ def process_block(lines: list[str], type: str):
             modified_lines.append(line)
 
     return modified_lines
-
-
-def select_type(choices: list[str]) -> str | None:
-    """Prompts the user to select a type."""
-    questions = [inquirer.List("type", message="Select block type", choices=choices)]
-    answers = inquirer.prompt(questions)
-    return answers["type"]
 
 
 def read_file(file_path: str) -> list[str]:
@@ -51,13 +43,13 @@ def read_file(file_path: str) -> list[str]:
         return []
 
 
-def process_file(file_path, type) -> None:
-    """Processes a file based on the given type."""
+def process_file(file_path, types: list[str]) -> None:
+    """Processes a file based on the given types."""
     lines = read_file(file_path)
     if not lines:
         return
 
-    modified_lines = process_block(lines, type)
+    modified_lines = process_block(lines, types)
 
     with open(file_path, "w", encoding="utf-8") as file:
         file.writelines(modified_lines)
