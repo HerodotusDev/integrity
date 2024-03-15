@@ -3,7 +3,7 @@ use cairo_verifier::{
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
-// === BLAKE ONLY BEGIN ===
+// === BLAKE BEGIN ===
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_stark_commit() {
@@ -29,9 +29,9 @@ use cairo_verifier::{
 //     );
 //     assert(channel.counter == 0x0, 'Invalid value');
 // }
-// === BLAKE ONLY END ===
+// === BLAKE END ===
 
-// === KECCAK ONLY BEGIN ===
+// === KECCAK BEGIN ===
 #[test]
 #[available_gas(9999999999)]
 fn test_stark_commit() {
@@ -57,6 +57,6 @@ fn test_stark_commit() {
     );
     assert(channel.counter == 0x0, 'Invalid value');
 }
-// === KECCAK ONLY END ===
+// === KECCAK END ===
 
 

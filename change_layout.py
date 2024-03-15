@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from utils import select_type, process_file
 
-HASH_TYPES = ("KECCAK", "BLAKE")
+LAYOUT_TYPES = ("DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL", "STARKNET")
 
 
 def main(type=None):
@@ -11,7 +11,7 @@ def main(type=None):
     if type is None:
         type = select_type()
 
-    if type.upper() not in HASH_TYPES:
+    if type.upper() not in LAYOUT_TYPES:
         print(f"Invalid block type: {type}")
         sys.exit(1)
 
@@ -24,7 +24,7 @@ def main(type=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process files based on block type.")
     parser.add_argument(
-        "-t", "--type", type=str, help=f"Type of block to process {HASH_TYPES}"
+        "-t", "--type", type=str, help=f"Type of block to process {LAYOUT_TYPES}"
     )
     args = parser.parse_args()
 

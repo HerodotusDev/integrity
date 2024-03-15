@@ -1,6 +1,6 @@
 use cairo_verifier::proof_of_work::proof_of_work::verify_proof_of_work;
 
-// === BLAKE ONLY BEGIN ===
+// === BLAKE BEGIN ===
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_verify_proof_of_work_0() {
@@ -19,9 +19,9 @@ use cairo_verifier::proof_of_work::proof_of_work::verify_proof_of_work;
 //     let n_bits: u8 = 20;
 //     verify_proof_of_work(digest, n_bits, nonce);
 // }
-// === BLAKE ONLY END ===
+// === BLAKE END ===
 
-// === KECCAK ONLY BEGIN ===
+// === KECCAK BEGIN ===
 #[test]
 #[available_gas(9999999999)]
 fn test_verify_proof_of_work_0() {
@@ -44,6 +44,6 @@ fn test_verify_proof_of_work_1() {
     let n_bits: u8 = 0x1e;
     verify_proof_of_work(digest, n_bits, nonce);
 }
-// === KECCAK ONLY END ===
+// === KECCAK END ===
 
 

@@ -3,7 +3,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
     vector_commitment_decommit,
 };
 
-// === BLAKE ONLY BEGIN ===
+// === BLAKE BEGIN ===
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_vector_commitment_decommit_1() {
@@ -106,9 +106,9 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //     //
 //     vector_commitment_decommit(commitment, queries, witness);
 // }
-// === BLAKE ONLY END ===
+// === BLAKE END ===
 
-// === KECCAK ONLY BEGIN ===
+// === KECCAK BEGIN ===
 #[test]
 #[available_gas(9999999999)]
 fn test_vector_commitment_decommit() {
@@ -211,6 +211,6 @@ fn test_vector_commitment_decommit() {
 
     vector_commitment_decommit(commitment, queries, witness);
 }
-// === KECCAK ONLY END ===
+// === KECCAK END ===
 
 

@@ -9,7 +9,7 @@ use cairo_verifier::{
     tests::{stone_proof_fibonacci_keccak, stone_proof_fibonacci}
 };
 
-// === BLAKE ONLY BEGIN ===
+// === BLAKE BEGIN ===
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_table_commitment_decommit() {
@@ -20,9 +20,9 @@ use cairo_verifier::{
 //     //
 //     table_decommit(commitment, queries, decommitment, witness);
 // }
-// === BLAKE ONLY END ===
+// === BLAKE END ===
 
-// === KECCAK ONLY BEGIN ===
+// === KECCAK BEGIN ===
 #[test]
 #[available_gas(9999999999)]
 fn test_table_commitment_decommit() {
@@ -33,6 +33,6 @@ fn test_table_commitment_decommit() {
 
     table_decommit(commitment, queries, decommitment, witness);
 }
-// === KECCAK ONLY END ===
+// === KECCAK END ===
 
 

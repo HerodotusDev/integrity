@@ -16,7 +16,21 @@ mod tests;
 
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    // === DEX BEGIN ===
+    // air::layouts::dex::public_input::DexPublicInputImpl,
+    // === DEX END ===
+    // === RECURSIVE BEGIN ===
     air::layouts::recursive::public_input::RecursivePublicInputImpl,
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    // air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl,
+    // === RECURSIVE_WITH_POSEIDON END ===
+    // === SMALL BEGIN ===
+    // air::layouts::small::public_input::SmallPublicInputImpl,
+    // === SMALL END ===
+    // === STARKNET BEGIN ===
+    // air::layouts::starknet::public_input::StarknetPublicInputImpl,
+    // === STARKNET END ===
 };
 
 const SECURITY_BITS: felt252 = 50;

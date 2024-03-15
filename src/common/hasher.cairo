@@ -3,7 +3,7 @@ use cairo_verifier::common::{
     flip_endianness::FlipEndiannessTrait
 };
 
-// === BLAKE ONLY BEGIN ===
+// === BLAKE BEGIN ===
 // 
 // fn hash_n_bytes(mut data: Array<u8>, n: u8, hash_len: bool) -> u256 {
 //     if hash_len {
@@ -19,9 +19,9 @@ use cairo_verifier::common::{
 // fn hash(data: Array<u32>) -> u256 {
 //     blake2s(data)
 // }
-// === BLAKE ONLY END ===
+// === BLAKE END ===
 
-// === KECCAK ONLY BEGIN ===
+// === KECCAK BEGIN ===
 
 fn hash_n_bytes(mut data: Array<u64>, n: u8, hash_len: bool) -> u256 {
     if hash_len {
@@ -41,6 +41,6 @@ fn hash_truncated(mut data: Array<u64>) -> felt252 {
 fn hash(mut data: Array<u64>) -> u256 {
     keccak::cairo_keccak(ref data, 0, 0)
 }
-// === KECCAK ONLY END ===
+// === KECCAK END ===
 
 

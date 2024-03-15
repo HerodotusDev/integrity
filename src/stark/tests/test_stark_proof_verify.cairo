@@ -3,7 +3,7 @@ use cairo_verifier::{
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
-// === BLAKE ONLY BEGIN ===
+// === BLAKE BEGIN ===
 // #[test]
 // #[available_gas(99999999999)]
 // fn test_stark_proof_fibonacci_verify() {
@@ -18,9 +18,9 @@ use cairo_verifier::{
 // 
 //     stark_proof.verify(security_bits);
 // }
-// === BLAKE ONLY END ===
+// === BLAKE END ===
 
-// === KECCAK ONLY BEGIN ===
+// === KECCAK BEGIN ===
 #[test]
 #[available_gas(9999999999)]
 fn test_stark_proof_fibonacci_verify() {
@@ -35,6 +35,6 @@ fn test_stark_proof_fibonacci_verify() {
 
     stark_proof.verify(security_bits);
 }
-// === KECCAK ONLY END ===
+// === KECCAK END ===
 
 
