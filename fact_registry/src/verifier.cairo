@@ -1,4 +1,4 @@
-use cairo_verifier::deserialization::stark::StarkProof;
+use cairo_verifier::stark::StarkProof;
 
 #[starknet::interface]
 trait ICairoVerifier<TContractState> {

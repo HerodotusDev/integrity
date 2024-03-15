@@ -1,5 +1,4 @@
 mod verifier;
-mod bootloader;
 
 use cairo_verifier::StarkProofWithSerde;
 use starknet::ContractAddress;
@@ -26,9 +25,7 @@ mod FactRegistry {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use fact_registry::{
-        verifier::{CairoVerifier, ICairoVerifier, StarkProof}, IFactRegistry,
-    };
+    use fact_registry::{verifier::{CairoVerifier, ICairoVerifier, StarkProof}, IFactRegistry,};
     use super::{ISmartProofDispatcher, ISmartProofDispatcherTrait};
 
     component!(path: CairoVerifier, storage: cairo_verifier, event: CairoVerifierEvent);
