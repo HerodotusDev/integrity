@@ -1,16 +1,14 @@
-use cairo_verifier::deserialization::stark::StarkProofWithSerde;
+use cairo_verifier::deserialization::stark::StarkProof;
 
 #[starknet::interface]
 trait ICairoVerifier<TContractState> {
-    fn verify_proof(
-        ref self: TContractState, stark_proof: StarkProofWithSerde
-    ) -> (felt252, felt252);
+    fn verify_proof(ref self: TContractState, stark_proof: StarkProof) -> (felt252, felt252);
 }
 
 #[starknet::component]
 mod CairoVerifier {
     use cairo_verifier::{
-        deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+        stark::{StarkProof, StarkProofImpl},
         air::layouts::recursive::public_input::RecursivePublicInputImpl,
     };
 
@@ -31,12 +29,11 @@ mod CairoVerifier {
         output_hash: felt252,
     }
 
-    #[embeddable_as(CairoVerifierImpl)]
-    impl CairoVerifier<
+    impl CairoVerifierImpl<
         TContractState, +HasComponent<TContractState>
     > of super::ICairoVerifier<ComponentState<TContractState>> {
         fn verify_proof(
-            ref self: ComponentState<TContractState>, stark_proof: StarkProofWithSerde
+            ref self: ComponentState<TContractState>, stark_proof: StarkProof
         ) -> (felt252, felt252) {
             let stark_proof: StarkProof = stark_proof.into();
             stark_proof.verify(50);
