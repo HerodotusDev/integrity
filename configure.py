@@ -12,7 +12,7 @@ def select_types() -> str:
     """Prompts the user to select a type."""
     questions = [
         inquirer.List("layout_type", message="Select layout", choices=LAYOUT_TYPES),
-        inquirer.List("hash_type", message="Select hash", choices=HASH_TYPES)
+        inquirer.List("hash_type", message="Select hash", choices=HASH_TYPES),
     ]
     answers = inquirer.prompt(questions)
     return (answers["layout_type"], answers["hash_type"])
@@ -32,7 +32,7 @@ def main(layout_type=None, hash_type=None):
         sys.exit(1)
 
     current_directory = Path("src")
-    for file_path in current_directory.rglob("*"):
+    for file_path in current_directory.rglob("*.cairo"):
         if file_path.is_file():
             process_file(file_path, [layout_type, hash_type])
 

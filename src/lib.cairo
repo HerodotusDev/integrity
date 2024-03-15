@@ -21,19 +21,19 @@ mod tests;
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
     // === DEX BEGIN ===
-    // air::layouts::dex::public_input::DexPublicInputImpl,
+    // air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl,
     // === DEX END ===
     // === RECURSIVE BEGIN ===
-    air::layouts::recursive::public_input::RecursivePublicInputImpl,
+    air::layouts::recursive::public_input::RecursivePublicInputImpl as PublicInputImpl,
 // === RECURSIVE END ===
 // === RECURSIVE_WITH_POSEIDON BEGIN ===
-// air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl,
+// air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl as PublicInputImpl,
 // === RECURSIVE_WITH_POSEIDON END ===
 // === SMALL BEGIN ===
-// air::layouts::small::public_input::SmallPublicInputImpl,
+// air::layouts::small::public_input::SmallPublicInputImpl as PublicInputImpl,
 // === SMALL END ===
 // === STARKNET BEGIN ===
-// air::layouts::starknet::public_input::StarknetPublicInputImpl,
+// air::layouts::starknet::public_input::StarknetPublicInputImpl as PublicInputImpl,
 // === STARKNET END ===
 };
 

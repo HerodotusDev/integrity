@@ -7,10 +7,7 @@ trait ICairoVerifier<TContractState> {
 
 #[starknet::component]
 mod CairoVerifier {
-    use cairo_verifier::{
-        stark::{StarkProof, StarkProofImpl},
-        air::layouts::recursive::public_input::RecursivePublicInputImpl,
-    };
+    use cairo_verifier::{PublicInputImpl, stark::{StarkProof, StarkProofImpl}};
 
     #[storage]
     struct Storage {}
