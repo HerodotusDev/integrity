@@ -35,7 +35,6 @@ mod CairoVerifier {
         fn verify_proof(
             ref self: ComponentState<TContractState>, stark_proof: StarkProof
         ) -> (felt252, felt252) {
-            let stark_proof: StarkProof = stark_proof.into();
             stark_proof.verify(50);
             let (program_hash, output_hash) = stark_proof.public_input.verify();
             self.emit(ProofVerified { program_hash, output_hash });
