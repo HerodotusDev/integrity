@@ -3,21 +3,21 @@ use cairo_verifier::{
         public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
         public_memory::{AddrValue, Page},
     },
-// === DEX BEGIN ===
-//     air::layouts::dex::traces::TracesConfig,
-// === DEX END ===
-// === RECURSIVE BEGIN ===
+    // === DEX BEGIN ===
+    // air::layouts::dex::traces::TracesConfig,
+    // === DEX END ===
+    // === RECURSIVE BEGIN ===
     air::layouts::recursive::traces::TracesConfig,
-// === RECURSIVE END ===
-// === RECURSIVE_WITH_POSEIDON BEGIN ===
-//     air::layouts::recursive_with_poseidon::traces::TracesConfig,
-// === RECURSIVE_WITH_POSEIDON END ===
-// === SMALL BEGIN ===
-//     air::layouts::small::traces::TracesConfig,
-// === SMALL END ===
-// === STARKNET BEGIN ===
-//     air::layouts::starknet::traces::TracesConfig,
-// === STARKNET END ===
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    // air::layouts::recursive_with_poseidon::traces::TracesConfig,
+    // === RECURSIVE_WITH_POSEIDON END ===
+    // === SMALL BEGIN ===
+    // air::layouts::small::traces::TracesConfig,
+    // === SMALL END ===
+    // === STARKNET BEGIN ===
+    // air::layouts::starknet::traces::TracesConfig,
+    // === STARKNET END ===
     deserialization::{
         traces::{
             TracesConfigWithSerde, TracesDecommitmentWithSerde, TracesWitnessWithSerde,

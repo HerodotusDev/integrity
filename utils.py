@@ -7,12 +7,13 @@ def process_block(lines: list[str], types: list[str]):
     modified_lines = []
 
     for line in lines:
-        begin_match = re.match(r"^// === ([A-Z_]+) BEGIN ===", line)
-        end_match = re.match(r"^// === ([A-Z_]+) END ===", line)
+        begin_match = re.match(r"^(\s*)// === ([A-Z_]+) BEGIN ===", line)
+        end_match = re.match(r"^(\s*)// === ([A-Z_]+) END ===", line)
 
         if begin_match:
             in_block = True
-            current_block_type = begin_match.group(1)
+            indent = begin_match.group(1)
+            current_block_type = begin_match.group(2)
             modified_lines.append(line)
             continue
         elif end_match:
@@ -22,11 +23,15 @@ def process_block(lines: list[str], types: list[str]):
 
         if in_block:
             if current_block_type in types:
-                modified_lines.append(line[3:] if line.startswith("// ") else line)
+                if line.lstrip().startswith("// "):
+                    modified_lines.append(indent + line.lstrip()[3:])
+                else:
+                    modified_lines.append(line)
             else:
-                modified_lines.append(
-                    "// " + line if not line.startswith("// ") else line
-                )
+                if not line.lstrip().startswith("// "):
+                    modified_lines.append(indent + "// " + line.lstrip())
+                else:
+                    modified_lines.append(line)
         else:
             modified_lines.append(line)
 
