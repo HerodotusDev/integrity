@@ -1,5 +1,7 @@
 mod air;
+// === RECURSIVE BEGIN ===
 mod benches;
+// === RECURSIVE END ===
 mod channel;
 mod common;
 mod deserialization;
@@ -12,7 +14,9 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
+// === RECURSIVE BEGIN ===
 mod tests;
+// === RECURSIVE END ===
 
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
