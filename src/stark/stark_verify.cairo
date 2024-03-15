@@ -3,8 +3,7 @@ use cairo_verifier::{
     fri::fri::{FriDecommitment, fri_verify},
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
     // === DEX BEGIN ===
-    // air::layouts::dex::traces::traces_decommit,
-    // === DEX END ===
+    // air::layouts::dex::traces::traces_decommit, // === DEX END ===
     // === RECURSIVE BEGIN ===
     air::layouts::recursive::traces::traces_decommit,
     // === RECURSIVE END ===

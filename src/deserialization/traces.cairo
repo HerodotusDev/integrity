@@ -1,7 +1,7 @@
 use cairo_verifier::{
     // === DEX BEGIN ===
     // air::layouts::dex::{
-    //     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    // traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     // },
     // === DEX END ===
     // === RECURSIVE BEGIN ===
@@ -11,17 +11,17 @@ use cairo_verifier::{
     // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
     // air::layouts::recursive_with_poseidon::{
-    //     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    // traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     // },
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // air::layouts::small::{
-    //     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    // traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     // },
     // === SMALL END ===
     // === STARKNET BEGIN ===
     // air::layouts::starknet::{
-    //     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    // traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     // },
     // === STARKNET END ===
     deserialization::{
