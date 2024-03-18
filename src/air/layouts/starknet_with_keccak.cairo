@@ -12,7 +12,7 @@ use cairo_verifier::{
             global_values::{
                 GlobalValues, InteractionElements, EcPoint, EcdsaSigConfig, CurveConfig
             },
-            public_input::StarknetPublicInputImpl,
+            public_input::StarknetWithKeccakPublicInputImpl,
             constants::{
                 PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING, PEDERSEN_BUILTIN_RATIO,
                 PEDERSEN_BUILTIN_REPETITIONS, segments, ECDSA_BUILTIN_RATIO,
