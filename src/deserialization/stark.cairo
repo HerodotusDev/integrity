@@ -18,6 +18,9 @@ use cairo_verifier::{
     // === STARKNET BEGIN ===
     // air::layouts::starknet::traces::TracesConfig,
     // === STARKNET END ===
+    // === STARKNET_WITH_KECCAK BEGIN ===
+    // air::layouts::starknet_with_keccak::traces::TracesConfig,
+    // === STARKNET_WITH_KECCAK END ===
     deserialization::{
         traces::{
             TracesConfigWithSerde, TracesDecommitmentWithSerde, TracesWitnessWithSerde,

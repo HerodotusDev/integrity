@@ -4,7 +4,7 @@ import inquirer
 from pathlib import Path
 from utils import process_file
 
-LAYOUT_TYPES = ("DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL", "STARKNET")
+LAYOUT_TYPES = ("DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL", "STARKNET", "STARKNET_WITH_KECCAK")
 HASH_TYPES = ("KECCAK", "BLAKE")
 
 
