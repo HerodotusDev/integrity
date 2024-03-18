@@ -45,7 +45,8 @@ use cairo_verifier::{
     // === STARKNET END ===
     // === STARKNET_WITH_KECCAK BEGIN ===
     // layouts::starknet_with_keccak::{
-    // traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
+    // traces::{TracesConfig, TracesConfigTrait},
+    // public_input::StarknetWithKeccakPublicInputImpl,
     // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     // },

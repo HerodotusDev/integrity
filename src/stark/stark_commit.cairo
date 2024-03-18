@@ -33,6 +33,7 @@ use cairo_verifier::{
     // air::layouts::starknet_with_keccak::{
     // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     // traces::traces_commit,
+    // },
     // === STARKNET_WITH_KECCAK END ===
     channel::channel::{Channel, ChannelTrait}, common::powers_array::powers_array,
     domains::StarkDomains, fri::fri::fri_commit,
