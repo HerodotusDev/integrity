@@ -96,11 +96,7 @@ fn compute_next_layer(
         verify_indices.append(coset_index);
 
         let (coset_elements, coset_x_inv) = compute_coset_elements(
-            ref queries,
-            ref sibling_witness,
-            coset_size,
-            coset_index * coset_size,
-            params.fri_group
+            ref queries, ref sibling_witness, coset_size, coset_index * coset_size, params.fri_group
         );
 
         // Verify that at least one query was consumed.
