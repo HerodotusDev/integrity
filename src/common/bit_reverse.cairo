@@ -1,4 +1,3 @@
-use core::option::OptionTrait;
 use core::integer::U128BitAnd;
 
 #[generate_trait]

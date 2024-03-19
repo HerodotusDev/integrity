@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    air::{
+    air::layouts::recursive::{
         constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
         traces::traces_commit,
     },
@@ -20,9 +20,7 @@ fn stark_commit(
     stark_domains: @StarkDomains,
 ) -> StarkCommitment {
     // Read the commitment of the 'traces' component.
-    let traces_commitment = traces_commit(
-        ref channel, public_input, *unsent_commitment.traces, *config.traces,
-    );
+    let traces_commitment = traces_commit(ref channel, *unsent_commitment.traces, *config.traces,);
 
     // Generate interaction values after traces commitment.
     let composition_alpha = channel.random_felt_to_prover();

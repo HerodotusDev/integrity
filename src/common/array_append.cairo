@@ -1,5 +1,3 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-use core::array::ArrayTrait;
 use cairo_verifier::common::{
     flip_endianness::FlipEndiannessU32,
     split::{u16_split, u32_split, u64_split, u128_split, u256_split}

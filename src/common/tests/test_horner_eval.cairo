@@ -1,4 +1,3 @@
-use core::array::ArrayTrait;
 use cairo_verifier::common::horner_eval::horner_eval;
 
 #[test]

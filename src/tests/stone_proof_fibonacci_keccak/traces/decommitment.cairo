@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    air::traces::TracesDecommitment, table_commitment::table_commitment::TableDecommitment,
+    air::layouts::recursive::traces::TracesDecommitment,
+    table_commitment::table_commitment::TableDecommitment,
 };
 
 fn get() -> TracesDecommitment {

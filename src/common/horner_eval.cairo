@@ -1,4 +1,3 @@
-use core::array::SpanTrait;
 // `horner_eval` is a function that evaluates a polynomial at a given point using Horner's method.
 // `coefs` is an array of coefficients representing the polynomial in the format a0, a1, a2, ... an.
 // `point` is the value at which the polynomial will be evaluated.

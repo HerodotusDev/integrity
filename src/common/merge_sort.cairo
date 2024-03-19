@@ -1,4 +1,4 @@
-use cairo_verifier::common::{array_extend::ArrayExtendTrait, array_split::ArraySplitTrait};
+use cairo_verifier::common::array_extend::ArrayExtendTrait;
 
 // Merge Sort
 /// # Arguments

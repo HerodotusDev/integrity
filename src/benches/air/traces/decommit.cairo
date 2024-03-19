@@ -1,5 +1,6 @@
 use cairo_verifier::{
-    channel::channel::ChannelImpl, air::{traces::traces_decommit}, tests::stone_proof_fibonacci,
+    channel::channel::ChannelImpl, air::layouts::recursive::{traces::traces_decommit},
+    tests::stone_proof_fibonacci,
 };
 
 fn bench_air_traces_decommit() {

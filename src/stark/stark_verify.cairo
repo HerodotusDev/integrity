@@ -1,7 +1,8 @@
 use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains,
     fri::fri::{FriDecommitment, fri_verify},
-    stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment}, air::traces::traces_decommit,
+    stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
+    air::layouts::recursive::traces::traces_decommit,
     table_commitment::table_commitment::table_decommit,
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
 };

@@ -1,8 +1,17 @@
+mod stark_commit;
+mod stark_verify;
+
+#[cfg(test)]
+mod tests;
+
 use cairo_verifier::{
     air::{
-        traces::{TracesConfig, TracesConfigTrait}, public_input::{PublicInput, PublicInputTrait},
-        traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-        constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+        public_input::{PublicInput, get_public_input_hash},
+        layouts::recursive::{
+            traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
+            traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+            constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+        }
     },
     channel::channel::{Channel, ChannelImpl},
     fri::{
@@ -19,12 +28,6 @@ use cairo_verifier::{
     },
     vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
 };
-
-mod stark_commit;
-mod stark_verify;
-
-#[cfg(test)]
-mod tests;
 
 #[derive(Drop)]
 struct StarkProof {
@@ -47,7 +50,7 @@ impl StarkProofImpl of StarkProofTrait {
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
-        let digest = self.public_input.get_public_input_hash();
+        let digest = get_public_input_hash(self.public_input);
         // Construct the channel.
         let mut channel = ChannelImpl::new(digest);
 

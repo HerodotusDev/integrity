@@ -1,9 +1,9 @@
 use cairo_verifier::{
     common::{
-        flip_endianness::FlipEndiannessTrait, array_print::{SpanPrintTrait, ArrayPrintTrait},
-        hasher::hash_n_bytes, array_append::ArrayAppendTrait, math::pow,
+        flip_endianness::FlipEndiannessTrait, hasher::hash_n_bytes, array_append::ArrayAppendTrait,
+        math::pow,
     },
-    channel::channel::{Channel, ChannelTrait}, proof_of_work::config::{ProofOfWorkConfig}
+    channel::channel::{Channel, ChannelTrait}, proof_of_work::config::ProofOfWorkConfig
 };
 
 const MAGIC: u64 = 0x0123456789abcded;
