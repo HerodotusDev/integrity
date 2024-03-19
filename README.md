@@ -27,7 +27,7 @@ For local proof verification, follow these steps:
 1. Run the verifier locally on example proof using the following command:
 
 ```bash
-cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/example_proof.json
+cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/recursive/example_proof.json
 ```
 
 ### Starknet Proof Verification
@@ -37,7 +37,7 @@ To verify proofs on Starknet, proceed with the following steps:
 1. Prepare calldata of example proof for sncast:
 
 ```bash
-cargo run --release --bin snfoundry_proof_serializer < examples/proofs/example_proof.json > examples/starknet/calldata
+cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive/example_proof.json > examples/starknet/calldata
 ```
 
 2. Call the function with calldata on the Starknet contract:
@@ -94,7 +94,7 @@ cairo-run \
 
 ```bash
 ./cpu_air_prover \
-    --out_file=../proofs/fibonacci_proof.json \
+    --out_file=../proofs/recursive/fibonacci_proof.json \
     --private_input_file=fibonacci_private_input.json \
     --public_input_file=fibonacci_public_input.json \
     --prover_config_file=cpu_air_prover_config.json \
@@ -102,7 +102,7 @@ cairo-run \
     --generate_annotations
 ```
 
-You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` contract by specifying the path `examples/proofs/fibonacci_proof.json` to the newly generated proof.
+You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` contract by specifying the path `examples/proofs/recursive/fibonacci_proof.json` to the newly generated proof.
 
 ## Benchmarking
 
