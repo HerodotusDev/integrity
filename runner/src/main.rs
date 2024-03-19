@@ -35,10 +35,10 @@ fn main() -> anyhow::Result<()> {
     let witness: VecFelt252 = serde_json::from_str(&parsed.witness.to_string()).unwrap();
 
     let proof = chain!(
-        config.to_vec(),
-        public_input.to_vec(),
-        unsent_commitment.to_vec(),
-        witness.to_vec()
+        config.into_iter(),
+        public_input.into_iter(),
+        unsent_commitment.into_iter(),
+        witness.into_iter()
     )
     .collect_vec();
 
@@ -58,7 +58,7 @@ fn main() -> anyhow::Result<()> {
     let result = runner
         .run_function_with_starknet_context(
             func,
-            &[Arg::Array(proof.to_vec())],
+            &[Arg::Array(proof.into_iter().map(Arg::Value).collect_vec())],
             Some(u32::MAX as usize),
             Default::default(),
         )
