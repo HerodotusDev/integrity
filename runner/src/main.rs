@@ -58,7 +58,7 @@ fn main() -> anyhow::Result<()> {
     let result = runner
         .run_function_with_starknet_context(
             func,
-            &[Arg::Array(proof.to_vec())],
+            &[Arg::Array(proof.into_iter().map(Arg::Value).collect_vec())],
             Some(u32::MAX as usize),
             Default::default(),
         )
