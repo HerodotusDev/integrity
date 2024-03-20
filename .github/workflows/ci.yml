@@ -33,6 +33,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - uses: software-mansion/setup-scarb@v1
-      - run: python configure.py -l {${{ matrix.layout }}} -s keccak
+      - run: python configure.py -l ${{ matrix.layout }} -s keccak
       - run: scarb build
-      - run: cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/{${{ matrix.layout }}}/example_proof.json
+      - run: cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/${{ matrix.layout }}/example_proof.json
