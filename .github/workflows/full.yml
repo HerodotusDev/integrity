@@ -2,11 +2,7 @@ name: Continuous Integration - full testing
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
 
 jobs:
   formatting-and-testing:
