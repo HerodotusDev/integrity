@@ -20,7 +20,7 @@ jobs:
       - name: Run tests
         run: scarb test
   
-  verify-layout:
+  verify-proof:
     needs: formatting-and-testing
     runs-on: ubuntu-latest
     strategy:
