@@ -24,7 +24,7 @@ def log_and_run(commands, description, cwd=None):
 
 
 # List of layouts to test
-LAYOUTS = ["DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL"]
+LAYOUTS = ["DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL", "STARKNET", "STARKNET_WITH_KECCAK"]
 
 
 # Main function to run the tests and optionally restore the src folder
