@@ -1,4 +1,4 @@
-name: Continuous Integration - partial testing
+name: Continuous Integration - tests
 
 on:
   push:
