@@ -24,7 +24,7 @@ def log_and_run(commands, description, cwd=None):
 
 
 # List of layouts to test
-LAYOUTS = ["DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL"]
+LAYOUTS = ["dex", "recursive", "recursive_with_poseidon", "small"]
 
 
 # Main function to run the tests and optionally restore the src folder
@@ -32,9 +32,9 @@ def main(restore_src=None):
     for layout in LAYOUTS:
         log_and_run(
             [
-                f"python configure.py -l {layout} -s KECCAK",
+                f"python configure.py -l {layout} -s keccak",
                 "scarb build",
-                f"cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/{layout.lower()}/example_proof.json",
+                f"cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/{layout}/example_proof.json",
             ],
             f"Testing {layout.lower()} layout",
             cwd=".",
