@@ -18,7 +18,7 @@ scarb build
 scarb test
 ```
 
-## Running the Verifier
+## Running the Verifier on Example Proof
 
 ### Local Proof Verification
 
@@ -44,8 +44,10 @@ cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive
 
 ```bash
 cd examples/starknet
-./call_contract.sh calldata
+./call_contract.sh 0x069df5a99fa42c37c946c58da0953d721b928078e740fef14da44e0f8c01f0f6 calldata
 ```
+
+[List of deployed Verifier Contracts](deployed_contracts.md)
 
 ## Creating a Proof
 
