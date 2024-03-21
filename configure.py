@@ -4,8 +4,8 @@ import inquirer
 from pathlib import Path
 from utils import process_file
 
-LAYOUT_TYPES = ("DEX", "RECURSIVE", "RECURSIVE_WITH_POSEIDON", "SMALL", "STARKNET", "STARKNET_WITH_KECCAK")
-HASH_TYPES = ("KECCAK", "BLAKE")
+LAYOUT_TYPES = ("dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak")
+HASH_TYPES = ("keccak", "blake")
 
 
 def select_types() -> str:
@@ -23,18 +23,18 @@ def main(layout_type=None, hash_type=None):
     if layout_type is None or hash_type is None:
         layout_type, hash_type = select_types()
 
-    if layout_type.upper() not in LAYOUT_TYPES:
+    if layout_type.lower() not in LAYOUT_TYPES:
         print(f"Invalid layout type: {layout_type}")
         sys.exit(1)
 
-    if hash_type.upper() not in HASH_TYPES:
+    if hash_type.lower() not in HASH_TYPES:
         print(f"Invalid hash type: {hash_type}")
         sys.exit(1)
 
     current_directory = Path("src")
     for file_path in current_directory.rglob("*.cairo"):
         if file_path.is_file():
-            process_file(file_path, [layout_type, hash_type])
+            process_file(file_path, [layout_type.upper(), hash_type.upper()])
 
 
 if __name__ == "__main__":
