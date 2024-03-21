@@ -5,7 +5,7 @@ from pathlib import Path
 from utils import process_file
 
 LAYOUT_TYPES = ("dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak")
-HASH_TYPES = ("keccak", "blake")
+HASH_TYPES = ("keccak", "blake2s")
 
 
 def select_types() -> str:

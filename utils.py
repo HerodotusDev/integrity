@@ -7,8 +7,8 @@ def process_block(lines: list[str], types: list[str]):
     modified_lines = []
 
     for line in lines:
-        begin_match = re.match(r"^(\s*)// === ([A-Z_]+) BEGIN ===", line)
-        end_match = re.match(r"^(\s*)// === ([A-Z_]+) END ===", line)
+        begin_match = re.match(r"^(\s*)// === ([A-Z_0-9]+) BEGIN ===", line)
+        end_match = re.match(r"^(\s*)// === ([A-Z_0-9]+) END ===", line)
 
         if begin_match:
             in_block = True
@@ -21,7 +21,7 @@ def process_block(lines: list[str], types: list[str]):
             modified_lines.append(line)
             continue
 
-        if in_block:
+        if in_block and line.strip() != "":
             if current_block_type in types:
                 if line.lstrip().startswith("// "):
                     modified_lines.append(indent + line.lstrip()[3:])

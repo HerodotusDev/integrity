@@ -2,7 +2,7 @@ use cairo_verifier::{
     fri::fri::fri_verify, tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
-// === BLAKE BEGIN ===
+// === BLAKE2S BEGIN ===
 // #[test]
 // #[available_gas(9999999999)]
 // fn test_fri_verify() {
@@ -13,7 +13,7 @@ use cairo_verifier::{
 // 
 //     fri_verify(queries, commitment, decommitment, witness)
 // }
-// === BLAKE END ===
+// === BLAKE2S END ===
 
 // === KECCAK BEGIN ===
 #[test]
