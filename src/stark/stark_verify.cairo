@@ -5,10 +5,10 @@ use cairo_verifier::{
     // === DEX BEGIN ===
     // air::layouts::dex::traces::traces_decommit, // === DEX END ===
     // === RECURSIVE BEGIN ===
-    air::layouts::recursive::traces::traces_decommit,
+    // air::layouts::recursive::traces::traces_decommit,
     // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // air::layouts::recursive_with_poseidon::traces::traces_decommit,
+    air::layouts::recursive_with_poseidon::traces::traces_decommit,
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // air::layouts::small::traces::traces_decommit,

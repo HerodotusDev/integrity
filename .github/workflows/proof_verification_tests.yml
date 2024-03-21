@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet"]
+        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

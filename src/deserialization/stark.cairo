@@ -7,10 +7,10 @@ use cairo_verifier::{
     // air::layouts::dex::traces::TracesConfig,
     // === DEX END ===
     // === RECURSIVE BEGIN ===
-    air::layouts::recursive::traces::TracesConfig,
+    // air::layouts::recursive::traces::TracesConfig,
     // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // air::layouts::recursive_with_poseidon::traces::TracesConfig,
+    air::layouts::recursive_with_poseidon::traces::TracesConfig,
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // air::layouts::small::traces::TracesConfig,

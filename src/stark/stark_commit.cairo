@@ -6,16 +6,16 @@ use cairo_verifier::{
     // },
     // === DEX END ===
     // === RECURSIVE BEGIN ===
-    air::layouts::recursive::{
-        constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-        traces::traces_commit,
-    },
-    // === RECURSIVE END ===
-    // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // air::layouts::recursive_with_poseidon::{
+    // air::layouts::recursive::{
     // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     // traces::traces_commit,
     // },
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    air::layouts::recursive_with_poseidon::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+    },
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // air::layouts::small::{
