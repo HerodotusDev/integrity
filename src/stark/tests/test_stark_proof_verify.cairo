@@ -3,7 +3,7 @@ use cairo_verifier::{
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
-// === BLAKE BEGIN ===
+// === BLAKE2S BEGIN ===
 // #[test]
 // #[available_gas(99999999999)]
 // fn test_stark_proof_fibonacci_verify() {
@@ -18,7 +18,7 @@ use cairo_verifier::{
 // 
 //     stark_proof.verify(security_bits);
 // }
-// === BLAKE END ===
+// === BLAKE2S END ===
 
 // === KECCAK BEGIN ===
 #[test]
