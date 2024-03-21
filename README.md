@@ -49,6 +49,17 @@ cd examples/starknet
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
 
+## Configure Verifier
+
+By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script:
+
+```bash
+python configure.py -l recursive -s keccak
+```
+
+layout types: [dex, recursive, recursive_with_poseidon, small, starknet]
+hash types: [keccak, blake2s]
+
 ## Creating a Proof
 
 To create a proof, perform the following steps:
@@ -104,34 +115,12 @@ cairo-run \
     --generate_annotations
 ```
 
-You can `verify` this the proof `locally` or on the `Starknet Cairo verifier` contract by specifying the path `examples/proofs/recursive/fibonacci_proof.json` to the newly generated proof.
+You can verify this proof locally or on the Starknet Cairo verifier contract by specifying the path examples/proofs/recursive/fibonacci_proof.json to the newly generated proof.
 
 ## Benchmarking
 
-In order to launch benchmarking just run this:
+In order to launch benchmarking, just run this:
 
 ```bash
 cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
 ```
-
-## Changing the Hasher
-
-By default, the verifier uses Pedersen for verifier-friendly layers and Keccak for unfriendly layers. To change the hasher for unfriendly layers, use the provided Python script:
-
-### Change to Blake2s
-
-To change the hasher for unfriendly layers to Blake2s, run the following command:
-
-```bash
-python3 change_hasher.py -t blake
-```
-
-### Change to Keccak256
-
-To change the hasher for unfriendly layers to Keccak256, run the following command:
-
-```bash
-python3 change_hasher.py -t keccak
-```
-
----
