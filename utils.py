@@ -21,7 +21,7 @@ def process_block(lines: list[str], types: list[str]):
             modified_lines.append(line)
             continue
 
-        if in_block:
+        if in_block and line.strip() != "":
             if current_block_type in types:
                 # Remove comment if exists
                 if line.lstrip().startswith("// "):
