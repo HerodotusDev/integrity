@@ -134,6 +134,7 @@ fn eval_oods_boundary_poly_at_points(
     evaluations
 }
 
+// === RECURSIVE BEGIN ===
 #[cfg(test)]
 mod tests {
     use cairo_verifier::oods::verify_oods;
@@ -158,3 +159,4 @@ mod tests {
         );
     }
 }
+// === RECURSIVE END ===
