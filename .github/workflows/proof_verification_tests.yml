@@ -2,18 +2,18 @@ name: Continuous Integration - proof verification tests
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
   pull_request:
-    branches:
-      - main
+    # branches:
+    #   - main
 
 jobs:
   verify-proof:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet"]
+        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
