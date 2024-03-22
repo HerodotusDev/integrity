@@ -47,7 +47,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         },
 //     ]
 //         .span();
-// //
+// 
 //     let witness = VectorCommitmentWitness {
 //         authentications: array![
 //             0x2e9de49846b184d454c30e3b4854167583093da20c5ddef5e3ba2885524d006,
@@ -103,7 +103,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         ]
 //             .span(),
 //     };
-// //
+// 
 //     vector_commitment_decommit(commitment, queries, witness);
 // }
 // === BLAKE2S END ===
