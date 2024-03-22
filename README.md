@@ -119,7 +119,7 @@ You can verify this proof locally or on the Starknet Cairo verifier contract by 
 
 ## Benchmarking
 
-In order to launch benchmarking, just run this:
+In order to launch benchmarking, just run this (it requires recursive layout configuration):
 
 ```bash
 cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
