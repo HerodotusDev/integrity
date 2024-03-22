@@ -51,7 +51,7 @@ cd examples/starknet
 
 ## Configure Verifier
 
-By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script:
+By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script (this script is in Experimental stage):
 
 ```bash
 python configure.py -l recursive -s keccak
