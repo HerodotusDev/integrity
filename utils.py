@@ -21,15 +21,19 @@ def process_block(lines: list[str], types: list[str]):
             modified_lines.append(line)
             continue
 
-        if in_block and line.strip() != "":
+        if in_block:
             if current_block_type in types:
+                # Remove comment if exists
                 if line.lstrip().startswith("// "):
                     modified_lines.append(indent + line.lstrip()[3:])
                 else:
                     modified_lines.append(line)
             else:
+                # Add comment if does not exist
                 if not line.lstrip().startswith("// "):
-                    modified_lines.append(indent + "// " + line.lstrip())
+                    line_indent = len(line) - len(line.lstrip())
+                    subtracted_indent = min(len(indent), line_indent)
+                    modified_lines.append(indent + "// " + line[subtracted_indent:])
                 else:
                     modified_lines.append(line)
         else:

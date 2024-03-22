@@ -13,7 +13,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         },
 //         commitment_hash: 0x1e9b0fa29ebe52b9c9a43a1d44e555ce42da3199370134d758735bfe9f40269
 //     };
-//
+// 
 //     let queries = array![
 //         VectorQuery {
 //             index: 0x73, value: 0x12346ea425a6aebc8c323a401410cc325aabaf99b54e600a7271f146488aa2d
@@ -47,7 +47,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         },
 //     ]
 //         .span();
-//
+// //
 //     let witness = VectorCommitmentWitness {
 //         authentications: array![
 //             0x2e9de49846b184d454c30e3b4854167583093da20c5ddef5e3ba2885524d006,
@@ -103,7 +103,7 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //         ]
 //             .span(),
 //     };
-//
+// //
 //     vector_commitment_decommit(commitment, queries, witness);
 // }
 // === BLAKE2S END ===
