@@ -44,14 +44,14 @@ cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive
 
 ```bash
 cd examples/starknet
-./call_contract.sh 0x069df5a99fa42c37c946c58da0953d721b928078e740fef14da44e0f8c01f0f6 calldata
+./1-verify-proof.sh 0x069df5a99fa42c37c946c58da0953d721b928078e740fef14da44e0f8c01f0f6 calldata
 ```
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
 
 ## Configure Verifier
 
-By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script:
+By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script (this script is in Experimental stage):
 
 ```bash
 python configure.py -l recursive -s keccak
@@ -119,7 +119,7 @@ You can verify this proof locally or on the Starknet Cairo verifier contract by 
 
 ## Benchmarking
 
-In order to launch benchmarking, just run this:
+In order to launch benchmarking, just run this (it requires recursive layout configuration):
 
 ```bash
 cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json

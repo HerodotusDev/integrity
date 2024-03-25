@@ -1,6 +1,4 @@
-use cairo_verifier::{
-    queries::queries::queries_to_points, domains::StarkDomains, tests::stone_proof_fibonacci
-};
+use cairo_verifier::{queries::queries::queries_to_points, domains::StarkDomains};
 
 #[test]
 #[available_gas(9999999999)]

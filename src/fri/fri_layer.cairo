@@ -23,7 +23,6 @@ struct FriLayerQuery {
 //   - sibling_witness: a list of all the query's siblings.
 //   - coset_size: the number of elements in the coset.
 //   - coset_start_index: the index of the first element of the coset being calculated.
-//   - offset_within_coset: the offset of the current processed element within the coset.
 //   - fri_group: holds the group <g> in bit reversed order, where g is the generator of the coset.
 //
 // Outputs:
