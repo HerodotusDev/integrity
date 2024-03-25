@@ -51,7 +51,7 @@ cd examples/starknet
 
 ## Configure Verifier
 
-By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script:
+By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script (this script is in Experimental stage):
 
 ```bash
 python configure.py -l recursive -s keccak
@@ -119,7 +119,7 @@ You can verify this proof locally or on the Starknet Cairo verifier contract by 
 
 ## Benchmarking
 
-In order to launch benchmarking, just run this:
+In order to launch benchmarking, just run this (it requires recursive layout configuration):
 
 ```bash
 cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json

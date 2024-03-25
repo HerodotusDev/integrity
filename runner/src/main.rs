@@ -1,7 +1,7 @@
 mod vec252;
 use crate::vec252::VecFelt252;
 
-use cairo_lang_runner::{Arg, ProfilingInfoCollectionConfig, SierraCasmRunner};
+use cairo_lang_runner::{Arg, ProfilingInfoCollectionConfig, RunResultValue, SierraCasmRunner};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use cairo_proof_parser::parse;
@@ -69,7 +69,15 @@ fn main() -> anyhow::Result<()> {
 
     println!("gas_counter: {}", result.gas_counter.unwrap());
     println!("n_steps: {}", result.memory.len());
-    println!("return: {:#?}", result.value);
+
+    match result.value {
+        RunResultValue::Success(msg) => {
+            println!("{:?}", msg);
+        }
+        RunResultValue::Panic(msg) => {
+            panic!("{:?}", msg);
+        }
+    }
 
     Ok(())
 }
