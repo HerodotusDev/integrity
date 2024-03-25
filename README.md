@@ -57,7 +57,7 @@ By default, the verifier is configured for recursive layout and keccak hash for 
 python configure.py -l recursive -s keccak
 ```
 
-layout types: [dex, recursive, recursive_with_poseidon, small, starknet]
+layout types: [dex, recursive, recursive_with_poseidon, small, starknet, starknet_with_keccak]  
 hash types: [keccak, blake2s]
 
 ## Creating a Proof
