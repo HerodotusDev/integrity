@@ -1,7 +1,7 @@
 mod vec252;
 use crate::vec252::VecFelt252;
 
-use cairo_lang_runner::{Arg, ProfilingInfoCollectionConfig, SierraCasmRunner};
+use cairo_lang_runner::{Arg, ProfilingInfoCollectionConfig, RunResultValue, SierraCasmRunner};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use cairo_proof_parser::parse;
@@ -58,7 +58,7 @@ fn main() -> anyhow::Result<()> {
     let result = runner
         .run_function_with_starknet_context(
             func,
-            &[Arg::Array(proof.to_vec())],
+            &[Arg::Array(proof.into_iter().map(Arg::Value).collect_vec())],
             Some(u32::MAX as usize),
             Default::default(),
         )
@@ -69,7 +69,15 @@ fn main() -> anyhow::Result<()> {
 
     println!("gas_counter: {}", result.gas_counter.unwrap());
     println!("n_steps: {}", result.memory.len());
-    println!("return: {:#?}", result.value);
+
+    match result.value {
+        RunResultValue::Success(msg) => {
+            println!("{:?}", msg);
+        }
+        RunResultValue::Panic(msg) => {
+            panic!("{:?}", msg);
+        }
+    }
 
     Ok(())
 }

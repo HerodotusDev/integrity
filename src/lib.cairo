@@ -1,5 +1,7 @@
 mod air;
+// === RECURSIVE BEGIN ===
 mod benches;
+// === RECURSIVE END ===
 mod channel;
 mod common;
 mod deserialization;
@@ -12,11 +14,27 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 
+// === RECURSIVE BEGIN ===
 mod tests;
+// === RECURSIVE END ===
 
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
-    air::layouts::recursive::public_input::RecursivePublicInputImpl,
+    // === DEX BEGIN ===
+    // air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl,
+    // === DEX END ===
+    // === RECURSIVE BEGIN ===
+    air::layouts::recursive::public_input::RecursivePublicInputImpl as PublicInputImpl,
+// === RECURSIVE END ===
+// === RECURSIVE_WITH_POSEIDON BEGIN ===
+// air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl as PublicInputImpl,
+// === RECURSIVE_WITH_POSEIDON END ===
+// === SMALL BEGIN ===
+// air::layouts::small::public_input::SmallPublicInputImpl as PublicInputImpl,
+// === SMALL END ===
+// === STARKNET BEGIN ===
+// air::layouts::starknet::public_input::StarknetPublicInputImpl as PublicInputImpl,
+// === STARKNET END ===
 };
 
 const SECURITY_BITS: felt252 = 50;
