@@ -2,7 +2,20 @@ use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains,
     fri::fri::{FriDecommitment, fri_verify},
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
+    // === DEX BEGIN ===
+    // air::layouts::dex::traces::traces_decommit, // === DEX END ===
+    // === RECURSIVE BEGIN ===
     air::layouts::recursive::traces::traces_decommit,
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    // air::layouts::recursive_with_poseidon::traces::traces_decommit,
+    // === RECURSIVE_WITH_POSEIDON END ===
+    // === SMALL BEGIN ===
+    // air::layouts::small::traces::traces_decommit,
+    // === SMALL END ===
+    // === STARKNET BEGIN ===
+    // air::layouts::starknet::traces::traces_decommit,
+    // === STARKNET END ===
     table_commitment::table_commitment::table_decommit,
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
 };

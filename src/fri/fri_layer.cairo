@@ -23,7 +23,6 @@ struct FriLayerQuery {
 //   - sibling_witness: a list of all the query's siblings.
 //   - coset_size: the number of elements in the coset.
 //   - coset_start_index: the index of the first element of the coset being calculated.
-//   - offset_within_coset: the offset of the current processed element within the coset.
 //   - fri_group: holds the group <g> in bit reversed order, where g is the generator of the coset.
 //
 // Outputs:
@@ -36,19 +35,18 @@ fn compute_coset_elements(
     ref sibling_witness: Span<felt252>,
     coset_size: felt252,
     coset_start_index: felt252,
-    mut offset_within_coset: felt252,
     fri_group: Span<felt252>,
 ) -> (Array<felt252>, felt252) {
     let mut coset_elements = ArrayTrait::<felt252>::new();
     let mut coset_x_inv: felt252 = 0;
     let mut i: u32 = 0;
     loop {
-        if offset_within_coset == coset_size {
+        if coset_size == i.into() {
             break;
         }
 
         let q = queries.get(0);
-        if q.is_some() && *q.unwrap().unbox().index == coset_start_index + offset_within_coset {
+        if q.is_some() && *q.unwrap().unbox().index == coset_start_index + i.into() {
             let query = *queries.pop_front().unwrap();
             coset_elements.append(query.y_value);
             coset_x_inv = query.x_inv_value * (*fri_group.at(i));
@@ -57,7 +55,6 @@ fn compute_coset_elements(
         }
 
         i += 1;
-        offset_within_coset += 1;
     };
 
     (coset_elements, coset_x_inv)
@@ -98,12 +95,7 @@ fn compute_next_layer(
         verify_indices.append(coset_index);
 
         let (coset_elements, coset_x_inv) = compute_coset_elements(
-            ref queries,
-            ref sibling_witness,
-            coset_size,
-            coset_index * coset_size,
-            0,
-            params.fri_group
+            ref queries, ref sibling_witness, coset_size, coset_index * coset_size, params.fri_group
         );
 
         // Verify that at least one query was consumed.

@@ -7,10 +7,7 @@ trait ICairoVerifier<TContractState> {
 
 #[starknet::component]
 mod CairoVerifier {
-    use cairo_verifier::{
-        stark::{StarkProof, StarkProofImpl},
-        air::layouts::recursive::public_input::RecursivePublicInputImpl,
-    };
+    use cairo_verifier::{PublicInputImpl, stark::{StarkProof, StarkProofImpl}};
 
     #[storage]
     struct Storage {}
@@ -29,14 +26,15 @@ mod CairoVerifier {
         output_hash: felt252,
     }
 
+    const SECURITY_BITS: felt252 = 50;
+
     impl CairoVerifierImpl<
         TContractState, +HasComponent<TContractState>
     > of super::ICairoVerifier<ComponentState<TContractState>> {
         fn verify_proof(
             ref self: ComponentState<TContractState>, stark_proof: StarkProof
         ) -> (felt252, felt252) {
-            let stark_proof: StarkProof = stark_proof.into();
-            stark_proof.verify(50);
+            stark_proof.verify(SECURITY_BITS);
             let (program_hash, output_hash) = stark_proof.public_input.verify();
             self.emit(ProofVerified { program_hash, output_hash });
             (program_hash, output_hash)
