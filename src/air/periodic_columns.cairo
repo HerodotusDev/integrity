@@ -1574,7 +1574,7 @@ fn eval_ecdsa_y(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key0(point: felt252) -> felt252 {
+fn eval_keccak_round_key0(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x25257ecfcf301b18da64254e59b151a549668b8c150b39f71eb3e3508224fbb);
     let res = res * point + (0x13342c1639906e1ef17847fdf16d032ea663fdc4fed28da92f88381ebfa626b);
@@ -1615,7 +1615,7 @@ fn eval_keccak_keccak_keccak_round_key0(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key1(point: felt252) -> felt252 {
+fn eval_keccak_round_key1(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x46c20a61e3dd5f8e8d4085bfcf8e52c9c50152285742b9ba783a4edb6608353);
     let res = res * point + (0x62db2649e22e5c49b68354e9a3801a9b695f7d1c8d03854b1edfa0e322ef902);
@@ -1656,7 +1656,7 @@ fn eval_keccak_keccak_keccak_round_key1(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key3(point: felt252) -> felt252 {
+fn eval_keccak_round_key3(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x4a025b231a318123295e4fc2ad69f9552eec69c64066fac264b1cfcdd7d3158);
     let res = res * point + (0x5460b40a6b82eea400c5f65223403b791182933281ab2654f3762718ea7272a);
@@ -1697,7 +1697,7 @@ fn eval_keccak_keccak_keccak_round_key3(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key7(point: felt252) -> felt252 {
+fn eval_keccak_round_key7(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x279b1137fbe58a227ed345e6b3136ea36aa5eabb7ebaac5f226c318ef599e60);
     let res = res * point + (0x63355b4be0dccf93a1fa0f44f29a9ddd83c010b942d979a530cecd6c74ba8c8);
@@ -1738,7 +1738,7 @@ fn eval_keccak_keccak_keccak_round_key7(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key15(point: felt252) -> felt252 {
+fn eval_keccak_round_key15(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x24ec7e1a7b8bcb5b138102f4131d7fa12dd5fc5278251892aa929a46b50dec4);
     let res = res * point + (0x6fab9476126a16ec91fb0071a673f7c8b65b1dbd3d04502cbc915a3db9e8a1f);
@@ -1779,7 +1779,7 @@ fn eval_keccak_keccak_keccak_round_key15(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key31(point: felt252) -> felt252 {
+fn eval_keccak_round_key31(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x5852cb7312b6299275e11e7bf04e6a604038b1398d93ed46cdfa41cb9503116);
     let res = res * point + (0x3645c0d194b9983bc9c138a6e57651551a16c071ad1f5b0fc37946aa5b6a2cf);
@@ -1820,7 +1820,7 @@ fn eval_keccak_keccak_keccak_round_key31(point: felt252) -> felt252 {
 // A periodic column of N values yields these values on the subgroup of size N.
 // To simulate a periodic column with 2**k repetitions, one should evaluate at point**(2**k)
 // instead.
-fn eval_keccak_keccak_keccak_round_key63(point: felt252) -> felt252 {
+fn eval_keccak_round_key63(point: felt252) -> felt252 {
     let res = 0;
     let res = res * point + (0x13c65642d180be37bf6db1ca47e2884a87a9c17aaa35744910c1b0fccc4c50f);
     let res = res * point + (0x4dff8ed2557436c17e52a86eb24e65fcef37d2d5d0df503f27351b9fb114deb);

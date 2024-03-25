@@ -21,13 +21,12 @@ use cairo_verifier::{
         },
         air::{AIRComposition, AIROods}, diluted::get_diluted_product,
         periodic_columns::{
-            eval_pedersen_x, eval_pedersen_y, eval_ecdsa_x, eval_ecdsa_y,
-            eval_keccak_keccak_keccak_round_key0, eval_keccak_keccak_keccak_round_key1,
-            eval_keccak_keccak_keccak_round_key3, eval_keccak_keccak_keccak_round_key7,
-            eval_keccak_keccak_keccak_round_key15, eval_keccak_keccak_keccak_round_key31,
-            eval_keccak_keccak_keccak_round_key63, eval_poseidon_poseidon_full_round_key0,
-            eval_poseidon_poseidon_full_round_key1, eval_poseidon_poseidon_full_round_key2,
-            eval_poseidon_poseidon_partial_round_key0, eval_poseidon_poseidon_partial_round_key1
+            eval_pedersen_x, eval_pedersen_y, eval_ecdsa_x, eval_ecdsa_y, eval_keccak_round_key0,
+            eval_keccak_round_key1, eval_keccak_round_key3, eval_keccak_round_key7,
+            eval_keccak_round_key15, eval_keccak_round_key31, eval_keccak_round_key63,
+            eval_poseidon_poseidon_full_round_key0, eval_poseidon_poseidon_full_round_key1,
+            eval_poseidon_poseidon_full_round_key2, eval_poseidon_poseidon_partial_round_key0,
+            eval_poseidon_poseidon_partial_round_key1
         },
         public_input::{PublicInput, get_public_memory_product_ratio}
     },
@@ -80,13 +79,13 @@ impl StarknetWithKeccakAIRCompositionImpl of AIRComposition<InteractionElements,
         assert_range_u128(n_keccak_component_copies);
         let n_keccak_periodic_columns_copies = 2048 * n_keccak_component_copies;
         let keccak_point = pow(point, n_keccak_periodic_columns_copies);
-        let keccak_keccak_keccak_round_key0 = eval_keccak_keccak_keccak_round_key0(keccak_point);
-        let keccak_keccak_keccak_round_key1 = eval_keccak_keccak_keccak_round_key1(keccak_point);
-        let keccak_keccak_keccak_round_key3 = eval_keccak_keccak_keccak_round_key3(keccak_point);
-        let keccak_keccak_keccak_round_key7 = eval_keccak_keccak_keccak_round_key7(keccak_point);
-        let keccak_keccak_keccak_round_key15 = eval_keccak_keccak_keccak_round_key15(keccak_point);
-        let keccak_keccak_keccak_round_key31 = eval_keccak_keccak_keccak_round_key31(keccak_point);
-        let keccak_keccak_keccak_round_key63 = eval_keccak_keccak_keccak_round_key63(keccak_point);
+        let keccak_keccak_keccak_round_key0 = eval_keccak_round_key0(keccak_point);
+        let keccak_keccak_keccak_round_key1 = eval_keccak_round_key1(keccak_point);
+        let keccak_keccak_keccak_round_key3 = eval_keccak_round_key3(keccak_point);
+        let keccak_keccak_keccak_round_key7 = eval_keccak_round_key7(keccak_point);
+        let keccak_keccak_keccak_round_key15 = eval_keccak_round_key15(keccak_point);
+        let keccak_keccak_keccak_round_key31 = eval_keccak_round_key31(keccak_point);
+        let keccak_keccak_keccak_round_key63 = eval_keccak_round_key63(keccak_point);
 
         let n_poseidon_copies = n_steps / POSEIDON_RATIO;
         assert_range_u128(n_poseidon_copies);
