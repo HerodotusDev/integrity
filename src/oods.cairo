@@ -1,6 +1,5 @@
 use cairo_verifier::{
-    common::array_extend::ArrayExtendTrait,
-    table_commitment::table_commitment::TableDecommitment
+    common::array_extend::ArrayExtendTrait, table_commitment::table_commitment::TableDecommitment
 };
 
 #[cfg(feature: 'dex')]
@@ -20,8 +19,8 @@ use cairo_verifier::air::layouts::recursive::{
 #[cfg(feature: 'recursive_with_poseidon')]
 use cairo_verifier::air::layouts::recursive_with_poseidon::{
     AIRComposition, AIROods, RecursiveWithPoseidonAIRCompositionImpl,
-    RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements,
-    public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements, public_input::PublicInput,
+    traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
 };
 
 #[cfg(feature: 'small')]
@@ -40,9 +39,9 @@ use cairo_verifier::air::layouts::starknet::{
 
 #[cfg(feature: 'starknet_with_keccak')]
 use cairo_verifier::air::layouts::starknet_with_keccak::{
-    AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
-    StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
-    public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl, StarknetWithKeccakAIROodsImpl,
+    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+    constants::CONSTRAINT_DEGREE,
 };
 
 

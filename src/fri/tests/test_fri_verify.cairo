@@ -26,4 +26,3 @@ fn test_fri_verify() {
     fri_verify(queries, commitment, decommitment, witness)
 }
 
-

@@ -38,8 +38,7 @@ use cairo_verifier::air::layouts::recursive::{
 
 #[cfg(feature: 'recursive_with_poseidon')]
 use cairo_verifier::air::layouts::recursive_with_poseidon::{
-    traces::{TracesConfig, TracesConfigTrait},
-    public_input::RecursiveWithPoseidonPublicInputImpl,
+    traces::{TracesConfig, TracesConfigTrait}, public_input::RecursiveWithPoseidonPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
@@ -60,8 +59,7 @@ use cairo_verifier::air::layouts::starknet::{
 
 #[cfg(feature: 'starknet_with_keccak')]
 use cairo_verifier::air::layouts::starknet_with_keccak::{
-    traces::{TracesConfig, TracesConfigTrait},
-    public_input::StarknetWithKeccakPublicInputImpl,
+    traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };

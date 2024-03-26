@@ -16,5 +16,3 @@ mod starknet;
 #[cfg(feature: 'starknet_with_keccak')]
 mod starknet_with_keccak;
 
-
-

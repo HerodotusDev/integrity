@@ -18,7 +18,9 @@ mod vector_commitment;
 #[cfg(feature: 'recursive')]
 mod tests;
 
-use cairo_verifier::{deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}};
+use cairo_verifier::{
+    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl}
+};
 
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::public_input::{DexPublicInputImpl as PublicInputImpl};

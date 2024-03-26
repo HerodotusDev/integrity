@@ -33,4 +33,3 @@ fn test_table_commitment_decommit() {
     table_decommit(commitment, queries, decommitment, witness);
 }
 
-
