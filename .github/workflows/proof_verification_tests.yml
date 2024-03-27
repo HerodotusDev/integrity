@@ -2,11 +2,11 @@ name: Continuous Integration - proof verification tests
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
   pull_request:
-    branches:
-      - main
+    # branches:
+    #   - main
 
 jobs:
   verify-proof:
@@ -34,14 +34,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Configure layout
-        run: python configure.py -l ${{ matrix.layout }} -s keccak
+      - name: Checkout custom scarb
+        uses: actions/checkout@v3
+        with:
+          repository: fmkra/scarb
       
+      - name: Build custom scarb
+        run: cargo build --release
+        working-directory: scarb
+
       - name: Build project
-        run: scarb build
+        run: ./scarb/target/release/scarb build --no-default-features --features=${{ matrix.layout }},keccak
       
       - name: Test project
-        run: scarb test
+        run: ./scarb/target/release/scarb test --no-default-features --features=${{ matrix.layout }},keccak
       
       - name: Run verification
         run: cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/${{ matrix.layout }}/example_proof.json
