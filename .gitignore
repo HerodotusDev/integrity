@@ -38,3 +38,6 @@ resources/
 
 # Stone-prover repository
 stone-prover
+
+# Scarb repository
+scarb
