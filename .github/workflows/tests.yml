@@ -28,4 +28,4 @@ jobs:
       
       - name: Run tests
         run: ./scarb/target/debug/scarb test
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/../
