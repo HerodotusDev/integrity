@@ -2,6 +2,10 @@
 
 ![Cairo Verifier](https://github.com/HerodotusDev/cairo-verifier/assets/46165861/8692dfc1-f267-4c7e-9af0-4ceaeec84207)
 
+[![Continuous Integration - tests](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml)
+
+[![Continuous Integration - proof verification tests](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml)
+
 ## Building the Verifier
 
 To build the Cairo Verifier, follow these steps:
@@ -44,7 +48,7 @@ cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive
 
 ```bash
 cd examples/starknet
-./1-verify-proof.sh 0x069df5a99fa42c37c946c58da0953d721b928078e740fef14da44e0f8c01f0f6 calldata
+./1-verify-proof.sh 0x487810706cc0dfdba0c82403d98e9d32dc36793ed2b731231e5ea19f00c5861 calldata
 ```
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
@@ -57,7 +61,7 @@ By default, the verifier is configured for recursive layout and keccak hash for 
 python configure.py -l recursive -s keccak
 ```
 
-layout types: [dex, recursive, recursive_with_poseidon, small, starknet]
+layout types: [dex, recursive, recursive_with_poseidon, small, starknet, starknet_with_keccak]  
 hash types: [keccak, blake2s]
 
 ## Creating a Proof

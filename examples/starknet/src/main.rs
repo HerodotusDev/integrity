@@ -16,10 +16,10 @@ fn main() -> anyhow::Result<()> {
     let witness: VecFelt252 = serde_json::from_str(&parsed.witness.to_string()).unwrap();
 
     let proof = chain!(
-        config.to_vec(),
-        public_input.to_vec(),
-        unsent_commitment.to_vec(),
-        witness.to_vec()
+        config.into_iter(),
+        public_input.into_iter(),
+        unsent_commitment.into_iter(),
+        witness.into_iter()
     )
     .collect_vec();
 

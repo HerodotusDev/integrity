@@ -38,6 +38,15 @@ impl VecFelt252 {
     }
 }
 
+impl IntoIterator for VecFelt252 {
+    type Item = Felt252;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
 impl Deref for VecFelt252 {
     type Target = Vec<Felt252>;
     fn deref(&self) -> &Self::Target {

@@ -35,6 +35,13 @@ use cairo_verifier::{
     // constants::CONSTRAINT_DEGREE,
     // },
     // === STARKNET END ===
+    // === STARKNET_WITH_KECCAK BEGIN ===
+    // air::layouts::starknet_with_keccak::{
+    // AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
+    // StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
+    // public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    // },
+    // === STARKNET_WITH_KECCAK END ===
     table_commitment::table_commitment::TableDecommitment
 };
 

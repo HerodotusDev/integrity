@@ -16,6 +16,9 @@ use cairo_verifier::{
     // === STARKNET BEGIN ===
     // air::layouts::starknet::traces::traces_decommit,
     // === STARKNET END ===
+    // === STARKNET_WITH_KECCAK BEGIN ===
+    // air::layouts::starknet_with_keccak::traces::traces_decommit,
+    // === STARKNET_WITH_KECCAK END ===
     table_commitment::table_commitment::table_decommit,
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
 };
