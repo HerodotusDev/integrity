@@ -40,14 +40,14 @@ jobs:
           repository: fmkra/scarb
       
       - name: Build custom scarb
-        run: cargo build --release
+        run: cargo build
         working-directory: scarb
 
       - name: Build project
-        run: ./scarb/target/release/scarb build --no-default-features --features=${{ matrix.layout }},keccak
+        run: ./scarb/target/debug/scarb build --no-default-features --features=${{ matrix.layout }},keccak
       
       - name: Test project
-        run: ./scarb/target/release/scarb test --no-default-features --features=${{ matrix.layout }},keccak
+        run: ./scarb/target/debug/scarb test --no-default-features --features=${{ matrix.layout }},keccak
       
       - name: Run verification
-        run: cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/${{ matrix.layout }}/example_proof.json
+        run: cargo run --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/${{ matrix.layout }}/example_proof.json
