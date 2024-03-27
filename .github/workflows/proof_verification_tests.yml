@@ -40,8 +40,7 @@ jobs:
           repository: fmkra/scarb
       
       - name: Build custom scarb
-        run: cargo build
-        working-directory: scarb
+        run: cd scarb && cargo build
 
       - name: Build project
         run: ./scarb/target/debug/scarb build --no-default-features --features=${{ matrix.layout }},keccak
