@@ -23,7 +23,9 @@ jobs:
           repository: fmkra/scarb
       
       - name: Build custom scarb
-        run: cd scarb && cargo build && cd ../
+        run: cargo build
+        working-directory: scarb
       
       - name: Run tests
         run: ./scarb/target/debug/scarb test
+        working-directory: $GITHUB_WORKSPACE
