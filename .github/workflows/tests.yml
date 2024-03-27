@@ -16,6 +16,14 @@ jobs:
       
       - name: Format code
         run: scarb fmt --check
+
+      - name: Checkout custom scarb
+        uses: actions/checkout@v3
+        with:
+          repository: fmkra/scarb
+      
+      - name: Build custom scarb
+        run: cd scarb && cargo build && cd ../
       
       - name: Run tests
-        run: scarb test
+        run: ./scarb/target/debug/scarb test
