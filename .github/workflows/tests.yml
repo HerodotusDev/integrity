@@ -18,7 +18,7 @@ jobs:
         run: scarb fmt --check
 
       - name: Clone custom scarb
-        run: git clone https://github.com/fmkra/scarb.git && git checkout feature_set_manipulations
+        run: git clone https://github.com/fmkra/scarb.git && git pull && git checkout feature_set_manipulations
         working-directory: ${{ github.workspace }}
       
       - name: Build custom scarb
