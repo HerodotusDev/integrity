@@ -23,23 +23,15 @@ jobs:
       
       - name: Setup Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
-      
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      
+
+      # temporary solution
       - name: Clone custom scarb
         run: |
           git clone https://github.com/fmkra/scarb.git
           cd scarb && git checkout feature_set_manipulations
         working-directory: ${{ github.workspace }}
       
+      # temporary solution
       - name: Build custom scarb
         run: cargo build
         working-directory: ${{ github.workspace }}/scarb
