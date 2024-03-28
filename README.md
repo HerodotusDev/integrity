@@ -54,14 +54,16 @@ To verify proofs on Starknet, proceed with the following steps:
 1. Prepare calldata of example proof for sncast:
 
 ```bash
-cargo run --release --bin snfoundry_proof_serializer < examples/proofs/<layout_type>/example_proof.json > examples/starknet/calldata
+cargo run --release --bin snfoundry_proof_serializer < examples/proofs/<layout_type>/example_proof.json > examples/starknet/proof
 ```
 
-2. Call the function with calldata on the Starknet contract:
+2. Call the function with serialized `proof` on the Starknet contract:
+
+In order to run this step, you need to have a Starknet account set up. For details, check [The Starknet Foundry Book](https://foundry-rs.github.io/starknet-foundry/starknet/account.html).
 
 ```bash
 cd examples/starknet
-./1-verify-proof.sh <contract_address> calldata
+./1-verify-proof.sh <contract_address> proof
 ```
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
