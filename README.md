@@ -64,63 +64,6 @@ python configure.py -l recursive -s keccak
 layout types: [dex, recursive, recursive_with_poseidon, small, starknet, starknet_with_keccak]  
 hash types: [keccak, blake2s]
 
-## Creating a Proof
-
-To create a proof, perform the following steps:
-
-1. Install stone-prover (restart your shell after installation):
-
-```bash
-git clone https://github.com/starkware-libs/stone-prover.git
-cd stone-prover
-docker build --tag prover .
-container_id=$(docker create prover)
-docker cp -L ${container_id}:/bin/cpu_air_prover ../examples/prover
-docker cp -L ${container_id}:/bin/cpu_air_verifier ../examples/prover
-```
-
-2. Install cairo-lang:
-
-```bash
-pip install cairo-lang==0.12.0
-```
-
-3. Compile a Cairo program, for example, the Fibonacci program:
-
-```bash
-cd examples/prover
-cairo-compile fibonacci.cairo --output fibonacci_compiled.json --proof_mode
-```
-
-4. Run the Cairo program:
-
-```bash
-cairo-run \
-    --program=fibonacci_compiled.json \
-    --layout=recursive \
-    --program_input=fibonacci_input.json \
-    --air_public_input=fibonacci_public_input.json \
-    --air_private_input=fibonacci_private_input.json \
-    --trace_file=fibonacci_trace.bin \
-    --memory_file=fibonacci_memory.bin \
-    --print_output \
-    --proof_mode
-```
-
-5. Prove the Cairo program:
-
-```bash
-./cpu_air_prover \
-    --out_file=../proofs/recursive/fibonacci_proof.json \
-    --private_input_file=fibonacci_private_input.json \
-    --public_input_file=fibonacci_public_input.json \
-    --prover_config_file=cpu_air_prover_config.json \
-    --parameter_file=cpu_air_params.json \
-    --generate_annotations
-```
-
-You can verify this proof locally or on the Starknet Cairo verifier contract by specifying the path examples/proofs/recursive/fibonacci_proof.json to the newly generated proof.
-
 ## Benchmarking
 
 In order to launch benchmarking, just run this (it requires recursive layout configuration):
@@ -128,3 +71,13 @@ In order to launch benchmarking, just run this (it requires recursive layout con
 ```bash
 cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
 ```
+
+## Creating a Proof
+
+### Stone Prover Instructions
+
+For detailed instructions and examples, refer to the Stone Prover [documentation](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairozero-program).
+
+### Stone Prover SDK Tool
+
+For information on how to use the Stone Prover SDK tool, please refer to the [documentation](https://github.com/Moonsong-Labs/stone-prover-sdk).
