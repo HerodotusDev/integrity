@@ -27,7 +27,8 @@ jobs:
       # temporary solution
       - name: Clone custom scarb
         run: |
-          git clone https://github.com/fmkra/scarb.git
+          git clone https://github.com/software-mansion/scarb.git
+          git checkout 9fe97c8eb8620a1e2103e7f5251c5a9189e75716
         working-directory: ${{ github.workspace }}
       
       # temporary solution
