@@ -63,7 +63,7 @@ In order to run this step, you need to have a Starknet account set up. For detai
 
 ```bash
 cd examples/starknet
-./1-verify-proof.sh <contract_address> proof
+./1-verify-proof.sh testnet <contract_address> proof
 ```
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
