@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  formatting-and-testing:
+  formatting:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,18 +16,19 @@ jobs:
       
       - name: Format code
         run: scarb fmt --check
-      
-      # temporary solution
-      - name: Clone custom scarb
-        run: |
-          git clone https://github.com/fmkra/scarb.git
-        working-directory: ${{ github.workspace }}
-      
-      # temporary solution
-      - name: Build custom scarb
-        run: cargo build
-        working-directory: ${{ github.workspace }}/scarb
-      
+  
+  testing:
+    runs-on: ubuntu-latest
+    needs: formatting
+    strategy:
+      matrix:
+        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Scarb
+        uses: software-mansion/setup-scarb@v1
+
       - name: Run tests
-        run: ./scarb/target/debug/scarb test
-        working-directory: ${{ github.workspace }}
+        run: scarb test --no-default-features --features=${{ matrix.layout }},keccak
