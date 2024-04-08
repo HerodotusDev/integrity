@@ -24,27 +24,11 @@ jobs:
       - name: Setup Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
 
-      # temporary solution
-      - name: Clone custom scarb
-        run: |
-          git clone https://github.com/software-mansion/scarb.git
-          cd scarb
-          git checkout 9fe97c8eb8620a1e2103e7f5251c5a9189e75716
-        working-directory: ${{ github.workspace }}
-      
-      # temporary solution
-      - name: Build custom scarb
-        run: cargo build
-        working-directory: ${{ github.workspace }}/scarb
-
       - name: Build project
-        run: ./scarb/target/debug/scarb build --no-default-features --features=${{ matrix.layout }},keccak
-        working-directory: ${{ github.workspace }}
+        run: scarb build --no-default-features --features=${{ matrix.layout }},keccak
       
       - name: Test project
-        run: ./scarb/target/debug/scarb test --no-default-features --features=${{ matrix.layout }},keccak
-        working-directory: ${{ github.workspace }}
+        run: scarb test --no-default-features --features=${{ matrix.layout }},keccak
       
       - name: Run verification
         run: cargo run --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/${{ matrix.layout }}/example_proof.json
-        working-directory: ${{ github.workspace }}
