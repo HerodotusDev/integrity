@@ -69,6 +69,13 @@ fn stark_verify(
     let fri_decommitment = FriDecommitment {
         values: oods_poly_evals.span(), points: points.span(),
     };
+
+    // --- REQUIRED CONTEXT FOR SUBSTEP 1
+    // --- queries_hash: felt252
+    // --- fri_commitment_hash: felt252
+    // --- fri_decommitment_hash: felt252
+    
+    // --- BEGIN SUBSTEP 1 --- (queries, fri_commitment, fri_decommitment, fri_witness) -> (bool)
     fri_verify(
         queries: queries,
         commitment: commitment.fri,
