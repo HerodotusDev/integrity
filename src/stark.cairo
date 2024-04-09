@@ -76,6 +76,7 @@ struct StarkProof {
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof, security_bits: felt252) {
+        // --- BEGIN STEP 1 --- (StarkConfig, PublicInput, StarkUnsentCommitment) -> (queries, stark_commitment, stark_domains)
         // Validate config.
         self.config.validate(security_bits);
 
@@ -101,7 +102,14 @@ impl StarkProofImpl of StarkProofTrait {
             (*self.config.n_queries).try_into().unwrap(),
             stark_domains.eval_domain_size.try_into().unwrap()
         );
+        // --- END STEP 1 --- 
 
+        // --- REQUIRED CONTEXT BETWEEN STEP1 & STEP2
+        // --- queries_hash: felt252
+        // --- stark_commitment_hash: felt252
+        // --- stark_domains_hash: felt252
+
+        // --- BEGIN STEP 2 --- (queries, stark_commitment, stark_domains, StarkWitness) -> (bool)
         // STARK verify phase.
         stark_verify::stark_verify(
             NUM_COLUMNS_FIRST,
@@ -111,6 +119,7 @@ impl StarkProofImpl of StarkProofTrait {
             *self.witness,
             stark_domains
         )
+        // --- END STEP 2 --- 
     }
 }
 
