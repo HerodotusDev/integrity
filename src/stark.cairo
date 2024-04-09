@@ -104,12 +104,6 @@ impl StarkProofImpl of StarkProofTrait {
         );
         // --- END STEP 1 --- 
 
-        // --- REQUIRED CONTEXT BETWEEN STEP1 & STEP2
-        // --- queries_hash: felt252
-        // --- stark_commitment_hash: felt252
-        // --- stark_domains_hash: felt252
-
-        // --- BEGIN STEP 2 --- (queries, stark_commitment, stark_domains, StarkWitness) -> (bool)
         // STARK verify phase.
         stark_verify::stark_verify(
             NUM_COLUMNS_FIRST,
@@ -119,7 +113,6 @@ impl StarkProofImpl of StarkProofTrait {
             *self.witness,
             stark_domains
         )
-        // --- END STEP 2 --- 
     }
 }
 
