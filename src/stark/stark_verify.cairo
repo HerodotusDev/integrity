@@ -82,7 +82,7 @@ fn stark_verify(
     // --- queries_hash: felt252
     // --- fri_commitment_hash: felt252
     // --- fri_decommitment_hash: felt252
-    
+
     // --- BEGIN SUBSTEP 2 --- (queries, fri_commitment, fri_decommitment, fri_witness) -> (bool)
     fri_verify(
         queries: queries,
@@ -90,5 +90,5 @@ fn stark_verify(
         decommitment: fri_decommitment,
         witness: witness.fri_witness,
     )
-    // --- END SUBSTEP 2 ---
+// --- END SUBSTEP 2 ---
 }
