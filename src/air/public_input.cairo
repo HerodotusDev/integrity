@@ -34,8 +34,14 @@ struct PublicInput {
     continuous_page_headers: Array<ContinuousPageHeader>
 }
 
+#[derive(Drop, Copy, PartialEq, Serde)]
+enum CairoVersion {
+    Cairo0,
+    Cairo1,
+}
+
 trait PublicInputTrait {
-    fn verify(self: @PublicInput) -> (felt252, felt252);
+    fn verify(self: @PublicInput, cairo_version: CairoVersion) -> (felt252, felt252);
     fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
 

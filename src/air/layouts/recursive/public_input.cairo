@@ -10,7 +10,7 @@ use cairo_verifier::{
             segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO
         },
-        public_input::{PublicInput, PublicInputTrait}
+        public_input::{CairoVersion, PublicInput, PublicInputTrait}
     },
     domains::StarkDomains
 };
@@ -19,7 +19,7 @@ use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Has
 use poseidon::poseidon_hash_span;
 
 impl RecursivePublicInputImpl of PublicInputTrait {
-    fn verify(self: @PublicInput) -> (felt252, felt252) {
+    fn verify(self: @PublicInput, cairo_version: CairoVersion) -> (felt252, felt252) {
         let public_segments = self.segments;
 
         let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
@@ -39,63 +39,66 @@ impl RecursivePublicInputImpl of PublicInputTrait {
         let builtins = get_builtins();
         let memory = self.main_page;
 
+        let offset = match cairo_version {
+            CairoVersion::Cairo0 => 0,
+            CairoVersion::Cairo1 => 1,
+        };
+
         // 1. Program segment
         assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
-        assert(final_pc == INITIAL_PC + 4, 'Invalid final_pc');
+        assert(final_pc == INITIAL_PC + 4 + offset, 'Invalid final_pc');
 
         let mut memory_index: usize = 0;
 
-        let program_end_pc = initial_fp - 2;
+        let program_end_pc = initial_fp - (2 + offset);
         let program_len = program_end_pc - initial_pc;
         let program = memory
             .extract_range(
                 initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), ref memory_index
             );
 
-        assert(
-            *program[0] == 0x40780017fff7fff, 'Invalid program'
-        ); // Instruction: ap += N_BUILTINS.
-        assert(*program[1] == builtins.len().into(), 'Invalid program');
-        assert(*program[2] == 0x1104800180018000, 'Invalid program'); // Instruction: call rel ?.
-        assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
-        assert(*program[5] == 0x0, 'Invalid program');
+        if cairo_version == CairoVersion::Cairo0 {
+            // Instruction: ap += N_BUILTINS.
+            assert(*program[0] == 0x40780017fff7fff, 'Invalid program');
+            assert(*program[1] == builtins.len().into(), 'Invalid program');
+            // Instruction: call rel ?.
+            assert(*program[2] == 0x1104800180018000, 'Invalid program');
+            // Instruction: jmp rel 0.
+            assert(*program[4] == 0x10780017fff7fff, 'Invalid program');
+            assert(*program[5] == 0x0, 'Invalid program');
 
-        let program_hash = poseidon_hash_span(program);
+            // 2. Execution segment
+            // 2.1 Initial_fp, initial_pc
+            let fp2 = *memory.at(memory_index);
+            assert(fp2.address == initial_fp - 2, 'Invalid fp2 addr');
+            assert(fp2.value == initial_fp, 'Invalid fp2 val');
 
-        // 2. Execution segment
-        // 2.1 Initial_fp, initial_pc
-        let fp2 = *memory.at(memory_index);
-        assert(fp2.address == initial_fp - 2, 'Invalid fp2 addr');
-        assert(fp2.value == initial_fp, 'Invalid fp2 val');
+            let fp1 = *memory.at(memory_index + 1);
+            assert(fp1.address == initial_fp - 1, 'Invalid fp1 addr');
+            assert(fp1.value == 0, 'Invalid fp1 val');
+            memory_index += 2;
 
-        let fp1 = *memory.at(memory_index + 1);
-        assert(fp1.address == initial_fp - 1, 'Invalid fp1 addr');
-        assert(fp1.value == 0, 'Invalid fp1 val');
-        memory_index += 2;
+            // 2.2 Main arguments and return values
+            let mut begin_addresses = array![];
+            let mut stop_addresses = array![];
+            let mut i = 0;
+            let builtins_len = builtins.len();
+            while i != builtins_len {
+                let segment = *public_segments.at(2 + i);
+                begin_addresses.append(segment.begin_addr);
+                stop_addresses.append(segment.stop_ptr);
+                i += 1;
+            };
 
-        // 2.2 Main arguments and return values
-        let mut begin_addresses = ArrayTrait::new();
-        let mut stop_addresses = ArrayTrait::new();
-        let mut i = 0;
-        let builtins_len = builtins.len();
-        loop {
-            if i == builtins_len {
-                break;
-            }
-
-            begin_addresses.append(*public_segments.at(2 + i).begin_addr);
-            stop_addresses.append(*public_segments.at(2 + i).stop_ptr);
-
-            i += 1;
-        };
-        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
-        memory
-            .verify_stack(
-                final_ap - builtins_len.into(),
-                stop_addresses.span(),
-                builtins_len,
-                ref memory_index
-            );
+            memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
+            memory
+                .verify_stack(
+                    final_ap - builtins_len.into(),
+                    stop_addresses.span(),
+                    builtins_len,
+                    ref memory_index
+                );
+        }
 
         // 3. Output segment 
         let output_len = output_stop - output_start;
@@ -103,13 +106,17 @@ impl RecursivePublicInputImpl of PublicInputTrait {
             .extract_range(
                 output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
             );
-        let output_hash = poseidon_hash_span(output);
 
-        // Check main page len
-        assert(
-            *memory.at(memory_index - 1) == *self.main_page.at(self.main_page.len() - 1),
-            'Invalid main page len'
-        );
+        if cairo_version == CairoVersion::Cairo0 {
+            // Check main page len
+            assert(
+                *memory.at(memory_index - 1) == *memory.at(memory.len() - 1),
+                'Invalid main page len'
+            );
+        }
+
+        let program_hash = poseidon_hash_span(program);
+        let output_hash = poseidon_hash_span(output);
 
         (program_hash, output_hash)
     }

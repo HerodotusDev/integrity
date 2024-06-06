@@ -19,7 +19,8 @@ mod tests;
 // === RECURSIVE END ===
 
 use cairo_verifier::{
-    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
+    stark::{StarkProof, StarkProofImpl},
     // === DEX BEGIN ===
     // air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl,
     // === DEX END ===
@@ -42,16 +43,12 @@ use cairo_verifier::{
 
 const SECURITY_BITS: felt252 = 50;
 
-fn main(serialized_proof: Array<felt252>) -> (felt252, felt252) {
-    let mut serialized_proof_span = serialized_proof.span();
-    let stark_proof: StarkProof = Serde::<
-        StarkProofWithSerde
-    >::deserialize(ref serialized_proof_span)
-        .unwrap()
-        .into();
+fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
+    let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
+    let stark_proof: StarkProof = stark_proof_serde.into();
 
     stark_proof.verify(SECURITY_BITS);
-    let (program_hash, output_hash) = stark_proof.public_input.verify();
+    let (program_hash, output_hash) = stark_proof.public_input.verify(cairo_version);
 
     (program_hash, output_hash)
 }
