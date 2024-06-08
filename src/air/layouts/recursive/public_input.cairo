@@ -48,7 +48,6 @@ impl RecursivePublicInputImpl of PublicInputTrait {
         let program_hash = poseidon_hash_span(program.span());
 
         // 3. Output segment 
-        let output_len: u32 = (output_stop - output_start).try_into().unwrap();
         let output = public_memory.extract_range(public_memory.len() - output_len, output_len);
         let output_hash = poseidon_hash_span(output.span());
 
