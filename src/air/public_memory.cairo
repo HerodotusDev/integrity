@@ -45,23 +45,21 @@ impl PageImpl of PageTrait {
         }
     }
 
-    fn extract_range(self: @Page, addr: u32, len: usize, ref offset: usize) -> Span<felt252> {
+    fn extract_range(self: @Page, start: u32, len: usize) -> Array<felt252> {
         let mut arr = ArrayTrait::new();
         let mut i = 0;
 
         loop {
             if i == len {
-                break arr.span();
+                break;
             }
 
-            let current = *self.at(offset);
-
-            // TODO is this needed? If not we can just use slice directly 
-            assert(current.address == (addr + i).into(), 'Invalid address');
+            let current = *self.at(start + i);
             arr.append(current.value);
             i += 1;
-            offset += 1;
-        }
+        };
+        
+        arr
     }
 
     fn verify_stack(
