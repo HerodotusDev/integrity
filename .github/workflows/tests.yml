@@ -19,3 +19,6 @@ jobs:
       
       - name: Run tests
         run: scarb test
+
+      - name: Build fact registry
+        run: (cd fact_registry && scarb build)

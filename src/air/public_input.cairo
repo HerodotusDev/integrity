@@ -41,7 +41,8 @@ enum CairoVersion {
 }
 
 trait PublicInputTrait {
-    fn verify(self: @PublicInput, cairo_version: CairoVersion) -> (felt252, felt252);
+    fn verify_cairo0(self: @PublicInput) -> (felt252, felt252);
+    fn verify_cairo1(self: @PublicInput) -> (felt252, felt252);
     fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
 

@@ -11,7 +11,7 @@ use cairo_verifier::{
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO,
             POSEIDON_ROW_RATIO
         },
-        public_input::{CairoVersion, PublicInput, PublicInputTrait}
+        public_input::{PublicInput, PublicInputTrait}
     },
     domains::StarkDomains
 };
@@ -20,7 +20,7 @@ use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Has
 use poseidon::poseidon_hash_span;
 
 impl RecursiveWithPoseidonPublicInputImpl of PublicInputTrait {
-    fn verify(self: @PublicInput, cairo_version: CairoVersion) -> (felt252, felt252) {
+    fn verify_cairo0(self: @PublicInput) -> (felt252, felt252) {
         let public_segments = self.segments;
 
         let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
@@ -113,6 +113,10 @@ impl RecursiveWithPoseidonPublicInputImpl of PublicInputTrait {
         );
 
         (program_hash, output_hash)
+    }
+
+    fn verify_cairo1(self: @PublicInput) -> (felt252, felt252) {
+        panic!("Not implemented")
     }
 
     fn validate(self: @PublicInput, stark_domains: @StarkDomains) {

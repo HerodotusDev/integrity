@@ -39,7 +39,10 @@ mod CairoVerifier {
             cairo_version: CairoVersion
         ) -> (felt252, felt252) {
             stark_proof.verify(SECURITY_BITS);
-            let (program_hash, output_hash) = stark_proof.public_input.verify(cairo_version);
+            let (program_hash, output_hash) = match cairo_version {
+                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
+                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+            };
             self.emit(ProofVerified { program_hash, output_hash });
             (program_hash, output_hash)
         }

@@ -11,7 +11,7 @@ type Page = Array<AddrValue>;
 // Each such page must be verified externally to the verifier:
 //   hash = Hash(
 //     memory[start_address], memory[start_address + 1], ..., memory[start_address + size - 1]).
-//   prod = prod_i (z - ((start_address + i) + alpha * (memory[start_address + i])).
+//   prod = prod_i (z - ((start_address + i) + alpha * (memory[start_address + i]))).
 // z, alpha are taken from the interaction values, and can be obtained directly from the
 // StarkProof object.
 //   z     = interaction_elements.memory_multi_column_perm_perm__interaction_elm
@@ -62,6 +62,17 @@ impl PageImpl of PageTrait {
             i += 1;
             offset += 1;
         }
+    }
+
+    fn extract_range_unchecked(self: @Page, addr: u32, len: usize) -> Span<felt252> {
+        let mut arr = ArrayTrait::new();
+        let mut slice = self.span().slice(addr, len);
+        while !slice
+            .is_empty() {
+                let current = *slice.pop_front().unwrap();
+                arr.append(current.value);
+            };
+        arr.span()
     }
 
     fn verify_stack(

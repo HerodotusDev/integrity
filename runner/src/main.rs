@@ -59,13 +59,9 @@ fn main() -> anyhow::Result<()> {
     let func = runner.find_function(function).unwrap();
     let proof_arg = Arg::Array(proof.into_iter().map(Arg::Value).collect_vec());
     let cairo_version_arg = Arg::Value(cli.cairo_version.into());
+    let args = &[proof_arg, cairo_version_arg];
     let result = runner
-        .run_function_with_starknet_context(
-            func,
-            &[proof_arg, cairo_version_arg],
-            Some(u32::MAX as usize),
-            Default::default(),
-        )
+        .run_function_with_starknet_context(func, args, Some(u32::MAX as usize), Default::default())
         .unwrap();
     // let profiling_processor =
     //     ProfilingInfoProcessor::new(None, sierra_program.program, UnorderedHashMap::default());

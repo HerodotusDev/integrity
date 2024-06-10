@@ -48,7 +48,10 @@ fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252,
     let stark_proof: StarkProof = stark_proof_serde.into();
 
     stark_proof.verify(SECURITY_BITS);
-    let (program_hash, output_hash) = stark_proof.public_input.verify(cairo_version);
+    let (program_hash, output_hash) = match cairo_version {
+        CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
+        CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+    };
 
     (program_hash, output_hash)
 }
