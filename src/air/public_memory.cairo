@@ -67,11 +67,9 @@ impl PageImpl of PageTrait {
     fn extract_range_unchecked(self: @Page, addr: u32, len: usize) -> Span<felt252> {
         let mut arr = ArrayTrait::new();
         let mut slice = self.span().slice(addr, len);
-        while !slice
-            .is_empty() {
-                let current = *slice.pop_front().unwrap();
-                arr.append(current.value);
-            };
+        while let Option::Some(current) = slice.pop_front() {
+            arr.append(*current.value);
+        };
         arr.span()
     }
 
