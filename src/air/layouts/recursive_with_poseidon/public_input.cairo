@@ -11,7 +11,7 @@ use cairo_verifier::{
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO,
             POSEIDON_ROW_RATIO
         },
-        public_input::{PublicInput, PublicInputTrait}
+        public_input::{PublicInput, PublicInputTrait, verify_cairo1_public_input}
     },
     domains::StarkDomains
 };
@@ -116,7 +116,7 @@ impl RecursiveWithPoseidonPublicInputImpl of PublicInputTrait {
     }
 
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252) {
-        panic!("Not implemented")
+        verify_cairo1_public_input(self)
     }
 
     fn validate(self: @PublicInput, stark_domains: @StarkDomains) {

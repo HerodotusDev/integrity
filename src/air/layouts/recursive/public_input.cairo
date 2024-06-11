@@ -10,7 +10,7 @@ use cairo_verifier::{
             segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO
         },
-        public_input::{PublicInput, PublicInputTrait}
+        public_input::{PublicInput, PublicInputTrait, verify_cairo1_public_input}
     },
     domains::StarkDomains
 };
@@ -114,30 +114,7 @@ impl RecursivePublicInputImpl of PublicInputTrait {
     }
 
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252) {
-        let public_segments = self.segments;
-
-        let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
-        let initial_ap = *public_segments.at(segments::EXECUTION).begin_addr;
-        let final_ap = *public_segments.at(segments::EXECUTION).stop_ptr;
-        let output_start = *public_segments.at(segments::OUTPUT).begin_addr;
-        let output_stop = *public_segments.at(segments::OUTPUT).stop_ptr;
-        let output_len: u32 = (output_stop - output_start).try_into().unwrap();
-
-        assert(initial_ap < MAX_ADDRESS, 'Invalid initial_ap');
-        assert(final_ap < MAX_ADDRESS, 'Invalid final_ap');
-        assert(self.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
-        let memory = self.main_page;
-
-        // 1. Program segment
-        assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
-        let program = memory
-            .extract_range_unchecked(initial_pc.try_into().unwrap(), memory.len() - output_len);
-        let program_hash = poseidon_hash_span(program);
-
-        // 2. Output segment 
-        let output = memory.extract_range_unchecked(memory.len() - output_len, output_len);
-        let output_hash = poseidon_hash_span(output);
-        (program_hash, output_hash)
+        verify_cairo1_public_input(self)
     }
 
     fn validate(self: @PublicInput, stark_domains: @StarkDomains) {
