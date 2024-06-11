@@ -2,14 +2,12 @@ use cairo_verifier::{
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
     },
-    air::constants::{MAX_ADDRESS, INITIAL_PC},
-    // === DEX BEGIN ===
+    air::constants::{MAX_ADDRESS, INITIAL_PC}, // === DEX BEGIN ===
     // air::layouts::dex::constants::segments,
     // === DEX END ===
     // === RECURSIVE BEGIN ===
-    air::layouts::recursive::constants::segments,
-    // === RECURSIVE END ===
-    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    air::layouts::recursive::constants::segments, // === RECURSIVE END ===
+     // === RECURSIVE_WITH_POSEIDON BEGIN ===
     // air::layouts::recursive_with_poseidon::constants::segments,
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
