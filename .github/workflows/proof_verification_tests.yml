@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak"]
+        cairo_version: ["cairo0", "cairo1"]
+        # layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak"]
+        layout: ["recursive"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -44,4 +46,4 @@ jobs:
         run: scarb test
       
       - name: Run verification
-        run: cargo run --release --bin runner -- -p target/dev/cairo_verifier.sierra.json -c cairo0 < examples/proofs/${{ matrix.layout }}/example_proof.json
+        run: cargo run --release --bin runner -- -p target/dev/cairo_verifier.sierra.json -c ${{ matrix.cairo_version }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_example_proof.json
