@@ -2,7 +2,25 @@ use cairo_verifier::{
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
     },
-    air::constants::{MAX_ADDRESS, INITIAL_PC}, air::layouts::recursive::constants::segments,
+    air::constants::{MAX_ADDRESS, INITIAL_PC},
+    // === DEX BEGIN ===
+    // air::layouts::dex::constants::segments,
+    // === DEX END ===
+    // === RECURSIVE BEGIN ===
+    air::layouts::recursive::constants::segments,
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    // air::layouts::recursive_with_poseidon::constants::segments,
+    // === RECURSIVE_WITH_POSEIDON END ===
+    // === SMALL BEGIN ===
+    // air::layouts::small::constants::segments,
+    // === SMALL END ===
+    // === STARKNET BEGIN ===
+    // air::layouts::starknet::constants::segments,
+    // === STARKNET END ===
+    // === STARKNET_WITH_KECCAK BEGIN ===
+    // air::layouts::starknet_with_keccak::constants::segments,
+    // === STARKNET_WITH_KECCAK END ===
     domains::StarkDomains,
     common::{
         array_extend::ArrayExtend, array_append::ArrayAppendTrait,
