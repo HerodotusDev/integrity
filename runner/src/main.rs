@@ -1,24 +1,42 @@
 mod vec252;
 use crate::vec252::VecFelt252;
 
+use cairo_felt::Felt252;
 use cairo_lang_runner::{Arg, ProfilingInfoCollectionConfig, RunResultValue, SierraCasmRunner};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use cairo_proof_parser::parse;
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use itertools::{chain, Itertools};
 use std::{
     fs,
     io::{stdin, Read},
 };
 
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+enum CairoVersion {
+    Cairo0 = 0,
+    Cairo1 = 1,
+}
+
+impl From<CairoVersion> for Felt252 {
+    fn from(value: CairoVersion) -> Self {
+        match value {
+            CairoVersion::Cairo0 => Felt252::from(0),
+            CairoVersion::Cairo1 => Felt252::from(1),
+        }
+    }
+}
+
 #[derive(Parser)]
-#[command(author, version, about, long_about = None)]
+#[command(author, version, about)]
 struct Cli {
     /// Path to compiled sierra file
+    #[clap(short, long)]
     program: String,
-    /// Cairo version
-    cairo_version: u8,
+    /// Cairo version - public memory pattern
+    #[clap(value_enum, short, long, default_value_t=CairoVersion::Cairo0)]
+    cairo_version: CairoVersion,
 }
 
 fn main() -> anyhow::Result<()> {
