@@ -16,7 +16,9 @@ use std::{
 #[command(author, version, about, long_about = None)]
 struct Cli {
     /// Path to compiled sierra file
-    target: String,
+    program: String,
+    /// Cairo version
+    cairo_version: u8,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -25,7 +27,6 @@ fn main() -> anyhow::Result<()> {
     stdin().read_to_string(&mut input)?;
     let parsed = parse(input)?;
 
-    let target = cli.target;
     let function = "main";
 
     let config: VecFelt252 = serde_json::from_str(&parsed.config.to_string()).unwrap();
@@ -45,7 +46,7 @@ fn main() -> anyhow::Result<()> {
     println!("proof size: {} felts", proof.len());
 
     let sierra_program =
-        serde_json::from_str::<VersionedProgram>(&fs::read_to_string(target)?)?.into_v1()?;
+        serde_json::from_str::<VersionedProgram>(&fs::read_to_string(cli.program)?)?.into_v1()?;
 
     let runner = SierraCasmRunner::new(
         sierra_program.program.clone(),
@@ -54,14 +55,13 @@ fn main() -> anyhow::Result<()> {
         Some(ProfilingInfoCollectionConfig::default()),
     )
     .unwrap();
+
     let func = runner.find_function(function).unwrap();
+    let proof_arg = Arg::Array(proof.into_iter().map(Arg::Value).collect_vec());
+    let cairo_version_arg = Arg::Value(cli.cairo_version.into());
+    let args = &[proof_arg, cairo_version_arg];
     let result = runner
-        .run_function_with_starknet_context(
-            func,
-            &[Arg::Array(proof.into_iter().map(Arg::Value).collect_vec())],
-            Some(u32::MAX as usize),
-            Default::default(),
-        )
+        .run_function_with_starknet_context(func, args, Some(u32::MAX as usize), Default::default())
         .unwrap();
     // let profiling_processor =
     //     ProfilingInfoProcessor::new(None, sierra_program.program, UnorderedHashMap::default());
