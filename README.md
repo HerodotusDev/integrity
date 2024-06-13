@@ -28,10 +28,10 @@ scarb test
 
 For local proof verification, follow these steps:
 
-1. Run the verifier locally on example proof using the following command:
+1. Run the verifier locally using the following command on example proof, followed by the Cairo version of the circuit (0 or 1) used to generate the proof:
 
 ```bash
-cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json < examples/proofs/recursive/example_proof.json
+cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json 0 < examples/proofs/recursive/example_proof.json
 ```
 
 ### Starknet Proof Verification

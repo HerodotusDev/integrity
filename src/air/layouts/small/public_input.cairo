@@ -10,7 +10,7 @@ use cairo_verifier::{
             segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, ECDSA_BUILTIN_ROW_RATIO
         },
-        public_input::{PublicInput, PublicInputTrait}
+        public_input::{PublicInput, PublicInputTrait, verify_cairo1_public_input}
     },
     domains::StarkDomains
 };
@@ -19,7 +19,7 @@ use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Has
 use poseidon::poseidon_hash_span;
 
 impl SmallPublicInputImpl of PublicInputTrait {
-    fn verify(self: @PublicInput) -> (felt252, felt252) {
+    fn verify_cairo0(self: @PublicInput) -> (felt252, felt252) {
         let public_segments = self.segments;
 
         let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
@@ -112,6 +112,10 @@ impl SmallPublicInputImpl of PublicInputTrait {
         );
 
         (program_hash, output_hash)
+    }
+
+    fn verify_cairo1(self: @PublicInput) -> (felt252, felt252) {
+        verify_cairo1_public_input(self)
     }
 
     fn validate(self: @PublicInput, stark_domains: @StarkDomains) {

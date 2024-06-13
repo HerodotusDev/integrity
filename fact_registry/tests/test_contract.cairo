@@ -1,8 +1,8 @@
 use core::result::ResultTrait;
 use starknet::ContractAddress;
 use snforge_std::{declare, ContractClassTrait};
-use cairo_verifier::deserialization::stark::StarkProofWithSerde;
 use fact_registry::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait};
+use cairo_verifier::{StarkProofWithSerde, CairoVersion};
 
 fn deploy_contract(name: ByteArray) -> ContractAddress {
     let contract = declare(name).unwrap();
@@ -11,7 +11,7 @@ fn deploy_contract(name: ByteArray) -> ContractAddress {
 }
 
 #[test]
-fn test_verify_and_register_fact() {
+fn test_verify_and_register_fact_cairo0() {
     let contract_address = deploy_contract("FactRegistry");
 
     let dispatcher = IFactRegistryDispatcher { contract_address };
@@ -22,7 +22,7 @@ fn test_verify_and_register_fact() {
     >::deserialize(ref serialized_proof_span)
         .unwrap();
 
-    dispatcher.verify_and_register_fact(stark_proof);
+    dispatcher.verify_and_register_fact(stark_proof, CairoVersion::Cairo0);
 }
 
 fn get_proof() -> Array<felt252> {

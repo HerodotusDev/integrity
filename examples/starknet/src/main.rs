@@ -1,5 +1,5 @@
 use cairo_proof_parser::parse;
-use itertools::{chain, Itertools};
+use itertools::chain;
 use runner::VecFelt252;
 use std::io::{stdin, Read};
 
@@ -20,16 +20,18 @@ fn main() -> anyhow::Result<()> {
         public_input.into_iter(),
         unsent_commitment.into_iter(),
         witness.into_iter()
-    )
-    .collect_vec();
+    );
 
-    let proof_string = proof
-        .iter()
+    let cairo_version = 0; // TODO: pass as argument
+
+    let calldata = chain!(proof, vec![cairo_version.into()].into_iter());
+
+    let calldata_string = calldata
         .map(|f| f.to_string())
         .collect::<Vec<String>>()
         .join(" ");
 
-    println!("{}", proof_string);
+    println!("{}", calldata_string);
 
     Ok(())
 }
