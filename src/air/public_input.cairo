@@ -1,8 +1,26 @@
 use cairo_verifier::{
+    domains::StarkDomains, air::constants::{MAX_ADDRESS, INITIAL_PC},
+    // === DEX BEGIN ===
+    // air::layouts::dex::constants::segments,
+    // === DEX END ===
+    // === RECURSIVE BEGIN ===
+    air::layouts::recursive::constants::segments,
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    // air::layouts::recursive_with_poseidon::constants::segments,
+    // === RECURSIVE_WITH_POSEIDON END ===
+    // === SMALL BEGIN ===
+    // air::layouts::small::constants::segments,
+    // === SMALL END ===
+    // === STARKNET BEGIN ===
+    // air::layouts::starknet::constants::segments,
+    // === STARKNET END ===
+    // === STARKNET_WITH_KECCAK BEGIN ===
+    // air::layouts::starknet_with_keccak::constants::segments,
+    // === STARKNET_WITH_KECCAK END ===
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
     },
-    domains::StarkDomains,
     common::{
         array_extend::ArrayExtend, array_append::ArrayAppendTrait,
         math::{pow, Felt252PartialOrd, Felt252Div},
@@ -34,8 +52,15 @@ struct PublicInput {
     continuous_page_headers: Array<ContinuousPageHeader>
 }
 
+#[derive(Drop, Copy, PartialEq, Serde)]
+enum CairoVersion {
+    Cairo0,
+    Cairo1,
+}
+
 trait PublicInputTrait {
-    fn verify(self: @PublicInput) -> (felt252, felt252);
+    fn verify_cairo0(self: @PublicInput) -> (felt252, felt252);
+    fn verify_cairo1(self: @PublicInput) -> (felt252, felt252);
     fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
 
@@ -130,4 +155,31 @@ fn get_public_memory_product(
     let total_length = (public_input.main_page.len()).into() + continuous_pages_total_length;
 
     (prod, total_length)
+}
+
+fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) {
+    let public_segments = public_input.segments;
+
+    let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
+    let initial_ap = *public_segments.at(segments::EXECUTION).begin_addr;
+    let final_ap = *public_segments.at(segments::EXECUTION).stop_ptr;
+    let output_start = *public_segments.at(segments::OUTPUT).begin_addr;
+    let output_stop = *public_segments.at(segments::OUTPUT).stop_ptr;
+    let output_len: u32 = (output_stop - output_start).try_into().unwrap();
+
+    assert(initial_ap < MAX_ADDRESS, 'Invalid initial_ap');
+    assert(final_ap < MAX_ADDRESS, 'Invalid final_ap');
+    assert(public_input.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
+    let memory = public_input.main_page;
+
+    // 1. Program segment
+    assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
+    let program = memory
+        .extract_range_unchecked(initial_pc.try_into().unwrap(), memory.len() - output_len);
+    let program_hash = poseidon_hash_span(program);
+
+    // 2. Output segment 
+    let output = memory.extract_range_unchecked(memory.len() - output_len, output_len);
+    let output_hash = poseidon_hash_span(output);
+    (program_hash, output_hash)
 }

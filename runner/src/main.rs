@@ -1,22 +1,42 @@
 mod vec252;
 use crate::vec252::VecFelt252;
 
+use cairo_felt::Felt252;
 use cairo_lang_runner::{Arg, ProfilingInfoCollectionConfig, RunResultValue, SierraCasmRunner};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use cairo_proof_parser::parse;
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use itertools::{chain, Itertools};
 use std::{
     fs,
     io::{stdin, Read},
 };
 
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+enum CairoVersion {
+    Cairo0 = 0,
+    Cairo1 = 1,
+}
+
+impl From<CairoVersion> for Felt252 {
+    fn from(value: CairoVersion) -> Self {
+        match value {
+            CairoVersion::Cairo0 => Felt252::from(0),
+            CairoVersion::Cairo1 => Felt252::from(1),
+        }
+    }
+}
+
 #[derive(Parser)]
-#[command(author, version, about, long_about = None)]
+#[command(author, version, about)]
 struct Cli {
     /// Path to compiled sierra file
-    target: String,
+    #[clap(short, long)]
+    program: String,
+    /// Cairo version - public memory pattern
+    #[clap(value_enum, short, long, default_value_t=CairoVersion::Cairo0)]
+    cairo_version: CairoVersion,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -25,7 +45,6 @@ fn main() -> anyhow::Result<()> {
     stdin().read_to_string(&mut input)?;
     let parsed = parse(input)?;
 
-    let target = cli.target;
     let function = "main";
 
     let config: VecFelt252 = serde_json::from_str(&parsed.config.to_string()).unwrap();
@@ -45,7 +64,7 @@ fn main() -> anyhow::Result<()> {
     println!("proof size: {} felts", proof.len());
 
     let sierra_program =
-        serde_json::from_str::<VersionedProgram>(&fs::read_to_string(target)?)?.into_v1()?;
+        serde_json::from_str::<VersionedProgram>(&fs::read_to_string(cli.program)?)?.into_v1()?;
 
     let runner = SierraCasmRunner::new(
         sierra_program.program.clone(),
@@ -54,14 +73,13 @@ fn main() -> anyhow::Result<()> {
         Some(ProfilingInfoCollectionConfig::default()),
     )
     .unwrap();
+
     let func = runner.find_function(function).unwrap();
+    let proof_arg = Arg::Array(proof.into_iter().map(Arg::Value).collect_vec());
+    let cairo_version_arg = Arg::Value(cli.cairo_version.into());
+    let args = &[proof_arg, cairo_version_arg];
     let result = runner
-        .run_function_with_starknet_context(
-            func,
-            &[Arg::Array(proof.into_iter().map(Arg::Value).collect_vec())],
-            Some(u32::MAX as usize),
-            Default::default(),
-        )
+        .run_function_with_starknet_context(func, args, Some(u32::MAX as usize), Default::default())
         .unwrap();
     // let profiling_processor =
     //     ProfilingInfoProcessor::new(None, sierra_program.program, UnorderedHashMap::default());
