@@ -28,6 +28,9 @@ jobs:
       
         - name: Setup Scarb
           uses: software-mansion/setup-scarb@v1
+
+        - name: Setup Starknet Foundry
+          uses: foundry-rs/setup-snfoundry@v3
         
         - name: Format code
           run: cd fact_registry && scarb fmt --check
