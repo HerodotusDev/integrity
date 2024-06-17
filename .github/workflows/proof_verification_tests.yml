@@ -52,7 +52,7 @@ jobs:
       strategy:
         matrix:
           cairo_version: ["cairo1"]
-          layout: ["recursive"]
+          layout: ["recursive", "small"]
       steps:
         - name: Checkout repository
           uses: actions/checkout@v3
