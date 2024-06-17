@@ -76,8 +76,8 @@ cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
 
 ### Stone Prover Instructions
 
-For detailed instructions and examples, refer to the Stone Prover [documentation](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairozero-program).
+For detailed instructions and examples, refer to the Stone Prover [documentation](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#overview).
 
-### Stone Prover SDK Tool
+How to prove [Cairo0](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairozero-program) program with Stone Prover.
 
-For information on how to use the Stone Prover SDK tool, please refer to the [documentation](https://github.com/Moonsong-Labs/stone-prover-sdk).
+How to prove [Cairo1](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairo-program) program with Stone Prover.
