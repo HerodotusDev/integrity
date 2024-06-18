@@ -28,10 +28,11 @@ scarb test
 
 For local proof verification, follow these steps:
 
-1. Run the verifier locally using the following command on example proof, followed by the Cairo version of the circuit (0 or 1) used to generate the proof:
+1. Run the verifier locally using the following command on example proof, followed by the Cairo version (cairo0 or cairo1) used to generate the proof:
 
 ```bash
-cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json 0 < examples/proofs/recursive/example_proof.json
+cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json -c cairo0 < examples/proofs/recursive/cairo0_example_proof.json
+cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json -c cairo1 < examples/proofs/recursive/cairo1_example_proof.json
 ```
 
 ### Starknet Proof Verification
@@ -41,14 +42,14 @@ To verify proofs on Starknet, proceed with the following steps:
 1. Prepare calldata of example proof for sncast:
 
 ```bash
-cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive/example_proof.json > examples/starknet/calldata
+cargo run --release --bin snfoundry_proof_serializer -- -c cairo0 < examples/proofs/recursive/cairo0_example_proof.json > examples/starknet/calldata
 ```
 
 2. Call the function with calldata on the Starknet contract:
 
 ```bash
 cd examples/starknet
-./1-verify-proof.sh 0x487810706cc0dfdba0c82403d98e9d32dc36793ed2b731231e5ea19f00c5861 calldata
+./1-verify-proof.sh 0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7 calldata
 ```
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
@@ -76,8 +77,8 @@ cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
 
 ### Stone Prover Instructions
 
-For detailed instructions and examples, refer to the Stone Prover [documentation](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairozero-program).
+For detailed instructions and examples, refer to the Stone Prover [documentation](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#overview).
 
-### Stone Prover SDK Tool
+How to prove [Cairo0](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairozero-program) program with Stone Prover.
 
-For information on how to use the Stone Prover SDK tool, please refer to the [documentation](https://github.com/Moonsong-Labs/stone-prover-sdk).
+How to prove [Cairo1](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairo-program) program with Stone Prover.
