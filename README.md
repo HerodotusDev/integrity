@@ -28,10 +28,11 @@ scarb test
 
 For local proof verification, follow these steps:
 
-1. Run the verifier locally using the following command on example proof, followed by the Cairo version of the circuit (0 or 1) used to generate the proof:
+1. Run the verifier locally using the following command on example proof, followed by the Cairo version (cairo0 or cairo1) used to generate the proof:
 
 ```bash
-cargo run --release --bin runner -- target/dev/cairo_verifier.sierra.json 0 < examples/proofs/recursive/example_proof.json
+cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json -c cairo0 < examples/proofs/recursive/cairo0_example_proof.json
+cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json -c cairo1 < examples/proofs/recursive/cairo1_example_proof.json
 ```
 
 ### Starknet Proof Verification
@@ -41,7 +42,7 @@ To verify proofs on Starknet, proceed with the following steps:
 1. Prepare calldata of example proof for sncast:
 
 ```bash
-cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive/example_proof.json > examples/starknet/calldata
+cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive/cairo0_example_proof.json > examples/starknet/calldata
 ```
 
 2. Call the function with calldata on the Starknet contract:
