@@ -7,7 +7,7 @@
 |                                                                                                     | **Mainnet**           | **starknet**                   |
 |                                                                                                     | **Mainnet**           | **starknet_with_keccak**       |
 |                                                                                                     | **Sepolia Testnet**   | **dex**                        |
-|[0x0110fc9f06e4864b5e7f51432149bc4c5ef7a2786e9125ba2177fbfe0a682751](https://sepolia.starkscan.co/contract/0x0110fc9f06e4864b5e7f51432149bc4c5ef7a2786e9125ba2177fbfe0a682751)                                   | **Sepolia Testnet**   | **recursive**                  |
+|[0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7](https://sepolia.starkscan.co/contract/0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7)                                   | **Sepolia Testnet**   | **recursive**                  |
 |                                                                                                     | **Sepolia Testnet**   | **recursive_with_poseidon**    |
 |                                                                                                     | **Sepolia Testnet**   | **small**                      |
 |                                                                                                     | **Sepolia Testnet**   | **starknet**                   |
