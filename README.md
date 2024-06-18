@@ -49,7 +49,7 @@ cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive
 
 ```bash
 cd examples/starknet
-./1-verify-proof.sh 0x487810706cc0dfdba0c82403d98e9d32dc36793ed2b731231e5ea19f00c5861 calldata
+./1-verify-proof.sh 0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7 calldata
 ```
 
 [List of deployed Verifier Contracts](deployed_contracts.md)
