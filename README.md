@@ -42,7 +42,7 @@ To verify proofs on Starknet, proceed with the following steps:
 1. Prepare calldata of example proof for sncast:
 
 ```bash
-cargo run --release --bin snfoundry_proof_serializer < examples/proofs/recursive/cairo0_example_proof.json > examples/starknet/calldata
+cargo run --release --bin snfoundry_proof_serializer -- -c cairo0 < examples/proofs/recursive/cairo0_example_proof.json > examples/starknet/calldata
 ```
 
 2. Call the function with calldata on the Starknet contract:
