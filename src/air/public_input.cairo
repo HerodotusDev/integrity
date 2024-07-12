@@ -183,3 +183,20 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     let output_hash = poseidon_hash_span(output);
     (program_hash, output_hash)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::get_public_input_hash;
+    use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
+    // test data from cairo0-verifier run on stone-prover generated proof
+    #[test]
+    #[available_gas(9999999999)]
+    fn test_get_public_input_hash() {
+        let public_input = get();
+        let hash = get_public_input_hash(@public_input);
+
+        assert(
+            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
+        )
+    }
+}
