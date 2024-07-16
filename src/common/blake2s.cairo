@@ -51,19 +51,23 @@ fn get_sigma(r: u32) -> Array<u32> {
 }
 
 fn rotr16(n: u32) -> u32 {
-    n / 65536 + (n % 65536) * 65536
+    let (high, low) = DivRem::div_rem(n, 65536);
+    high + (low % 65536) * 65536
 }
 
 fn rotr12(n: u32) -> u32 {
-    n / 4096 + (n % 4096) * 1048576
+    let (high, low) = DivRem::div_rem(n, 4096);
+    high + low * 1048576
 }
 
 fn rotr8(n: u32) -> u32 {
-    n / 256 + (n % 256) * 16777216
+    let (high, low) = DivRem::div_rem(n, 256);
+    high + low * 16777216
 }
 
 fn rotr7(n: u32) -> u32 {
-    n / 128 + (n % 128) * 33554432
+    let (high, low) = DivRem::div_rem(n, 128);
+    high + low * 33554432
 }
 
 #[derive(Drop, Clone)]
