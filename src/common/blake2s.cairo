@@ -18,22 +18,25 @@ fn truncated_blake2s(data: Array<u32>) -> felt252 {
 
 // internals:
 
-
+#[inline(always)]
 fn rotr16(n: u32) -> u32 {
     let (high, low) = DivRem::div_rem(n, 65536);
     TryInto::<felt252, u32>::try_into(high.into() + low.into() * 65536).unwrap()
 }
 
+#[inline(always)]
 fn rotr12(n: u32) -> u32 {
     let (high, low) = DivRem::div_rem(n, 4096);
     TryInto::<felt252, u32>::try_into(high.into() + low.into() * 1048576).unwrap()
 }
 
+#[inline(always)]
 fn rotr8(n: u32) -> u32 {
     let (high, low) = DivRem::div_rem(n, 256);
     TryInto::<felt252, u32>::try_into(high.into() + low.into() * 16777216).unwrap()
 }
 
+#[inline(always)]
 fn rotr7(n: u32) -> u32 {
     let (high, low) = DivRem::div_rem(n, 128);
     TryInto::<felt252, u32>::try_into(high.into() + low.into() * 33554432).unwrap()
