@@ -184,6 +184,7 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     (program_hash, output_hash)
 }
 
+// === RECURSIVE BEGIN ===
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
@@ -200,3 +201,4 @@ mod tests {
         )
     }
 }
+// === RECURSIVE END ===
