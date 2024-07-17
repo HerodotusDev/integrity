@@ -64,7 +64,8 @@ trait PublicInputTrait {
     fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
 
-// Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
+// Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir
+// heuristic.
 fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
@@ -178,7 +179,7 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
         .extract_range_unchecked(initial_pc.try_into().unwrap(), memory.len() - output_len);
     let program_hash = poseidon_hash_span(program);
 
-    // 2. Output segment 
+    // 2. Output segment
     let output = memory.extract_range_unchecked(memory.len() - output_len, output_len);
     let output_hash = poseidon_hash_span(output);
     (program_hash, output_hash)

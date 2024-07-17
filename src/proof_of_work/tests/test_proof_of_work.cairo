@@ -9,7 +9,7 @@ use cairo_verifier::proof_of_work::proof_of_work::verify_proof_of_work;
 //     let n_bits: u8 = 20;
 //     verify_proof_of_work(digest, n_bits, nonce);
 // }
-// 
+//
 // #[test]
 // #[should_panic]
 // #[available_gas(9999999999)]
