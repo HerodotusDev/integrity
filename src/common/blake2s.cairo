@@ -250,7 +250,8 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         12,
         13,
         0,
-    ].span();
+    ]
+        .span();
 
     loop {
         if sigma.is_empty() {
