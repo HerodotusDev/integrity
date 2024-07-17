@@ -89,7 +89,7 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
     let mut v15: u32 = 0x5BE0CD19; // f1 is always 0
 
     let m_span = m.span();
-    let mut sigma = [
+    let mut sigma = array![
         0,
         1,
         2,
