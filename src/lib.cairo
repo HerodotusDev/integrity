@@ -28,8 +28,7 @@ use cairo_verifier::{
     air::layouts::recursive::public_input::RecursivePublicInputImpl as PublicInputImpl,
 // === RECURSIVE END ===
 // === RECURSIVE_WITH_POSEIDON BEGIN ===
-// air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl as
-// PublicInputImpl,
+// air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl as PublicInputImpl,
 // === RECURSIVE_WITH_POSEIDON END ===
 // === SMALL BEGIN ===
 // air::layouts::small::public_input::SmallPublicInputImpl as PublicInputImpl,
@@ -38,8 +37,7 @@ use cairo_verifier::{
 // air::layouts::starknet::public_input::StarknetPublicInputImpl as PublicInputImpl,
 // === STARKNET END ===
 // === STARKNET_WITH_KECCAK BEGIN ===
-// air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as
-// PublicInputImpl,
+// air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl,
 // === STARKNET_WITH_KECCAK END ===
 };
 

@@ -5,8 +5,7 @@ const OMEGA_8: felt252 = 0x446ed3ce295dda2b5ea677394813e6eab8bfbc55397aacac8e6df
 const OMEGA_4: felt252 = 0x1dafdc6d65d66b5accedf99bcd607383ad971a9537cdf25d59e99d90becc81e;
 const OMEGA_2: felt252 = 0x800000000000011000000000000000000000000000000000000000000000000;
 
-// Function to fold 2 elements into one using one layer of FRI (Fast Reed-Solomon Interactive Oracle
-// Proofs).
+// Function to fold 2 elements into one using one layer of FRI (Fast Reed-Solomon Interactive Oracle Proofs).
 fn fri_formula2(f_x: felt252, f_minus_x: felt252, eval_point: felt252, x_inv: felt252) -> felt252 {
     f_x + f_minus_x + eval_point * x_inv * (f_x - f_minus_x)
 }

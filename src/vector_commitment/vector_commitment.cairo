@@ -28,8 +28,8 @@ impl VectorCommitmentConfigImpl of VectorCommitmentConfigTrait {
         n_verifier_friendly_commitment_layers: felt252,
     ) {
         assert(*self.height == expected_height, 'height mismatch');
-        // Note that n_verifier_friendly_commitment_layers can be greater than height (in such a
-        // case, all Merkle layers use the verifier-friendly hash).
+        // Note that n_verifier_friendly_commitment_layers can be greater than height (in such a case,
+        // all Merkle layers use the verifier-friendly hash).
         assert(
             *self.n_verifier_friendly_commitment_layers == n_verifier_friendly_commitment_layers,
             'n_verifier_friendly mismatch'
