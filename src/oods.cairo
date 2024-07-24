@@ -147,30 +147,30 @@ fn eval_oods_boundary_poly_at_points(
 }
 
 // === RECURSIVE BEGIN ===
-// #[cfg(test)]
-// mod tests {
-//     use cairo_verifier::oods::verify_oods;
-//     use cairo_verifier::tests::stone_proof_fibonacci;
+#[cfg(test)]
+mod tests {
+    use cairo_verifier::oods::verify_oods;
+    use cairo_verifier::tests::stone_proof_fibonacci;
 
-//     #[test]
-//     #[available_gas(9999999999)]
-//     fn test_verify_oods() {
-//         let public_input = stone_proof_fibonacci::public_input::get();
-//         let interaction_elements = stone_proof_fibonacci::interaction_elements::get();
-//         let mask_values = stone_proof_fibonacci::stark::oods_values::get();
-//         let constraint_coefficients = stone_proof_fibonacci::constraint_coefficients::get();
+    #[test]
+    #[available_gas(9999999999)]
+    fn test_verify_oods() {
+        let public_input = stone_proof_fibonacci::public_input::get();
+        let interaction_elements = stone_proof_fibonacci::interaction_elements::get();
+        let mask_values = stone_proof_fibonacci::stark::oods_values::get();
+        let constraint_coefficients = stone_proof_fibonacci::constraint_coefficients::get();
 
-//         verify_oods(
-//             mask_values.span(),
-//             interaction_elements,
-//             @public_input,
-//             constraint_coefficients.span(),
-//             0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8,
-//             0x40000,
-//             0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
-//         );
-//     }
-// }
+        verify_oods(
+            mask_values.span(),
+            interaction_elements,
+            @public_input,
+            constraint_coefficients.span(),
+            0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8,
+            0x40000,
+            0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
+        );
+    }
+}
 // === RECURSIVE END ===
 
 
