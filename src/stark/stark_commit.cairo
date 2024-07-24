@@ -41,6 +41,7 @@ use cairo_verifier::{
     proof_of_work::proof_of_work::proof_of_work_commit,
     table_commitment::table_commitment::table_commit, oods::verify_oods,
 };
+use starknet::ContractAddress;
 
 
 // STARK commitment phase.
@@ -50,6 +51,7 @@ fn stark_commit(
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
     stark_domains: @StarkDomains,
+    contract_address_1: ContractAddress,
 ) -> StarkCommitment {
     // Read the commitment of the 'traces' component.
     let traces_commitment = traces_commit(ref channel, *unsent_commitment.traces, *config.traces,);
@@ -78,6 +80,7 @@ fn stark_commit(
         interaction_after_composition,
         *stark_domains.trace_domain_size,
         *stark_domains.trace_generator,
+        contract_address_1,
     );
 
     // Generate interaction values after OODS.

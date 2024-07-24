@@ -1,9 +1,10 @@
 use cairo_verifier::{StarkProof, CairoVersion};
+use starknet::ContractAddress;
 
 #[starknet::interface]
 trait ICairoVerifier<TContractState> {
     fn verify_proof(
-        ref self: TContractState, stark_proof: StarkProof, cairo_version: CairoVersion
+        ref self: TContractState, stark_proof: StarkProof, cairo_version: CairoVersion, contract_address_1: ContractAddress, contract_address_2: ContractAddress
     ) -> (felt252, felt252);
 }
 
@@ -13,16 +14,7 @@ mod CairoVerifier {
     use starknet::ContractAddress;
 
     #[storage]
-    struct Storage {
-        contract_address_1: ContractAddress,
-        contract_address_2: ContractAddress,
-    }
-
-    #[constructor]
-    fn constructor(ref self: ContractState, contract_address_1: ContractAddress, contract_address_2: ContractAddress) {
-        self.contract_address_1.write(contract_address_1);
-        self.contract_address_2.write(contract_address_2);
-    }
+    struct Storage {}
 
     #[event]
     #[derive(Drop, starknet::Event)]
@@ -46,9 +38,11 @@ mod CairoVerifier {
         fn verify_proof(
             ref self: ComponentState<TContractState>,
             stark_proof: StarkProof,
-            cairo_version: CairoVersion
+            cairo_version: CairoVersion,
+            contract_address_1: ContractAddress,
+            contract_address_2: ContractAddress
         ) -> (felt252, felt252) {
-            stark_proof.verify(SECURITY_BITS, self.contract_address_1.read(), self.contract_address_2.read());
+            stark_proof.verify(SECURITY_BITS, contract_address_1, contract_address_2);
             let (program_hash, output_hash) = match cairo_version {
                 CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
                 CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),

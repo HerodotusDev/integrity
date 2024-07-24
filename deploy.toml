@@ -1,0 +1,20 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x7846b47c1242233941eee3ac15b0b5bdb84bfae8bf835882988fdb0b173b683"
+inputs = []
+id = "contract_1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x5a2b373221551bff799a7a501783523841beb24491d8a7974676dbee0f37f2"
+inputs = []
+id = "contract_2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x24b74b8a8aa766149a22e1dbb08b40171988b63d235a4e45e8186570c82b35"
+inputs = ["contract_1", "contract_2"]
+id = "main_contract"
+unique = false

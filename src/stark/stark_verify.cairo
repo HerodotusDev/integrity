@@ -22,6 +22,7 @@ use cairo_verifier::{
     table_commitment::table_commitment::table_decommit,
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
 };
+use starknet::ContractAddress;
 
 // STARK verify phase.
 fn stark_verify(
@@ -31,6 +32,7 @@ fn stark_verify(
     commitment: StarkCommitment,
     witness: StarkWitness,
     stark_domains: StarkDomains,
+    contract_address_2: ContractAddress,
 ) {
     // First layer decommit.
     traces_decommit(
@@ -61,6 +63,7 @@ fn stark_verify(
         points.span(),
         witness.traces_decommitment,
         witness.composition_decommitment,
+        contract_address_2,
     );
 
     // Decommit FRI.

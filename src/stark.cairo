@@ -67,6 +67,7 @@ use cairo_verifier::{
     },
     vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
 };
+use starknet::ContractAddress;
 
 #[derive(Drop, Serde)]
 struct StarkProof {
@@ -78,7 +79,7 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof, security_bits: felt252) {
+    fn verify(self: @StarkProof, security_bits: felt252, contract_address_1: ContractAddress, contract_address_2: ContractAddress) {
         // Validate config.
         self.config.validate(security_bits);
 
@@ -95,7 +96,7 @@ impl StarkProofImpl of StarkProofTrait {
 
         // STARK commitment phase.
         let stark_commitment = stark_commit::stark_commit(
-            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
+            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains, contract_address_1
         );
 
         // Generate queries.
@@ -112,7 +113,8 @@ impl StarkProofImpl of StarkProofTrait {
             queries.span(),
             stark_commitment,
             *self.witness,
-            stark_domains
+            stark_domains,
+            contract_address_2
         )
     }
 }

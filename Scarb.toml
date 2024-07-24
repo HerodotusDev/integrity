@@ -1,3 +1,10 @@
 [package]
 name = "cairo_verifier"
 version = "0.1.0"
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[dependencies]
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.24.0" }

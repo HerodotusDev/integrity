@@ -18,6 +18,9 @@ mod vector_commitment;
 mod tests;
 // === RECURSIVE END ===
 
+mod facts_registry;
+mod verifier;
+
 use cairo_verifier::{
     air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
     stark::{StarkProof, StarkProofImpl},
@@ -41,17 +44,17 @@ use cairo_verifier::{
 // === STARKNET_WITH_KECCAK END ===
 };
 
-const SECURITY_BITS: felt252 = 50;
+// const SECURITY_BITS: felt252 = 50;
 
-fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
-    let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
-    let stark_proof: StarkProof = stark_proof_serde.into();
+// fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
+//     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
+//     let stark_proof: StarkProof = stark_proof_serde.into();
 
-    stark_proof.verify(SECURITY_BITS);
-    let (program_hash, output_hash) = match cairo_version {
-        CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-        CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
-    };
+//     stark_proof.verify(SECURITY_BITS);
+//     let (program_hash, output_hash) = match cairo_version {
+//         CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
+//         CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+//     };
 
-    (program_hash, output_hash)
-}
+//     (program_hash, output_hash)
+// }

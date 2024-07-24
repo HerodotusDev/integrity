@@ -20,9 +20,9 @@ fi
 calldata=$(<$calldata_file)
 
 # Pass the calldata to the sncast command
-sncast --profile testnet \
-  --wait \
-  invoke \
-  --contract-address "$contract_address" \
-  --function "verify_and_register_fact" \
-  --calldata $calldata
+sncast \
+    --wait \
+    invoke \
+    --contract-address "$contract_address" \
+    --function "verify_and_register_fact" \
+    --calldata $calldata
