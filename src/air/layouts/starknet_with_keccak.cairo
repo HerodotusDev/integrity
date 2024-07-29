@@ -169,7 +169,7 @@ impl StarknetWithKeccakAIRCompositionImpl of AIRComposition<InteractionElements,
 
         IStarknetWithKeccakLayoutContract1Dispatcher {
             contract_address: contract_address_1
-        }. eval_composition_polynomial_inner(
+        }.eval_composition_polynomial_inner(
             mask_values, constraint_coefficients, point, trace_generator, global_values
         )
     }

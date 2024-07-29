@@ -1,0 +1,83 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x740d31a0ea552b8f06f9562ffc83fe9812f9bd4aab7e4c9ff608dccb189ea8d"
+inputs = []
+id = "contract_1_part_1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x37694a9628592e7e1fc33fcc1cbf3c6ab8f11738d7f82acf58287871ead4825"
+inputs = []
+id = "contract_1_part_2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x3feb86fa581d588afbede863c9ab32d7be7b173326417e6a2ad2f5a297c7e39"
+inputs = []
+id = "contract_1_part_3"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x3450d3fa5140603ca66d18f7be8480648913c2f5588ab4ee35327e34903f1c8"
+inputs = []
+id = "contract_1_part_4"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x60a8b817fc54120cfc5ae596cf0bf43b51ab268d64992b8548a1d1457e8fbe2"
+inputs = []
+id = "contract_1_part_5"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x74ca3ba4e5558e1853b7e2fc409063ab4fea3879b220ba5ea263edf200519f5"
+inputs = []
+id = "contract_1_part_6"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x769cbeff866fef34236ac98e2d92b8be9a035f50e68eca8314b6b84ed82ccaa"
+inputs = []
+id = "contract_1_part_7"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x07a34aa6757602c2aab48861849df5b9fb6be39e6a625e9fdefe1d470e1425aa"
+inputs = ["0x7", "contract_1_part_1", "contract_1_part_2", "contract_1_part_3", "contract_1_part_4", "contract_1_part_5", "contract_1_part_6", "contract_1_part_7"]
+id = "contract_1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x3cef34bc5fa15938e0c8401398ee96d2277c4b1bd0855f952b8770e14a3f7d6"
+inputs = []
+id = "contract_2_part1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x1b9ef9fafe141c000ae467f43d8a9efad39343890ef827e9d2268977a82b889"
+inputs = []
+id = "contract_2_part2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x14a87df70bd5abca9fb1c0483017dfe1c78e14144a9ccfa40acd916e9290dbb"
+inputs = ["contract_2_part1", "contract_2_part2"]
+id = "contract_2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x5f2f7cb025748fd1bd761d63ae78b8c72f986d731af7b2dd2149c674749acaf"
+inputs = ["contract_1", "contract_2"]
+id = "main_contract"
+unique = false
