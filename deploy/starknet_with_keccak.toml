@@ -77,7 +77,7 @@ unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x5f2f7cb025748fd1bd761d63ae78b8c72f986d731af7b2dd2149c674749acaf"
+class_hash = "0x0773ee3a60343f252127645db51ac3750be118339f647b69e0a9f43c359aac40"
 inputs = ["contract_1", "contract_2"]
 id = "main_contract"
 unique = false
