@@ -13,6 +13,7 @@ mod queries;
 mod stark;
 mod table_commitment;
 mod vector_commitment;
+mod verifier;
 
 // === RECURSIVE BEGIN ===
 mod tests;

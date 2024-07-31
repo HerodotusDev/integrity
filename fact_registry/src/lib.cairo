@@ -1,5 +1,3 @@
-mod verifier;
-
 use cairo_verifier::{StarkProofWithSerde, CairoVersion};
 use starknet::ContractAddress;
 
@@ -33,8 +31,8 @@ mod FactRegistry {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use fact_registry::{verifier::{ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait, StarkProof}, IFactRegistry};
-    use super::VerifierSettings;
+    use cairo_verifier::verifier::{ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait, StarkProof};
+    use super::{VerifierSettings, IFactRegistry};
 
     #[storage]
     struct Storage {
