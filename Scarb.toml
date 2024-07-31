@@ -11,3 +11,17 @@ casm = true
 [lib]
 sierra = true
 casm = false
+
+[features]
+
+recursive = []
+recursive_with_poseidon = []
+dex = []
+small = []
+starknet = []
+starknet_with_keccak = []
+
+keccak = []
+blake2s = []
+
+default = ["recursive", "keccak"]

@@ -1,23 +1,5 @@
 use cairo_verifier::{
     domains::StarkDomains, air::constants::{MAX_ADDRESS, INITIAL_PC},
-    // === DEX BEGIN ===
-    // air::layouts::dex::constants::segments,
-    // === DEX END ===
-    // === RECURSIVE BEGIN ===
-    air::layouts::recursive::constants::segments,
-    // === RECURSIVE END ===
-    // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // air::layouts::recursive_with_poseidon::constants::segments,
-    // === RECURSIVE_WITH_POSEIDON END ===
-    // === SMALL BEGIN ===
-    // air::layouts::small::constants::segments,
-    // === SMALL END ===
-    // === STARKNET BEGIN ===
-    // air::layouts::starknet::constants::segments,
-    // === STARKNET END ===
-    // === STARKNET_WITH_KECCAK BEGIN ===
-    // air::layouts::starknet_with_keccak::constants::segments,
-    // === STARKNET_WITH_KECCAK END ===
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
     },
@@ -26,9 +8,21 @@ use cairo_verifier::{
         math::{pow, Felt252PartialOrd, Felt252Div},
     },
 };
-
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
+#[cfg(feature: 'dex')]
+use cairo_verifier::air::layouts::dex::constants::segments;
+#[cfg(feature: 'recursive')]
+use cairo_verifier::air::layouts::recursive::constants::segments;
+#[cfg(feature: 'recursive_with_poseidon')]
+use cairo_verifier::air::layouts::recursive_with_poseidon::constants::segments;
+#[cfg(feature: 'small')]
+use cairo_verifier::air::layouts::small::constants::segments;
+#[cfg(feature: 'starknet')]
+use cairo_verifier::air::layouts::starknet::constants::segments;
+#[cfg(feature: 'starknet_with_keccak')]
+use cairo_verifier::air::layouts::starknet_with_keccak::constants::segments;
+
 
 #[derive(Drop, Copy, PartialEq, Serde)]
 struct SegmentInfo {
@@ -184,6 +178,8 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     (program_hash, output_hash)
 }
 
+#[cfg(feature: 'recursive')]
+#[cfg(feature: 'keccak')]
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
