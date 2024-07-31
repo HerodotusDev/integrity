@@ -89,7 +89,7 @@ impl StarkProofImpl of StarkProofTrait {
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
-        let digest = get_public_input_hash(self.public_input);
+        let digest = get_public_input_hash(self.public_input, *self.config.n_verifier_friendly_commitment_layers);
         // Construct the channel.
         let mut channel = ChannelImpl::new(digest);
 

@@ -11,7 +11,9 @@ use cairo_verifier::common::{
 //     blake2s_u8(data)
 // }
 // fn hash_truncated(data: Array<u32>) -> felt252 {
-//     truncated_blake2s(data)
+//     (blake2s(data).flip_endianness() & 0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+//          .try_into()
+//          .unwrap()
 // }
 // fn hash(data: Array<u32>) -> u256 {
 //     blake2s(data)
@@ -28,7 +30,7 @@ fn hash_n_bytes(mut data: Array<u64>, n: u8, hash_len: bool) -> u256 {
 }
 fn hash_truncated(mut data: Array<u64>) -> felt252 {
     (keccak::cairo_keccak(ref data, 0, 0)
-        .flip_endianness() % 0x10000000000000000000000000000000000000000)
+        .flip_endianness() & 0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
         .try_into()
         .unwrap()
 }
