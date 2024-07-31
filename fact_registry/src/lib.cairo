@@ -8,7 +8,6 @@ use starknet::ContractAddress;
 struct VerifierSettings {
     layout: felt252,
     hasher: felt252,
-    cairo_version: CairoVersion,
     security_bits: felt252,
     version: felt252,
 }
@@ -16,7 +15,10 @@ struct VerifierSettings {
 #[starknet::interface]
 trait IFactRegistry<TContractState> {
     fn verify_and_register_fact(
-        ref self: TContractState, stark_proof: StarkProofWithSerde, settings: VerifierSettings
+        ref self: TContractState,
+        stark_proof: StarkProofWithSerde,
+        cairo_version: CairoVersion,
+        settings: VerifierSettings,
     );
     fn is_valid(self: @TContractState, fact: felt252) -> bool;
     fn register_verifier(ref self: TContractState, settings: VerifierSettings, address: ContractAddress);
@@ -70,13 +72,16 @@ mod FactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn verify_and_register_fact(
-            ref self: ContractState, stark_proof: StarkProofWithSerde, settings: VerifierSettings,
+            ref self: ContractState,
+            stark_proof: StarkProofWithSerde,
+            cairo_version: CairoVersion,
+            settings: VerifierSettings,
         ) {
             let verifier_address = self.verifiers.read(self._hash_settings(settings));
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             let (program_hash, output_hash) = ICairoVerifierDispatcher {
                 contract_address: verifier_address
-            }.verify_proof(stark_proof.into(), settings.cairo_version);
+            }.verify_proof(stark_proof.into(), cairo_version);
             self._register_fact(program_hash, output_hash);
         }
 
@@ -115,9 +120,12 @@ mod FactRegistry {
         }
 
         fn _hash_settings(self: @ContractState, settings: VerifierSettings) -> felt252 {
-            PoseidonImpl::new().update(settings.layout).update(settings.hasher)
-                .update(settings.cairo_version.into()).update(settings.security_bits)
-                .update(settings.version).finalize()
+            PoseidonImpl::new()
+                .update(settings.layout)
+                .update(settings.hasher)
+                .update(settings.security_bits)
+                .update(settings.version)
+                .finalize()
         }
     }
 }
