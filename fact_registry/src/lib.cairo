@@ -3,20 +3,21 @@ mod verifier;
 use cairo_verifier::{StarkProofWithSerde, CairoVersion};
 use starknet::ContractAddress;
 
-#[starknet::interface]
-trait IFactRegistry<TContractState> {
-    fn verify_and_register_fact(
-        ref self: TContractState, stark_proof: StarkProofWithSerde, cairo_version: CairoVersion
-    );
-    fn verify_and_register_fact_from_contract(
-        ref self: TContractState, contract_address: ContractAddress
-    );
-    fn is_valid(self: @TContractState, fact: felt252) -> bool;
+#[derive(Drop, Copy, Serde)]
+struct VerifierSettings {
+    layout: felt252,
+    hasher: felt252,
+    cairo_version: CairoVersion,
+    security_bits: felt252,
+    version: felt252,
 }
 
 #[starknet::interface]
-trait ISmartProof<TContractState> {
-    fn get_proof(self: @TContractState) -> (Array<felt252>, CairoVersion);
+trait IFactRegistry<TContractState> {
+    fn verify_and_register_fact(
+        ref self: TContractState, stark_proof: StarkProofWithSerde, settings: VerifierSettings
+    );
+    fn is_valid(self: @TContractState, fact: felt252) -> bool;
 }
 
 #[starknet::contract]
@@ -27,23 +28,20 @@ mod FactRegistry {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use fact_registry::{verifier::{CairoVerifier, ICairoVerifier, StarkProof}, IFactRegistry};
-    use super::{ISmartProofDispatcher, ISmartProofDispatcherTrait};
-
-    component!(path: CairoVerifier, storage: cairo_verifier, event: CairoVerifierEvent);
+    use fact_registry::{verifier::{ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait, StarkProof}, IFactRegistry};
+    use super::VerifierSettings;
 
     #[storage]
     struct Storage {
-        #[substorage(v0)]
-        cairo_verifier: CairoVerifier::Storage,
+        verifiers: LegacyMap<felt252, ContractAddress>,
         facts: LegacyMap<felt252, bool>,
     }
 
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
-        #[flat]
-        CairoVerifierEvent: CairoVerifier::Event,
+        // #[flat]
+        // CairoVerifierEvent: CairoVerifier::Event,
         FactRegistered: FactRegistered,
     }
 
@@ -56,22 +54,13 @@ mod FactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn verify_and_register_fact(
-            ref self: ContractState, stark_proof: StarkProofWithSerde, cairo_version: CairoVersion
+            ref self: ContractState, stark_proof: StarkProofWithSerde, settings: VerifierSettings,
         ) {
-            let (program_hash, output_hash) = self
-                .cairo_verifier
-                .verify_proof(stark_proof.into(), cairo_version);
+            let verifier_address = self.verifiers.read(self._hash_settings(settings));
+            let (program_hash, output_hash) = ICairoVerifierDispatcher {
+                contract_address: verifier_address
+            }.verify_proof(stark_proof.into(), settings.cairo_version);
             self._register_fact(program_hash, output_hash);
-        }
-
-        fn verify_and_register_fact_from_contract(
-            ref self: ContractState, contract_address: ContractAddress
-        ) {
-            let (proof_array, cairo_version) = ISmartProofDispatcher { contract_address }
-                .get_proof();
-            let mut proof_array = proof_array.span();
-            let proof = Serde::<StarkProofWithSerde>::deserialize(ref proof_array).unwrap();
-            self.verify_and_register_fact(proof, cairo_version);
         }
 
         fn is_valid(self: @ContractState, fact: felt252) -> bool {
@@ -85,6 +74,12 @@ mod FactRegistry {
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
             self.emit(Event::FactRegistered(FactRegistered { fact }));
             self.facts.write(fact, true);
+        }
+
+        fn _hash_settings(self: @ContractState, settings: VerifierSettings) -> felt252 {
+            PoseidonImpl::new().update(settings.layout).update(settings.hasher)
+                .update(settings.cairo_version.into()).update(settings.security_bits)
+                .update(settings.version).finalize()
         }
     }
 }

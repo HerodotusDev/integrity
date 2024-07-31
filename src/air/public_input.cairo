@@ -58,6 +58,15 @@ enum CairoVersion {
     Cairo1,
 }
 
+impl CairoVersionIntoFelt252 of Into<CairoVersion, felt252> {
+    fn into(self: CairoVersion) -> felt252 {
+        match self {
+            CairoVersion::Cairo0 => {0},
+            CairoVersion::Cairo1 => {1},
+        }
+    }
+}
+
 trait PublicInputTrait {
     fn verify_cairo0(self: @PublicInput) -> (felt252, felt252);
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252);
