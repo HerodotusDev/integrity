@@ -1,3 +1,5 @@
+use core::array::SpanTrait;
+use core::debug::PrintTrait;
 #[derive(Drop, Copy, Hash, PartialEq, Serde)]
 struct AddrValue {
     address: felt252,
@@ -77,21 +79,28 @@ impl PageImpl of PageTrait {
         self: @Page,
         start_ap: felt252,
         segment_addresses: Span<felt252>,
-        builtins_len: usize,
+        program_builtins: Span<felt252>,
+        layout_builtins: Span<felt252>,
         ref offset: usize
     ) {
-        let mut i = 0;
+        let mut p = 0;
+        let mut l = 0;
 
         loop {
-            if i == builtins_len {
+            if p == program_builtins.len() {
                 break;
             }
 
             let current = *self.at(offset);
 
-            assert(current.address == start_ap + i.into(), 'Invalid address');
-            assert(current.value == *segment_addresses.at(i), 'Invalid builtin');
-            i += 1;
+            assert(current.address == start_ap + p.into(), 'Invalid address');
+            if l < layout_builtins.len() {
+                if program_builtins[p] == layout_builtins[l] {
+                    assert(current.value == *segment_addresses.at(l), 'Invalid builtin');
+                    l += 1;
+                }
+            }
+            p += 1;
             offset += 1;
         };
     }

@@ -27,6 +27,22 @@ use cairo_verifier::{
     },
 };
 
+pub fn get_builtins() -> Array<felt252> {
+    array![
+        'output',
+        'pedersen',
+        'range_check',
+        'ecdsa',
+        'bitwise',
+        'ec_op',
+        'keccak',
+        'poseidon',
+        'range_check96',
+        'add_mod',
+        'mul_mod'
+    ]
+}
+
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 
@@ -65,7 +81,9 @@ trait PublicInputTrait {
 }
 
 // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
-fn get_public_input_hash(public_input: @PublicInput, n_verifier_friendly_commitment_layers: felt252) -> felt252 {
+fn get_public_input_hash(
+    public_input: @PublicInput, n_verifier_friendly_commitment_layers: felt252
+) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
     let mut i: u32 = 0;
