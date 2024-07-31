@@ -7,7 +7,7 @@ trait ICairoVerifier<TContractState> {
     ) -> (felt252, felt252);
 }
 
-#[starknet::component]
+#[starknet::contract]
 mod CairoVerifier {
     use cairo_verifier::{CairoVersion, PublicInputImpl, stark::{StarkProof, StarkProofImpl}};
 
@@ -30,11 +30,9 @@ mod CairoVerifier {
 
     const SECURITY_BITS: felt252 = 50;
 
-    impl CairoVerifierImpl<
-        TContractState, +HasComponent<TContractState>
-    > of super::ICairoVerifier<ComponentState<TContractState>> {
+    impl CairoVerifier of super::ICairoVerifier<ContractState> {
         fn verify_proof(
-            ref self: ComponentState<TContractState>,
+            ref self: ContractState,
             stark_proof: StarkProof,
             cairo_version: CairoVersion
         ) -> (felt252, felt252) {

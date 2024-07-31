@@ -1,0 +1,6 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x79b972400cbbbc9afe4056a377366773bc069e292e1b9657bec2e48b4353ad3"
+inputs = ["REPLACE WITH YOUR ACCOUNT ADDRESS"]
+unique = false
+id = "fact_registry"
