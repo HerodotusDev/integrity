@@ -20,7 +20,7 @@ use cairo_verifier::{
             traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
             constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
         },
-    // === RECURSIVE END ===
+        // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
     // layouts::recursive_with_poseidon::{
     // traces::{TracesConfig, TracesConfigTrait},
