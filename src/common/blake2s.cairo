@@ -1,5 +1,5 @@
 use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
-use core::integer::u32_wrapping_add;
+use core::num::traits::WrappingAdd;
 
 fn blake2s(data: Array<u32>) -> u256 {
     let mut state = blake2s_init();
@@ -125,83 +125,83 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // ROUND function begin
 
         // 0 - 0,4,8,12
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma[0]));
+        v0 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v0, v4), *m_span.at(*sigma[0]));
         v12 = rotr16(v12 ^ v0);
-        v8 = u32_wrapping_add(v8, v12);
+        v8 = WrappingAdd::wrapping_add(v8, v12);
         v4 = rotr12(v4 ^ v8);
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma[1]));
+        v0 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v0, v4), *m_span.at(*sigma[1]));
         v12 = rotr8(v12 ^ v0);
-        v8 = u32_wrapping_add(v8, v12);
+        v8 = WrappingAdd::wrapping_add(v8, v12);
         v4 = rotr7(v4 ^ v8);
 
         // 1 - 1,5,9,13
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma[2]));
+        v1 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v1, v5), *m_span.at(*sigma[2]));
         v13 = rotr16(v13 ^ v1);
-        v9 = u32_wrapping_add(v9, v13);
+        v9 = WrappingAdd::wrapping_add(v9, v13);
         v5 = rotr12(v5 ^ v9);
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma[3]));
+        v1 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v1, v5), *m_span.at(*sigma[3]));
         v13 = rotr8(v13 ^ v1);
-        v9 = u32_wrapping_add(v9, v13);
+        v9 = WrappingAdd::wrapping_add(v9, v13);
         v5 = rotr7(v5 ^ v9);
 
         // 2 - 2,6,10,14
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma[4]));
+        v2 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v2, v6), *m_span.at(*sigma[4]));
         v14 = rotr16(v14 ^ v2);
-        v10 = u32_wrapping_add(v10, v14);
+        v10 = WrappingAdd::wrapping_add(v10, v14);
         v6 = rotr12(v6 ^ v10);
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma[5]));
+        v2 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v2, v6), *m_span.at(*sigma[5]));
         v14 = rotr8(v14 ^ v2);
-        v10 = u32_wrapping_add(v10, v14);
+        v10 = WrappingAdd::wrapping_add(v10, v14);
         v6 = rotr7(v6 ^ v10);
 
         // 3 - 3,7,11,15
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[6]));
+        v3 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v3, v7), *m_span.at(*sigma[6]));
         v15 = rotr16(v15 ^ v3);
-        v11 = u32_wrapping_add(v11, v15);
+        v11 = WrappingAdd::wrapping_add(v11, v15);
         v7 = rotr12(v7 ^ v11);
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[7]));
+        v3 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v3, v7), *m_span.at(*sigma[7]));
         v15 = rotr8(v15 ^ v3);
-        v11 = u32_wrapping_add(v11, v15);
+        v11 = WrappingAdd::wrapping_add(v11, v15);
         v7 = rotr7(v7 ^ v11);
 
         // 4 - 0,5,10,15
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma[8]));
+        v0 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v0, v5), *m_span.at(*sigma[8]));
         v15 = rotr16(v15 ^ v0);
-        v10 = u32_wrapping_add(v10, v15);
+        v10 = WrappingAdd::wrapping_add(v10, v15);
         v5 = rotr12(v5 ^ v10);
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma[9]));
+        v0 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v0, v5), *m_span.at(*sigma[9]));
         v15 = rotr8(v15 ^ v0);
-        v10 = u32_wrapping_add(v10, v15);
+        v10 = WrappingAdd::wrapping_add(v10, v15);
         v5 = rotr7(v5 ^ v10);
 
         // 5 - 1,6,11,12
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma[10]));
+        v1 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v1, v6), *m_span.at(*sigma[10]));
         v12 = rotr16(v12 ^ v1);
-        v11 = u32_wrapping_add(v11, v12);
+        v11 = WrappingAdd::wrapping_add(v11, v12);
         v6 = rotr12(v6 ^ v11);
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma[11]));
+        v1 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v1, v6), *m_span.at(*sigma[11]));
         v12 = rotr8(v12 ^ v1);
-        v11 = u32_wrapping_add(v11, v12);
+        v11 = WrappingAdd::wrapping_add(v11, v12);
         v6 = rotr7(v6 ^ v11);
 
         // 6 - 2,7,8,13
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma[12]));
+        v2 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v2, v7), *m_span.at(*sigma[12]));
         v13 = rotr16(v13 ^ v2);
-        v8 = u32_wrapping_add(v8, v13);
+        v8 = WrappingAdd::wrapping_add(v8, v13);
         v7 = rotr12(v7 ^ v8);
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma[13]));
+        v2 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v2, v7), *m_span.at(*sigma[13]));
         v13 = rotr8(v13 ^ v2);
-        v8 = u32_wrapping_add(v8, v13);
+        v8 = WrappingAdd::wrapping_add(v8, v13);
         v7 = rotr7(v7 ^ v8);
 
         // 7 - 3,4,9,14
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma[14]));
+        v3 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v3, v4), *m_span.at(*sigma[14]));
         v14 = rotr16(v14 ^ v3);
-        v9 = u32_wrapping_add(v9, v14);
+        v9 = WrappingAdd::wrapping_add(v9, v14);
         v4 = rotr12(v4 ^ v9);
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma[15]));
+        v3 = WrappingAdd::wrapping_add(WrappingAdd::wrapping_add(v3, v4), *m_span.at(*sigma[15]));
         v14 = rotr8(v14 ^ v3);
-        v9 = u32_wrapping_add(v9, v14);
+        v9 = WrappingAdd::wrapping_add(v9, v14);
         v4 = rotr7(v4 ^ v9);
 
         r += 1;
@@ -252,9 +252,9 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
             };
 
             // blake2s_increment_counter
-            s.t0 = u32_wrapping_add(s.t0, 64_u32);
+            s.t0 = WrappingAdd::wrapping_add(s.t0, 64_u32);
             if s.t0 < 64_u32 {
-                s.t1 = u32_wrapping_add(s.t1, 1);
+                s.t1 = WrappingAdd::wrapping_add(s.t1, 1);
             }
 
             s = blake2s_compress(s, new_buf);
@@ -268,9 +268,9 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
                 }
 
                 // blake2s_increment_counter
-                s.t0 = u32_wrapping_add(s.t0, 64_u32);
+                s.t0 = WrappingAdd::wrapping_add(s.t0, 64_u32);
                 if s.t0 < 64_u32 {
-                    s.t1 = u32_wrapping_add(s.t1, 1);
+                    s.t1 = WrappingAdd::wrapping_add(s.t1, 1);
                 }
 
                 let mut compress_in = ArrayTrait::new();
@@ -325,9 +325,9 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
     assert(s.f0 == 0, 'blake2s_is_lastblock');
 
     // blake2s_increment_counter 
-    s.t0 = u32_wrapping_add(s.t0, s.buflen * 4);
+    s.t0 = WrappingAdd::wrapping_add(s.t0, s.buflen * 4);
     if s.t0 < s.buflen {
-        s.t1 = u32_wrapping_add(s.t1, 1);
+        s.t1 = WrappingAdd::wrapping_add(s.t1, 1);
     }
 
     s.f0 = 0xffffffff;
