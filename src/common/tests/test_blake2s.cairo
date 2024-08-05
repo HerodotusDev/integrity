@@ -1,5 +1,5 @@
 use cairo_verifier::common::{
-    array_append::ArrayAppendTrait, blake2s::{blake2s, truncated_blake2s, load32}
+    array_append::ArrayAppendTrait, blake2s::{blake2s, truncated_blake2s}, blake2s_u8::load32,
 };
 
 fn get_arr_v1(n: u32) -> Array<u32> {

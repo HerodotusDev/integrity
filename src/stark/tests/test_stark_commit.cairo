@@ -10,19 +10,19 @@ use cairo_verifier::{
 //     let mut channel = ChannelTrait::new_with_counter(
 //         0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
 //     );
-// 
+//
 //     let public_input = stone_proof_fibonacci::public_input::get();
 //     let unsent_commitment = stone_proof_fibonacci::stark::unsent_commitment::get();
 //     let config = stone_proof_fibonacci::stark::config::get();
 //     let stark_domains = stone_proof_fibonacci::stark::domains::get();
-// 
+//
 //     assert(
 //         stark_commit(
 //             ref channel, @public_input, @unsent_commitment, @config, @stark_domains
 //         ) == stone_proof_fibonacci::stark::commitment::get(),
 //         'Invalid value'
 //     );
-// 
+//
 //     assert(
 //         channel.digest == 0x9c769c7e0797cf043b06b980072a798b141f2bc41b14e85ad93ba178b13de7,
 //         'Invalid value'
