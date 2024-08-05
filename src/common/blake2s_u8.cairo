@@ -338,7 +338,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u8>) -> blake2s_state {
 fn blake2s_final(mut s: blake2s_state) -> u256 {
     assert(s.f0 == 0, 'blake2s_is_lastblock');
 
-    // blake2s_increment_counter 
+    // blake2s_increment_counter
     s.t0 = WrappingAdd::wrapping_add(s.t0, s.buflen);
     if s.t0 < s.buflen {
         s.t1 = WrappingAdd::wrapping_add(s.t1, 1);
