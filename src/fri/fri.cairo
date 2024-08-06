@@ -170,49 +170,13 @@ fn fri_verify_layer_step(
     next_queries
 }
 
-fn fri_verify_layers(
-    n_layers: felt252,
-    commitment: Span<TableCommitment>,
-    layer_witness: Span<FriLayerWitness>,
-    eval_points: Span<felt252>,
-    step_sizes: Span<felt252>,
-    mut queries: Array<FriLayerQuery>,
-) -> Array<FriLayerQuery> {
-    let len: u32 = n_layers.try_into().unwrap();
-    let mut i: u32 = 0;
-
-    loop {
-        if i == len {
-            break;
-        }
-
-        let step_size = *step_sizes.at(i);
-        let eval_point = *eval_points.at(i);
-        let single_commitment = *commitment.at(i);
-        let single_layer_witness = *layer_witness.at(i);
-        // queries
-
-        queries = fri_verify_layer_step(
-            queries.span(),
-            step_size,
-            eval_point,
-            single_commitment,
-            single_layer_witness,
-        );
-
-        i += 1;
-    };
-
-    queries
-}
-
 // FRI protocol component decommitment.
-fn fri_verify(
+fn fri_verify_initial(
     queries: Span<felt252>,
     commitment: FriCommitment,
     decommitment: FriDecommitment,
     witness: FriWitness,
-) {
+) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(queries.len() == decommitment.values.len(), 'Invalid value');
 
     // Compute first FRI layer queries.
@@ -220,18 +184,7 @@ fn fri_verify(
         queries, decommitment.values, decommitment.points,
     );
 
-
-    // Verify inner layers.
-    let last_queries = fri_verify_layers(
-        commitment.config.n_layers - 1,
-        commitment.inner_layers,
-        witness.layers,
-        commitment.eval_points,
-        commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
-        fri_queries,
-    );
-
-    // Last layer.
+    // Last layer assert.
     assert(
         commitment
             .last_layer_coefficients
@@ -239,5 +192,94 @@ fn fri_verify(
             .into() == pow(2, commitment.config.log_last_layer_degree_bound),
         'Invlid value'
     );
-    verify_last_layer(last_queries.span(), commitment.last_layer_coefficients);
+
+    (
+        FriVerificationStateConstant {
+            n_layers: (commitment.config.n_layers - 1).try_into().unwrap(),
+            commitment: commitment.inner_layers,
+            eval_points: commitment.eval_points,
+            step_sizes: commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
+        },
+        FriVerificationStateVariable {
+            iter: 0,
+            queries: fri_queries,
+        }
+    )
+}
+
+fn fri_verify_step(
+    ref stateConstant: FriVerificationStateConstant,
+    stateVariable: FriVerificationStateVariable,
+    witness: FriLayerWitness
+) -> FriVerificationStateVariable {
+    assert(stateVariable.iter <= stateConstant.n_layers, 'Too many fri steps called');
+
+    // Verify inner layers.
+    let queries = fri_verify_layer_step(
+        stateVariable.queries.span(),
+        *stateConstant.step_sizes.at(stateVariable.iter),
+        *stateConstant.eval_points.at(stateVariable.iter),
+        *stateConstant.commitment.at(stateVariable.iter),
+        witness,
+    );
+
+    FriVerificationStateVariable {
+        iter: stateVariable.iter + 1,
+        queries: queries,
+    }
+}
+
+fn fri_verify_final(
+    stateConstant: FriVerificationStateConstant,
+    stateVariable: FriVerificationStateVariable,
+    last_layer_coefficients: Span<felt252>, // TODO: validate that input
+) -> FriVerificationStateVariable {
+    assert(stateVariable.iter == stateConstant.n_layers, 'Fri final called at wrong time');
+
+    verify_last_layer(stateVariable.queries.span(), last_layer_coefficients);
+
+    return FriVerificationStateVariable {
+        iter: stateVariable.iter + 1,
+        queries: array![],
+    };
+
+}
+
+#[derive(Drop)]
+struct FriVerificationStateConstant {
+    n_layers: u32,
+    commitment: Span<TableCommitment>,
+    eval_points: Span<felt252>,
+    step_sizes: Span<felt252>,
+}
+
+#[derive(Drop)]
+struct FriVerificationStateVariable {
+    iter: u32,
+    queries: Array<FriLayerQuery>,
+}
+
+fn fri_verify(
+    queries: Span<felt252>,
+    commitment: FriCommitment,
+    decommitment: FriDecommitment,
+    witness: FriWitness,
+) {
+    let (mut con, mut var) = fri_verify_initial(queries, commitment, decommitment, witness);
+    
+    let n = con.n_layers;
+    let mut i = 0;
+    loop {
+        if i == n {
+            break;
+        }
+        
+        let new_var = fri_verify_step(ref con, var, *witness.layers.at(i));
+        var = new_var;
+
+        i += 1;
+    };
+
+    let new_var = fri_verify_final(con, var, commitment.last_layer_coefficients);
+    assert(new_var.iter.into() == n + 1, 'X');
 }
