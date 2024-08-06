@@ -138,8 +138,39 @@ fn fri_commit(
     }
 }
 
+fn fri_verify_layer_step(
+    queries: Span<FriLayerQuery>,
+    step_size: felt252,
+    eval_point: felt252,
+    commitment: TableCommitment,
+    layer_witness: FriLayerWitness,
+) -> Array<FriLayerQuery> {
+    // Compute fri_group.
+    let fri_group = get_fri_group().span();
+
+    // Params.
+    let coset_size = pow(2, step_size);
+    let params = FriLayerComputationParams {
+        coset_size, fri_group, eval_point: eval_point
+    };
+
+    // Compute next layer queries.
+    let (next_queries, verify_indices, verify_y_values) = compute_next_layer(
+        queries, layer_witness.leaves, params
+    );
+
+    // Table decommitment.
+    table_decommit(
+        commitment,
+        verify_indices.span(),
+        TableDecommitment { values: verify_y_values.span() },
+        layer_witness.table_witness
+    );
+
+    next_queries
+}
+
 fn fri_verify_layers(
-    fri_group: Span<felt252>,
     n_layers: felt252,
     commitment: Span<TableCommitment>,
     layer_witness: Span<FriLayerWitness>,
@@ -155,26 +186,20 @@ fn fri_verify_layers(
             break;
         }
 
-        // Params.
-        let coset_size = pow(2, *step_sizes.at(i));
-        let params = FriLayerComputationParams {
-            coset_size, fri_group, eval_point: *eval_points.at(i)
-        };
+        let step_size = *step_sizes.at(i);
+        let eval_point = *eval_points.at(i);
+        let single_commitment = *commitment.at(i);
+        let single_layer_witness = *layer_witness.at(i);
+        // queries
 
-        // Compute next layer queries.
-        let (next_queries, verify_indices, verify_y_values) = compute_next_layer(
-            queries.span(), *layer_witness.at(i).leaves, params
+        queries = fri_verify_layer_step(
+            queries.span(),
+            step_size,
+            eval_point,
+            single_commitment,
+            single_layer_witness,
         );
 
-        // Table decommitment.
-        table_decommit(
-            *commitment.at(i),
-            verify_indices.span(),
-            TableDecommitment { values: verify_y_values.span() },
-            *layer_witness.at(i).table_witness
-        );
-
-        queries = next_queries;
         i += 1;
     };
 
@@ -195,12 +220,9 @@ fn fri_verify(
         queries, decommitment.values, decommitment.points,
     );
 
-    // Compute fri_group.
-    let fri_group = get_fri_group();
 
     // Verify inner layers.
     let last_queries = fri_verify_layers(
-        fri_group.span(),
         commitment.config.n_layers - 1,
         commitment.inner_layers,
         witness.layers,
