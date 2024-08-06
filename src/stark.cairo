@@ -55,7 +55,7 @@ use cairo_verifier::{
     channel::channel::{Channel, ChannelImpl},
     fri::{
         fri_config::{FriConfig, FriConfigTrait},
-        fri::{FriUnsentCommitment, FriWitness, FriCommitment}
+        fri::{FriUnsentCommitment, FriWitness, FriCommitment, FriVerificationStateConstant, FriVerificationStateVariable, FriLayerWitness, fri_verify_step, fri_verify_final}
     },
     queries::queries, domains::StarkDomainsImpl,
     table_commitment::table_commitment::{
@@ -78,7 +78,7 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof, security_bits: felt252) {
+    fn verify_initial(self: @StarkProof, security_bits: felt252) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>) {
         // Validate config.
         self.config.validate(security_bits);
 
@@ -98,6 +98,8 @@ impl StarkProofImpl of StarkProofTrait {
             ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
         );
 
+        let last_layer_coefficients = stark_commitment.fri.last_layer_coefficients;
+
         // Generate queries.
         let queries = queries::generate_queries(
             ref channel,
@@ -106,14 +108,52 @@ impl StarkProofImpl of StarkProofTrait {
         );
 
         // STARK verify phase.
-        stark_verify::stark_verify(
+        let (con, var) = stark_verify::stark_verify(
             NUM_COLUMNS_FIRST,
             NUM_COLUMNS_SECOND,
             queries.span(),
             stark_commitment,
             *self.witness,
             stark_domains
-        )
+        );
+        (con, var, last_layer_coefficients)
+    }
+
+    fn verify_step(
+        stateConstant: FriVerificationStateConstant,
+        stateVariable: FriVerificationStateVariable,
+        witness: FriLayerWitness
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
+        fri_verify_step(stateConstant, stateVariable, witness)
+    }
+
+    fn verify_final(
+        stateConstant: FriVerificationStateConstant,
+        stateVariable: FriVerificationStateVariable,
+        last_layer_coefficients: Span<felt252>,
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
+        fri_verify_final(stateConstant, stateVariable, last_layer_coefficients)
+    }
+
+    fn verify_full(self: @StarkProof, security_bits: felt252) {
+        let (mut con, mut var, last_layer_coefficients) = self.verify_initial(security_bits);
+        
+        let n = con.n_layers;
+        let mut i = 0;
+        loop {
+            if i == n {
+                break;
+            }
+            
+            let (new_con, new_var) = StarkProofTrait::verify_step(con, var, *(*self.witness.fri_witness.layers).at(i));
+            var = new_var;
+            con = new_con;
+
+            i += 1;
+        };
+
+        let (_, new_var) = StarkProofTrait::verify_final(con, var, last_layer_coefficients);
+        assert(new_var.iter.into() == n + 1, 'Verification not finalized');
     }
 }
 

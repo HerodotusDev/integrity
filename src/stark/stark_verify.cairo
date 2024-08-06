@@ -1,6 +1,6 @@
 use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains,
-    fri::fri::{FriDecommitment, fri_verify},
+    fri::fri::{FriDecommitment, fri_verify_initial, FriVerificationStateConstant, FriVerificationStateVariable},
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
     // === DEX BEGIN ===
     // air::layouts::dex::traces::traces_decommit, // === DEX END ===
@@ -24,6 +24,7 @@ use cairo_verifier::{
 };
 
 // STARK verify phase.
+// NOTICE: when using splitted verifier, witness.fri_witness may be ommited (empty array)
 fn stark_verify(
     n_original_columns: u32,
     n_interaction_columns: u32,
@@ -31,7 +32,7 @@ fn stark_verify(
     commitment: StarkCommitment,
     witness: StarkWitness,
     stark_domains: StarkDomains,
-) {
+) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     // First layer decommit.
     traces_decommit(
         queries, commitment.traces, witness.traces_decommitment, witness.traces_witness
@@ -67,10 +68,9 @@ fn stark_verify(
     let fri_decommitment = FriDecommitment {
         values: oods_poly_evals.span(), points: points.span(),
     };
-    fri_verify(
+    fri_verify_initial(
         queries: queries,
         commitment: commitment.fri,
         decommitment: fri_decommitment,
-        witness: witness.fri_witness,
     )
 }

@@ -11,6 +11,7 @@ use cairo_verifier::{
         table_commit, table_decommit
     }
 };
+use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
 
 // Commitment values for FRI. Used to generate a commitment by "reading" these values
 // from the channel.
@@ -175,7 +176,6 @@ fn fri_verify_initial(
     queries: Span<felt252>,
     commitment: FriCommitment,
     decommitment: FriDecommitment,
-    witness: FriWitness,
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(queries.len() == decommitment.values.len(), 'Invalid value');
 
@@ -199,6 +199,7 @@ fn fri_verify_initial(
             commitment: commitment.inner_layers,
             eval_points: commitment.eval_points,
             step_sizes: commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
+            last_layer_coefficients_hash: hash_array(commitment.last_layer_coefficients),
         },
         FriVerificationStateVariable {
             iter: 0,
@@ -208,10 +209,10 @@ fn fri_verify_initial(
 }
 
 fn fri_verify_step(
-    ref stateConstant: FriVerificationStateConstant,
+    stateConstant: FriVerificationStateConstant,
     stateVariable: FriVerificationStateVariable,
     witness: FriLayerWitness
-) -> FriVerificationStateVariable {
+) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(stateVariable.iter <= stateConstant.n_layers, 'Too many fri steps called');
 
     // Verify inner layers.
@@ -223,26 +224,40 @@ fn fri_verify_step(
         witness,
     );
 
-    FriVerificationStateVariable {
+    (stateConstant, FriVerificationStateVariable {
         iter: stateVariable.iter + 1,
         queries: queries,
-    }
+    })
 }
 
 fn fri_verify_final(
     stateConstant: FriVerificationStateConstant,
     stateVariable: FriVerificationStateVariable,
-    last_layer_coefficients: Span<felt252>, // TODO: validate that input
-) -> FriVerificationStateVariable {
+    last_layer_coefficients: Span<felt252>,
+) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(stateVariable.iter == stateConstant.n_layers, 'Fri final called at wrong time');
+    assert(hash_array(last_layer_coefficients) == stateConstant.last_layer_coefficients_hash, 'Invalid last_layer_coefficients');
 
     verify_last_layer(stateVariable.queries.span(), last_layer_coefficients);
 
-    return FriVerificationStateVariable {
+    (stateConstant, FriVerificationStateVariable {
         iter: stateVariable.iter + 1,
         queries: array![],
-    };
+    })
+}
 
+fn hash_array(mut array: Span<felt252>) -> felt252 {
+    let mut hash = PoseidonImpl::new();
+    loop {
+        match array.pop_front() {
+            Option::Some(value) => {
+                hash = hash.update(*value);
+            },
+            Option::None => {
+                break hash.finalize();
+            }
+        }
+    }
 }
 
 #[derive(Drop)]
@@ -251,35 +266,11 @@ struct FriVerificationStateConstant {
     commitment: Span<TableCommitment>,
     eval_points: Span<felt252>,
     step_sizes: Span<felt252>,
+    last_layer_coefficients_hash: felt252,
 }
 
 #[derive(Drop)]
 struct FriVerificationStateVariable {
     iter: u32,
     queries: Array<FriLayerQuery>,
-}
-
-fn fri_verify(
-    queries: Span<felt252>,
-    commitment: FriCommitment,
-    decommitment: FriDecommitment,
-    witness: FriWitness,
-) {
-    let (mut con, mut var) = fri_verify_initial(queries, commitment, decommitment, witness);
-    
-    let n = con.n_layers;
-    let mut i = 0;
-    loop {
-        if i == n {
-            break;
-        }
-        
-        let new_var = fri_verify_step(ref con, var, *witness.layers.at(i));
-        var = new_var;
-
-        i += 1;
-    };
-
-    let new_var = fri_verify_final(con, var, commitment.last_layer_coefficients);
-    assert(new_var.iter.into() == n + 1, 'X');
 }
