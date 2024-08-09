@@ -9,7 +9,7 @@ struct FriLayerComputationParams {
     eval_point: felt252,
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct FriLayerQuery {
     index: felt252,
     y_value: felt252,

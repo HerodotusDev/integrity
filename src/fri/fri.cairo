@@ -203,7 +203,7 @@ fn fri_verify_initial(
         },
         FriVerificationStateVariable {
             iter: 0,
-            queries: fri_queries,
+            queries: fri_queries.span(),
         }
     )
 }
@@ -217,7 +217,7 @@ fn fri_verify_step(
 
     // Verify inner layers.
     let queries = fri_verify_layer_step(
-        stateVariable.queries.span(),
+        stateVariable.queries,
         *stateConstant.step_sizes.at(stateVariable.iter),
         *stateConstant.eval_points.at(stateVariable.iter),
         *stateConstant.commitment.at(stateVariable.iter),
@@ -226,7 +226,7 @@ fn fri_verify_step(
 
     (stateConstant, FriVerificationStateVariable {
         iter: stateVariable.iter + 1,
-        queries: queries,
+        queries: queries.span(),
     })
 }
 
@@ -238,11 +238,11 @@ fn fri_verify_final(
     assert(stateVariable.iter == stateConstant.n_layers, 'Fri final called at wrong time');
     assert(hash_array(last_layer_coefficients) == stateConstant.last_layer_coefficients_hash, 'Invalid last_layer_coefficients');
 
-    verify_last_layer(stateVariable.queries.span(), last_layer_coefficients);
+    verify_last_layer(stateVariable.queries, last_layer_coefficients);
 
     (stateConstant, FriVerificationStateVariable {
         iter: stateVariable.iter + 1,
-        queries: array![],
+        queries: array![].span(),
     })
 }
 
@@ -260,7 +260,9 @@ fn hash_array(mut array: Span<felt252>) -> felt252 {
     }
 }
 
-#[derive(Drop)]
+// TODO: probably commitment can be moved to separate struct StateFinalize together with last_layer_coefficients
+
+#[derive(Drop, Serde)]
 struct FriVerificationStateConstant {
     n_layers: u32,
     commitment: Span<TableCommitment>,
@@ -269,8 +271,49 @@ struct FriVerificationStateConstant {
     last_layer_coefficients_hash: felt252,
 }
 
-#[derive(Drop)]
+fn hash_constant(state: @FriVerificationStateConstant) -> felt252 {
+    let mut hash = PoseidonImpl::new()
+        .update((*state.n_layers).into())
+        .update(hash_array(*state.eval_points))
+        .update(hash_array(*state.step_sizes))
+        .update(*state.last_layer_coefficients_hash);
+    let mut commitment = *state.commitment;
+    loop {
+        match commitment.pop_front() {
+            Option::Some(value) => {
+                hash = hash.update(*value.config.n_columns);
+                hash = hash.update(*value.config.vector.height);
+                hash = hash.update(*value.config.vector.n_verifier_friendly_commitment_layers);
+                hash = hash.update(*value.vector_commitment.config.height);
+                hash = hash.update(*value.vector_commitment.config.n_verifier_friendly_commitment_layers);
+                hash = hash.update(*value.vector_commitment.commitment_hash);
+            },
+            Option::None => {
+                break hash.finalize();
+            }
+        }
+    }
+}
+
+#[derive(Drop, Serde)]
 struct FriVerificationStateVariable {
     iter: u32,
-    queries: Array<FriLayerQuery>,
+    queries: Span<FriLayerQuery>,
+}
+
+fn hash_variable(state: @FriVerificationStateVariable) -> felt252 {
+    let mut hash = PoseidonImpl::new().update((*state.iter).into());
+    let mut queries = *state.queries;
+    loop {
+        match queries.pop_front() {
+            Option::Some(query) => {
+                hash = hash.update(*query.index);
+                hash = hash.update(*query.y_value);
+                hash = hash.update(*query.x_inv_value);
+            },
+            Option::None => {
+                break hash.finalize();
+            }
+        }
+    }
 }
