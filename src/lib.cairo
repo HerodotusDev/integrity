@@ -18,9 +18,6 @@ mod vector_commitment;
 mod tests;
 // === RECURSIVE END ===
 
-mod facts_registry;
-mod verifier;
-
 use cairo_verifier::{
     air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
     stark::{StarkProof, StarkProofImpl},

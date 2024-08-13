@@ -79,7 +79,7 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof, security_bits: felt252, contract_address_1: ContractAddress, contract_address_2: ContractAddress) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>) {
+    fn verify_initial(self: @StarkProof, security_bits: felt252, contract_address_1: ContractAddress, contract_address_2: ContractAddress) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>) {
         // Validate config.
         self.config.validate(security_bits);
 
@@ -137,8 +137,8 @@ impl StarkProofImpl of StarkProofTrait {
         fri_verify_final(stateConstant, stateVariable, last_layer_coefficients)
     }
 
-    fn verify_full(self: @StarkProof, security_bits: felt252) {
-        let (mut con, mut var, last_layer_coefficients) = self.verify_initial(security_bits);
+    fn verify_full(self: @StarkProof, security_bits: felt252, contract_address_1: ContractAddress, contract_address_2: ContractAddress) {
+        let (mut con, mut var, last_layer_coefficients) = self.verify_initial(security_bits, contract_address_1, contract_address_2);
         
         let n = con.n_layers;
         let mut i = 0;
