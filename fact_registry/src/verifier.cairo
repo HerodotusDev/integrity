@@ -98,7 +98,9 @@ mod CairoVerifier {
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
 
-            let (con, var, last_layer_coefficients) = stark_proof.verify_initial(SECURITY_BITS);
+            let (con, var, last_layer_coefficients) = stark_proof.verify_initial(
+                SECURITY_BITS, self.contract_address_1.read(), self.contract_address_2.read()
+            );
             self.state_constant.write(job_id, Option::Some(hash_constant(@con)));
             self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
             self.state_fact.write(job_id, Option::Some(fact));
