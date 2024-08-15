@@ -2,13 +2,10 @@
 name = "cairo_verifier"
 version = "0.1.0"
 
-
+[lib]
+sierra = true
 
 [[target.starknet-contract]]
-sierra = true
-casm = true
-
-[lib]
 sierra = true
 casm = true
 
