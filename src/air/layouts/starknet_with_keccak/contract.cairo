@@ -16,7 +16,7 @@ trait IStarknetWithKeccakLayoutContract1parts<ContractState> {
 #[starknet::interface]
 trait IStarknetWithKeccakLayoutContract1<ContractState> {
     fn eval_composition_polynomial_inner(
-        self: @ContractState,
+        ref self: ContractState,
         mask_values: Span<felt252>,
         constraint_coefficients: Span<felt252>,
         point: felt252,
@@ -50,7 +50,7 @@ trait IStarknetWithKeccakLayoutContract2parts<ContractState> {
 #[starknet::interface]
 trait IStarknetWithKeccakLayoutContract2<ContractState> {
     fn eval_oods_polynomial_inner(
-        self: @ContractState,
+        ref self: ContractState,
         column_values: Span<felt252>,
         oods_values: Span<felt252>,
         constraint_coefficients: Span<felt252>,
@@ -152,7 +152,7 @@ mod StarknetWithKeccakLayoutContract1 {
         }
 
         fn eval_composition_polynomial_inner(
-            self: @ContractState,
+            ref self: ContractState,
             mask_values: Span<felt252>,
             constraint_coefficients: Span<felt252>,
             point: felt252,
@@ -162,7 +162,7 @@ mod StarknetWithKeccakLayoutContract1 {
             let hash = self._hash(mask_values, constraint_coefficients, point, trace_generator, global_values);
             let mut result = self.registered.read(hash);
             if result.is_none() {
-                register_evaluation(mask_values, constraint_coefficients, point, trace_generator, global_values);
+                self.register_evaluation(mask_values, constraint_coefficients, point, trace_generator, global_values);
                 result = self.registered.read(hash);    
             }
             result.unwrap()
@@ -601,7 +601,7 @@ mod StarknetWithKeccakLayoutContract2 {
         }
 
         fn eval_oods_polynomial_inner(
-            self: @ContractState,
+            ref self: ContractState,
             column_values: Span<felt252>,
             oods_values: Span<felt252>,
             constraint_coefficients: Span<felt252>,
@@ -612,8 +612,8 @@ mod StarknetWithKeccakLayoutContract2 {
             let hash = self._hash(column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator);
             let mut result = self.registered.read(hash);
             if result.is_none() {
-                register_evaluation(column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator);
-                result = self.registered.read(hash);    
+                self.register_evaluation(column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator);
+                result = self.registered.read(hash); 
             }
             result.unwrap()
         }

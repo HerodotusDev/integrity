@@ -49,7 +49,7 @@ unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x07a34aa6757602c2aab48861849df5b9fb6be39e6a625e9fdefe1d470e1425aa"
+class_hash = "0x60ed97da980fb6610abdc7117ff62b0156b02008fd8289bce76d5c3e2c045e3"
 inputs = ["0x7", "contract_1_part_1", "contract_1_part_2", "contract_1_part_3", "contract_1_part_4", "contract_1_part_5", "contract_1_part_6", "contract_1_part_7"]
 id = "contract_1"
 unique = false
@@ -70,7 +70,7 @@ unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x14a87df70bd5abca9fb1c0483017dfe1c78e14144a9ccfa40acd916e9290dbb"
+class_hash = "0x4e32e70b5dba55e305238b95f9b44e47930d742163dd689b08dd610a5b07694"
 inputs = ["contract_2_part1", "contract_2_part2"]
 id = "contract_2"
 unique = false
