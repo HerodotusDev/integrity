@@ -167,7 +167,8 @@ mod tests {
             constraint_coefficients.span(),
             0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8,
             0x40000,
-            0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046
+            0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046,
+            0.try_into().unwrap()
         );
     }
 }

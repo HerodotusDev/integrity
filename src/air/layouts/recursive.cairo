@@ -22,6 +22,7 @@ use cairo_verifier::{
     },
     common::{math::{Felt252Div, Felt252PartialOrd, pow}, asserts::assert_range_u128}
 };
+use starknet::ContractAddress;
 
 impl RecursiveAIRCompositionImpl of AIRComposition<InteractionElements, PublicInput> {
     fn eval_composition_polynomial(
@@ -31,7 +32,8 @@ impl RecursiveAIRCompositionImpl of AIRComposition<InteractionElements, PublicIn
         constraint_coefficients: Span<felt252>,
         point: felt252,
         trace_domain_size: felt252,
-        trace_generator: felt252
+        trace_generator: felt252,
+        contract_address_1: ContractAddress,
     ) -> felt252 {
         let memory_z = interaction_elements.memory_multi_column_perm_perm_interaction_elm;
         let memory_alpha = interaction_elements.memory_multi_column_perm_hash_interaction_elm0;
@@ -104,6 +106,7 @@ impl RecursiveAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        contract_address_2: ContractAddress,
     ) -> felt252 {
         eval_oods_polynomial_inner(
             column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator,

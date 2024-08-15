@@ -29,8 +29,9 @@ fn test_stark_verify() {
     let stark_domains = stone_proof_fibonacci_keccak::stark::domains::get();
 
     stark_verify(
-        NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, queries, commitment, witness, stark_domains,
-    )
+        NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, queries, commitment, witness, stark_domains, 0.try_into().unwrap()
+    );
+    // TODO: next steps
 }
 // === KECCAK END ===
 

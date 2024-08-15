@@ -10,5 +10,5 @@ fn bench_stark_proof_verify() {
         witness: stone_proof_fibonacci_keccak::stark::witness::get(),
     };
 
-    stark_proof.verify(security_bits);
+    stark_proof.verify_initial(security_bits, 0.try_into().unwrap(), 0.try_into().unwrap());
 }

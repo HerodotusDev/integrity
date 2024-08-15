@@ -16,7 +16,7 @@ use cairo_verifier::{
 //         witness: stone_proof_fibonacci::stark::witness::get(),
 //     };
 // 
-//     stark_proof.verify(security_bits);
+//     stark_proof.verify_initial(security_bits);
 // }
 // === BLAKE2S END ===
 
@@ -33,7 +33,8 @@ fn test_stark_proof_fibonacci_verify() {
         witness: stone_proof_fibonacci_keccak::stark::witness::get(),
     };
 
-    stark_proof.verify(security_bits);
+    stark_proof.verify_initial(security_bits, 0.try_into().unwrap(), 0.try_into().unwrap());
+    // TODO: next steps
 }
 // === KECCAK END ===
 
