@@ -1,0 +1,11 @@
+[[call]]
+call_type = "invoke"
+contract_address = "0x00225abd9d24ea97a18711eca30c97987a9a8c55105faf77f0d4fc15e326ae5b" # FactRegistry address
+function = "register_verifier"
+inputs = [
+    "0x737461726b6e65745f776974685f6b656363616b", # layout
+    "0x6b656363616b", # hasher
+    "50", # security_bits
+    "0x73746f6e6535", # version
+    "0x005c9b26f786f724a26b6ade37270f9e79fc903a3a96a61d6a14380d099d1df2", # CairoVerifier address
+]

@@ -34,7 +34,13 @@ trait ICairoVerifier<TContractState> {
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         last_layer_coefficients: Span<felt252>,   
-    );
+    ) -> felt252;
+
+    fn verify_proof_full(
+        ref self: TContractState,
+        stark_proof_serde: StarkProofWithSerde,
+        cairo_version: CairoVersion,
+    ) -> felt252;
 }
 
 #[starknet::contract]
@@ -142,7 +148,7 @@ mod CairoVerifier {
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
-        ) {
+        ) -> felt252 {
             assert(hash_constant(@state_constant) == self.state_constant.read(job_id).unwrap(), 'Invalid state (constant)');
             assert(hash_variable(@state_variable) == self.state_variable.read(job_id).unwrap(), 'Invalid state (variable)');
             let fact = self.state_fact.read(job_id).expect('No fact saved');
@@ -155,6 +161,27 @@ mod CairoVerifier {
             self.state_fact.write(job_id, Option::None);
 
             self.emit(ProofVerified { job_id, fact });
+            fact
+        }
+
+        fn verify_proof_full(
+            ref self: ContractState,
+            stark_proof_serde: StarkProofWithSerde,
+            cairo_version: CairoVersion,
+        ) -> felt252 {
+            let stark_proof: StarkProof = stark_proof_serde.into();
+            let (program_hash, output_hash) = match cairo_version {
+                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
+                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+            };
+            stark_proof.verify_full(
+                SECURITY_BITS, self.contract_address_1.read(), self.contract_address_2.read()
+            );
+
+            let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
+
+            self.emit(ProofVerified { job_id: 0, fact });
+            fact
         }
     }
 }

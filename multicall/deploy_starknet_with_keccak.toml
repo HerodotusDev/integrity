@@ -1,0 +1,83 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x01d7338e998a3cfe1151fc8522e0e7208ae6d620a7654d9c2249fe32fe21b281"
+inputs = []
+id = "contract_1_part_1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x07fecd4461e47b8cf1ac339f1f2c8bc06c9a80e4353cd0bcf5acd0e41662ba2d"
+inputs = []
+id = "contract_1_part_2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x0128f32b1363d6f83f0bae224bb3ec9de112090167da94bafbf2d5917dec31db"
+inputs = []
+id = "contract_1_part_3"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x0262a1af6614c3c9ed7b4922dada2d187d7756e02bc1940c22b5197741cf1c8d"
+inputs = []
+id = "contract_1_part_4"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x00261d1290811d440655a0ae2ca3bde5e91511462962448ff5459523b6ccde98"
+inputs = []
+id = "contract_1_part_5"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x0678cf8c4c9fce2a9ea044036704cfb2cda6543f02407dc21f510958b7c29487"
+inputs = []
+id = "contract_1_part_6"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x063d3a2509c30d33ae9189e6c7e3c6354ede001f92a982569451b334100a798a"
+inputs = []
+id = "contract_1_part_7"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x2d4eb74c22f33983f27885787f5c70bb5eaf5bdc1f2f297278b3084448aa471"
+inputs = []
+id = "contract_2_part1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x2bfcd7eac7a43c552cb1b0b5b1d488f9af1c9162b21b723518504a73c3b333b"
+inputs = []
+id = "contract_2_part2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x60ed97da980fb6610abdc7117ff62b0156b02008fd8289bce76d5c3e2c045e3"
+inputs = ["0x7", "contract_1_part_1", "contract_1_part_2", "contract_1_part_3", "contract_1_part_4", "contract_1_part_5", "contract_1_part_6", "contract_1_part_7"]
+id = "contract_1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x4e32e70b5dba55e305238b95f9b44e47930d742163dd689b08dd610a5b07694"
+inputs = ["contract_2_part1", "contract_2_part2"]
+id = "contract_2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x04aa8b4ed13fc8dcbd65b51b086a49e42d72b8bfdb07f12a040ecd6d28855ae1"
+inputs = ["contract_1", "contract_2"]
+id = "cairo_verifier"
+unique = false
