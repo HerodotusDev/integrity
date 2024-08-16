@@ -1,0 +1,22 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x5ceec02bae5db59fc5f1acaacce766de6cac4da0534e9da7486a4db62612aab"
+inputs = []
+id = "contract_1"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x7d2968da886c0c212b97a2f1e39464e1cc24f2569f32fbac19814208f6b5506"
+inputs = []
+id = "contract_2"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x312c9f107e9722e1d10364ae7a38dd9206b34b3d6bffbf9e67ccc8643e7fcb3"
+# 0x487af989259c0c258028f16322fe16fede90272673fc1295ee980e2330e05a8 - keccak
+# 0x312c9f107e9722e1d10364ae7a38dd9206b34b3d6bffbf9e67ccc8643e7fcb3 - blake2s
+inputs = ["contract_1", "contract_2"]
+id = "cairo_verifier"
+unique = false
