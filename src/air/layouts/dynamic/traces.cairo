@@ -1,7 +1,5 @@
 use cairo_verifier::{
-    air::layouts::dex::{
-        constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
-    },
+    air::layouts::dynamic::{global_values::InteractionElements, constants::DynamicParams},
     channel::channel::{Channel, ChannelTrait},
     table_commitment::table_commitment::{
         TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
@@ -69,9 +67,27 @@ struct TracesConfig {
 impl TracesConfigImpl of TracesConfigTrait {
     fn validate(
         self: @TracesConfig,
+        dynamic_params: @DynamicParams,
         log_eval_domain_size: felt252,
         n_verifier_friendly_commitment_layers: felt252,
-    ) {// TODO REWRITE
+    ) {
+        assert_in_range(*self.original.n_columns, 1, MAX_N_COLUMNS + 1);
+        assert_in_range(*self.interaction.n_columns, 1, MAX_N_COLUMNS + 1);
+        assert(
+            *self.original.n_columns == (*dynamic_params.num_columns_first).into(),
+            'Wrong number of columns'
+        );
+        assert(
+            *self.interaction.n_columns == (*dynamic_params.num_columns_second).into(),
+            'Wrong number of columns'
+        );
+
+        self.original.vector.validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
+
+        self
+            .interaction
+            .vector
+            .validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
     }
 }
 
@@ -91,6 +107,11 @@ fn traces_commit(
         memory_multi_column_perm_perm_interaction_elm: channel.random_felt_to_prover(),
         memory_multi_column_perm_hash_interaction_elm0: channel.random_felt_to_prover(),
         range_check16_perm_interaction_elm: channel.random_felt_to_prover(),
+        diluted_check_permutation_interaction_elm: channel.random_felt_to_prover(),
+        diluted_check_interaction_z: channel.random_felt_to_prover(),
+        diluted_check_interaction_alpha: channel.random_felt_to_prover(),
+        add_mod_interaction_elm: channel.random_felt_to_prover(),
+        mul_mod_interaction_elm: channel.random_felt_to_prover(),
     };
     // Read interaction commitment.
     let interaction_commitment = table_commit(
@@ -112,8 +133,6 @@ fn traces_decommit(
     decommitment: TracesDecommitment,
     witness: TracesWitness,
 ) {
-    // TODO REWRITE
-
     table_decommit(commitment.original, queries, decommitment.original, witness.original);
     table_decommit(commitment.interaction, queries, decommitment.interaction, witness.interaction)
 }

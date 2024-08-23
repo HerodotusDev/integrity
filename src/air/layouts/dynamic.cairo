@@ -6,6 +6,7 @@ mod traces;
 
 use cairo_verifier::{
     air::{
+        layouts::dynamic::{global_values::InteractionElements},
         constants::{SHIFT_POINT_X, SHIFT_POINT_Y, StarkCurve}, air::{AIRComposition, AIROods},
         diluted::get_diluted_product,
         periodic_columns::{
@@ -28,7 +29,8 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
         point: felt252,
         trace_domain_size: felt252,
         trace_generator: felt252
-    ) -> felt252 {// TODO REWRITE
+    ) -> felt252 { // TODO REWRITE
+        0
     }
 }
 
@@ -40,6 +42,7 @@ impl StarknetAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
-    ) -> felt252 {// TODO REWRITE
+    ) -> felt252 { // TODO REWRITE
+        0
     }
 }

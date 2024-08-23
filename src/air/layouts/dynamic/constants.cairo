@@ -39,6 +39,7 @@ const PUBLIC_MEMORY_FRACTION: felt252 = 8;
 const RANGE_CHECK_N_PARTS: felt252 = 8;
 const RANGE_CHECK96_N_PARTS: felt252 = 6;
 
+#[derive(Drop, Copy, Serde)]
 struct DynamicParams {
     add_mod_a0_suboffset: felt252,
     add_mod_a1_suboffset: felt252,
@@ -152,7 +153,7 @@ struct DynamicParams {
     ecdsa_signature0_add_results_slope_offset: felt252,
     ecdsa_signature0_doubling_slope_column: felt252,
     ecdsa_signature0_doubling_slope_offset: felt252,
-    ecdsa_signature0_exponentiate_generator_partial_sum_x_column: felt252,
+    ecdsazk_signature0_exponentiate_generator_partial_sum_x_column: felt252,
     ecdsa_signature0_exponentiate_generator_partial_sum_x_offset: felt252,
     ecdsa_signature0_exponentiate_generator_partial_sum_y_column: felt252,
     ecdsa_signature0_exponentiate_generator_partial_sum_y_offset: felt252,

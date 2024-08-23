@@ -1,7 +1,7 @@
 use cairo_verifier::{
-    air::layouts::dex::{
-        global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE}
+    domains::StarkDomains,
+    air::layouts::dynamic::{
+        global_values::GlobalValues, constants::{CONSTRAINT_DEGREE, MASK_SIZE, DynamicParams}
     },
     common::math::{Felt252Div, pow},
 };
@@ -13,6 +13,7 @@ fn eval_composition_polynomial_inner(
     trace_generator: felt252,
     global_values: GlobalValues
 ) -> felt252 { // TODO REWRITE
+    0
 }
 
 fn eval_oods_polynomial_inner(
@@ -23,4 +24,7 @@ fn eval_oods_polynomial_inner(
     oods_point: felt252,
     trace_generator: felt252,
 ) -> felt252 { // TODO REWRITE
+    0
 }
+
+fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {}
