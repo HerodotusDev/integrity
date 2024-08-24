@@ -28,22 +28,27 @@ use cairo_verifier::vector_commitment::vector_commitment::{
 //             index: 0xf8, value: 0x5d49462d844a3f203c59d39fa005cbe153c78e6ac831987f19c0d6dfae38fad
 //         },
 //         VectorQuery {
-//             index: 0x115, value: 0x53d21587a9cb08d1b9402a4b8c2a9d37942b26963936200fea3122eaaf870b1
+//             index: 0x115, value:
+//             0x53d21587a9cb08d1b9402a4b8c2a9d37942b26963936200fea3122eaaf870b1
 //         },
 //         VectorQuery {
-//             index: 0x11c, value: 0x7c3355a75f6b36a95068b68d48e7539cd97531b7478e2cf7d2dc85b32bafc66
+//             index: 0x11c, value:
+//             0x7c3355a75f6b36a95068b68d48e7539cd97531b7478e2cf7d2dc85b32bafc66
 //         },
 //         VectorQuery {
 //             index: 0x12f, value: 0xb6f3a522577229ac26f12df90daaf376afbd960ee4b0ab07f270bf9c5da56a
 //         },
 //         VectorQuery {
-//             index: 0x13c, value: 0x174cfc44eb57da0eda6ae9407db71c5144940f05ef51f858bc8e229d15703e2
+//             index: 0x13c, value:
+//             0x174cfc44eb57da0eda6ae9407db71c5144940f05ef51f858bc8e229d15703e2
 //         },
 //         VectorQuery {
-//             index: 0x153, value: 0x2220da78b33e155482bdf0534dc30fc17fe059a7b9e30f710ee2681a8151484
+//             index: 0x153, value:
+//             0x2220da78b33e155482bdf0534dc30fc17fe059a7b9e30f710ee2681a8151484
 //         },
 //         VectorQuery {
-//             index: 0x1f4, value: 0x566b71a4f84556a3816d911c5dfb45f75cc962d9829acd0dd56e81517cc73b8
+//             index: 0x1f4, value:
+//             0x566b71a4f84556a3816d911c5dfb45f75cc962d9829acd0dd56e81517cc73b8
 //         },
 //     ]
 //         .span();

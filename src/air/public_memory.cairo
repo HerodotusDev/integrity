@@ -56,7 +56,7 @@ impl PageImpl of PageTrait {
 
             let current = *self.at(offset);
 
-            // TODO is this needed? If not we can just use slice directly 
+            // TODO is this needed? If not we can just use slice directly
             assert(current.address == (addr + i).into(), 'Invalid address');
             arr.append(current.value);
             i += 1;
