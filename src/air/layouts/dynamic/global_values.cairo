@@ -1,3 +1,5 @@
+use cairo_verifier::air::layouts::dynamic::constants::DynamicParams;
+
 #[derive(Drop, Copy, Serde)]
 struct EcPoint {
     x: felt252,
@@ -77,7 +79,7 @@ struct GlobalValues {
     diluted_check_permutation_public_memory_prod: felt252,
     diluted_check_final_cum_val: felt252,
     // Dynamic params.
-    dynamic_params: Span<felt252>,
+    dynamic_params: DynamicParams,
 }
 
 // Elements that are sent from the prover after the commitment on the original trace.
