@@ -217,8 +217,6 @@ impl StarknetAIROodsImpl of AIROods {
         oods_point: felt252,
         trace_generator: felt252,
     ) -> felt252 {
-        eval_oods_polynomial_inner(
-            column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator,
-        )
+        0
     }
 }
