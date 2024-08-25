@@ -131,7 +131,9 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let n_steps = pow(2, *self.log_n_steps);
         let trace_length = *stark_domains.trace_domain_size;
         assert(
-            n_steps * CPU_COMPONENT_HEIGHT * dynamic_params.cpu_component_step.into() == trace_length,
+            n_steps
+                * CPU_COMPONENT_HEIGHT
+                * dynamic_params.cpu_component_step.into() == trace_length,
             'Wrong trace size'
         );
 
