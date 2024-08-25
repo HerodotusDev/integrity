@@ -1,3 +1,4 @@
+use core::option::OptionTrait;
 use cairo_verifier::{
     domains::StarkDomains,
     air::layouts::dynamic::{
@@ -27,34 +28,34 @@ fn eval_oods_polynomial_inner(
     0
 }
 
-fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
+fn check_asserts(dynamic_params: DynamicParams, stark_domains: @StarkDomains) {
     let trace_length: u256 = (*stark_domains.trace_domain_size).into();
 
-    let mut x = 0;
+    let mut x: u256 = 0;
 
     // Coset step (dynamicparam(diluted_units_row_ratio)) must be a power of two.
      x = dynamic_params.diluted_units_row_ratio;
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Dimension should be a power of 2.
-     x = (trace_length /  dynamic_params.diluted_units_row_ratio);
-    assert_is_power_of_2(x.into());
+     x = trace_length /  dynamic_params.diluted_units_row_ratio;
+    assert_is_power_of_2(x);
     // Index out of range.
      x = (trace_length /  dynamic_params.diluted_units_row_ratio) - 1;
     assert_range_u128_from_u256(x);
     
     // Coset step (memberexpression(trace_length)) must be a power of two.
      x = trace_length;
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Index should be non negative.
      x = (trace_length /  dynamic_params.diluted_units_row_ratio);
     assert_range_u128_from_u256(x);
     
     // Coset step (dynamicparam(range_check_units_row_ratio)) must be a power of two.
      x = dynamic_params.range_check_units_row_ratio;
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Dimension should be a power of 2.
      x = (trace_length /  dynamic_params.range_check_units_row_ratio);
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Index out of range.
      x = (trace_length /  dynamic_params.range_check_units_row_ratio) - 1;
     assert_range_u128_from_u256(x);
@@ -65,16 +66,16 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
     
     // Coset step ((8) * (dynamicparam(memory_units_row_ratio))) must be a power of two.
      x = (8 * dynamic_params.memory_units_row_ratio);
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Dimension should be a power of 2.
      x = (trace_length /  (8 * dynamic_params.memory_units_row_ratio));
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Coset step (dynamicparam(memory_units_row_ratio)) must be a power of two.
      x = dynamic_params.memory_units_row_ratio;
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Dimension should be a power of 2.
      x = (trace_length /  dynamic_params.memory_units_row_ratio);
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Index out of range.
      x = (trace_length /  dynamic_params.memory_units_row_ratio) - 1;
     assert_range_u128_from_u256(x);
@@ -85,17 +86,17 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
     
     // Coset step ((16) * (dynamicparam(cpu_component_step))) must be a power of two.
      x = (16 * dynamic_params.cpu_component_step);
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Dimension should be a power of 2.
      x = (trace_length /  (16 * dynamic_params.cpu_component_step));
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Step must not exceed dimension.
      x = (trace_length /  (16 * dynamic_params.cpu_component_step)) - 1;
     assert_range_u128_from_u256(x);
     
     // Coset step (dynamicparam(cpu_component_step)) must be a power of two.
      x = dynamic_params.cpu_component_step;
-    assert_is_power_of_2(x.into());
+    assert_is_power_of_2(x);
     // Index out of range.
      x = (trace_length /  (16 * dynamic_params.cpu_component_step));
     assert_range_u128_from_u256(x);
@@ -206,28 +207,25 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
     assert_range_u128_from_u256(x);
     
     // Uses_pedersen_builtin should be a boolean.
-    assert (dynamic_params.uses_pedersen_builtin * dynamic_params.uses_pedersen_builtin - dynamic_params.uses_pedersen_builtin == 0);
+    assert (dynamic_params.uses_pedersen_builtin * dynamic_params.uses_pedersen_builtin - dynamic_params.uses_pedersen_builtin == 0 , 'Invalid value');
     // Uses_range_check_builtin should be a boolean.
-    assert (dynamic_params.uses_range_check_builtin * dynamic_params.uses_range_check_builtin - dynamic_params.uses_range_check_builtin == 0);
+    assert (dynamic_params.uses_range_check_builtin * dynamic_params.uses_range_check_builtin - dynamic_params.uses_range_check_builtin == 0 , 'Invalid value');
     // Uses_ecdsa_builtin should be a boolean.
-    assert (dynamic_params.uses_ecdsa_builtin * dynamic_params.uses_ecdsa_builtin - dynamic_params.uses_ecdsa_builtin == 0);
+    assert (dynamic_params.uses_ecdsa_builtin * dynamic_params.uses_ecdsa_builtin - dynamic_params.uses_ecdsa_builtin == 0 , 'Invalid value');
     // Uses_bitwise_builtin should be a boolean.
-    assert (dynamic_params.uses_bitwise_builtin * dynamic_params.uses_bitwise_builtin - dynamic_params.uses_bitwise_builtin == 0);
+    assert (dynamic_params.uses_bitwise_builtin * dynamic_params.uses_bitwise_builtin - dynamic_params.uses_bitwise_builtin == 0 , 'Invalid value');
     // Uses_ec_op_builtin should be a boolean.
-    assert (dynamic_params.uses_ec_op_builtin * dynamic_params.uses_ec_op_builtin -
-        dynamic_params.uses_ec_op_builtin == 0);
+    assert (dynamic_params.uses_ec_op_builtin * dynamic_params.uses_ec_op_builtin - dynamic_params.uses_ec_op_builtin == 0 , 'Invalid value');
     // Uses_keccak_builtin should be a boolean.
-    assert (dynamic_params.uses_keccak_builtin * dynamic_params.uses_keccak_builtin -
-        dynamic_params.uses_keccak_builtin == 0);
+    assert (dynamic_params.uses_keccak_builtin * dynamic_params.uses_keccak_builtin - dynamic_params.uses_keccak_builtin == 0 , 'Invalid value');
     // Uses_poseidon_builtin should be a boolean.
-    assert (dynamic_params.uses_poseidon_builtin * dynamic_params.uses_poseidon_builtin -
-        dynamic_params.uses_poseidon_builtin == 0);
+    assert (dynamic_params.uses_poseidon_builtin * dynamic_params.uses_poseidon_builtin - dynamic_params.uses_poseidon_builtin == 0 , 'Invalid value');
     // Uses_range_check96_builtin should be a boolean.
-    assert (dynamic_params.uses_range_check96_builtin * dynamic_params.uses_range_check96_builtin - dynamic_params.uses_range_check96_builtin == 0);
+    assert (dynamic_params.uses_range_check96_builtin * dynamic_params.uses_range_check96_builtin - dynamic_params.uses_range_check96_builtin == 0 , 'Invalid value');
     // Uses_add_mod_builtin should be a boolean.
-    assert (dynamic_params.uses_add_mod_builtin * dynamic_params.uses_add_mod_builtin - dynamic_params.uses_add_mod_builtin == 0);
+    assert (dynamic_params.uses_add_mod_builtin * dynamic_params.uses_add_mod_builtin - dynamic_params.uses_add_mod_builtin == 0 , 'Invalid value');
     // Uses_mul_mod_builtin should be a boolean.
-    assert (dynamic_params.uses_mul_mod_builtin * dynamic_params.uses_mul_mod_builtin - dynamic_params.uses_mul_mod_builtin == 0);
+    assert (dynamic_params.uses_mul_mod_builtin * dynamic_params.uses_mul_mod_builtin - dynamic_params.uses_mul_mod_builtin == 0 , 'Invalid value');
     // Num_columns_first is out of range.
      x = 65536 - dynamic_params.num_columns_first - 1;
     assert_range_u128_from_u256(x);
@@ -1608,16 +1606,16 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.pedersen_builtin_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.pedersen_builtin_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(pedersen_builtin_row_ratio)) / (512)) must be a power of two.
          x = dynamic_params.pedersen_builtin_row_ratio / 512;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(pedersen_builtin_row_ratio)) / (2)) must be a power of two.
          x = dynamic_params.pedersen_builtin_row_ratio / 2;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Step must not exceed dimension.
          x = (trace_length /  dynamic_params.pedersen_builtin_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -1628,7 +1626,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of pedersen/input0 must be nonnegative.
          x = dynamic_params.pedersen_input0_suboffset;
         assert_range_u128_from_u256(x);
@@ -1669,23 +1667,20 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          x = dynamic_params.pedersen_builtin_row_ratio  - 
                 dynamic_params.pedersen_output_suboffset * dynamic_params.memory_units_row_ratio
              -  1
-        assert_range_u128_from_u256(x);
-        
-
-         
+        assert_range_u128_from_u256(x);         
     }
 
     if (dynamic_params.uses_range_check_builtin != 0) {
          
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.range_check_builtin_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.range_check_builtin_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Step must not exceed dimension.
          x = (trace_length /  dynamic_params.range_check_builtin_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -1696,7 +1691,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step ((dynamicparam(range_check_builtin_row_ratio)) / (8)) must be a power of two.
          x = dynamic_params.range_check_builtin_row_ratio / 8;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of range_check_builtin/mem must be nonnegative.
          x = dynamic_params.range_check_builtin_mem_suboffset;
         assert_range_u128_from_u256(x);
@@ -1728,13 +1723,13 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.ecdsa_builtin_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.ecdsa_builtin_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(ecdsa_builtin_row_ratio)) / (512)) must be a power of two.
          x = dynamic_params.ecdsa_builtin_row_ratio / 512;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Step must not exceed dimension.
          x = (trace_length /  dynamic_params.ecdsa_builtin_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -1745,13 +1740,13 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step ((dynamicparam(ecdsa_builtin_row_ratio)) / (256)) must be a power of two.
          x = dynamic_params.ecdsa_builtin_row_ratio / 256;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(ecdsa_builtin_row_ratio)) / (2)) must be a power of two.
          x = dynamic_params.ecdsa_builtin_row_ratio / 2;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of ecdsa/pubkey must be nonnegative.
          x = dynamic_params.ecdsa_pubkey_suboffset;
         assert_range_u128_from_u256(x);
@@ -1781,16 +1776,16 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.bitwise_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.bitwise_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(bitwise_row_ratio)) / (64)) must be a power of two.
          x = dynamic_params.bitwise_row_ratio / 64;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(bitwise_row_ratio)) / (4)) must be a power of two.
          x = dynamic_params.bitwise_row_ratio / 4;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Index out of range.
          x = trace_length /  dynamic_params.bitwise_row_ratio - 1;
         assert_range_u128_from_u256(x);
@@ -1801,7 +1796,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of bitwise/var_pool must be nonnegative.
          x = dynamic_params.bitwise_var_pool_suboffset;
         assert_range_u128_from_u256(x);
@@ -1891,13 +1886,13 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.ec_op_builtin_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.ec_op_builtin_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(ec_op_builtin_row_ratio)) / (256)) must be a power of two.
          x = dynamic_params.ec_op_builtin_row_ratio / 256;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Index out of range.
          x = (trace_length /  dynamic_params.ec_op_builtin_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -1908,7 +1903,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of ec_op/p_x must be nonnegative.
          x = dynamic_params.ec_op_p_x_suboffset;
         assert_range_u128_from_u256(x);
@@ -2001,25 +1996,25 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Coset step ((dynamicparam(keccak_row_ratio)) / (4096)) must be a power of two.
          x = dynamic_params.keccak_row_ratio / 4096;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  (16 * dynamic_params.keccak_row_ratio));
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(keccak_row_ratio)) / (128)) must be a power of two.
          x = dynamic_params.keccak_row_ratio / 128;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(keccak_row_ratio)) / (32768)) must be a power of two.
          x = dynamic_params.keccak_row_ratio / 32768;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.keccak_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(keccak_row_ratio)) / (16)) must be a power of two.
          x = dynamic_params.keccak_row_ratio / 16;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (16 * trace_length) / dynamic_params.keccak_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Index out of range.
          x = (16 * trace_length) / dynamic_params.keccak_row_ratio - 1;
         assert_range_u128_from_u256(x);
@@ -2030,7 +2025,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of keccak/input_output must be nonnegative.
          x = dynamic_params.keccak_input_output_suboffset;
         assert_range_u128_from_u256(x);
@@ -2090,34 +2085,31 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         // Offset of keccak/keccak/diluted_column3 is too big.
          x = dynamic_params.keccak_row_ratio / 4096 - dynamic_params.keccak_keccak_diluted_column3_suboffset * dynamic_params.diluted_units_row_ratio - 1;
         assert_range_u128_from_u256(x);
-        
-
-         
     }
 
     if (dynamic_params.uses_poseidon_builtin != 0) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.poseidon_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.poseidon_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(poseidon_row_ratio)) / (32)) must be a power of two.
          x = dynamic_params.poseidon_row_ratio /  32;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(poseidon_row_ratio)) / (8)) must be a power of two.
          x = dynamic_params.poseidon_row_ratio /  8;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(poseidon_row_ratio)) / (64)) must be a power of two.
          x = dynamic_params.poseidon_row_ratio /  64;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Coset step ((dynamicparam(poseidon_row_ratio)) / (2)) must be a power of two.
          x = dynamic_params.poseidon_row_ratio / 2;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = 2 * trace_length / dynamic_params.poseidon_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Index out of range.
          x = 2 * trace_length / dynamic_params.poseidon_row_ratio -1;
         assert_range_u128_from_u256(x);
@@ -2128,7 +2120,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of poseidon/param_0/input_output must be nonnegative.
          x = dynamic_params.poseidon_param_0_input_output_suboffset;
         assert_range_u128_from_u256(x);
@@ -2163,23 +2155,20 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Offset of poseidon/param_2/input_output is too big.
          x = dynamic_params.poseidon_row_ratio / 2 - dynamic_params.poseidon_param_2_input_output_suboffset * dynamic_params.memory_units_row_ratio - 1;
-        assert_range_u128_from_u256(x);
-        
-
-         
+        assert_range_u128_from_u256(x);         
     }
 
     if (dynamic_params.uses_range_check96_builtin != 0) {
          
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.range_check96_builtin_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.range_check96_builtin_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Step must not exceed dimension.
          x = (trace_length /  dynamic_params.range_check96_builtin_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -2286,10 +2275,10 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.add_mod_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.add_mod_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Index out of range.
          x = (trace_length /  dynamic_params.add_mod_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -2300,7 +2289,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of add_mod/p0 must be nonnegative.
          x = dynamic_params.add_mod_p0_suboffset;
         assert_range_u128_from_u256(x);
@@ -2570,10 +2559,10 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
          
         // Row ratio should be a power of 2, smaller than trace length.
          x = dynamic_params.mul_mod_row_ratio;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Dimension should be a power of 2.
          x = (trace_length /  dynamic_params.mul_mod_row_ratio);
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Index out of range.
          x = (trace_length /  dynamic_params.mul_mod_row_ratio) - 1;
         assert_range_u128_from_u256(x);
@@ -2584,7 +2573,7 @@ fn check_asserts(dynamic_params: @DynamicParams, stark_domains: @StarkDomains) {
         
         // Coset step (memberexpression(trace_length)) must be a power of two.
          x = trace_length;
-        assert_is_power_of_2(x.into());
+        assert_is_power_of_2(x);
         // Offset of mul_mod/p0 must be nonnegative.
          x = dynamic_params.mul_mod_p0_suboffset;
         assert_range_u128_from_u256(x);

@@ -304,7 +304,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
             assert_range_u128_le(16, keccak_copies);
         }
 
-        check_asserts(@dynamic_params, stark_domains);
+        check_asserts(dynamic_params, stark_domains);
     }
 }
 

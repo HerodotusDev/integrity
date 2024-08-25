@@ -1,4 +1,4 @@
-use core::integer::U256BitAnd;
+use core::integer::U128BitAnd;
 use cairo_verifier::common::math::Felt252PartialOrd;
 
 fn assert_in_range(x: felt252, min: felt252, max: felt252) {
@@ -21,6 +21,6 @@ fn assert_range_u128_le(x: felt252, max: felt252) {
     assert(x <= max, 'range check failed');
 }
 
-fn assert_is_power_of_2(x: u256) {
-    assert(U256BitAnd::bitand(x, x-1) == 0, 'Value is not pow of 2');
+fn assert_is_power_of_2(x: u128) {
+    assert(U128BitAnd::bitand(x, x-1) == 0, 'Value is not pow of 2');
 }
