@@ -131,7 +131,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let n_steps = pow(2, *self.log_n_steps);
         let trace_length = *stark_domains.trace_domain_size;
         assert(
-            n_steps * CPU_COMPONENT_HEIGHT * dynamic_params.cpu_component_step == trace_length,
+            n_steps * CPU_COMPONENT_HEIGHT * dynamic_params.cpu_component_step.into() == trace_length,
             'Wrong trace size'
         );
 
@@ -151,7 +151,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let pedersen_copies = if (dynamic_params.uses_pedersen_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.pedersen_builtin_row_ratio
+            trace_length / dynamic_params.pedersen_builtin_row_ratio.into()
         };
         let pedersen_uses = (*self.segments.at(segments::PEDERSEN).stop_ptr
             - *self.segments.at(segments::PEDERSEN).begin_addr)
@@ -164,7 +164,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let range_check_copies = if (dynamic_params.uses_range_check_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.range_check_builtin_row_ratio
+            trace_length / dynamic_params.range_check_builtin_row_ratio.into()
         };
         let range_check_uses = *self.segments.at(segments::RANGE_CHECK).stop_ptr
             - *self.segments.at(segments::RANGE_CHECK).begin_addr;
@@ -175,7 +175,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let ecdsa_copies = if (dynamic_params.uses_ecdsa_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.ecdsa_builtin_row_ratio
+            trace_length / dynamic_params.ecdsa_builtin_row_ratio.into()
         };
         let ecdsa_uses = (*self.segments.at(segments::ECDSA).stop_ptr
             - *self.segments.at(segments::ECDSA).begin_addr)
@@ -188,7 +188,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let bitwise_copies = if (dynamic_params.uses_bitwise_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.bitwise_row_ratio
+            trace_length / dynamic_params.bitwise_row_ratio.into()
         };
         let bitwise_uses = (*self.segments.at(segments::BITWISE).stop_ptr
             - *self.segments.at(segments::BITWISE).begin_addr)
@@ -201,7 +201,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let ec_op_copies = if (dynamic_params.uses_ec_op_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.ec_op_builtin_row_ratio
+            trace_length / dynamic_params.ec_op_builtin_row_ratio.into()
         };
         let ec_op_uses = (*self.segments.at(segments::EC_OP).stop_ptr
             - *self.segments.at(segments::EC_OP).begin_addr)
@@ -214,7 +214,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let keccak_copies = if (dynamic_params.uses_keccak_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.keccak_row_ratio
+            trace_length / dynamic_params.keccak_row_ratio.into()
         };
         let keccak_uses = (*self.segments.at(segments::KECCAK).stop_ptr
             - *self.segments.at(segments::KECCAK).begin_addr)
@@ -227,7 +227,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let poseidon_copies = if (dynamic_params.uses_poseidon_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.poseidon_row_ratio
+            trace_length / dynamic_params.poseidon_row_ratio.into()
         };
         let poseidon_uses = (*self.segments.at(segments::POSEIDON).stop_ptr
             - *self.segments.at(segments::POSEIDON).begin_addr)
@@ -240,7 +240,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let range_check96_copies = if (dynamic_params.uses_range_check96_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.range_check96_builtin_row_ratio
+            trace_length / dynamic_params.range_check96_builtin_row_ratio.into()
         };
         let range_check96_uses = *self.segments.at(segments::RANGE_CHECK96).stop_ptr
             - *self.segments.at(segments::RANGE_CHECK96).begin_addr;
@@ -251,7 +251,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let add_mod_copies = if (dynamic_params.uses_add_mod_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.add_mod_row_ratio
+            trace_length / dynamic_params.add_mod_row_ratio.into()
         };
         let add_mod_uses = (*self.segments.at(segments::ADD_MOD).stop_ptr
             - *self.segments.at(segments::ADD_MOD).begin_addr)
@@ -264,7 +264,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         let mul_mod_copies = if (dynamic_params.uses_mul_mod_builtin == 0) {
             0
         } else {
-            trace_length / dynamic_params.mul_mod_row_ratio
+            trace_length / dynamic_params.mul_mod_row_ratio.into()
         };
         let mul_mod_uses = (*self.segments.at(segments::MUL_MOD).stop_ptr
             - *self.segments.at(segments::MUL_MOD).begin_addr)
@@ -274,7 +274,7 @@ impl DynamicPublicInputImpl of PublicInputTrait {
         // dynamic_params.mul_mod_row_ratio
         // and that stop_ptr - begin_addr is divisible by 7.
 
-        let memory_units = trace_length / dynamic_params.memory_units_row_ratio;
+        let memory_units = trace_length / dynamic_params.memory_units_row_ratio.into();
         assert_range_u128_le(
             4 * n_steps
                 + memory_units / PUBLIC_MEMORY_FRACTION
@@ -291,13 +291,13 @@ impl DynamicPublicInputImpl of PublicInputTrait {
             memory_units,
         );
 
-        let n_rc_units = trace_length / dynamic_params.range_check_units_row_ratio;
+        let n_rc_units = trace_length / dynamic_params.range_check_units_row_ratio.into();
         assert_range_u128_le(
             3 * n_steps + 8 * range_check_copies + 6 * range_check96_copies + 66 * mul_mod_copies,
             n_rc_units,
         );
 
-        let n_diluted_units = trace_length / dynamic_params.diluted_units_row_ratio;
+        let n_diluted_units = trace_length / dynamic_params.diluted_units_row_ratio.into();
         assert_range_u128_le(68 * bitwise_copies + 16384 * keccak_copies, n_diluted_units);
 
         if (dynamic_params.uses_keccak_builtin != 0) {

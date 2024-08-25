@@ -49,7 +49,7 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
 
         // Public memory
         let public_memory_column_size = trace_domain_size
-            / (PUBLIC_MEMORY_FRACTION * dynamic_params.memory_units_row_ratio);
+            / (PUBLIC_MEMORY_FRACTION * dynamic_params.memory_units_row_ratio.into());
         assert_range_u128(public_memory_column_size);
         let public_memory_prod_ratio = get_public_memory_product_ratio(
             public_input, memory_z, memory_alpha, public_memory_column_size
@@ -67,7 +67,7 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
             (0, 0)
         } else {
             let n_pedersen_hash_copies = trace_domain_size
-                / (dynamic_params.pedersen_builtin_row_ratio * PEDERSEN_BUILTIN_REPETITIONS);
+                / (PEDERSEN_BUILTIN_REPETITIONS * dynamic_params.pedersen_builtin_row_ratio.into());
             assert_range_u128(n_pedersen_hash_copies);
             let pedersen_point = pow(point, n_pedersen_hash_copies);
             (eval_pedersen_x(pedersen_point), eval_pedersen_y(pedersen_point))
@@ -78,7 +78,7 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
             (0, 0)
         } else {
             let n_ecdsa_signature_copies = trace_domain_size
-                / (dynamic_params.ecdsa_builtin_row_ratio * ECDSA_BUILTIN_REPETITIONS);
+                / (ECDSA_BUILTIN_REPETITIONS * dynamic_params.ecdsa_builtin_row_ratio.into());
             assert_range_u128(n_ecdsa_signature_copies);
             let ecdsa_point = pow(point, n_ecdsa_signature_copies);
             (eval_ecdsa_x(ecdsa_point), eval_ecdsa_y(ecdsa_point))
@@ -98,7 +98,7 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
             (0, 0, 0, 0, 0, 0, 0)
         } else {
             let n_keccak_component_copies = trace_domain_size
-                / (dynamic_params.keccak_row_ratio * DILUTED_N_BITS);
+                / (DILUTED_N_BITS * dynamic_params.keccak_row_ratio.into());
             // The following assert enforces that the number of keccak instances is divisible by
             // KECCAK_PERMUTATIONS_PER_INSTANCE.
             assert_range_u128(n_keccak_component_copies);
@@ -126,7 +126,7 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
             .uses_poseidon_builtin == 0 {
             (0, 0, 0, 0, 0)
         } else {
-            let n_poseidon_copies = trace_domain_size / dynamic_params.poseidon_row_ratio;
+            let n_poseidon_copies = trace_domain_size / dynamic_params.poseidon_row_ratio.into();
             assert_range_u128(n_poseidon_copies);
             let poseidon_point = pow(point, n_poseidon_copies);
             (
