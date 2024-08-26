@@ -942,7 +942,7 @@ fn eval_oods_polynomial_inner(
     let pow194 = pow(
         trace_generator, (keccak_keccak_diluted_column0_suboffset * diluted_units_row_ratio).into(),
     );
-    let pow195 = pow(trace_generator, (safe_div(keccak_row_ratio, 32768)));
+    let pow195 = pow(trace_generator, (keccak_row_ratio / 32768).into());
     let pow196 = pow195 * pow195; // pow(trace_generator, (safe_div(keccak_row_ratio, 16384))).
     let pow197 = pow195
         * pow196; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 32768))).
@@ -2571,8 +2571,8 @@ fn eval_oods_polynomial_inner(
         * pow1025; // pow(trace_generator, (safe_div((safe_mult(3, bitwise_row_ratio)), 4)) + (safe_mult(bitwise_var_pool_suboffset, memory_units_row_ratio))).
     let pow1027 = pow18
         * pow1026; // pow(trace_generator, bitwise_row_ratio + (safe_mult(bitwise_var_pool_suboffset, memory_units_row_ratio))).
-    let pow1028 = pow(trace_generator, ecdsa_message_suboffset * memory_units_row_ratio);
-    let pow1029 = pow(trace_generator, ecdsa_pubkey_suboffset * memory_units_row_ratio);
+    let pow1028 = pow(trace_generator, (ecdsa_message_suboffset * memory_units_row_ratio).into());
+    let pow1029 = pow(trace_generator, (ecdsa_pubkey_suboffset * memory_units_row_ratio).into());
     let pow1030 = pow(trace_generator, (255 * ecdsa_builtin_row_ratio / 512).into());
     let pow1031 = pow1030
         * pow1030; // pow(trace_generator, (safe_div((safe_mult(255, ecdsa_builtin_row_ratio)), 256))).
@@ -2604,17 +2604,19 @@ fn eval_oods_polynomial_inner(
         * pow1043; // pow(trace_generator, (safe_div((safe_mult(3, range_check_builtin_row_ratio)), 4)) + (safe_mult(range_check_builtin_inner_range_check_suboffset, range_check_units_row_ratio))).
     let pow1045 = pow30
         * pow1044; // pow(trace_generator, (safe_div((safe_mult(7, range_check_builtin_row_ratio)), 8)) + (safe_mult(range_check_builtin_inner_range_check_suboffset, range_check_units_row_ratio))).
-    let pow1046 = pow(trace_generator, range_check_builtin_mem_suboffset * memory_units_row_ratio);
+    let pow1046 = pow(
+        trace_generator, (range_check_builtin_mem_suboffset * memory_units_row_ratio).into()
+    );
     let pow1047 = pow37
         * pow1046; // pow(trace_generator, range_check_builtin_row_ratio + (safe_mult(range_check_builtin_mem_suboffset, memory_units_row_ratio))).
-    let pow1048 = pow(trace_generator, pedersen_input1_suboffset * memory_units_row_ratio);
-    let pow1049 = pow(trace_generator, pedersen_output_suboffset * memory_units_row_ratio);
-    let pow1050 = pow(trace_generator, pedersen_input0_suboffset * memory_units_row_ratio);
-    let pow1051 = pow(trace_generator, 255 * pedersen_builtin_row_ratio / 512);
-    let pow1052 = pow(trace_generator, 251 * pedersen_builtin_row_ratio / 512);
-    let pow1053 = pow(trace_generator, 49 * pedersen_builtin_row_ratio / 128);
-    let pow1054 = pow(trace_generator, 3 * pedersen_builtin_row_ratio / 8);
-    let pow1055 = pow(trace_generator, pedersen_builtin_row_ratio / 512);
+    let pow1048 = pow(trace_generator, (pedersen_input1_suboffset * memory_units_row_ratio).into());
+    let pow1049 = pow(trace_generator, (pedersen_output_suboffset * memory_units_row_ratio).into());
+    let pow1050 = pow(trace_generator, (pedersen_input0_suboffset * memory_units_row_ratio).into());
+    let pow1051 = pow(trace_generator, (255 * pedersen_builtin_row_ratio / 512).into());
+    let pow1052 = pow(trace_generator, (251 * pedersen_builtin_row_ratio / 512).into());
+    let pow1053 = pow(trace_generator, (49 * pedersen_builtin_row_ratio / 128).into());
+    let pow1054 = pow(trace_generator, (3 * pedersen_builtin_row_ratio / 8).into());
+    let pow1055 = pow(trace_generator, (pedersen_builtin_row_ratio / 512).into());
     let pow1056 = pow1054
         * pow1055; // pow(trace_generator, (safe_div((safe_mult(193, pedersen_builtin_row_ratio)), 512))).
     let pow1057 = pow1051
@@ -3154,35 +3156,37 @@ fn eval_oods_polynomial_inner(
     let pow1342 = pow1031
         * pow1340; // pow(trace_generator, (safe_div((safe_mult(255, ecdsa_builtin_row_ratio)), 256)) + ecdsa_signature0_exponentiate_generator_partial_sum_y_offset).
     let pow1343 = pow(
-        trace_generator, ecdsa_signature0_exponentiate_generator_partial_sum_x_offset
+        trace_generator, ecdsa_signature0_exponentiate_generator_partial_sum_x_offset.into()
     );
     let pow1344 = pow1035
         * pow1343; // pow(trace_generator, (safe_div(ecdsa_builtin_row_ratio, 256)) + ecdsa_signature0_exponentiate_generator_partial_sum_x_offset).
     let pow1345 = pow1031
         * pow1343; // pow(trace_generator, (safe_div((safe_mult(255, ecdsa_builtin_row_ratio)), 256)) + ecdsa_signature0_exponentiate_generator_partial_sum_x_offset).
-    let pow1346 = pow(trace_generator, ecdsa_signature0_exponentiate_generator_selector_offset);
+    let pow1346 = pow(
+        trace_generator, ecdsa_signature0_exponentiate_generator_selector_offset.into()
+    );
     let pow1347 = pow1035
         * pow1346; // pow(trace_generator, (safe_div(ecdsa_builtin_row_ratio, 256)) + ecdsa_signature0_exponentiate_generator_selector_offset).
-    let pow1348 = pow(trace_generator, ecdsa_signature0_doubling_slope_offset);
-    let pow1349 = pow(trace_generator, ecdsa_signature0_key_points_y_offset);
+    let pow1348 = pow(trace_generator, ecdsa_signature0_doubling_slope_offset.into());
+    let pow1349 = pow(trace_generator, ecdsa_signature0_key_points_y_offset.into());
     let pow1350 = pow1032
         * pow1349; // pow(trace_generator, (safe_div(ecdsa_builtin_row_ratio, 512)) + ecdsa_signature0_key_points_y_offset).
     let pow1351 = pow1030
         * pow1350; // pow(trace_generator, (safe_div(ecdsa_builtin_row_ratio, 2)) + ecdsa_signature0_key_points_y_offset).
-    let pow1352 = pow(trace_generator, ecdsa_signature0_key_points_x_offset);
+    let pow1352 = pow(trace_generator, ecdsa_signature0_key_points_x_offset.into());
     let pow1353 = pow1032
         * pow1352; // pow(trace_generator, (safe_div(ecdsa_builtin_row_ratio, 512)) + ecdsa_signature0_key_points_x_offset).
     let pow1354 = pow1030
         * pow1353; // pow(trace_generator, (safe_div(ecdsa_builtin_row_ratio, 2)) + ecdsa_signature0_key_points_x_offset).
-    let pow1355 = pow(trace_generator, pedersen_hash0_ec_subset_sum_slope_offset);
-    let pow1356 = pow(trace_generator, pedersen_hash0_ec_subset_sum_partial_sum_y_offset);
+    let pow1355 = pow(trace_generator, pedersen_hash0_ec_subset_sum_slope_offset.into());
+    let pow1356 = pow(trace_generator, pedersen_hash0_ec_subset_sum_partial_sum_y_offset.into());
     let pow1357 = pow1051
         * pow1356; // pow(trace_generator, (safe_div((safe_mult(255, pedersen_builtin_row_ratio)), 512)) + pedersen_hash0_ec_subset_sum_partial_sum_y_offset).
     let pow1358 = pow1055
         * pow1356; // pow(trace_generator, (safe_div(pedersen_builtin_row_ratio, 512)) + pedersen_hash0_ec_subset_sum_partial_sum_y_offset).
     let pow1359 = pow1051
         * pow1358; // pow(trace_generator, (safe_div(pedersen_builtin_row_ratio, 2)) + pedersen_hash0_ec_subset_sum_partial_sum_y_offset).
-    let pow1360 = pow(trace_generator, pedersen_hash0_ec_subset_sum_partial_sum_x_offset);
+    let pow1360 = pow(trace_generator, pedersen_hash0_ec_subset_sum_partial_sum_x_offset.into());
     let pow1361 = pow1051
         * pow1360; // pow(trace_generator, (safe_div((safe_mult(255, pedersen_builtin_row_ratio)), 512)) + pedersen_hash0_ec_subset_sum_partial_sum_x_offset).
     let pow1362 = pow1055
@@ -3883,10 +3887,10 @@ fn eval_oods_polynomial_inner(
         * pow1708; // pow(trace_generator, (safe_div((safe_mult(15, bitwise_row_ratio)), 64)) + (safe_div((safe_mult(3, bitwise_row_ratio)), 4)) + (safe_mult(bitwise_diluted_var_pool_suboffset, diluted_units_row_ratio)) + diluted_pool_offset).
     let pow1710 = pow1063
         * pow1376; // pow(trace_generator, diluted_units_row_ratio + diluted_pool_offset).
-    let pow1711 = pow(trace_generator, diluted_check_permuted_values_offset);
+    let pow1711 = pow(trace_generator, diluted_check_permuted_values_offset.into());
     let pow1712 = pow1063
         * pow1711; // pow(trace_generator, diluted_units_row_ratio + diluted_check_permuted_values_offset).
-    let pow1713 = pow(trace_generator, range_check16_pool_offset);
+    let pow1713 = pow(trace_generator, range_check16_pool_offset.into());
     let pow1714 = pow38
         * pow1713; // pow(trace_generator, (safe_mult(mul_mod_carry0_part6_suboffset, range_check_units_row_ratio)) + range_check16_pool_offset).
     let pow1715 = pow39
@@ -4049,10 +4053,10 @@ fn eval_oods_polynomial_inner(
         * pow1792; // pow(trace_generator, (safe_div((safe_mult(7, range_check_builtin_row_ratio)), 8)) + (safe_mult(range_check_builtin_inner_range_check_suboffset, range_check_units_row_ratio)) + range_check16_pool_offset).
     let pow1794 = pow1064
         * pow1713; // pow(trace_generator, range_check_units_row_ratio + range_check16_pool_offset).
-    let pow1795 = pow(trace_generator, range_check16_sorted_offset);
+    let pow1795 = pow(trace_generator, range_check16_sorted_offset.into());
     let pow1796 = pow1064
         * pow1795; // pow(trace_generator, range_check_units_row_ratio + range_check16_sorted_offset).
-    let pow1797 = pow(trace_generator, mem_pool_value_offset);
+    let pow1797 = pow(trace_generator, mem_pool_value_offset.into());
     let pow1798 = pow107
         * pow1797; // pow(trace_generator, (safe_mult(mul_mod_c0_suboffset, memory_units_row_ratio)) + mem_pool_value_offset).
     let pow1799 = pow104
@@ -4253,7 +4257,7 @@ fn eval_oods_polynomial_inner(
         * pow1797; // pow(trace_generator, (safe_mult(orig_public_memory_suboffset, memory_units_row_ratio)) + mem_pool_value_offset).
     let pow1897 = pow1066
         * pow1797; // pow(trace_generator, memory_units_row_ratio + mem_pool_value_offset).
-    let pow1898 = pow(trace_generator, mem_pool_addr_offset);
+    let pow1898 = pow(trace_generator, mem_pool_addr_offset.into());
     let pow1899 = pow104
         * pow1898; // pow(trace_generator, (safe_mult(mul_mod_c3_suboffset, memory_units_row_ratio)) + mem_pool_addr_offset).
     let pow1900 = pow105
@@ -4414,20 +4418,20 @@ fn eval_oods_polynomial_inner(
         * pow1898; // pow(trace_generator, (safe_mult(orig_public_memory_suboffset, memory_units_row_ratio)) + mem_pool_addr_offset).
     let pow1978 = pow1066
         * pow1898; // pow(trace_generator, memory_units_row_ratio + mem_pool_addr_offset).
-    let pow1979 = pow(trace_generator, memory_sorted_value_offset);
+    let pow1979 = pow(trace_generator, memory_sorted_value_offset.into());
     let pow1980 = pow1066
         * pow1979; // pow(trace_generator, memory_units_row_ratio + memory_sorted_value_offset).
-    let pow1981 = pow(trace_generator, memory_sorted_addr_offset);
+    let pow1981 = pow(trace_generator, memory_sorted_addr_offset.into());
     let pow1982 = pow1066
         * pow1981; // pow(trace_generator, memory_units_row_ratio + memory_sorted_addr_offset).
-    let pow1983 = pow(trace_generator, cpu_update_registers_update_pc_tmp1_offset);
+    let pow1983 = pow(trace_generator, cpu_update_registers_update_pc_tmp1_offset.into());
     let pow1984 = pow1069
         * pow1797; // pow(trace_generator, (safe_mult(cpu_operands_mem_dst_suboffset, memory_units_row_ratio)) + mem_pool_value_offset).
-    let pow1985 = pow(trace_generator, cpu_update_registers_update_pc_tmp0_offset);
-    let pow1986 = pow(trace_generator, cpu_operands_res_offset);
+    let pow1985 = pow(trace_generator, cpu_update_registers_update_pc_tmp0_offset.into());
+    let pow1986 = pow(trace_generator, cpu_operands_res_offset.into());
     let pow1987 = pow1067
         * pow1797; // pow(trace_generator, (safe_mult(cpu_operands_mem_op1_suboffset, memory_units_row_ratio)) + mem_pool_value_offset).
-    let pow1988 = pow(trace_generator, cpu_operands_ops_mul_offset);
+    let pow1988 = pow(trace_generator, cpu_operands_ops_mul_offset.into());
     let pow1989 = pow1068
         * pow1797; // pow(trace_generator, (safe_mult(cpu_operands_mem_op0_suboffset, memory_units_row_ratio)) + mem_pool_value_offset).
     let pow1990 = pow1073
@@ -4438,10 +4442,10 @@ fn eval_oods_polynomial_inner(
         * pow1898; // pow(trace_generator, (safe_mult(cpu_operands_mem_op1_suboffset, memory_units_row_ratio)) + mem_pool_addr_offset).
     let pow1993 = pow1068
         * pow1898; // pow(trace_generator, (safe_mult(cpu_operands_mem_op0_suboffset, memory_units_row_ratio)) + mem_pool_addr_offset).
-    let pow1994 = pow(trace_generator, cpu_registers_ap_offset);
+    let pow1994 = pow(trace_generator, cpu_registers_ap_offset.into());
     let pow1995 = pow1089
         * pow1994; // pow(trace_generator, (safe_mult(16, cpu_component_step)) + cpu_registers_ap_offset).
-    let pow1996 = pow(trace_generator, cpu_registers_fp_offset);
+    let pow1996 = pow(trace_generator, cpu_registers_fp_offset.into());
     let pow1997 = pow1089
         * pow1996; // pow(trace_generator, (safe_mult(16, cpu_component_step)) + cpu_registers_fp_offset).
     let pow1998 = pow1069
@@ -4454,7 +4458,7 @@ fn eval_oods_polynomial_inner(
         * pow1713; // pow(trace_generator, (safe_mult(cpu_decode_off2_suboffset, range_check_units_row_ratio)) + range_check16_pool_offset).
     let pow2002 = pow1073
         * pow1797; // pow(trace_generator, (safe_mult(cpu_decode_mem_inst_suboffset, memory_units_row_ratio)) + mem_pool_value_offset).
-    let pow2003 = pow(trace_generator, cpu_decode_opcode_range_check_column_offset);
+    let pow2003 = pow(trace_generator, cpu_decode_opcode_range_check_column_offset.into());
     let pow2004 = pow1074
         * pow2003; // pow(trace_generator, cpu_component_step + cpu_decode_opcode_range_check_column_offset).
     let pow2005 = pow1074
@@ -4492,3939 +4496,4380 @@ fn eval_oods_polynomial_inner(
     let mut total_sum: felt252 = 0;
     let mut value: felt252 = 0;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[0])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2003 * oods_point);
-    total_sum = total_sum + constraint_coefficients[0] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[1])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2004 * oods_point);
-    total_sum = total_sum + constraint_coefficients[1] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[2])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow2002 * oods_point);
-    total_sum = total_sum + constraint_coefficients[2] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[3])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow2001 * oods_point);
-    total_sum = total_sum + constraint_coefficients[3] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[4])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow2000 * oods_point);
-    total_sum = total_sum + constraint_coefficients[4] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[5])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1999 * oods_point);
-    total_sum = total_sum + constraint_coefficients[5] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[6])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2005 * oods_point);
-    total_sum = total_sum + constraint_coefficients[6] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[7])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2006 * oods_point);
-    total_sum = total_sum + constraint_coefficients[7] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[8])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2007 * oods_point);
-    total_sum = total_sum + constraint_coefficients[8] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[9])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2008 * oods_point);
-    total_sum = total_sum + constraint_coefficients[9] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[10])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2006 * oods_point);
-    total_sum = total_sum + constraint_coefficients[10] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[11])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2007 * oods_point);
-    total_sum = total_sum + constraint_coefficients[11] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[12])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2008 * oods_point);
-    total_sum = total_sum + constraint_coefficients[12] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[13])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2009 * oods_point);
-    total_sum = total_sum + constraint_coefficients[13] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[14])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2009 * oods_point);
-    total_sum = total_sum + constraint_coefficients[14] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[15])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2010 * oods_point);
-    total_sum = total_sum + constraint_coefficients[15] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[16])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2012 * oods_point);
-    total_sum = total_sum + constraint_coefficients[16] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[17])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2013 * oods_point);
-    total_sum = total_sum + constraint_coefficients[17] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[18])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2010 * oods_point);
-    total_sum = total_sum + constraint_coefficients[18] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[19])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2011 * oods_point);
-    total_sum = total_sum + constraint_coefficients[19] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[20])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2011 * oods_point);
-    total_sum = total_sum + constraint_coefficients[20] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[21])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2012 * oods_point);
-    total_sum = total_sum + constraint_coefficients[21] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[22])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2015 * oods_point);
-    total_sum = total_sum + constraint_coefficients[22] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[23])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2016 * oods_point);
-    total_sum = total_sum + constraint_coefficients[23] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[24])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2016 * oods_point);
-    total_sum = total_sum + constraint_coefficients[24] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[25])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2017 * oods_point);
-    total_sum = total_sum + constraint_coefficients[25] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[26])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1998 * oods_point);
-    total_sum = total_sum + constraint_coefficients[26] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_registers_fp_column] - oods_values[27])
+    value = (*column_values.at(cpu_registers_fp_column) - *oods_values.pop_front().unwrap())
         / (point - pow1996 * oods_point);
-    total_sum = total_sum + constraint_coefficients[27] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_registers_ap_column] - oods_values[28])
+    value = (*column_values.at(cpu_registers_ap_column) - *oods_values.pop_front().unwrap())
         / (point - pow1994 * oods_point);
-    total_sum = total_sum + constraint_coefficients[28] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[29])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1993 * oods_point);
-    total_sum = total_sum + constraint_coefficients[29] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[30])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2005 * oods_point);
-    total_sum = total_sum + constraint_coefficients[30] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[31])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1992 * oods_point);
-    total_sum = total_sum + constraint_coefficients[31] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[32])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1990 * oods_point);
-    total_sum = total_sum + constraint_coefficients[32] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[33])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1989 * oods_point);
-    total_sum = total_sum + constraint_coefficients[33] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_operands_ops_mul_column] - oods_values[34])
+    value = (*column_values.at(cpu_operands_ops_mul_column) - *oods_values.pop_front().unwrap())
         / (point - pow1988 * oods_point);
-    total_sum = total_sum + constraint_coefficients[34] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[35])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1987 * oods_point);
-    total_sum = total_sum + constraint_coefficients[35] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_operands_res_column] - oods_values[36])
+    value = (*column_values.at(cpu_operands_res_column) - *oods_values.pop_front().unwrap())
         / (point - pow1986 * oods_point);
-    total_sum = total_sum + constraint_coefficients[36] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_update_registers_update_pc_tmp0_column] - oods_values[37])
+    value =
+        (*column_values.at(cpu_update_registers_update_pc_tmp0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1985 * oods_point);
-    total_sum = total_sum + constraint_coefficients[37] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[38])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1984 * oods_point);
-    total_sum = total_sum + constraint_coefficients[38] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_update_registers_update_pc_tmp1_column] - oods_values[39])
+    value =
+        (*column_values.at(cpu_update_registers_update_pc_tmp1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1983 * oods_point);
-    total_sum = total_sum + constraint_coefficients[39] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[40])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1991 * oods_point);
-    total_sum = total_sum + constraint_coefficients[40] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_registers_ap_column] - oods_values[41])
+    value = (*column_values.at(cpu_registers_ap_column) - *oods_values.pop_front().unwrap())
         / (point - pow1995 * oods_point);
-    total_sum = total_sum + constraint_coefficients[41] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[42])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2013 * oods_point);
-    total_sum = total_sum + constraint_coefficients[42] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[43])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2014 * oods_point);
-    total_sum = total_sum + constraint_coefficients[43] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[44])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2014 * oods_point);
-    total_sum = total_sum + constraint_coefficients[44] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[45])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2015 * oods_point);
-    total_sum = total_sum + constraint_coefficients[45] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_registers_fp_column] - oods_values[46])
+    value = (*column_values.at(cpu_registers_fp_column) - *oods_values.pop_front().unwrap())
         / (point - pow1997 * oods_point);
-    total_sum = total_sum + constraint_coefficients[46] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[47])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2017 * oods_point);
-    total_sum = total_sum + constraint_coefficients[47] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[cpu_decode_opcode_range_check_column_column] - oods_values[48])
+    value =
+        (*column_values.at(cpu_decode_opcode_range_check_column_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow2018 * oods_point);
-    total_sum = total_sum + constraint_coefficients[48] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[memory_sorted_addr_column] - oods_values[49])
+    value = (*column_values.at(memory_sorted_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1981 * oods_point);
-    total_sum = total_sum + constraint_coefficients[49] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[memory_sorted_value_column] - oods_values[50])
+    value = (*column_values.at(memory_sorted_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1979 * oods_point);
-    total_sum = total_sum + constraint_coefficients[50] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[51])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1898 * oods_point);
-    total_sum = total_sum + constraint_coefficients[51] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[52])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1797 * oods_point);
-    total_sum = total_sum + constraint_coefficients[52] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[memory_sorted_addr_column] - oods_values[53])
+    value = (*column_values.at(memory_sorted_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1982 * oods_point);
-    total_sum = total_sum + constraint_coefficients[53] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[memory_sorted_value_column] - oods_values[54])
+    value = (*column_values.at(memory_sorted_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1980 * oods_point);
-    total_sum = total_sum + constraint_coefficients[54] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[55])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1978 * oods_point);
-    total_sum = total_sum + constraint_coefficients[55] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[56])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1897 * oods_point);
-    total_sum = total_sum + constraint_coefficients[56] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[57])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1977 * oods_point);
-    total_sum = total_sum + constraint_coefficients[57] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[58])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1896 * oods_point);
-    total_sum = total_sum + constraint_coefficients[58] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_sorted_column] - oods_values[59])
+    value = (*column_values.at(range_check16_sorted_column) - *oods_values.pop_front().unwrap())
         / (point - pow1795 * oods_point);
-    total_sum = total_sum + constraint_coefficients[59] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[60])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1713 * oods_point);
-    total_sum = total_sum + constraint_coefficients[60] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_sorted_column] - oods_values[61])
+    value = (*column_values.at(range_check16_sorted_column) - *oods_values.pop_front().unwrap())
         / (point - pow1796 * oods_point);
-    total_sum = total_sum + constraint_coefficients[61] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[62])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1794 * oods_point);
-    total_sum = total_sum + constraint_coefficients[62] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_check_permuted_values_column] - oods_values[63])
+    value =
+        (*column_values.at(diluted_check_permuted_values_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1711 * oods_point);
-    total_sum = total_sum + constraint_coefficients[63] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[64]) / (point - pow1376 * oods_point);
-    total_sum = total_sum + constraint_coefficients[64] * value;
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
+        / (point - pow1376 * oods_point);
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_check_permuted_values_column] - oods_values[65])
+    value =
+        (*column_values.at(diluted_check_permuted_values_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1712 * oods_point);
-    total_sum = total_sum + constraint_coefficients[65] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[66]) / (point - pow1710 * oods_point);
-    total_sum = total_sum + constraint_coefficients[66] * value;
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
+        / (point - pow1710 * oods_point);
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_column]
-            - oods_values[67])
+        (*column_values.at(pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1375 * oods_point);
-    total_sum = total_sum + constraint_coefficients[67] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[68])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1366 * oods_point);
-    total_sum = total_sum + constraint_coefficients[68] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[69])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1370 * oods_point);
-    total_sum = total_sum + constraint_coefficients[69] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[70])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1369 * oods_point);
-    total_sum = total_sum + constraint_coefficients[70] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_column]
-            - oods_values[71])
+        (*column_values.at(pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1365 * oods_point);
-    total_sum = total_sum + constraint_coefficients[71] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[72])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1373 * oods_point);
-    total_sum = total_sum + constraint_coefficients[72] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[73])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1368 * oods_point);
-    total_sum = total_sum + constraint_coefficients[73] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[74])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1367 * oods_point);
-    total_sum = total_sum + constraint_coefficients[74] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[75])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1372 * oods_point);
-    total_sum = total_sum + constraint_coefficients[75] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[76])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1371 * oods_point);
-    total_sum = total_sum + constraint_coefficients[76] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_x_column] - oods_values[77])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1360 * oods_point);
-    total_sum = total_sum + constraint_coefficients[77] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_y_column] - oods_values[78])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1356 * oods_point);
-    total_sum = total_sum + constraint_coefficients[78] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_x_column] - oods_values[79])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1362 * oods_point);
-    total_sum = total_sum + constraint_coefficients[79] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_y_column] - oods_values[80])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1358 * oods_point);
-    total_sum = total_sum + constraint_coefficients[80] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_slope_column] - oods_values[81])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_slope_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1355 * oods_point);
-    total_sum = total_sum + constraint_coefficients[81] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_x_column] - oods_values[82])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1361 * oods_point);
-    total_sum = total_sum + constraint_coefficients[82] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_y_column] - oods_values[83])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1357 * oods_point);
-    total_sum = total_sum + constraint_coefficients[83] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_x_column] - oods_values[84])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1363 * oods_point);
-    total_sum = total_sum + constraint_coefficients[84] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_y_column] - oods_values[85])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1359 * oods_point);
-    total_sum = total_sum + constraint_coefficients[85] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[86])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1895 * oods_point);
-    total_sum = total_sum + constraint_coefficients[86] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[87])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1976 * oods_point);
-    total_sum = total_sum + constraint_coefficients[87] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[88])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1975 * oods_point);
-    total_sum = total_sum + constraint_coefficients[88] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[89])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1974 * oods_point);
-    total_sum = total_sum + constraint_coefficients[89] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_selector_column] - oods_values[90])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1374 * oods_point);
-    total_sum = total_sum + constraint_coefficients[90] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[91])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1894 * oods_point);
-    total_sum = total_sum + constraint_coefficients[91] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[92])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1973 * oods_point);
-    total_sum = total_sum + constraint_coefficients[92] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[93])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1893 * oods_point);
-    total_sum = total_sum + constraint_coefficients[93] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[pedersen_hash0_ec_subset_sum_partial_sum_x_column] - oods_values[94])
+    value =
+        (*column_values.at(pedersen_hash0_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1364 * oods_point);
-    total_sum = total_sum + constraint_coefficients[94] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[95])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1892 * oods_point);
-    total_sum = total_sum + constraint_coefficients[95] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[96])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1786 * oods_point);
-    total_sum = total_sum + constraint_coefficients[96] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[97])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1787 * oods_point);
-    total_sum = total_sum + constraint_coefficients[97] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[98])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1788 * oods_point);
-    total_sum = total_sum + constraint_coefficients[98] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[99])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1789 * oods_point);
-    total_sum = total_sum + constraint_coefficients[99] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[100])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1790 * oods_point);
-    total_sum = total_sum + constraint_coefficients[100] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[101])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1791 * oods_point);
-    total_sum = total_sum + constraint_coefficients[101] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[102])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1792 * oods_point);
-    total_sum = total_sum + constraint_coefficients[102] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[103])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1793 * oods_point);
-    total_sum = total_sum + constraint_coefficients[103] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[104])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1972 * oods_point);
-    total_sum = total_sum + constraint_coefficients[104] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[105])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1971 * oods_point);
-    total_sum = total_sum + constraint_coefficients[105] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_key_points_x_column] - oods_values[106])
+    value =
+        (*column_values.at(ecdsa_signature0_key_points_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1352 * oods_point);
-    total_sum = total_sum + constraint_coefficients[106] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_key_points_y_column] - oods_values[107])
+    value =
+        (*column_values.at(ecdsa_signature0_key_points_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1349 * oods_point);
-    total_sum = total_sum + constraint_coefficients[107] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_key_points_x_column] - oods_values[108])
+    value =
+        (*column_values.at(ecdsa_signature0_key_points_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1353 * oods_point);
-    total_sum = total_sum + constraint_coefficients[108] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_key_points_y_column] - oods_values[109])
+    value =
+        (*column_values.at(ecdsa_signature0_key_points_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1350 * oods_point);
-    total_sum = total_sum + constraint_coefficients[109] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_doubling_slope_column] - oods_values[110])
+    value =
+        (*column_values.at(ecdsa_signature0_doubling_slope_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1348 * oods_point);
-    total_sum = total_sum + constraint_coefficients[110] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_selector_column] - oods_values[111])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1346 * oods_point);
-    total_sum = total_sum + constraint_coefficients[111] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_selector_column] - oods_values[112])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1347 * oods_point);
-    total_sum = total_sum + constraint_coefficients[112] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_partial_sum_x_column]
-            - oods_values[113])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1343 * oods_point);
-    total_sum = total_sum + constraint_coefficients[113] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_partial_sum_y_column]
-            - oods_values[114])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1340 * oods_point);
-    total_sum = total_sum + constraint_coefficients[114] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_partial_sum_x_column]
-            - oods_values[115])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1344 * oods_point);
-    total_sum = total_sum + constraint_coefficients[115] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_partial_sum_y_column]
-            - oods_values[116])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1341 * oods_point);
-    total_sum = total_sum + constraint_coefficients[116] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_exponentiate_generator_slope_column] - oods_values[117])
+    value =
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_slope_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1339 * oods_point);
-    total_sum = total_sum + constraint_coefficients[117] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_x_diff_inv_column]
-            - oods_values[118])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_x_diff_inv_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1338 * oods_point);
-    total_sum = total_sum + constraint_coefficients[118] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_exponentiate_key_selector_column] - oods_values[119])
+    value =
+        (*column_values.at(ecdsa_signature0_exponentiate_key_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1336 * oods_point);
-    total_sum = total_sum + constraint_coefficients[119] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_exponentiate_key_selector_column] - oods_values[120])
+    value =
+        (*column_values.at(ecdsa_signature0_exponentiate_key_selector_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1337 * oods_point);
-    total_sum = total_sum + constraint_coefficients[120] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_x_column] - oods_values[121])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1332 * oods_point);
-    total_sum = total_sum + constraint_coefficients[121] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_y_column] - oods_values[122])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1328 * oods_point);
-    total_sum = total_sum + constraint_coefficients[122] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_x_column] - oods_values[123])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1333 * oods_point);
-    total_sum = total_sum + constraint_coefficients[123] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_y_column] - oods_values[124])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1329 * oods_point);
-    total_sum = total_sum + constraint_coefficients[124] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_exponentiate_key_slope_column] - oods_values[125])
+    value =
+        (*column_values.at(ecdsa_signature0_exponentiate_key_slope_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1327 * oods_point);
-    total_sum = total_sum + constraint_coefficients[125] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_exponentiate_key_x_diff_inv_column] - oods_values[126])
+    value =
+        (*column_values.at(ecdsa_signature0_exponentiate_key_x_diff_inv_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1326 * oods_point);
-    total_sum = total_sum + constraint_coefficients[126] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_partial_sum_x_column]
-            - oods_values[127])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1345 * oods_point);
-    total_sum = total_sum + constraint_coefficients[127] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_generator_partial_sum_y_column]
-            - oods_values[128])
+        (*column_values.at(ecdsa_signature0_exponentiate_generator_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1342 * oods_point);
-    total_sum = total_sum + constraint_coefficients[128] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_x_column] - oods_values[129])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1334 * oods_point);
-    total_sum = total_sum + constraint_coefficients[129] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_y_column] - oods_values[130])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1330 * oods_point);
-    total_sum = total_sum + constraint_coefficients[130] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_key_points_x_column] - oods_values[131])
+    value =
+        (*column_values.at(ecdsa_signature0_key_points_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1354 * oods_point);
-    total_sum = total_sum + constraint_coefficients[131] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_key_points_y_column] - oods_values[132])
+    value =
+        (*column_values.at(ecdsa_signature0_key_points_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1351 * oods_point);
-    total_sum = total_sum + constraint_coefficients[132] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_add_results_slope_column] - oods_values[133])
+    value =
+        (*column_values.at(ecdsa_signature0_add_results_slope_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1325 * oods_point);
-    total_sum = total_sum + constraint_coefficients[133] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_add_results_inv_column] - oods_values[134])
+    value =
+        (*column_values.at(ecdsa_signature0_add_results_inv_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1324 * oods_point);
-    total_sum = total_sum + constraint_coefficients[134] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_x_column] - oods_values[135])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1335 * oods_point);
-    total_sum = total_sum + constraint_coefficients[135] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ecdsa_signature0_exponentiate_key_partial_sum_y_column] - oods_values[136])
+        (*column_values.at(ecdsa_signature0_exponentiate_key_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1331 * oods_point);
-    total_sum = total_sum + constraint_coefficients[136] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_extract_r_slope_column] - oods_values[137])
+    value =
+        (*column_values.at(ecdsa_signature0_extract_r_slope_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1323 * oods_point);
-    total_sum = total_sum + constraint_coefficients[137] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_extract_r_inv_column] - oods_values[138])
+    value =
+        (*column_values.at(ecdsa_signature0_extract_r_inv_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1322 * oods_point);
-    total_sum = total_sum + constraint_coefficients[138] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_z_inv_column] - oods_values[139])
+    value = (*column_values.at(ecdsa_signature0_z_inv_column) - *oods_values.pop_front().unwrap())
         / (point - pow1321 * oods_point);
-    total_sum = total_sum + constraint_coefficients[139] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_r_w_inv_column] - oods_values[140])
+    value = (*column_values.at(ecdsa_signature0_r_w_inv_column) - *oods_values.pop_front().unwrap())
         / (point - pow1320 * oods_point);
-    total_sum = total_sum + constraint_coefficients[140] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ecdsa_signature0_q_x_squared_column] - oods_values[141])
+    value =
+        (*column_values.at(ecdsa_signature0_q_x_squared_column) - *oods_values.pop_front().unwrap())
         / (point - pow1319 * oods_point);
-    total_sum = total_sum + constraint_coefficients[141] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[142])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1969 * oods_point);
-    total_sum = total_sum + constraint_coefficients[142] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[143])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1968 * oods_point);
-    total_sum = total_sum + constraint_coefficients[143] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[144])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1970 * oods_point);
-    total_sum = total_sum + constraint_coefficients[144] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[145])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1891 * oods_point);
-    total_sum = total_sum + constraint_coefficients[145] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[146])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1890 * oods_point);
-    total_sum = total_sum + constraint_coefficients[146] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[147])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1964 * oods_point);
-    total_sum = total_sum + constraint_coefficients[147] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[148])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1965 * oods_point);
-    total_sum = total_sum + constraint_coefficients[148] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[149])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1963 * oods_point);
-    total_sum = total_sum + constraint_coefficients[149] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[150])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1966 * oods_point);
-    total_sum = total_sum + constraint_coefficients[150] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[151])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1967 * oods_point);
-    total_sum = total_sum + constraint_coefficients[151] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[152])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1887 * oods_point);
-    total_sum = total_sum + constraint_coefficients[152] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[153])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1683 * oods_point);
-    total_sum = total_sum + constraint_coefficients[153] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[154])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1684 * oods_point);
-    total_sum = total_sum + constraint_coefficients[154] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[155])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1685 * oods_point);
-    total_sum = total_sum + constraint_coefficients[155] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[156])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1686 * oods_point);
-    total_sum = total_sum + constraint_coefficients[156] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[157])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1687 * oods_point);
-    total_sum = total_sum + constraint_coefficients[157] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[158])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1688 * oods_point);
-    total_sum = total_sum + constraint_coefficients[158] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[159])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1689 * oods_point);
-    total_sum = total_sum + constraint_coefficients[159] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[160])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1690 * oods_point);
-    total_sum = total_sum + constraint_coefficients[160] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[161])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1691 * oods_point);
-    total_sum = total_sum + constraint_coefficients[161] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[162])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1692 * oods_point);
-    total_sum = total_sum + constraint_coefficients[162] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[163])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1693 * oods_point);
-    total_sum = total_sum + constraint_coefficients[163] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[164])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1694 * oods_point);
-    total_sum = total_sum + constraint_coefficients[164] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[165])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1695 * oods_point);
-    total_sum = total_sum + constraint_coefficients[165] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[166])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1696 * oods_point);
-    total_sum = total_sum + constraint_coefficients[166] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[167])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1697 * oods_point);
-    total_sum = total_sum + constraint_coefficients[167] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[168])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1698 * oods_point);
-    total_sum = total_sum + constraint_coefficients[168] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[169])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1886 * oods_point);
-    total_sum = total_sum + constraint_coefficients[169] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[170])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1888 * oods_point);
-    total_sum = total_sum + constraint_coefficients[170] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[171])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1889 * oods_point);
-    total_sum = total_sum + constraint_coefficients[171] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[172])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1700 * oods_point);
-    total_sum = total_sum + constraint_coefficients[172] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[173])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1699 * oods_point);
-    total_sum = total_sum + constraint_coefficients[173] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[174])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1705 * oods_point);
-    total_sum = total_sum + constraint_coefficients[174] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[175])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1682 * oods_point);
-    total_sum = total_sum + constraint_coefficients[175] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[176])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1701 * oods_point);
-    total_sum = total_sum + constraint_coefficients[176] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[177])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1706 * oods_point);
-    total_sum = total_sum + constraint_coefficients[177] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[178])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1681 * oods_point);
-    total_sum = total_sum + constraint_coefficients[178] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[179])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1702 * oods_point);
-    total_sum = total_sum + constraint_coefficients[179] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[180])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1707 * oods_point);
-    total_sum = total_sum + constraint_coefficients[180] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[181])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1680 * oods_point);
-    total_sum = total_sum + constraint_coefficients[181] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[182])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1703 * oods_point);
-    total_sum = total_sum + constraint_coefficients[182] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[183])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1708 * oods_point);
-    total_sum = total_sum + constraint_coefficients[183] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[184])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1679 * oods_point);
-    total_sum = total_sum + constraint_coefficients[184] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[185])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1704 * oods_point);
-    total_sum = total_sum + constraint_coefficients[185] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[186])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1709 * oods_point);
-    total_sum = total_sum + constraint_coefficients[186] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[187])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1955 * oods_point);
-    total_sum = total_sum + constraint_coefficients[187] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[188])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1956 * oods_point);
-    total_sum = total_sum + constraint_coefficients[188] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[189])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1954 * oods_point);
-    total_sum = total_sum + constraint_coefficients[189] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[190])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1953 * oods_point);
-    total_sum = total_sum + constraint_coefficients[190] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[191])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1952 * oods_point);
-    total_sum = total_sum + constraint_coefficients[191] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[192])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1951 * oods_point);
-    total_sum = total_sum + constraint_coefficients[192] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[193])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1950 * oods_point);
-    total_sum = total_sum + constraint_coefficients[193] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[194])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1949 * oods_point);
-    total_sum = total_sum + constraint_coefficients[194] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_doubling_slope_column] - oods_values[195])
+    value = (*column_values.at(ec_op_doubling_slope_column) - *oods_values.pop_front().unwrap())
         / (point - pow1318 * oods_point);
-    total_sum = total_sum + constraint_coefficients[195] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_doubled_points_x_column] - oods_values[196])
+    value = (*column_values.at(ec_op_doubled_points_x_column) - *oods_values.pop_front().unwrap())
         / (point - pow1316 * oods_point);
-    total_sum = total_sum + constraint_coefficients[196] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_doubled_points_y_column] - oods_values[197])
+    value = (*column_values.at(ec_op_doubled_points_y_column) - *oods_values.pop_front().unwrap())
         / (point - pow1314 * oods_point);
-    total_sum = total_sum + constraint_coefficients[197] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_doubled_points_x_column] - oods_values[198])
+    value = (*column_values.at(ec_op_doubled_points_x_column) - *oods_values.pop_front().unwrap())
         / (point - pow1317 * oods_point);
-    total_sum = total_sum + constraint_coefficients[198] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_doubled_points_y_column] - oods_values[199])
+    value = (*column_values.at(ec_op_doubled_points_y_column) - *oods_values.pop_front().unwrap())
         / (point - pow1315 * oods_point);
-    total_sum = total_sum + constraint_coefficients[199] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[200])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1879 * oods_point);
-    total_sum = total_sum + constraint_coefficients[200] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[201])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1878 * oods_point);
-    total_sum = total_sum + constraint_coefficients[201] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ec_op_ec_subset_sum_bit_unpacking_prod_ones192_column] - oods_values[202])
+        (*column_values.at(ec_op_ec_subset_sum_bit_unpacking_prod_ones192_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1313 * oods_point);
-    total_sum = total_sum + constraint_coefficients[202] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[203])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1305 * oods_point);
-    total_sum = total_sum + constraint_coefficients[203] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[204])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1306 * oods_point);
-    total_sum = total_sum + constraint_coefficients[204] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[205])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1311 * oods_point);
-    total_sum = total_sum + constraint_coefficients[205] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[ec_op_ec_subset_sum_bit_unpacking_prod_ones196_column] - oods_values[206])
+        (*column_values.at(ec_op_ec_subset_sum_bit_unpacking_prod_ones196_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1304 * oods_point);
-    total_sum = total_sum + constraint_coefficients[206] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[207])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1312 * oods_point);
-    total_sum = total_sum + constraint_coefficients[207] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[208])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1309 * oods_point);
-    total_sum = total_sum + constraint_coefficients[208] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[209])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1307 * oods_point);
-    total_sum = total_sum + constraint_coefficients[209] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[210])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1308 * oods_point);
-    total_sum = total_sum + constraint_coefficients[210] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_selector_column] - oods_values[211])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_selector_column) - *oods_values.pop_front().unwrap())
         / (point - pow1310 * oods_point);
-    total_sum = total_sum + constraint_coefficients[211] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_partial_sum_x_column] - oods_values[212])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1301 * oods_point);
-    total_sum = total_sum + constraint_coefficients[212] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_partial_sum_y_column] - oods_values[213])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1298 * oods_point);
-    total_sum = total_sum + constraint_coefficients[213] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_partial_sum_x_column] - oods_values[214])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1303 * oods_point);
-    total_sum = total_sum + constraint_coefficients[214] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_partial_sum_y_column] - oods_values[215])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1300 * oods_point);
-    total_sum = total_sum + constraint_coefficients[215] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_slope_column] - oods_values[216])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_slope_column) - *oods_values.pop_front().unwrap())
         / (point - pow1297 * oods_point);
-    total_sum = total_sum + constraint_coefficients[216] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_x_diff_inv_column] - oods_values[217])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_x_diff_inv_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1296 * oods_point);
-    total_sum = total_sum + constraint_coefficients[217] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[218])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1876 * oods_point);
-    total_sum = total_sum + constraint_coefficients[218] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[219])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1875 * oods_point);
-    total_sum = total_sum + constraint_coefficients[219] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[220])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1874 * oods_point);
-    total_sum = total_sum + constraint_coefficients[220] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[221])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1873 * oods_point);
-    total_sum = total_sum + constraint_coefficients[221] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_partial_sum_x_column] - oods_values[222])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_partial_sum_x_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1302 * oods_point);
-    total_sum = total_sum + constraint_coefficients[222] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[223])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1872 * oods_point);
-    total_sum = total_sum + constraint_coefficients[223] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[ec_op_ec_subset_sum_partial_sum_y_column] - oods_values[224])
+    value =
+        (*column_values.at(ec_op_ec_subset_sum_partial_sum_y_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1299 * oods_point);
-    total_sum = total_sum + constraint_coefficients[224] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[225])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1947 * oods_point);
-    total_sum = total_sum + constraint_coefficients[225] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[226])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1948 * oods_point);
-    total_sum = total_sum + constraint_coefficients[226] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[227])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1265 * oods_point);
-    total_sum = total_sum + constraint_coefficients[227] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[228])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1856 * oods_point);
-    total_sum = total_sum + constraint_coefficients[228] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[229])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1270 * oods_point);
-    total_sum = total_sum + constraint_coefficients[229] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[230])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1857 * oods_point);
-    total_sum = total_sum + constraint_coefficients[230] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[231])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1271 * oods_point);
-    total_sum = total_sum + constraint_coefficients[231] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[232])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1858 * oods_point);
-    total_sum = total_sum + constraint_coefficients[232] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[233])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1272 * oods_point);
-    total_sum = total_sum + constraint_coefficients[233] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[234])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1859 * oods_point);
-    total_sum = total_sum + constraint_coefficients[234] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[235])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1273 * oods_point);
-    total_sum = total_sum + constraint_coefficients[235] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[236])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1860 * oods_point);
-    total_sum = total_sum + constraint_coefficients[236] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[237])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1274 * oods_point);
-    total_sum = total_sum + constraint_coefficients[237] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[238])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1861 * oods_point);
-    total_sum = total_sum + constraint_coefficients[238] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[239])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1275 * oods_point);
-    total_sum = total_sum + constraint_coefficients[239] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[240])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1862 * oods_point);
-    total_sum = total_sum + constraint_coefficients[240] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[241])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1276 * oods_point);
-    total_sum = total_sum + constraint_coefficients[241] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[242])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1863 * oods_point);
-    total_sum = total_sum + constraint_coefficients[242] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[243])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1277 * oods_point);
-    total_sum = total_sum + constraint_coefficients[243] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[244])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1864 * oods_point);
-    total_sum = total_sum + constraint_coefficients[244] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[245])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1278 * oods_point);
-    total_sum = total_sum + constraint_coefficients[245] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[246])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1865 * oods_point);
-    total_sum = total_sum + constraint_coefficients[246] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[247])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1279 * oods_point);
-    total_sum = total_sum + constraint_coefficients[247] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[248])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1866 * oods_point);
-    total_sum = total_sum + constraint_coefficients[248] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[249])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1280 * oods_point);
-    total_sum = total_sum + constraint_coefficients[249] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[250])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1867 * oods_point);
-    total_sum = total_sum + constraint_coefficients[250] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[251])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1281 * oods_point);
-    total_sum = total_sum + constraint_coefficients[251] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[252])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1868 * oods_point);
-    total_sum = total_sum + constraint_coefficients[252] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[253])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1282 * oods_point);
-    total_sum = total_sum + constraint_coefficients[253] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[254])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1869 * oods_point);
-    total_sum = total_sum + constraint_coefficients[254] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[255])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1283 * oods_point);
-    total_sum = total_sum + constraint_coefficients[255] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[256])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1870 * oods_point);
-    total_sum = total_sum + constraint_coefficients[256] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[257])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1284 * oods_point);
-    total_sum = total_sum + constraint_coefficients[257] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[258])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1871 * oods_point);
-    total_sum = total_sum + constraint_coefficients[258] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[259])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1235 * oods_point);
-    total_sum = total_sum + constraint_coefficients[259] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[260])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1243 * oods_point);
-    total_sum = total_sum + constraint_coefficients[260] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[261])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1266 * oods_point);
-    total_sum = total_sum + constraint_coefficients[261] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[262])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1251 * oods_point);
-    total_sum = total_sum + constraint_coefficients[262] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[263])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1267 * oods_point);
-    total_sum = total_sum + constraint_coefficients[263] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[264])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1252 * oods_point);
-    total_sum = total_sum + constraint_coefficients[264] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[265])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1268 * oods_point);
-    total_sum = total_sum + constraint_coefficients[265] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[266])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1253 * oods_point);
-    total_sum = total_sum + constraint_coefficients[266] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[267])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1269 * oods_point);
-    total_sum = total_sum + constraint_coefficients[267] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[268])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1254 * oods_point);
-    total_sum = total_sum + constraint_coefficients[268] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[269])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1285 * oods_point);
-    total_sum = total_sum + constraint_coefficients[269] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[270])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1255 * oods_point);
-    total_sum = total_sum + constraint_coefficients[270] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[271])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1286 * oods_point);
-    total_sum = total_sum + constraint_coefficients[271] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[272])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1256 * oods_point);
-    total_sum = total_sum + constraint_coefficients[272] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[273])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1287 * oods_point);
-    total_sum = total_sum + constraint_coefficients[273] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[274])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1257 * oods_point);
-    total_sum = total_sum + constraint_coefficients[274] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[275])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1288 * oods_point);
-    total_sum = total_sum + constraint_coefficients[275] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[276])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1258 * oods_point);
-    total_sum = total_sum + constraint_coefficients[276] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[277])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1289 * oods_point);
-    total_sum = total_sum + constraint_coefficients[277] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[278])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1259 * oods_point);
-    total_sum = total_sum + constraint_coefficients[278] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[279])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1290 * oods_point);
-    total_sum = total_sum + constraint_coefficients[279] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[280])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1260 * oods_point);
-    total_sum = total_sum + constraint_coefficients[280] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[281])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1291 * oods_point);
-    total_sum = total_sum + constraint_coefficients[281] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[282])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1261 * oods_point);
-    total_sum = total_sum + constraint_coefficients[282] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[283])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1292 * oods_point);
-    total_sum = total_sum + constraint_coefficients[283] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[284])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1262 * oods_point);
-    total_sum = total_sum + constraint_coefficients[284] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[285])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1293 * oods_point);
-    total_sum = total_sum + constraint_coefficients[285] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[286])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1263 * oods_point);
-    total_sum = total_sum + constraint_coefficients[286] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[287])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1294 * oods_point);
-    total_sum = total_sum + constraint_coefficients[287] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[288])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1264 * oods_point);
-    total_sum = total_sum + constraint_coefficients[288] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_reshaped_intermediate_column]
-            - oods_values[289])
+        (*column_values.at(keccak_keccak_parse_to_diluted_reshaped_intermediate_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1295 * oods_point);
-    total_sum = total_sum + constraint_coefficients[289] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[290])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1219 * oods_point);
-    total_sum = total_sum + constraint_coefficients[290] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[291])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1203 * oods_point);
-    total_sum = total_sum + constraint_coefficients[291] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[292])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1211 * oods_point);
-    total_sum = total_sum + constraint_coefficients[292] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[293])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1204 * oods_point);
-    total_sum = total_sum + constraint_coefficients[293] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[294])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1214 * oods_point);
-    total_sum = total_sum + constraint_coefficients[294] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[295])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1212 * oods_point);
-    total_sum = total_sum + constraint_coefficients[295] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[296])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1236 * oods_point);
-    total_sum = total_sum + constraint_coefficients[296] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[297])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1215 * oods_point);
-    total_sum = total_sum + constraint_coefficients[297] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[298])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1244 * oods_point);
-    total_sum = total_sum + constraint_coefficients[298] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[299])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1213 * oods_point);
-    total_sum = total_sum + constraint_coefficients[299] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[300])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1237 * oods_point);
-    total_sum = total_sum + constraint_coefficients[300] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[301])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1217 * oods_point);
-    total_sum = total_sum + constraint_coefficients[301] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[302])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1245 * oods_point);
-    total_sum = total_sum + constraint_coefficients[302] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[303])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1216 * oods_point);
-    total_sum = total_sum + constraint_coefficients[303] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[304])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1238 * oods_point);
-    total_sum = total_sum + constraint_coefficients[304] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[305])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1218 * oods_point);
-    total_sum = total_sum + constraint_coefficients[305] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[306])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1246 * oods_point);
-    total_sum = total_sum + constraint_coefficients[306] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[307])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1221 * oods_point);
-    total_sum = total_sum + constraint_coefficients[307] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[308])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1239 * oods_point);
-    total_sum = total_sum + constraint_coefficients[308] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[309])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1226 * oods_point);
-    total_sum = total_sum + constraint_coefficients[309] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[310])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1247 * oods_point);
-    total_sum = total_sum + constraint_coefficients[310] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[311])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1222 * oods_point);
-    total_sum = total_sum + constraint_coefficients[311] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[312])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1240 * oods_point);
-    total_sum = total_sum + constraint_coefficients[312] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[313])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1227 * oods_point);
-    total_sum = total_sum + constraint_coefficients[313] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[314])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1248 * oods_point);
-    total_sum = total_sum + constraint_coefficients[314] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[315])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1223 * oods_point);
-    total_sum = total_sum + constraint_coefficients[315] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[316])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1241 * oods_point);
-    total_sum = total_sum + constraint_coefficients[316] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[317])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1231 * oods_point);
-    total_sum = total_sum + constraint_coefficients[317] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[318])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1249 * oods_point);
-    total_sum = total_sum + constraint_coefficients[318] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[319])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1242 * oods_point);
-    total_sum = total_sum + constraint_coefficients[319] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[320])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1225 * oods_point);
-    total_sum = total_sum + constraint_coefficients[320] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[keccak_keccak_parse_to_diluted_final_reshaped_input_column]
-            - oods_values[321])
+        (*column_values.at(keccak_keccak_parse_to_diluted_final_reshaped_input_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1250 * oods_point);
-    total_sum = total_sum + constraint_coefficients[321] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[322])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1224 * oods_point);
-    total_sum = total_sum + constraint_coefficients[322] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[323])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1207 * oods_point);
-    total_sum = total_sum + constraint_coefficients[323] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[324])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1232 * oods_point);
-    total_sum = total_sum + constraint_coefficients[324] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[325])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1208 * oods_point);
-    total_sum = total_sum + constraint_coefficients[325] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[326])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1673 * oods_point);
-    total_sum = total_sum + constraint_coefficients[326] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[327])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1233 * oods_point);
-    total_sum = total_sum + constraint_coefficients[327] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[328])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1209 * oods_point);
-    total_sum = total_sum + constraint_coefficients[328] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[329])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1674 * oods_point);
-    total_sum = total_sum + constraint_coefficients[329] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[330])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1234 * oods_point);
-    total_sum = total_sum + constraint_coefficients[330] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[331])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1210 * oods_point);
-    total_sum = total_sum + constraint_coefficients[331] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[332])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1220 * oods_point);
-    total_sum = total_sum + constraint_coefficients[332] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[333])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1228 * oods_point);
-    total_sum = total_sum + constraint_coefficients[333] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[334])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1571 * oods_point);
-    total_sum = total_sum + constraint_coefficients[334] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[335])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1205 * oods_point);
-    total_sum = total_sum + constraint_coefficients[335] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[336])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1229 * oods_point);
-    total_sum = total_sum + constraint_coefficients[336] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[337])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1572 * oods_point);
-    total_sum = total_sum + constraint_coefficients[337] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[338])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1206 * oods_point);
-    total_sum = total_sum + constraint_coefficients[338] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_parse_to_diluted_cumulative_sum_column] - oods_values[339])
+    value =
+        (*column_values.at(keccak_keccak_parse_to_diluted_cumulative_sum_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1230 * oods_point);
-    total_sum = total_sum + constraint_coefficients[339] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[340])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1615 * oods_point);
-    total_sum = total_sum + constraint_coefficients[340] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[341])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1581 * oods_point);
-    total_sum = total_sum + constraint_coefficients[341] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[342])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1588 * oods_point);
-    total_sum = total_sum + constraint_coefficients[342] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[343])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1596 * oods_point);
-    total_sum = total_sum + constraint_coefficients[343] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[344])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1604 * oods_point);
-    total_sum = total_sum + constraint_coefficients[344] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[345])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1546 * oods_point);
-    total_sum = total_sum + constraint_coefficients[345] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[346])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1518 * oods_point);
-    total_sum = total_sum + constraint_coefficients[346] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[347])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1512 * oods_point);
-    total_sum = total_sum + constraint_coefficients[347] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[348])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1574 * oods_point);
-    total_sum = total_sum + constraint_coefficients[348] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[349])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1582 * oods_point);
-    total_sum = total_sum + constraint_coefficients[349] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[350])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1590 * oods_point);
-    total_sum = total_sum + constraint_coefficients[350] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[351])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1599 * oods_point);
-    total_sum = total_sum + constraint_coefficients[351] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[352])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1605 * oods_point);
-    total_sum = total_sum + constraint_coefficients[352] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[353])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1622 * oods_point);
-    total_sum = total_sum + constraint_coefficients[353] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[354])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1548 * oods_point);
-    total_sum = total_sum + constraint_coefficients[354] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[355])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1508 * oods_point);
-    total_sum = total_sum + constraint_coefficients[355] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[356])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1575 * oods_point);
-    total_sum = total_sum + constraint_coefficients[356] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[357])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1583 * oods_point);
-    total_sum = total_sum + constraint_coefficients[357] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[358])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1591 * oods_point);
-    total_sum = total_sum + constraint_coefficients[358] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[359])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1600 * oods_point);
-    total_sum = total_sum + constraint_coefficients[359] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[360])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1608 * oods_point);
-    total_sum = total_sum + constraint_coefficients[360] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[361])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1516 * oods_point);
-    total_sum = total_sum + constraint_coefficients[361] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[362])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1628 * oods_point);
-    total_sum = total_sum + constraint_coefficients[362] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[363])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1619 * oods_point);
-    total_sum = total_sum + constraint_coefficients[363] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[364])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1576 * oods_point);
-    total_sum = total_sum + constraint_coefficients[364] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[365])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1584 * oods_point);
-    total_sum = total_sum + constraint_coefficients[365] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[366])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1592 * oods_point);
-    total_sum = total_sum + constraint_coefficients[366] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[367])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1601 * oods_point);
-    total_sum = total_sum + constraint_coefficients[367] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[368])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1609 * oods_point);
-    total_sum = total_sum + constraint_coefficients[368] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[369])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1547 * oods_point);
-    total_sum = total_sum + constraint_coefficients[369] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[370])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1519 * oods_point);
-    total_sum = total_sum + constraint_coefficients[370] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[371])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1513 * oods_point);
-    total_sum = total_sum + constraint_coefficients[371] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[372])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1579 * oods_point);
-    total_sum = total_sum + constraint_coefficients[372] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[373])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1587 * oods_point);
-    total_sum = total_sum + constraint_coefficients[373] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[374])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1593 * oods_point);
-    total_sum = total_sum + constraint_coefficients[374] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[375])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1602 * oods_point);
-    total_sum = total_sum + constraint_coefficients[375] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[376])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1614 * oods_point);
-    total_sum = total_sum + constraint_coefficients[376] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[377])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1627 * oods_point);
-    total_sum = total_sum + constraint_coefficients[377] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[378])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1549 * oods_point);
-    total_sum = total_sum + constraint_coefficients[378] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[379])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1195 * oods_point);
-    total_sum = total_sum + constraint_coefficients[379] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[380])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1192 * oods_point);
-    total_sum = total_sum + constraint_coefficients[380] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[381])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1677 * oods_point);
-    total_sum = total_sum + constraint_coefficients[381] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[382])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1188 * oods_point);
-    total_sum = total_sum + constraint_coefficients[382] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[383])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1182 * oods_point);
-    total_sum = total_sum + constraint_coefficients[383] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[384])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1538 * oods_point);
-    total_sum = total_sum + constraint_coefficients[384] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[385])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1175 * oods_point);
-    total_sum = total_sum + constraint_coefficients[385] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[386])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1171 * oods_point);
-    total_sum = total_sum + constraint_coefficients[386] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[387])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1568 * oods_point);
-    total_sum = total_sum + constraint_coefficients[387] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[388])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1165 * oods_point);
-    total_sum = total_sum + constraint_coefficients[388] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[389])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1164 * oods_point);
-    total_sum = total_sum + constraint_coefficients[389] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[390])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1678 * oods_point);
-    total_sum = total_sum + constraint_coefficients[390] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[391])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1156 * oods_point);
-    total_sum = total_sum + constraint_coefficients[391] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[392])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1153 * oods_point);
-    total_sum = total_sum + constraint_coefficients[392] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[393])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1542 * oods_point);
-    total_sum = total_sum + constraint_coefficients[393] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[394])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1383 * oods_point);
-    total_sum = total_sum + constraint_coefficients[394] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[395])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1629 * oods_point);
-    total_sum = total_sum + constraint_coefficients[395] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[396])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1404 * oods_point);
-    total_sum = total_sum + constraint_coefficients[396] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[397])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1455 * oods_point);
-    total_sum = total_sum + constraint_coefficients[397] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[398])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1570 * oods_point);
-    total_sum = total_sum + constraint_coefficients[398] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[399])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1181 * oods_point);
-    total_sum = total_sum + constraint_coefficients[399] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[400])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1676 * oods_point);
-    total_sum = total_sum + constraint_coefficients[400] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[401])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1553 * oods_point);
-    total_sum = total_sum + constraint_coefficients[401] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[402])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1421 * oods_point);
-    total_sum = total_sum + constraint_coefficients[402] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[403])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1485 * oods_point);
-    total_sum = total_sum + constraint_coefficients[403] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[404])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1494 * oods_point);
-    total_sum = total_sum + constraint_coefficients[404] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[405])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1517 * oods_point);
-    total_sum = total_sum + constraint_coefficients[405] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[406])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1166 * oods_point);
-    total_sum = total_sum + constraint_coefficients[406] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[407])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1650 * oods_point);
-    total_sum = total_sum + constraint_coefficients[407] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[408])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1447 * oods_point);
-    total_sum = total_sum + constraint_coefficients[408] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[409])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1393 * oods_point);
-    total_sum = total_sum + constraint_coefficients[409] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[410])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1491 * oods_point);
-    total_sum = total_sum + constraint_coefficients[410] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[411])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1531 * oods_point);
-    total_sum = total_sum + constraint_coefficients[411] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[412])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1562 * oods_point);
-    total_sum = total_sum + constraint_coefficients[412] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[413])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1161 * oods_point);
-    total_sum = total_sum + constraint_coefficients[413] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[414])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1577 * oods_point);
-    total_sum = total_sum + constraint_coefficients[414] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[415])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1521 * oods_point);
-    total_sum = total_sum + constraint_coefficients[415] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[416])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1416 * oods_point);
-    total_sum = total_sum + constraint_coefficients[416] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[417])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1440 * oods_point);
-    total_sum = total_sum + constraint_coefficients[417] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[418])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1453 * oods_point);
-    total_sum = total_sum + constraint_coefficients[418] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[419])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1640 * oods_point);
-    total_sum = total_sum + constraint_coefficients[419] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[420])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1199 * oods_point);
-    total_sum = total_sum + constraint_coefficients[420] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[421])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1667 * oods_point);
-    total_sum = total_sum + constraint_coefficients[421] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[422])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1442 * oods_point);
-    total_sum = total_sum + constraint_coefficients[422] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[423])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1417 * oods_point);
-    total_sum = total_sum + constraint_coefficients[423] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[424])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1473 * oods_point);
-    total_sum = total_sum + constraint_coefficients[424] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[425])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1492 * oods_point);
-    total_sum = total_sum + constraint_coefficients[425] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[426])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1527 * oods_point);
-    total_sum = total_sum + constraint_coefficients[426] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[427])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1189 * oods_point);
-    total_sum = total_sum + constraint_coefficients[427] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[428])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1663 * oods_point);
-    total_sum = total_sum + constraint_coefficients[428] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[429])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1443 * oods_point);
-    total_sum = total_sum + constraint_coefficients[429] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[430])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1385 * oods_point);
-    total_sum = total_sum + constraint_coefficients[430] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[431])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1504 * oods_point);
-    total_sum = total_sum + constraint_coefficients[431] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[432])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1545 * oods_point);
-    total_sum = total_sum + constraint_coefficients[432] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[433])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1625 * oods_point);
-    total_sum = total_sum + constraint_coefficients[433] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[434])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1177 * oods_point);
-    total_sum = total_sum + constraint_coefficients[434] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[435])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1624 * oods_point);
-    total_sum = total_sum + constraint_coefficients[435] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[436])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1520 * oods_point);
-    total_sum = total_sum + constraint_coefficients[436] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[437])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1408 * oods_point);
-    total_sum = total_sum + constraint_coefficients[437] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[438])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1414 * oods_point);
-    total_sum = total_sum + constraint_coefficients[438] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[439])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1463 * oods_point);
-    total_sum = total_sum + constraint_coefficients[439] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[440])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1539 * oods_point);
-    total_sum = total_sum + constraint_coefficients[440] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[441])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1170 * oods_point);
-    total_sum = total_sum + constraint_coefficients[441] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[442])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1668 * oods_point);
-    total_sum = total_sum + constraint_coefficients[442] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[443])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1441 * oods_point);
-    total_sum = total_sum + constraint_coefficients[443] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[444])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1424 * oods_point);
-    total_sum = total_sum + constraint_coefficients[444] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[445])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1456 * oods_point);
-    total_sum = total_sum + constraint_coefficients[445] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[446])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1399 * oods_point);
-    total_sum = total_sum + constraint_coefficients[446] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[447])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1510 * oods_point);
-    total_sum = total_sum + constraint_coefficients[447] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[448])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1154 * oods_point);
-    total_sum = total_sum + constraint_coefficients[448] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[449])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1585 * oods_point);
-    total_sum = total_sum + constraint_coefficients[449] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[450])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1457 * oods_point);
-    total_sum = total_sum + constraint_coefficients[450] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[451])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1406 * oods_point);
-    total_sum = total_sum + constraint_coefficients[451] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[452])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1511 * oods_point);
-    total_sum = total_sum + constraint_coefficients[452] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[453])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1155 * oods_point);
-    total_sum = total_sum + constraint_coefficients[453] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[454])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1586 * oods_point);
-    total_sum = total_sum + constraint_coefficients[454] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[455])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1476 * oods_point);
-    total_sum = total_sum + constraint_coefficients[455] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[456])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1407 * oods_point);
-    total_sum = total_sum + constraint_coefficients[456] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[457])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1558 * oods_point);
-    total_sum = total_sum + constraint_coefficients[457] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[458])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1158 * oods_point);
-    total_sum = total_sum + constraint_coefficients[458] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[459])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1611 * oods_point);
-    total_sum = total_sum + constraint_coefficients[459] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[460])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1422 * oods_point);
-    total_sum = total_sum + constraint_coefficients[460] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[461])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1384 * oods_point);
-    total_sum = total_sum + constraint_coefficients[461] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[462])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1559 * oods_point);
-    total_sum = total_sum + constraint_coefficients[462] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[463])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1159 * oods_point);
-    total_sum = total_sum + constraint_coefficients[463] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[464])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1644 * oods_point);
-    total_sum = total_sum + constraint_coefficients[464] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[465])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1423 * oods_point);
-    total_sum = total_sum + constraint_coefficients[465] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[466])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1386 * oods_point);
-    total_sum = total_sum + constraint_coefficients[466] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[467])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1560 * oods_point);
-    total_sum = total_sum + constraint_coefficients[467] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[468])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1160 * oods_point);
-    total_sum = total_sum + constraint_coefficients[468] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[469])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1651 * oods_point);
-    total_sum = total_sum + constraint_coefficients[469] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[470])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1388 * oods_point);
-    total_sum = total_sum + constraint_coefficients[470] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[471])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1395 * oods_point);
-    total_sum = total_sum + constraint_coefficients[471] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[472])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1426 * oods_point);
-    total_sum = total_sum + constraint_coefficients[472] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[473])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1552 * oods_point);
-    total_sum = total_sum + constraint_coefficients[473] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[474])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1641 * oods_point);
-    total_sum = total_sum + constraint_coefficients[474] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[475])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1200 * oods_point);
-    total_sum = total_sum + constraint_coefficients[475] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[476])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1671 * oods_point);
-    total_sum = total_sum + constraint_coefficients[476] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[477])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1551 * oods_point);
-    total_sum = total_sum + constraint_coefficients[477] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[478])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1397 * oods_point);
-    total_sum = total_sum + constraint_coefficients[478] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[479])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1466 * oods_point);
-    total_sum = total_sum + constraint_coefficients[479] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[480])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1462 * oods_point);
-    total_sum = total_sum + constraint_coefficients[480] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[481])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1541 * oods_point);
-    total_sum = total_sum + constraint_coefficients[481] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[482])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1191 * oods_point);
-    total_sum = total_sum + constraint_coefficients[482] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[483])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1589 * oods_point);
-    total_sum = total_sum + constraint_coefficients[483] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[484])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1438 * oods_point);
-    total_sum = total_sum + constraint_coefficients[484] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[485])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1418 * oods_point);
-    total_sum = total_sum + constraint_coefficients[485] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[486])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1472 * oods_point);
-    total_sum = total_sum + constraint_coefficients[486] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[487])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1474 * oods_point);
-    total_sum = total_sum + constraint_coefficients[487] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[488])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1616 * oods_point);
-    total_sum = total_sum + constraint_coefficients[488] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[489])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1172 * oods_point);
-    total_sum = total_sum + constraint_coefficients[489] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[490])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1612 * oods_point);
-    total_sum = total_sum + constraint_coefficients[490] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[491])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1444 * oods_point);
-    total_sum = total_sum + constraint_coefficients[491] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[492])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1387 * oods_point);
-    total_sum = total_sum + constraint_coefficients[492] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[493])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1503 * oods_point);
-    total_sum = total_sum + constraint_coefficients[493] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[494])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1569 * oods_point);
-    total_sum = total_sum + constraint_coefficients[494] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[495])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1536 * oods_point);
-    total_sum = total_sum + constraint_coefficients[495] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[496])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1168 * oods_point);
-    total_sum = total_sum + constraint_coefficients[496] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[497])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1626 * oods_point);
-    total_sum = total_sum + constraint_coefficients[497] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[498])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1550 * oods_point);
-    total_sum = total_sum + constraint_coefficients[498] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[499])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1410 * oods_point);
-    total_sum = total_sum + constraint_coefficients[499] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[500])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1460 * oods_point);
-    total_sum = total_sum + constraint_coefficients[500] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[501])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1669 * oods_point);
-    total_sum = total_sum + constraint_coefficients[501] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[502])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1564 * oods_point);
-    total_sum = total_sum + constraint_coefficients[502] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[503])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1162 * oods_point);
-    total_sum = total_sum + constraint_coefficients[503] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[504])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1653 * oods_point);
-    total_sum = total_sum + constraint_coefficients[504] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[505])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1647 * oods_point);
-    total_sum = total_sum + constraint_coefficients[505] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[506])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1430 * oods_point);
-    total_sum = total_sum + constraint_coefficients[506] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[507])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1427 * oods_point);
-    total_sum = total_sum + constraint_coefficients[507] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[508])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1481 * oods_point);
-    total_sum = total_sum + constraint_coefficients[508] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[509])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1620 * oods_point);
-    total_sum = total_sum + constraint_coefficients[509] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[510])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1193 * oods_point);
-    total_sum = total_sum + constraint_coefficients[510] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[511])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1594 * oods_point);
-    total_sum = total_sum + constraint_coefficients[511] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[512])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1429 * oods_point);
-    total_sum = total_sum + constraint_coefficients[512] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[513])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1484 * oods_point);
-    total_sum = total_sum + constraint_coefficients[513] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[514])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1621 * oods_point);
-    total_sum = total_sum + constraint_coefficients[514] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[515])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1194 * oods_point);
-    total_sum = total_sum + constraint_coefficients[515] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[516])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1595 * oods_point);
-    total_sum = total_sum + constraint_coefficients[516] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[517])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1475 * oods_point);
-    total_sum = total_sum + constraint_coefficients[517] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[518])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1495 * oods_point);
-    total_sum = total_sum + constraint_coefficients[518] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[519])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1639 * oods_point);
-    total_sum = total_sum + constraint_coefficients[519] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[520])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1196 * oods_point);
-    total_sum = total_sum + constraint_coefficients[520] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[521])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1613 * oods_point);
-    total_sum = total_sum + constraint_coefficients[521] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[522])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1425 * oods_point);
-    total_sum = total_sum + constraint_coefficients[522] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[523])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1390 * oods_point);
-    total_sum = total_sum + constraint_coefficients[523] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[524])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1660 * oods_point);
-    total_sum = total_sum + constraint_coefficients[524] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[525])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1197 * oods_point);
-    total_sum = total_sum + constraint_coefficients[525] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[526])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1659 * oods_point);
-    total_sum = total_sum + constraint_coefficients[526] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[527])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1428 * oods_point);
-    total_sum = total_sum + constraint_coefficients[527] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[528])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1392 * oods_point);
-    total_sum = total_sum + constraint_coefficients[528] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[529])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1662 * oods_point);
-    total_sum = total_sum + constraint_coefficients[529] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[530])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1198 * oods_point);
-    total_sum = total_sum + constraint_coefficients[530] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[531])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1661 * oods_point);
-    total_sum = total_sum + constraint_coefficients[531] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[532])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1394 * oods_point);
-    total_sum = total_sum + constraint_coefficients[532] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[533])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1433 * oods_point);
-    total_sum = total_sum + constraint_coefficients[533] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[534])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1498 * oods_point);
-    total_sum = total_sum + constraint_coefficients[534] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[535])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1486 * oods_point);
-    total_sum = total_sum + constraint_coefficients[535] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[536])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1514 * oods_point);
-    total_sum = total_sum + constraint_coefficients[536] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[537])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1184 * oods_point);
-    total_sum = total_sum + constraint_coefficients[537] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[538])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1597 * oods_point);
-    total_sum = total_sum + constraint_coefficients[538] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[539])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1499 * oods_point);
-    total_sum = total_sum + constraint_coefficients[539] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[540])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1496 * oods_point);
-    total_sum = total_sum + constraint_coefficients[540] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[541])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1515 * oods_point);
-    total_sum = total_sum + constraint_coefficients[541] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[542])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1186 * oods_point);
-    total_sum = total_sum + constraint_coefficients[542] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[543])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1598 * oods_point);
-    total_sum = total_sum + constraint_coefficients[543] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[544])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1500 * oods_point);
-    total_sum = total_sum + constraint_coefficients[544] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[545])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1497 * oods_point);
-    total_sum = total_sum + constraint_coefficients[545] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[546])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1528 * oods_point);
-    total_sum = total_sum + constraint_coefficients[546] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[547])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1183 * oods_point);
-    total_sum = total_sum + constraint_coefficients[547] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[548])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1637 * oods_point);
-    total_sum = total_sum + constraint_coefficients[548] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[549])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1431 * oods_point);
-    total_sum = total_sum + constraint_coefficients[549] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[550])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1396 * oods_point);
-    total_sum = total_sum + constraint_coefficients[550] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[551])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1529 * oods_point);
-    total_sum = total_sum + constraint_coefficients[551] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[552])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1185 * oods_point);
-    total_sum = total_sum + constraint_coefficients[552] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[553])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1638 * oods_point);
-    total_sum = total_sum + constraint_coefficients[553] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[554])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1432 * oods_point);
-    total_sum = total_sum + constraint_coefficients[554] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[555])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1398 * oods_point);
-    total_sum = total_sum + constraint_coefficients[555] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[556])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1530 * oods_point);
-    total_sum = total_sum + constraint_coefficients[556] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[557])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1187 * oods_point);
-    total_sum = total_sum + constraint_coefficients[557] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[558])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1652 * oods_point);
-    total_sum = total_sum + constraint_coefficients[558] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[559])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1401 * oods_point);
-    total_sum = total_sum + constraint_coefficients[559] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[560])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1400 * oods_point);
-    total_sum = total_sum + constraint_coefficients[560] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[561])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1470 * oods_point);
-    total_sum = total_sum + constraint_coefficients[561] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[562])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1646 * oods_point);
-    total_sum = total_sum + constraint_coefficients[562] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[563])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1623 * oods_point);
-    total_sum = total_sum + constraint_coefficients[563] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[564])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1176 * oods_point);
-    total_sum = total_sum + constraint_coefficients[564] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[565])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1603 * oods_point);
-    total_sum = total_sum + constraint_coefficients[565] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[566])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1645 * oods_point);
-    total_sum = total_sum + constraint_coefficients[566] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[567])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1419 * oods_point);
-    total_sum = total_sum + constraint_coefficients[567] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[568])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1490 * oods_point);
-    total_sum = total_sum + constraint_coefficients[568] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[569])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1487 * oods_point);
-    total_sum = total_sum + constraint_coefficients[569] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[570])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1537 * oods_point);
-    total_sum = total_sum + constraint_coefficients[570] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[571])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1169 * oods_point);
-    total_sum = total_sum + constraint_coefficients[571] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[572])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1664 * oods_point);
-    total_sum = total_sum + constraint_coefficients[572] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[573])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1445 * oods_point);
-    total_sum = total_sum + constraint_coefficients[573] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[574])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1389 * oods_point);
-    total_sum = total_sum + constraint_coefficients[574] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[575])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1468 * oods_point);
-    total_sum = total_sum + constraint_coefficients[575] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[576])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1469 * oods_point);
-    total_sum = total_sum + constraint_coefficients[576] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[577])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1565 * oods_point);
-    total_sum = total_sum + constraint_coefficients[577] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[578])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1163 * oods_point);
-    total_sum = total_sum + constraint_coefficients[578] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[579])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1670 * oods_point);
-    total_sum = total_sum + constraint_coefficients[579] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[580])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1437 * oods_point);
-    total_sum = total_sum + constraint_coefficients[580] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[581])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1411 * oods_point);
-    total_sum = total_sum + constraint_coefficients[581] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[582])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1415 * oods_point);
-    total_sum = total_sum + constraint_coefficients[582] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[583])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1543 * oods_point);
-    total_sum = total_sum + constraint_coefficients[583] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[584])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1666 * oods_point);
-    total_sum = total_sum + constraint_coefficients[584] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[585])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1202 * oods_point);
-    total_sum = total_sum + constraint_coefficients[585] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[586])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1665 * oods_point);
-    total_sum = total_sum + constraint_coefficients[586] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[587])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1523 * oods_point);
-    total_sum = total_sum + constraint_coefficients[587] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[588])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1412 * oods_point);
-    total_sum = total_sum + constraint_coefficients[588] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[589])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1413 * oods_point);
-    total_sum = total_sum + constraint_coefficients[589] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[590])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1566 * oods_point);
-    total_sum = total_sum + constraint_coefficients[590] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[591])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1540 * oods_point);
-    total_sum = total_sum + constraint_coefficients[591] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity1_column] - oods_values[592])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1190 * oods_point);
-    total_sum = total_sum + constraint_coefficients[592] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[593])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1672 * oods_point);
-    total_sum = total_sum + constraint_coefficients[593] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[594])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1554 * oods_point);
-    total_sum = total_sum + constraint_coefficients[594] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[595])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1436 * oods_point);
-    total_sum = total_sum + constraint_coefficients[595] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[596])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1451 * oods_point);
-    total_sum = total_sum + constraint_coefficients[596] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[597])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1439 * oods_point);
-    total_sum = total_sum + constraint_coefficients[597] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[598])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1617 * oods_point);
-    total_sum = total_sum + constraint_coefficients[598] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[599])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1173 * oods_point);
-    total_sum = total_sum + constraint_coefficients[599] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[600])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1606 * oods_point);
-    total_sum = total_sum + constraint_coefficients[600] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[601])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1452 * oods_point);
-    total_sum = total_sum + constraint_coefficients[601] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[602])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1458 * oods_point);
-    total_sum = total_sum + constraint_coefficients[602] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[603])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1618 * oods_point);
-    total_sum = total_sum + constraint_coefficients[603] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[604])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1174 * oods_point);
-    total_sum = total_sum + constraint_coefficients[604] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[605])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1607 * oods_point);
-    total_sum = total_sum + constraint_coefficients[605] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[606])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1454 * oods_point);
-    total_sum = total_sum + constraint_coefficients[606] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[607])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1459 * oods_point);
-    total_sum = total_sum + constraint_coefficients[607] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[608])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1656 * oods_point);
-    total_sum = total_sum + constraint_coefficients[608] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[609])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1178 * oods_point);
-    total_sum = total_sum + constraint_coefficients[609] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[610])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1642 * oods_point);
-    total_sum = total_sum + constraint_coefficients[610] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[611])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1434 * oods_point);
-    total_sum = total_sum + constraint_coefficients[611] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[612])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1403 * oods_point);
-    total_sum = total_sum + constraint_coefficients[612] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[613])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1657 * oods_point);
-    total_sum = total_sum + constraint_coefficients[613] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[614])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1179 * oods_point);
-    total_sum = total_sum + constraint_coefficients[614] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[615])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1654 * oods_point);
-    total_sum = total_sum + constraint_coefficients[615] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[616])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1435 * oods_point);
-    total_sum = total_sum + constraint_coefficients[616] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[617])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1405 * oods_point);
-    total_sum = total_sum + constraint_coefficients[617] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[618])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1658 * oods_point);
-    total_sum = total_sum + constraint_coefficients[618] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity2_column] - oods_values[619])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1180 * oods_point);
-    total_sum = total_sum + constraint_coefficients[619] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[620])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1655 * oods_point);
-    total_sum = total_sum + constraint_coefficients[620] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[621])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1409 * oods_point);
-    total_sum = total_sum + constraint_coefficients[621] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[622])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1402 * oods_point);
-    total_sum = total_sum + constraint_coefficients[622] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[623])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1502 * oods_point);
-    total_sum = total_sum + constraint_coefficients[623] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[624])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1544 * oods_point);
-    total_sum = total_sum + constraint_coefficients[624] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[625])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1526 * oods_point);
-    total_sum = total_sum + constraint_coefficients[625] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity3_column] - oods_values[626])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity3_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1167 * oods_point);
-    total_sum = total_sum + constraint_coefficients[626] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[627])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1636 * oods_point);
-    total_sum = total_sum + constraint_coefficients[627] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[628])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1522 * oods_point);
-    total_sum = total_sum + constraint_coefficients[628] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[629])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1420 * oods_point);
-    total_sum = total_sum + constraint_coefficients[629] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[630])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1501 * oods_point);
-    total_sum = total_sum + constraint_coefficients[630] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[631])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1493 * oods_point);
-    total_sum = total_sum + constraint_coefficients[631] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[632])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1509 * oods_point);
-    total_sum = total_sum + constraint_coefficients[632] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity4_column] - oods_values[633])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity4_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1157 * oods_point);
-    total_sum = total_sum + constraint_coefficients[633] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[634])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1610 * oods_point);
-    total_sum = total_sum + constraint_coefficients[634] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[635])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1446 * oods_point);
-    total_sum = total_sum + constraint_coefficients[635] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[636])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1391 * oods_point);
-    total_sum = total_sum + constraint_coefficients[636] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[637])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1478 * oods_point);
-    total_sum = total_sum + constraint_coefficients[637] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[638])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1643 * oods_point);
-    total_sum = total_sum + constraint_coefficients[638] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[639])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1649 * oods_point);
-    total_sum = total_sum + constraint_coefficients[639] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[keccak_keccak_rotated_parity0_column] - oods_values[640])
+    value =
+        (*column_values.at(keccak_keccak_rotated_parity0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1201 * oods_point);
-    total_sum = total_sum + constraint_coefficients[640] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[641])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1648 * oods_point);
-    total_sum = total_sum + constraint_coefficients[641] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[642])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1635 * oods_point);
-    total_sum = total_sum + constraint_coefficients[642] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[643])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1573 * oods_point);
-    total_sum = total_sum + constraint_coefficients[643] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[644])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1380 * oods_point);
-    total_sum = total_sum + constraint_coefficients[644] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[645])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1377 * oods_point);
-    total_sum = total_sum + constraint_coefficients[645] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[646])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1630 * oods_point);
-    total_sum = total_sum + constraint_coefficients[646] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[647])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1448 * oods_point);
-    total_sum = total_sum + constraint_coefficients[647] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[648])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1449 * oods_point);
-    total_sum = total_sum + constraint_coefficients[648] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[649])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1450 * oods_point);
-    total_sum = total_sum + constraint_coefficients[649] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[650])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1524 * oods_point);
-    total_sum = total_sum + constraint_coefficients[650] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[651])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1555 * oods_point);
-    total_sum = total_sum + constraint_coefficients[651] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[652])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1631 * oods_point);
-    total_sum = total_sum + constraint_coefficients[652] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[653])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1461 * oods_point);
-    total_sum = total_sum + constraint_coefficients[653] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[654])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1464 * oods_point);
-    total_sum = total_sum + constraint_coefficients[654] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[655])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1465 * oods_point);
-    total_sum = total_sum + constraint_coefficients[655] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[656])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1525 * oods_point);
-    total_sum = total_sum + constraint_coefficients[656] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[657])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1556 * oods_point);
-    total_sum = total_sum + constraint_coefficients[657] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[658])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1632 * oods_point);
-    total_sum = total_sum + constraint_coefficients[658] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[659])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1467 * oods_point);
-    total_sum = total_sum + constraint_coefficients[659] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[660])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1471 * oods_point);
-    total_sum = total_sum + constraint_coefficients[660] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[661])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1477 * oods_point);
-    total_sum = total_sum + constraint_coefficients[661] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[662])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1532 * oods_point);
-    total_sum = total_sum + constraint_coefficients[662] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[663])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1557 * oods_point);
-    total_sum = total_sum + constraint_coefficients[663] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[664])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1633 * oods_point);
-    total_sum = total_sum + constraint_coefficients[664] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[665])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1479 * oods_point);
-    total_sum = total_sum + constraint_coefficients[665] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[666])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1482 * oods_point);
-    total_sum = total_sum + constraint_coefficients[666] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[667])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1488 * oods_point);
-    total_sum = total_sum + constraint_coefficients[667] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[668])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1533 * oods_point);
-    total_sum = total_sum + constraint_coefficients[668] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[669])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1561 * oods_point);
-    total_sum = total_sum + constraint_coefficients[669] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[670])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1634 * oods_point);
-    total_sum = total_sum + constraint_coefficients[670] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[671])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1480 * oods_point);
-    total_sum = total_sum + constraint_coefficients[671] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[672])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1483 * oods_point);
-    total_sum = total_sum + constraint_coefficients[672] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[673])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1489 * oods_point);
-    total_sum = total_sum + constraint_coefficients[673] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[674])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1534 * oods_point);
-    total_sum = total_sum + constraint_coefficients[674] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[675])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1563 * oods_point);
-    total_sum = total_sum + constraint_coefficients[675] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[676])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1675 * oods_point);
-    total_sum = total_sum + constraint_coefficients[676] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[677])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1505 * oods_point);
-    total_sum = total_sum + constraint_coefficients[677] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[678])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1506 * oods_point);
-    total_sum = total_sum + constraint_coefficients[678] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[679])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1507 * oods_point);
-    total_sum = total_sum + constraint_coefficients[679] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[680])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1535 * oods_point);
-    total_sum = total_sum + constraint_coefficients[680] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[681])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1567 * oods_point);
-    total_sum = total_sum + constraint_coefficients[681] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[682])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1580 * oods_point);
-    total_sum = total_sum + constraint_coefficients[682] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[683])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1382 * oods_point);
-    total_sum = total_sum + constraint_coefficients[683] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[684])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1379 * oods_point);
-    total_sum = total_sum + constraint_coefficients[684] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[685])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1578 * oods_point);
-    total_sum = total_sum + constraint_coefficients[685] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[686])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1381 * oods_point);
-    total_sum = total_sum + constraint_coefficients[686] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_pool_column] - oods_values[687])
+    value = (*column_values.at(diluted_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1378 * oods_point);
-    total_sum = total_sum + constraint_coefficients[687] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[688])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1961 * oods_point);
-    total_sum = total_sum + constraint_coefficients[688] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[689])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1962 * oods_point);
-    total_sum = total_sum + constraint_coefficients[689] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[690])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1959 * oods_point);
-    total_sum = total_sum + constraint_coefficients[690] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[691])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1960 * oods_point);
-    total_sum = total_sum + constraint_coefficients[691] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[692])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1957 * oods_point);
-    total_sum = total_sum + constraint_coefficients[692] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[693])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1958 * oods_point);
-    total_sum = total_sum + constraint_coefficients[693] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_squared_column] - oods_values[694])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1150 * oods_point);
-    total_sum = total_sum + constraint_coefficients[694] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_column] - oods_values[695])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1145 * oods_point);
-    total_sum = total_sum + constraint_coefficients[695] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_squared_column] - oods_values[696])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1142 * oods_point);
-    total_sum = total_sum + constraint_coefficients[696] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_column] - oods_values[697])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1137 * oods_point);
-    total_sum = total_sum + constraint_coefficients[697] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_squared_column] - oods_values[698])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1134 * oods_point);
-    total_sum = total_sum + constraint_coefficients[698] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_column] - oods_values[699])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1129 * oods_point);
-    total_sum = total_sum + constraint_coefficients[699] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state0_squared_column] - oods_values[700])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1126 * oods_point);
-    total_sum = total_sum + constraint_coefficients[700] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[701])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1119 * oods_point);
-    total_sum = total_sum + constraint_coefficients[701] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state1_squared_column] - oods_values[702])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1113 * oods_point);
-    total_sum = total_sum + constraint_coefficients[702] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[703])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1106 * oods_point);
-    total_sum = total_sum + constraint_coefficients[703] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[704])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1884 * oods_point);
-    total_sum = total_sum + constraint_coefficients[704] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[705])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1882 * oods_point);
-    total_sum = total_sum + constraint_coefficients[705] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[706])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1880 * oods_point);
-    total_sum = total_sum + constraint_coefficients[706] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_column] - oods_values[707])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1147 * oods_point);
-    total_sum = total_sum + constraint_coefficients[707] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_column] - oods_values[708])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1138 * oods_point);
-    total_sum = total_sum + constraint_coefficients[708] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_column] - oods_values[709])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1131 * oods_point);
-    total_sum = total_sum + constraint_coefficients[709] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[710])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1885 * oods_point);
-    total_sum = total_sum + constraint_coefficients[710] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_column] - oods_values[711])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1149 * oods_point);
-    total_sum = total_sum + constraint_coefficients[711] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_squared_column] - oods_values[712])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1152 * oods_point);
-    total_sum = total_sum + constraint_coefficients[712] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_column] - oods_values[713])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1141 * oods_point);
-    total_sum = total_sum + constraint_coefficients[713] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_squared_column] - oods_values[714])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1144 * oods_point);
-    total_sum = total_sum + constraint_coefficients[714] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_column] - oods_values[715])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1133 * oods_point);
-    total_sum = total_sum + constraint_coefficients[715] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_squared_column] - oods_values[716])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1136 * oods_point);
-    total_sum = total_sum + constraint_coefficients[716] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[717])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1883 * oods_point);
-    total_sum = total_sum + constraint_coefficients[717] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[718])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1881 * oods_point);
-    total_sum = total_sum + constraint_coefficients[718] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[719])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1123 * oods_point);
-    total_sum = total_sum + constraint_coefficients[719] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[720])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1107 * oods_point);
-    total_sum = total_sum + constraint_coefficients[720] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[721])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1124 * oods_point);
-    total_sum = total_sum + constraint_coefficients[721] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[722])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1108 * oods_point);
-    total_sum = total_sum + constraint_coefficients[722] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[723])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1125 * oods_point);
-    total_sum = total_sum + constraint_coefficients[723] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_column] - oods_values[724])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1146 * oods_point);
-    total_sum = total_sum + constraint_coefficients[724] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_squared_column] - oods_values[725])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1151 * oods_point);
-    total_sum = total_sum + constraint_coefficients[725] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_column] - oods_values[726])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1139 * oods_point);
-    total_sum = total_sum + constraint_coefficients[726] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_squared_column] - oods_values[727])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1143 * oods_point);
-    total_sum = total_sum + constraint_coefficients[727] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_column] - oods_values[728])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1130 * oods_point);
-    total_sum = total_sum + constraint_coefficients[728] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_squared_column] - oods_values[729])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1135 * oods_point);
-    total_sum = total_sum + constraint_coefficients[729] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[730])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1120 * oods_point);
-    total_sum = total_sum + constraint_coefficients[730] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[731])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1121 * oods_point);
-    total_sum = total_sum + constraint_coefficients[731] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state0_squared_column] - oods_values[732])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1127 * oods_point);
-    total_sum = total_sum + constraint_coefficients[732] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state0_column] - oods_values[733])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1122 * oods_point);
-    total_sum = total_sum + constraint_coefficients[733] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state0_squared_column] - oods_values[734])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state0_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1128 * oods_point);
-    total_sum = total_sum + constraint_coefficients[734] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[735])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1109 * oods_point);
-    total_sum = total_sum + constraint_coefficients[735] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state1_squared_column] - oods_values[736])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1115 * oods_point);
-    total_sum = total_sum + constraint_coefficients[736] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state1_squared_column] - oods_values[737])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1116 * oods_point);
-    total_sum = total_sum + constraint_coefficients[737] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state0_column] - oods_values[738])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1148 * oods_point);
-    total_sum = total_sum + constraint_coefficients[738] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[739])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1110 * oods_point);
-    total_sum = total_sum + constraint_coefficients[739] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state1_squared_column] - oods_values[740])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1114 * oods_point);
-    total_sum = total_sum + constraint_coefficients[740] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[741])
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1111 * oods_point);
-    total_sum = total_sum + constraint_coefficients[741] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state1_squared_column] - oods_values[742])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1117 * oods_point);
-    total_sum = total_sum + constraint_coefficients[742] * value;
-
-    value = (column_values[poseidon_poseidon_partial_rounds_state1_column] - oods_values[743])
-        / (point - pow1112 * oods_point);
-    total_sum = total_sum + constraint_coefficients[743] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     value =
-        (column_values[poseidon_poseidon_partial_rounds_state1_squared_column] - oods_values[744])
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
+        / (point - pow1112 * oods_point);
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
+
+    value =
+        (*column_values.at(poseidon_poseidon_partial_rounds_state1_squared_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1118 * oods_point);
-    total_sum = total_sum + constraint_coefficients[744] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state1_column] - oods_values[745])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state1_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1140 * oods_point);
-    total_sum = total_sum + constraint_coefficients[745] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[poseidon_poseidon_full_rounds_state2_column] - oods_values[746])
+    value =
+        (*column_values.at(poseidon_poseidon_full_rounds_state2_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1132 * oods_point);
-    total_sum = total_sum + constraint_coefficients[746] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[747])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1854 * oods_point);
-    total_sum = total_sum + constraint_coefficients[747] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[748])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1785 * oods_point);
-    total_sum = total_sum + constraint_coefficients[748] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[749])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1784 * oods_point);
-    total_sum = total_sum + constraint_coefficients[749] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[750])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1783 * oods_point);
-    total_sum = total_sum + constraint_coefficients[750] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[751])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1782 * oods_point);
-    total_sum = total_sum + constraint_coefficients[751] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[752])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1781 * oods_point);
-    total_sum = total_sum + constraint_coefficients[752] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[753])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1780 * oods_point);
-    total_sum = total_sum + constraint_coefficients[753] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[754])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1946 * oods_point);
-    total_sum = total_sum + constraint_coefficients[754] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[755])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1945 * oods_point);
-    total_sum = total_sum + constraint_coefficients[755] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[756])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1943 * oods_point);
-    total_sum = total_sum + constraint_coefficients[756] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[757])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1942 * oods_point);
-    total_sum = total_sum + constraint_coefficients[757] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[758])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1941 * oods_point);
-    total_sum = total_sum + constraint_coefficients[758] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[759])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1940 * oods_point);
-    total_sum = total_sum + constraint_coefficients[759] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[760])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1939 * oods_point);
-    total_sum = total_sum + constraint_coefficients[760] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[761])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1938 * oods_point);
-    total_sum = total_sum + constraint_coefficients[761] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[762])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1937 * oods_point);
-    total_sum = total_sum + constraint_coefficients[762] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[763])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1944 * oods_point);
-    total_sum = total_sum + constraint_coefficients[763] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[764])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1877 * oods_point);
-    total_sum = total_sum + constraint_coefficients[764] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[765])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1853 * oods_point);
-    total_sum = total_sum + constraint_coefficients[765] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[766])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1851 * oods_point);
-    total_sum = total_sum + constraint_coefficients[766] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[767])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1850 * oods_point);
-    total_sum = total_sum + constraint_coefficients[767] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[768])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1849 * oods_point);
-    total_sum = total_sum + constraint_coefficients[768] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[769])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1855 * oods_point);
-    total_sum = total_sum + constraint_coefficients[769] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[770])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1848 * oods_point);
-    total_sum = total_sum + constraint_coefficients[770] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[771])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1847 * oods_point);
-    total_sum = total_sum + constraint_coefficients[771] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[772])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1846 * oods_point);
-    total_sum = total_sum + constraint_coefficients[772] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[773])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1845 * oods_point);
-    total_sum = total_sum + constraint_coefficients[773] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[774])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1844 * oods_point);
-    total_sum = total_sum + constraint_coefficients[774] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[775])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1843 * oods_point);
-    total_sum = total_sum + constraint_coefficients[775] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[776])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1842 * oods_point);
-    total_sum = total_sum + constraint_coefficients[776] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[777])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1852 * oods_point);
-    total_sum = total_sum + constraint_coefficients[777] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[778])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1936 * oods_point);
-    total_sum = total_sum + constraint_coefficients[778] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[779])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1935 * oods_point);
-    total_sum = total_sum + constraint_coefficients[779] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[780])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1934 * oods_point);
-    total_sum = total_sum + constraint_coefficients[780] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[781])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1933 * oods_point);
-    total_sum = total_sum + constraint_coefficients[781] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[782])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1841 * oods_point);
-    total_sum = total_sum + constraint_coefficients[782] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[783])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1932 * oods_point);
-    total_sum = total_sum + constraint_coefficients[783] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[784])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1931 * oods_point);
-    total_sum = total_sum + constraint_coefficients[784] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[785])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1930 * oods_point);
-    total_sum = total_sum + constraint_coefficients[785] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[786])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1929 * oods_point);
-    total_sum = total_sum + constraint_coefficients[786] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[787])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1840 * oods_point);
-    total_sum = total_sum + constraint_coefficients[787] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[788])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1928 * oods_point);
-    total_sum = total_sum + constraint_coefficients[788] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[789])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1927 * oods_point);
-    total_sum = total_sum + constraint_coefficients[789] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[790])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1926 * oods_point);
-    total_sum = total_sum + constraint_coefficients[790] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[791])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1925 * oods_point);
-    total_sum = total_sum + constraint_coefficients[791] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[792])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1839 * oods_point);
-    total_sum = total_sum + constraint_coefficients[792] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[793])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1924 * oods_point);
-    total_sum = total_sum + constraint_coefficients[793] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[794])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1923 * oods_point);
-    total_sum = total_sum + constraint_coefficients[794] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[795])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1922 * oods_point);
-    total_sum = total_sum + constraint_coefficients[795] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_sub_p_bit_column] - oods_values[796])
+    value = (*column_values.at(add_mod_sub_p_bit_column) - *oods_values.pop_front().unwrap())
         / (point - pow1105 * oods_point);
-    total_sum = total_sum + constraint_coefficients[796] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_carry1_bit_column] - oods_values[797])
+    value = (*column_values.at(add_mod_carry1_bit_column) - *oods_values.pop_front().unwrap())
         / (point - pow1104 * oods_point);
-    total_sum = total_sum + constraint_coefficients[797] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_carry1_sign_column] - oods_values[798])
+    value = (*column_values.at(add_mod_carry1_sign_column) - *oods_values.pop_front().unwrap())
         / (point - pow1103 * oods_point);
-    total_sum = total_sum + constraint_coefficients[798] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_carry2_bit_column] - oods_values[799])
+    value = (*column_values.at(add_mod_carry2_bit_column) - *oods_values.pop_front().unwrap())
         / (point - pow1102 * oods_point);
-    total_sum = total_sum + constraint_coefficients[799] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_carry2_sign_column] - oods_values[800])
+    value = (*column_values.at(add_mod_carry2_sign_column) - *oods_values.pop_front().unwrap())
         / (point - pow1101 * oods_point);
-    total_sum = total_sum + constraint_coefficients[800] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_carry3_bit_column] - oods_values[801])
+    value = (*column_values.at(add_mod_carry3_bit_column) - *oods_values.pop_front().unwrap())
         / (point - pow1100 * oods_point);
-    total_sum = total_sum + constraint_coefficients[801] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[add_mod_carry3_sign_column] - oods_values[802])
+    value = (*column_values.at(add_mod_carry3_sign_column) - *oods_values.pop_front().unwrap())
         / (point - pow1099 * oods_point);
-    total_sum = total_sum + constraint_coefficients[802] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[803])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1838 * oods_point);
-    total_sum = total_sum + constraint_coefficients[803] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[804])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1837 * oods_point);
-    total_sum = total_sum + constraint_coefficients[804] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[805])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1836 * oods_point);
-    total_sum = total_sum + constraint_coefficients[805] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[806])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1835 * oods_point);
-    total_sum = total_sum + constraint_coefficients[806] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[807])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1834 * oods_point);
-    total_sum = total_sum + constraint_coefficients[807] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[808])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1833 * oods_point);
-    total_sum = total_sum + constraint_coefficients[808] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[809])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1832 * oods_point);
-    total_sum = total_sum + constraint_coefficients[809] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[810])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1831 * oods_point);
-    total_sum = total_sum + constraint_coefficients[810] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[811])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1830 * oods_point);
-    total_sum = total_sum + constraint_coefficients[811] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[812])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1829 * oods_point);
-    total_sum = total_sum + constraint_coefficients[812] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[813])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1828 * oods_point);
-    total_sum = total_sum + constraint_coefficients[813] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[814])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1827 * oods_point);
-    total_sum = total_sum + constraint_coefficients[814] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[815])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1920 * oods_point);
-    total_sum = total_sum + constraint_coefficients[815] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[816])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1919 * oods_point);
-    total_sum = total_sum + constraint_coefficients[816] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[817])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1918 * oods_point);
-    total_sum = total_sum + constraint_coefficients[817] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[818])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1917 * oods_point);
-    total_sum = total_sum + constraint_coefficients[818] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[819])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1916 * oods_point);
-    total_sum = total_sum + constraint_coefficients[819] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[820])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1915 * oods_point);
-    total_sum = total_sum + constraint_coefficients[820] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[821])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1914 * oods_point);
-    total_sum = total_sum + constraint_coefficients[821] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[822])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1921 * oods_point);
-    total_sum = total_sum + constraint_coefficients[822] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[823])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1826 * oods_point);
-    total_sum = total_sum + constraint_coefficients[823] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[824])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1825 * oods_point);
-    total_sum = total_sum + constraint_coefficients[824] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[825])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1823 * oods_point);
-    total_sum = total_sum + constraint_coefficients[825] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[826])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1822 * oods_point);
-    total_sum = total_sum + constraint_coefficients[826] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[827])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1821 * oods_point);
-    total_sum = total_sum + constraint_coefficients[827] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[828])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1820 * oods_point);
-    total_sum = total_sum + constraint_coefficients[828] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[829])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1819 * oods_point);
-    total_sum = total_sum + constraint_coefficients[829] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[830])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1818 * oods_point);
-    total_sum = total_sum + constraint_coefficients[830] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[831])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1817 * oods_point);
-    total_sum = total_sum + constraint_coefficients[831] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[832])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1816 * oods_point);
-    total_sum = total_sum + constraint_coefficients[832] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[833])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1815 * oods_point);
-    total_sum = total_sum + constraint_coefficients[833] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[834])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1814 * oods_point);
-    total_sum = total_sum + constraint_coefficients[834] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[835])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1813 * oods_point);
-    total_sum = total_sum + constraint_coefficients[835] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[836])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1824 * oods_point);
-    total_sum = total_sum + constraint_coefficients[836] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[837])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1913 * oods_point);
-    total_sum = total_sum + constraint_coefficients[837] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[838])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1912 * oods_point);
-    total_sum = total_sum + constraint_coefficients[838] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[839])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1911 * oods_point);
-    total_sum = total_sum + constraint_coefficients[839] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[840])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1910 * oods_point);
-    total_sum = total_sum + constraint_coefficients[840] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[841])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1812 * oods_point);
-    total_sum = total_sum + constraint_coefficients[841] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[842])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1909 * oods_point);
-    total_sum = total_sum + constraint_coefficients[842] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[843])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1908 * oods_point);
-    total_sum = total_sum + constraint_coefficients[843] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[844])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1907 * oods_point);
-    total_sum = total_sum + constraint_coefficients[844] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[845])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1906 * oods_point);
-    total_sum = total_sum + constraint_coefficients[845] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[846])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1811 * oods_point);
-    total_sum = total_sum + constraint_coefficients[846] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[847])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1905 * oods_point);
-    total_sum = total_sum + constraint_coefficients[847] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[848])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1904 * oods_point);
-    total_sum = total_sum + constraint_coefficients[848] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[849])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1903 * oods_point);
-    total_sum = total_sum + constraint_coefficients[849] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[850])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1902 * oods_point);
-    total_sum = total_sum + constraint_coefficients[850] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[851])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1810 * oods_point);
-    total_sum = total_sum + constraint_coefficients[851] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[852])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1901 * oods_point);
-    total_sum = total_sum + constraint_coefficients[852] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[853])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1900 * oods_point);
-    total_sum = total_sum + constraint_coefficients[853] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_addr_column] - oods_values[854])
+    value = (*column_values.at(mem_pool_addr_column) - *oods_values.pop_front().unwrap())
         / (point - pow1899 * oods_point);
-    total_sum = total_sum + constraint_coefficients[854] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[855])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1809 * oods_point);
-    total_sum = total_sum + constraint_coefficients[855] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[856])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1808 * oods_point);
-    total_sum = total_sum + constraint_coefficients[856] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[857])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1807 * oods_point);
-    total_sum = total_sum + constraint_coefficients[857] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[858])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1806 * oods_point);
-    total_sum = total_sum + constraint_coefficients[858] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[859])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1805 * oods_point);
-    total_sum = total_sum + constraint_coefficients[859] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[860])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1804 * oods_point);
-    total_sum = total_sum + constraint_coefficients[860] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[861])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1803 * oods_point);
-    total_sum = total_sum + constraint_coefficients[861] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[862])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1802 * oods_point);
-    total_sum = total_sum + constraint_coefficients[862] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[863])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1801 * oods_point);
-    total_sum = total_sum + constraint_coefficients[863] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[864])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1800 * oods_point);
-    total_sum = total_sum + constraint_coefficients[864] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[865])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1799 * oods_point);
-    total_sum = total_sum + constraint_coefficients[865] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[mem_pool_value_column] - oods_values[866])
+    value = (*column_values.at(mem_pool_value_column) - *oods_values.pop_front().unwrap())
         / (point - pow1798 * oods_point);
-    total_sum = total_sum + constraint_coefficients[866] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[867])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1779 * oods_point);
-    total_sum = total_sum + constraint_coefficients[867] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[868])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1778 * oods_point);
-    total_sum = total_sum + constraint_coefficients[868] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[869])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1777 * oods_point);
-    total_sum = total_sum + constraint_coefficients[869] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[870])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1776 * oods_point);
-    total_sum = total_sum + constraint_coefficients[870] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[871])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1775 * oods_point);
-    total_sum = total_sum + constraint_coefficients[871] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[872])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1774 * oods_point);
-    total_sum = total_sum + constraint_coefficients[872] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[873])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1773 * oods_point);
-    total_sum = total_sum + constraint_coefficients[873] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[874])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1772 * oods_point);
-    total_sum = total_sum + constraint_coefficients[874] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[875])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1771 * oods_point);
-    total_sum = total_sum + constraint_coefficients[875] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[876])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1770 * oods_point);
-    total_sum = total_sum + constraint_coefficients[876] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[877])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1769 * oods_point);
-    total_sum = total_sum + constraint_coefficients[877] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[878])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1768 * oods_point);
-    total_sum = total_sum + constraint_coefficients[878] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[879])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1767 * oods_point);
-    total_sum = total_sum + constraint_coefficients[879] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[880])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1766 * oods_point);
-    total_sum = total_sum + constraint_coefficients[880] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[881])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1765 * oods_point);
-    total_sum = total_sum + constraint_coefficients[881] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[882])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1764 * oods_point);
-    total_sum = total_sum + constraint_coefficients[882] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[883])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1763 * oods_point);
-    total_sum = total_sum + constraint_coefficients[883] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[884])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1762 * oods_point);
-    total_sum = total_sum + constraint_coefficients[884] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[885])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1761 * oods_point);
-    total_sum = total_sum + constraint_coefficients[885] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[886])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1760 * oods_point);
-    total_sum = total_sum + constraint_coefficients[886] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[887])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1759 * oods_point);
-    total_sum = total_sum + constraint_coefficients[887] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[888])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1758 * oods_point);
-    total_sum = total_sum + constraint_coefficients[888] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[889])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1757 * oods_point);
-    total_sum = total_sum + constraint_coefficients[889] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[890])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1756 * oods_point);
-    total_sum = total_sum + constraint_coefficients[890] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[891])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1755 * oods_point);
-    total_sum = total_sum + constraint_coefficients[891] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[892])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1754 * oods_point);
-    total_sum = total_sum + constraint_coefficients[892] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[893])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1753 * oods_point);
-    total_sum = total_sum + constraint_coefficients[893] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[894])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1752 * oods_point);
-    total_sum = total_sum + constraint_coefficients[894] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[895])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1751 * oods_point);
-    total_sum = total_sum + constraint_coefficients[895] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[896])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1750 * oods_point);
-    total_sum = total_sum + constraint_coefficients[896] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[897])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1749 * oods_point);
-    total_sum = total_sum + constraint_coefficients[897] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[898])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1748 * oods_point);
-    total_sum = total_sum + constraint_coefficients[898] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[899])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1747 * oods_point);
-    total_sum = total_sum + constraint_coefficients[899] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[900])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1746 * oods_point);
-    total_sum = total_sum + constraint_coefficients[900] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[901])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1745 * oods_point);
-    total_sum = total_sum + constraint_coefficients[901] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[902])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1744 * oods_point);
-    total_sum = total_sum + constraint_coefficients[902] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[903])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1743 * oods_point);
-    total_sum = total_sum + constraint_coefficients[903] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[904])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1742 * oods_point);
-    total_sum = total_sum + constraint_coefficients[904] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[905])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1741 * oods_point);
-    total_sum = total_sum + constraint_coefficients[905] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[906])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1740 * oods_point);
-    total_sum = total_sum + constraint_coefficients[906] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[907])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1739 * oods_point);
-    total_sum = total_sum + constraint_coefficients[907] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[908])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1738 * oods_point);
-    total_sum = total_sum + constraint_coefficients[908] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[909])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1737 * oods_point);
-    total_sum = total_sum + constraint_coefficients[909] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[910])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1736 * oods_point);
-    total_sum = total_sum + constraint_coefficients[910] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[911])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1735 * oods_point);
-    total_sum = total_sum + constraint_coefficients[911] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[912])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1734 * oods_point);
-    total_sum = total_sum + constraint_coefficients[912] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[913])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1733 * oods_point);
-    total_sum = total_sum + constraint_coefficients[913] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[914])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1732 * oods_point);
-    total_sum = total_sum + constraint_coefficients[914] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[915])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1731 * oods_point);
-    total_sum = total_sum + constraint_coefficients[915] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[916])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1730 * oods_point);
-    total_sum = total_sum + constraint_coefficients[916] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[917])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1729 * oods_point);
-    total_sum = total_sum + constraint_coefficients[917] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[918])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1728 * oods_point);
-    total_sum = total_sum + constraint_coefficients[918] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[919])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1727 * oods_point);
-    total_sum = total_sum + constraint_coefficients[919] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[920])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1726 * oods_point);
-    total_sum = total_sum + constraint_coefficients[920] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[921])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1725 * oods_point);
-    total_sum = total_sum + constraint_coefficients[921] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[922])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1724 * oods_point);
-    total_sum = total_sum + constraint_coefficients[922] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[923])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1723 * oods_point);
-    total_sum = total_sum + constraint_coefficients[923] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[924])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1722 * oods_point);
-    total_sum = total_sum + constraint_coefficients[924] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[925])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1721 * oods_point);
-    total_sum = total_sum + constraint_coefficients[925] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[926])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1720 * oods_point);
-    total_sum = total_sum + constraint_coefficients[926] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[927])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1719 * oods_point);
-    total_sum = total_sum + constraint_coefficients[927] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[928])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1718 * oods_point);
-    total_sum = total_sum + constraint_coefficients[928] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[929])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1717 * oods_point);
-    total_sum = total_sum + constraint_coefficients[929] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[930])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1716 * oods_point);
-    total_sum = total_sum + constraint_coefficients[930] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[931])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1715 * oods_point);
-    total_sum = total_sum + constraint_coefficients[931] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_pool_column] - oods_values[932])
+    value = (*column_values.at(range_check16_pool_column) - *oods_values.pop_front().unwrap())
         / (point - pow1714 * oods_point);
-    total_sum = total_sum + constraint_coefficients[932] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[memory_multi_column_perm_perm_cum_prod0_column] - oods_values[933])
+    value =
+        (*column_values.at(memory_multi_column_perm_perm_cum_prod0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1097 * oods_point);
-    total_sum = total_sum + constraint_coefficients[933] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[memory_multi_column_perm_perm_cum_prod0_column] - oods_values[934])
+    value =
+        (*column_values.at(memory_multi_column_perm_perm_cum_prod0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1098 * oods_point);
-    total_sum = total_sum + constraint_coefficients[934] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_perm_cum_prod0_column] - oods_values[935])
+    value =
+        (*column_values.at(range_check16_perm_cum_prod0_column) - *oods_values.pop_front().unwrap())
         / (point - pow1095 * oods_point);
-    total_sum = total_sum + constraint_coefficients[935] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[range_check16_perm_cum_prod0_column] - oods_values[936])
+    value =
+        (*column_values.at(range_check16_perm_cum_prod0_column) - *oods_values.pop_front().unwrap())
         / (point - pow1096 * oods_point);
-    total_sum = total_sum + constraint_coefficients[936] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_check_permutation_cum_prod0_column] - oods_values[937])
+    value =
+        (*column_values.at(diluted_check_permutation_cum_prod0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1093 * oods_point);
-    total_sum = total_sum + constraint_coefficients[937] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_check_permutation_cum_prod0_column] - oods_values[938])
+    value =
+        (*column_values.at(diluted_check_permutation_cum_prod0_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1094 * oods_point);
-    total_sum = total_sum + constraint_coefficients[938] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_check_cumulative_value_column] - oods_values[939])
+    value =
+        (*column_values.at(diluted_check_cumulative_value_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1091 * oods_point);
-    total_sum = total_sum + constraint_coefficients[939] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[diluted_check_cumulative_value_column] - oods_values[940])
+    value =
+        (*column_values.at(diluted_check_cumulative_value_column)
+            - *oods_values.pop_front().unwrap())
         / (point - pow1092 * oods_point);
-    total_sum = total_sum + constraint_coefficients[940] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     // Sum the OODS boundary constraints on the composition polynomials.
-    let (oods_point_to_deg) = pow(oods_point, CONSTRAINT_DEGREE.into());
+    let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());
 
-    value = (column_values[num_columns_first + num_columns_second] - oods_values[941])
+    value =
+        (*column_values.at(num_columns_first + num_columns_second)
+            - *oods_values.pop_front().unwrap())
         / (point - oods_point_to_deg);
-    total_sum = total_sum + constraint_coefficients[941] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    value = (column_values[num_columns_first + num_columns_second + 1] - oods_values[942])
+    value =
+        (*column_values.at(num_columns_first + num_columns_second + 1)
+            - *oods_values.pop_front().unwrap())
         / (point - oods_point_to_deg);
-    total_sum = total_sum + constraint_coefficients[942] * value;
+    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
     total_sum
 }
