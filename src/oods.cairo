@@ -4,49 +4,49 @@ use cairo_verifier::{
     // air::layouts::dex::{
     // AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,
     // global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    // constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === DEX END ===
     // === RECURSIVE BEGIN ===
     air::layouts::recursive::{
         AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
         global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-        constants::{CONSTRAINT_DEGREE, DynamicParams},
+        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     },
     // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
     // air::layouts::recursive_with_poseidon::{
     // AIRComposition, AIROods, RecursiveWithPoseidonAIRCompositionImpl,
     // RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements,
-    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // air::layouts::small::{
     // AIRComposition, AIROods, SmallAIRCompositionImpl, SmallAIROodsImpl,
     // global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    // constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === SMALL END ===
     // === STARKNET BEGIN ===
     // air::layouts::starknet::{
     // AIRComposition, AIROods, StarknetAIRCompositionImpl, StarknetAIROodsImpl,
     // global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    // constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === STARKNET END ===
     // === STARKNET_WITH_KECCAK BEGIN ===
     // air::layouts::starknet_with_keccak::{
     // AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
     // StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
-    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === STARKNET_WITH_KECCAK END ===
     // === DYNAMIC BEGIN ===
     // air::layouts::dynamic::{
     // AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
     // StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
-    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === DYNAMIC END ===
     table_commitment::table_commitment::TableDecommitment
@@ -88,8 +88,6 @@ fn verify_oods(
 }
 
 fn eval_oods_boundary_poly_at_points(
-    n_original_columns: u32,
-    n_interaction_columns: u32,
     public_input: @PublicInput,
     eval_info: OodsEvaluationInfo,
     points: Span<felt252>,
@@ -98,6 +96,35 @@ fn eval_oods_boundary_poly_at_points(
 ) -> Array<felt252> {
     let mut dynamic_params_span = public_input.dynamic_params.span();
     let dynamic_params = Serde::<DynamicParams>::deserialize(ref dynamic_params_span).unwrap();
+
+    // === DEX BEGIN ===
+    // let n_original_columns: u32 = NUM_COLUMNS_FIRST;
+    // let n_interaction_columns: u32 = NUM_COLUMNS_SECOND;
+    // === DEX END ===
+    // === RECURSIVE BEGIN ===
+    let n_original_columns: u32 = NUM_COLUMNS_FIRST;
+    let n_interaction_columns: u32 = NUM_COLUMNS_SECOND;
+    // === RECURSIVE END ===
+    // === RECURSIVE_WITH_POSEIDON BEGIN ===
+    // let n_original_columns: u32 = NUM_COLUMNS_FIRST;
+    // let n_interaction_columns: u32 = NUM_COLUMNS_SECOND;
+    // === RECURSIVE_WITH_POSEIDON END ===
+    // === SMALL BEGIN ===
+    // let n_original_columns: u32 = NUM_COLUMNS_FIRST;
+    // let n_interaction_columns: u32 = NUM_COLUMNS_SECOND;
+    // === SMALL END ===
+    // === STARKNET BEGIN ===
+    // let n_original_columns: u32 = NUM_COLUMNS_FIRST;
+    // let n_interaction_columns: u32 = NUM_COLUMNS_SECOND;
+    // === STARKNET END ===
+    // === STARKNET_WITH_KECCAK BEGIN ===
+    // let n_original_columns: u32 = NUM_COLUMNS_FIRST;
+    // let n_interaction_columns: u32 = NUM_COLUMNS_SECOND;
+    // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // let n_original_columns: u32 = dynamic_params.num_columns_first;
+    // let n_interaction_columns: u32 = dynamic_params.num_columns_second;
+    // === DYNAMIC END ===
 
     assert(
         decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'

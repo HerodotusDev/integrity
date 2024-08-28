@@ -28,8 +28,6 @@ use cairo_verifier::{
 
 // STARK verify phase.
 fn stark_verify(
-    n_original_columns: u32,
-    n_interaction_columns: u32,
     public_input: @PublicInput,
     queries: Span<felt252>,
     commitment: StarkCommitment,
@@ -59,8 +57,6 @@ fn stark_verify(
         constraint_coefficients: commitment.interaction_after_oods,
     };
     let oods_poly_evals = eval_oods_boundary_poly_at_points(
-        n_original_columns,
-        n_interaction_columns,
         public_input,
         eval_info,
         points.span(),
