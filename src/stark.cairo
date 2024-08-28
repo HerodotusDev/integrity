@@ -48,7 +48,7 @@ use cairo_verifier::{
     // === DYNAMIC BEGIN ===
     // layouts::dynamic::{
     // traces::{TracesConfig, TracesConfigTrait},
-    // public_input::StarknetWithKeccakPublicInputImpl,
+    // public_input::DynamicPublicInputImpl,
     // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     // },
     // === DYNAMIC END ===
@@ -81,7 +81,7 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof, security_bits: felt252) {
         // Validate config.
-        self.config.validate(security_bits);
+        self.config.validate(self.public_input, security_bits);
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
@@ -132,7 +132,7 @@ struct StarkConfig {
 
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
-    fn validate(self: @StarkConfig, security_bits: felt252) {
+    fn validate(self: @StarkConfig, public_input: @PublicInput, security_bits: felt252) {
         // Validate Proof of work config.
         self.proof_of_work.validate();
 
@@ -146,7 +146,11 @@ impl StarkConfigImpl of StarkConfigTrait {
 
         // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
-        self.traces.validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
+        self
+            .traces
+            .validate(
+                public_input, log_eval_domain_size, *self.n_verifier_friendly_commitment_layers
+            );
 
         // Validate composition config.
         self

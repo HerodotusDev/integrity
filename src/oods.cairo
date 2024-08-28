@@ -44,8 +44,8 @@ use cairo_verifier::{
     // === STARKNET_WITH_KECCAK END ===
     // === DYNAMIC BEGIN ===
     // air::layouts::dynamic::{
-    // AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
-    // StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
+    // AIRComposition, AIROods, DynamicAIRCompositionImpl,
+    // DynamicAIROodsImpl, global_values::InteractionElements,
     // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
     // },
     // === DYNAMIC END ===

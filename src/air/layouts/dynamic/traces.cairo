@@ -1,5 +1,8 @@
 use cairo_verifier::{
-    air::layouts::dynamic::{global_values::InteractionElements, constants::DynamicParams},
+    air::{
+        public_input::PublicInput,
+        layouts::dynamic::{global_values::InteractionElements, constants::DynamicParams}
+    },
     channel::channel::{Channel, ChannelTrait},
     table_commitment::table_commitment::{
         TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
@@ -67,7 +70,7 @@ struct TracesConfig {
 impl TracesConfigImpl of TracesConfigTrait {
     fn validate(
         self: @TracesConfig,
-        dynamic_params: @DynamicParams,
+        public_input: @PublicInput,
         log_eval_domain_size: felt252,
         n_verifier_friendly_commitment_layers: felt252,
     ) {

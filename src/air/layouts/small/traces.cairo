@@ -1,6 +1,9 @@
 use cairo_verifier::{
-    air::layouts::small::{
-        constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
+    air::{
+        public_input::PublicInput,
+        layouts::small::{
+            constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
+        }
     },
     channel::channel::{Channel, ChannelTrait},
     table_commitment::table_commitment::{
@@ -69,6 +72,7 @@ struct TracesConfig {
 impl TracesConfigImpl of TracesConfigTrait {
     fn validate(
         self: @TracesConfig,
+        public_input: @PublicInput,
         log_eval_domain_size: felt252,
         n_verifier_friendly_commitment_layers: felt252,
     ) {
