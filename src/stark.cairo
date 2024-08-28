@@ -51,6 +51,14 @@ use cairo_verifier::{
     // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     // },
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // layouts::dynamic::{
+    // traces::{TracesConfig, TracesConfigTrait},
+    // public_input::StarknetWithKeccakPublicInputImpl,
+    // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+    // },
+    // === DYNAMIC END ===
     },
     channel::channel::{Channel, ChannelImpl},
     fri::{
@@ -109,6 +117,7 @@ impl StarkProofImpl of StarkProofTrait {
         stark_verify::stark_verify(
             NUM_COLUMNS_FIRST,
             NUM_COLUMNS_SECOND,
+            self.public_input,
             queries.span(),
             stark_commitment,
             *self.witness,

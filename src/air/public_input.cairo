@@ -18,6 +18,9 @@ use cairo_verifier::{
     // === STARKNET_WITH_KECCAK BEGIN ===
     // air::layouts::starknet_with_keccak::constants::segments,
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // air::layouts::dynamic::constants::segments,
+    // === DYNAMIC END ===
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
     },

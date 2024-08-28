@@ -4,44 +4,51 @@ use cairo_verifier::{
     // air::layouts::dex::{
     // AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,
     // global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    // constants::CONSTRAINT_DEGREE,
+    // constants::{CONSTRAINT_DEGREE, DynamicParams},
     // },
     // === DEX END ===
     // === RECURSIVE BEGIN ===
     air::layouts::recursive::{
         AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
         global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-        constants::CONSTRAINT_DEGREE,
+        constants::{CONSTRAINT_DEGREE, DynamicParams},
     },
     // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
     // air::layouts::recursive_with_poseidon::{
     // AIRComposition, AIROods, RecursiveWithPoseidonAIRCompositionImpl,
     // RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements,
-    // public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
     // },
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // air::layouts::small::{
     // AIRComposition, AIROods, SmallAIRCompositionImpl, SmallAIROodsImpl,
     // global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    // constants::CONSTRAINT_DEGREE,
+    // constants::{CONSTRAINT_DEGREE, DynamicParams},
     // },
     // === SMALL END ===
     // === STARKNET BEGIN ===
     // air::layouts::starknet::{
     // AIRComposition, AIROods, StarknetAIRCompositionImpl, StarknetAIROodsImpl,
     // global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    // constants::CONSTRAINT_DEGREE,
+    // constants::{CONSTRAINT_DEGREE, DynamicParams},
     // },
     // === STARKNET END ===
     // === STARKNET_WITH_KECCAK BEGIN ===
     // air::layouts::starknet_with_keccak::{
     // AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
     // StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
-    // public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
     // },
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // air::layouts::dynamic::{
+    // AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
+    // StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
+    // },
+    // === DYNAMIC END ===
     table_commitment::table_commitment::TableDecommitment
 };
 
@@ -83,11 +90,15 @@ fn verify_oods(
 fn eval_oods_boundary_poly_at_points(
     n_original_columns: u32,
     n_interaction_columns: u32,
+    public_input: @PublicInput,
     eval_info: OodsEvaluationInfo,
     points: Span<felt252>,
     decommitment: TracesDecommitment,
     composition_decommitment: TableDecommitment,
 ) -> Array<felt252> {
+    let mut dynamic_params_span = public_input.dynamic_params.span();
+    let dynamic_params = Serde::<DynamicParams>::deserialize(ref dynamic_params_span).unwrap();
+
     assert(
         decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
     );
@@ -132,6 +143,7 @@ fn eval_oods_boundary_poly_at_points(
                     *points.at(i),
                     eval_info.oods_point,
                     eval_info.trace_generator,
+                    dynamic_params,
                 )
             );
 

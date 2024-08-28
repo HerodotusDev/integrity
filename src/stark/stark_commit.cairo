@@ -35,6 +35,12 @@ use cairo_verifier::{
     // traces::traces_commit,
     // },
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // air::layouts::dynamic::{
+    // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    // traces::traces_commit,
+    // },
+    // === DYNAMIC END ===
     channel::channel::{Channel, ChannelTrait}, common::powers_array::powers_array,
     domains::StarkDomains, fri::fri::fri_commit,
     stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},

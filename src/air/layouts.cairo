@@ -17,7 +17,7 @@ mod recursive;
 // mod starknet_with_keccak;
 // === STARKNET_WITH_KECCAK END ===
 // === DYNAMIC BEGIN ===
-mod dynamic;
+// mod dynamic;
 // === DYNAMIC END ===
 
 

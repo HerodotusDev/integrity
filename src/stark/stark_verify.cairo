@@ -1,5 +1,5 @@
 use cairo_verifier::{
-    queries::queries::queries_to_points, domains::StarkDomains,
+    air::public_input::PublicInput, queries::queries::queries_to_points, domains::StarkDomains,
     fri::fri::{FriDecommitment, fri_verify},
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
     // === DEX BEGIN ===
@@ -19,6 +19,9 @@ use cairo_verifier::{
     // === STARKNET_WITH_KECCAK BEGIN ===
     // air::layouts::starknet_with_keccak::traces::traces_decommit,
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // air::layouts::dynamic::traces::traces_decommit,
+    // === DYNAMIC END ===
     table_commitment::table_commitment::table_decommit,
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
 };
@@ -27,6 +30,7 @@ use cairo_verifier::{
 fn stark_verify(
     n_original_columns: u32,
     n_interaction_columns: u32,
+    public_input: @PublicInput,
     queries: Span<felt252>,
     commitment: StarkCommitment,
     witness: StarkWitness,
@@ -57,6 +61,7 @@ fn stark_verify(
     let oods_poly_evals = eval_oods_boundary_poly_at_points(
         n_original_columns,
         n_interaction_columns,
+        public_input,
         eval_info,
         points.span(),
         witness.traces_decommitment,

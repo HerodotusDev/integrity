@@ -31,7 +31,7 @@ use cairo_verifier::{
     common::{math::{Felt252Div, Felt252PartialOrd, pow}, asserts::assert_range_u128}
 };
 
-impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInput> {
+impl DynamicAIRCompositionImpl of AIRComposition<InteractionElements, PublicInput> {
     fn eval_composition_polynomial(
         interaction_elements: InteractionElements,
         public_input: @PublicInput,
@@ -203,17 +203,12 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
         };
 
         eval_composition_polynomial_inner(
-            mask_values,
-            constraint_coefficients,
-            point,
-            trace_generator,
-            global_values,
-            dynamic_params
+            mask_values, constraint_coefficients, point, trace_generator, global_values,
         )
     }
 }
 
-impl StarknetAIROodsImpl of AIROods {
+impl DynamicAIROodsImpl of AIROods<DynamicParams> {
     fn eval_oods_polynomial(
         column_values: Span<felt252>,
         oods_values: Span<felt252>,
@@ -221,7 +216,16 @@ impl StarknetAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        dynamic_params: DynamicParams,
     ) -> felt252 {
-        0
+        eval_oods_polynomial_inner(
+            column_values,
+            oods_values,
+            constraint_coefficients,
+            point,
+            oods_point,
+            trace_generator,
+            dynamic_params,
+        )
     }
 }

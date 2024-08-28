@@ -13,8 +13,8 @@ fn eval_composition_polynomial_inner(
     point: felt252,
     trace_generator: felt252,
     global_values: GlobalValues,
-    dynamic_params: DynamicParams
 ) -> felt252 {
+    let dynamic_params = global_values.dynamic_params;
     let add_mod_a0_suboffset = dynamic_params.add_mod_a0_suboffset;
     let add_mod_a1_suboffset = dynamic_params.add_mod_a1_suboffset;
     let add_mod_a2_suboffset = dynamic_params.add_mod_a2_suboffset;
