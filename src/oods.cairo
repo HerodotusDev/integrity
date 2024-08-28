@@ -46,7 +46,7 @@ use cairo_verifier::{
     // air::layouts::dynamic::{
     // AIRComposition, AIROods, DynamicAIRCompositionImpl,
     // DynamicAIROodsImpl, global_values::InteractionElements,
-    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, DynamicParams},
+    // public_input::PublicInput, traces::TracesDecommitment, constants::{CONSTRAINT_DEGREE, DynamicParams},
     // },
     // === DYNAMIC END ===
     table_commitment::table_commitment::TableDecommitment
