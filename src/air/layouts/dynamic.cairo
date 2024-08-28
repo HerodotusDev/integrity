@@ -203,7 +203,12 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
         };
 
         eval_composition_polynomial_inner(
-            mask_values, constraint_coefficients, point, trace_generator, global_values
+            mask_values,
+            constraint_coefficients,
+            point,
+            trace_generator,
+            global_values,
+            dynamic_params
         )
     }
 }
