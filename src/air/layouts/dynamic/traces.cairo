@@ -102,8 +102,6 @@ impl TracesConfigImpl of TracesConfigTrait {
 fn traces_commit(
     ref channel: Channel, unsent_commitment: TracesUnsentCommitment, config: TracesConfig
 ) -> TracesCommitment {
-    // TODO REWRITE
-
     // Read original commitment.
     let original_commitment = table_commit(
         ref channel, unsent_commitment.original, config.original
