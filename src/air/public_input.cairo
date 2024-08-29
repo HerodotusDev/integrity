@@ -177,17 +177,17 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     let program = memory.extract_range_unchecked(0, memory.len() - output_len);
     let program_hash = poseidon_hash_span(program);
 
-    // 2. Output segment 
+    // 2. Output segment
     let output = memory.extract_range_unchecked(memory.len() - output_len, output_len);
     let output_hash = poseidon_hash_span(output);
     (program_hash, output_hash)
 }
 
+// === RECURSIVE BEGIN ===
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
     use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
-    // test data from cairo0-verifier run on stone-prover generated proof
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
@@ -199,3 +199,6 @@ mod tests {
         )
     }
 }
+// === RECURSIVE END ===
+
+
