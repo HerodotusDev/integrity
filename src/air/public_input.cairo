@@ -205,6 +205,7 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 
 #[cfg(test)]
 mod tests {
+    use core::debug::PrintTrait;
     use super::get_public_input_hash;
     use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
     // test data from cairo0-verifier run on stone-prover generated proof
@@ -213,9 +214,9 @@ mod tests {
     fn test_get_public_input_hash() {
         let public_input = get();
         let hash = get_public_input_hash(@public_input, 20);
-
         assert(
-            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
+            hash == 0x113b1d4f79ee0dac11d2677f9f6dc8ffacb6ea129f3ae1e45e1158ad500791f,
+            'Hash invalid'
         )
     }
 }

@@ -1,6 +1,4 @@
-use cairo_verifier::common::{
-    array_append::ArrayAppendTrait, blake2s_u8::{blake2s, load32}
-};
+use cairo_verifier::common::{array_append::ArrayAppendTrait, blake2s_u8::{blake2s, load32}};
 
 fn get_arr_v1(n: u32) -> Array<u8> {
     let mut arr = ArrayTrait::new();

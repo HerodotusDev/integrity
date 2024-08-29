@@ -29,8 +29,8 @@ fn hash_n_bytes(mut data: Array<u64>, n: u8, hash_len: bool) -> u256 {
     }
 }
 fn hash_truncated(mut data: Array<u64>) -> felt252 {
-    (keccak::cairo_keccak(ref data, 0, 0)
-        .flip_endianness() & 0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+    (keccak::cairo_keccak(ref data, 0, 0).flip_endianness()
+        & 0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
         .try_into()
         .unwrap()
 }
