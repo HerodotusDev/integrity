@@ -1,3 +1,5 @@
+use core::array::ArrayTrait;
+use core::traits::Into;
 use cairo_verifier::{
     common::{
         math::{pow, Felt252PartialOrd, Felt252Div},
@@ -10,7 +12,10 @@ use cairo_verifier::{
             segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO
         },
-        public_input::{PublicInput, PublicInputTrait, verify_cairo1_public_input}
+        public_input::{
+            PublicInput, PublicInputTrait, verify_cairo1_public_input,
+            get_builtins as get_program_builtins
+        }
     },
     domains::StarkDomains
 };
@@ -36,7 +41,8 @@ impl RecursivePublicInputImpl of PublicInputTrait {
         // TODO support more pages?
         assert(self.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
 
-        let builtins = get_builtins();
+        let layout_builtins = get_builtins();
+        let program_builtins = get_program_builtins();
         let memory = self.main_page;
 
         // 1. Program segment
@@ -55,7 +61,7 @@ impl RecursivePublicInputImpl of PublicInputTrait {
         assert(
             *program[0] == 0x40780017fff7fff, 'Invalid program'
         ); // Instruction: ap += N_BUILTINS.
-        assert(*program[1] == builtins.len().into(), 'Invalid program');
+        assert(*program[1] == program_builtins.len().into(), 'Invalid program');
         assert(*program[2] == 0x1104800180018000, 'Invalid program'); // Instruction: call rel ?.
         assert(*program[4] == 0x10780017fff7fff, 'Invalid program'); // Instruction: jmp rel 0.
         assert(*program[5] == 0x0, 'Invalid program');
@@ -76,10 +82,10 @@ impl RecursivePublicInputImpl of PublicInputTrait {
         // 2.2 Main arguments and return values
         let mut begin_addresses = ArrayTrait::new();
         let mut stop_addresses = ArrayTrait::new();
+        let layout_builtins_len = layout_builtins.len();
         let mut i = 0;
-        let builtins_len = builtins.len();
         loop {
-            if i == builtins_len {
+            if i == layout_builtins_len {
                 break;
             }
 
@@ -88,12 +94,20 @@ impl RecursivePublicInputImpl of PublicInputTrait {
 
             i += 1;
         };
-        memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
         memory
             .verify_stack(
-                final_ap - builtins_len.into(),
+                initial_ap,
+                begin_addresses.span(),
+                program_builtins.span(),
+                layout_builtins.span(),
+                ref memory_index
+            );
+        memory
+            .verify_stack(
+                final_ap - program_builtins.len().into(),
                 stop_addresses.span(),
-                builtins_len,
+                program_builtins.span(),
+                layout_builtins.span(),
                 ref memory_index
             );
 
