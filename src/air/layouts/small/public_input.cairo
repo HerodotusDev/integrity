@@ -109,7 +109,7 @@ impl SmallPublicInputImpl of PublicInputTrait {
                 ref memory_index
             );
 
-        // 3. Output segment 
+        // 3. Output segment
         let output_len = output_stop - output_start;
         let output = memory
             .extract_range(
