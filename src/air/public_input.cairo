@@ -169,7 +169,6 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 
     assert(initial_ap < MAX_ADDRESS, 'Invalid initial_ap');
     assert(final_ap < MAX_ADDRESS, 'Invalid final_ap');
-    assert(public_input.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
     let memory = public_input.main_page;
 
     // 1. Program segment
