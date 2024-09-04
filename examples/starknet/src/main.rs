@@ -1,8 +1,8 @@
-use cairo_proof_parser::parse;
 use clap::Parser;
 use itertools::chain;
-use runner::{CairoVersion, VecFelt252};
+use runner::{transform::ParsedStarkProof, CairoVersion, VecFelt252};
 use std::io::{stdin, Read};
+use swiftness_proof_parser::parse;
 
 #[derive(Parser)]
 #[command(author, version, about)]
@@ -17,7 +17,7 @@ fn main() -> anyhow::Result<()> {
     let mut input = String::new();
     stdin().read_to_string(&mut input)?;
 
-    let parsed = parse(input)?;
+    let parsed: ParsedStarkProof = parse(input)?.into();
 
     let config: VecFelt252 = serde_json::from_str(&parsed.config.to_string()).unwrap();
     let public_input: VecFelt252 = serde_json::from_str(&parsed.public_input.to_string()).unwrap();
