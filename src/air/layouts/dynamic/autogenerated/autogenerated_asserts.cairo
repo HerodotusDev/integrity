@@ -2672,755 +2672,756 @@ fn check_asserts(dynamic_params: DynamicParams, stark_domains: @StarkDomains) {
         // Offset of mul_mod/p_multiplier0/part3 is too big.
         x = trace_length - (dynamic_params.mul_mod_p_multiplier0_part3_suboffset.into()) - 1_u256;
         assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier0_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier0_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier0_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier0_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier0_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier0_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier0/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier0_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier1_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier1_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier1_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier1_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier1_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier1_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier1_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier1_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier1_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier1_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier1_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier1/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier1_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier2_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier2_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier2_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier2_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier2_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier2_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier2_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier2_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier2_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier2_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier2_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier2/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier2_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier3_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier3_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier3_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier3_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier3_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier3_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier3_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier3_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier3_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier3_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_p_multiplier3_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/p_multiplier3/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_p_multiplier3_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part6 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry0_part6_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part6 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry0_part6_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry0/part6 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry0_part6_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part6 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry1_part6_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part6 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry1_part6_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry1/part6 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry1_part6_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part6 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry2_part6_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part6 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry2_part6_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry2/part6 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry2_part6_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part6 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry3_part6_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part6 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry3_part6_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry3/part6 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry3_part6_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part6 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry4_part6_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part6 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry4_part6_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry4/part6 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry4_part6_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part0 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part0_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part0 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part0_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part0 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part0_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part1 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part1_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part1 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part1_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part1 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part1_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part2 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part2_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part2 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part2_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part2 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part2_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part3 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part3_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part3 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part3_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part3 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part3_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part4 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part4_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part4 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part4_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part4 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part4_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part5 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part5_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part5 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part5_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part5 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part5_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part6 must be nonnegative.
-        x = (dynamic_params.mul_mod_carry5_part6_suboffset.into());
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part6 is too big.
-        x = trace_length - (dynamic_params.mul_mod_carry5_part6_suboffset.into()) - 1_u256;
-        assert_range_u128_from_u256(x);
-        // Offset of mul_mod/carry5/part6 is too big.
-        x = (dynamic_params.mul_mod_row_ratio.into())
-            - (((dynamic_params.mul_mod_carry5_part6_suboffset.into())
-                * (dynamic_params.range_check_units_row_ratio.into())))
-            - 1_u256;
-        assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier0_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier0_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier0_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier0_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier0_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier0_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier0/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier0_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier1_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier1_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier1_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier1_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier1_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier1_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier1_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier1_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier1_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier1_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier1_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier1_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier1/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier1_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier2_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier2_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier2_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+
+        // // Offset of mul_mod/p_multiplier2/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier2_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier2_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier2_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier2_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier2_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier2_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier2_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier2_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier2_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier2/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier2_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier3_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier3_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier3_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier3_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier3_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier3_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier3_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier3_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier3_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier3_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_p_multiplier3_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_p_multiplier3_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/p_multiplier3/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_p_multiplier3_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part6 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry0_part6_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part6 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry0_part6_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry0/part6 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry0_part6_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part6 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry1_part6_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part6 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry1_part6_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry1/part6 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry1_part6_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part6 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry2_part6_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part6 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry2_part6_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry2/part6 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry2_part6_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part6 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry3_part6_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part6 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry3_part6_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry3/part6 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry3_part6_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part6 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry4_part6_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part6 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry4_part6_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry4/part6 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry4_part6_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // //Offset of mul_mod/carry5/part0 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part0_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part0 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part0_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part0 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part0_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part1 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part1_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part1 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part1_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part1 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part1_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part2 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part2_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part2 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part2_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part2 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part2_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part3 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part3_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part3 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part3_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part3 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part3_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part4 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part4_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part4 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part4_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part4 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part4_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part5 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part5_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part5 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part5_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part5 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part5_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part6 must be nonnegative.
+        // x = (dynamic_params.mul_mod_carry5_part6_suboffset.into());
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part6 is too big.
+        // x = trace_length - (dynamic_params.mul_mod_carry5_part6_suboffset.into()) - 1_u256;
+        // assert_range_u128_from_u256(x);
+        // // Offset of mul_mod/carry5/part6 is too big.
+        // x = (dynamic_params.mul_mod_row_ratio.into())
+        //     - (((dynamic_params.mul_mod_carry5_part6_suboffset.into())
+        //         * (dynamic_params.range_check_units_row_ratio.into())))
+        //     - 1_u256;
+        // assert_range_u128_from_u256(x);
     }
 }
