@@ -28,11 +28,17 @@ fn eval_oods_polynomial_inner(
     let add_mod_c2_suboffset = dynamic_params.add_mod_c2_suboffset;
     let add_mod_c3_suboffset = dynamic_params.add_mod_c3_suboffset;
     let add_mod_c_offset_suboffset = dynamic_params.add_mod_c_offset_suboffset;
+    let add_mod_carry1_bit_column = dynamic_params.add_mod_carry1_bit_column;
     let add_mod_carry1_bit_offset = dynamic_params.add_mod_carry1_bit_offset;
+    let add_mod_carry1_sign_column = dynamic_params.add_mod_carry1_sign_column;
     let add_mod_carry1_sign_offset = dynamic_params.add_mod_carry1_sign_offset;
+    let add_mod_carry2_bit_column = dynamic_params.add_mod_carry2_bit_column;
     let add_mod_carry2_bit_offset = dynamic_params.add_mod_carry2_bit_offset;
+    let add_mod_carry2_sign_column = dynamic_params.add_mod_carry2_sign_column;
     let add_mod_carry2_sign_offset = dynamic_params.add_mod_carry2_sign_offset;
+    let add_mod_carry3_bit_column = dynamic_params.add_mod_carry3_bit_column;
     let add_mod_carry3_bit_offset = dynamic_params.add_mod_carry3_bit_offset;
+    let add_mod_carry3_sign_column = dynamic_params.add_mod_carry3_sign_column;
     let add_mod_carry3_sign_offset = dynamic_params.add_mod_carry3_sign_offset;
     let add_mod_n_suboffset = dynamic_params.add_mod_n_suboffset;
     let add_mod_offsets_ptr_suboffset = dynamic_params.add_mod_offsets_ptr_suboffset;
@@ -41,6 +47,7 @@ fn eval_oods_polynomial_inner(
     let add_mod_p2_suboffset = dynamic_params.add_mod_p2_suboffset;
     let add_mod_p3_suboffset = dynamic_params.add_mod_p3_suboffset;
     let add_mod_row_ratio = dynamic_params.add_mod_row_ratio;
+    let add_mod_sub_p_bit_column = dynamic_params.add_mod_sub_p_bit_column;
     let add_mod_sub_p_bit_offset = dynamic_params.add_mod_sub_p_bit_offset;
     let add_mod_values_ptr_suboffset = dynamic_params.add_mod_values_ptr_suboffset;
     let bitwise_diluted_var_pool_suboffset = dynamic_params.bitwise_diluted_var_pool_suboffset;
@@ -55,40 +62,71 @@ fn eval_oods_polynomial_inner(
     let cpu_decode_off0_suboffset = dynamic_params.cpu_decode_off0_suboffset;
     let cpu_decode_off1_suboffset = dynamic_params.cpu_decode_off1_suboffset;
     let cpu_decode_off2_suboffset = dynamic_params.cpu_decode_off2_suboffset;
+    let cpu_decode_opcode_range_check_column_column = dynamic_params
+        .cpu_decode_opcode_range_check_column_column;
     let cpu_decode_opcode_range_check_column_offset = dynamic_params
         .cpu_decode_opcode_range_check_column_offset;
     let cpu_operands_mem_dst_suboffset = dynamic_params.cpu_operands_mem_dst_suboffset;
     let cpu_operands_mem_op0_suboffset = dynamic_params.cpu_operands_mem_op0_suboffset;
     let cpu_operands_mem_op1_suboffset = dynamic_params.cpu_operands_mem_op1_suboffset;
+    let cpu_operands_ops_mul_column = dynamic_params.cpu_operands_ops_mul_column;
     let cpu_operands_ops_mul_offset = dynamic_params.cpu_operands_ops_mul_offset;
+    let cpu_operands_res_column = dynamic_params.cpu_operands_res_column;
     let cpu_operands_res_offset = dynamic_params.cpu_operands_res_offset;
+    let cpu_registers_ap_column = dynamic_params.cpu_registers_ap_column;
     let cpu_registers_ap_offset = dynamic_params.cpu_registers_ap_offset;
+    let cpu_registers_fp_column = dynamic_params.cpu_registers_fp_column;
     let cpu_registers_fp_offset = dynamic_params.cpu_registers_fp_offset;
+    let cpu_update_registers_update_pc_tmp0_column = dynamic_params
+        .cpu_update_registers_update_pc_tmp0_column;
     let cpu_update_registers_update_pc_tmp0_offset = dynamic_params
         .cpu_update_registers_update_pc_tmp0_offset;
+    let cpu_update_registers_update_pc_tmp1_column = dynamic_params
+        .cpu_update_registers_update_pc_tmp1_column;
     let cpu_update_registers_update_pc_tmp1_offset = dynamic_params
         .cpu_update_registers_update_pc_tmp1_offset;
     let cpu_component_step = dynamic_params.cpu_component_step;
+    let diluted_check_cumulative_value_column = dynamic_params
+        .diluted_check_cumulative_value_column;
     let diluted_check_cumulative_value_offset = dynamic_params
         .diluted_check_cumulative_value_offset;
+    let diluted_check_permutation_cum_prod0_column = dynamic_params
+        .diluted_check_permutation_cum_prod0_column;
     let diluted_check_permutation_cum_prod0_offset = dynamic_params
         .diluted_check_permutation_cum_prod0_offset;
+    let diluted_check_permuted_values_column = dynamic_params.diluted_check_permuted_values_column;
     let diluted_check_permuted_values_offset = dynamic_params.diluted_check_permuted_values_offset;
+    let diluted_pool_column = dynamic_params.diluted_pool_column;
     let diluted_pool_offset = dynamic_params.diluted_pool_offset;
     let diluted_units_row_ratio = dynamic_params.diluted_units_row_ratio;
+    let ec_op_doubled_points_x_column = dynamic_params.ec_op_doubled_points_x_column;
     let ec_op_doubled_points_x_offset = dynamic_params.ec_op_doubled_points_x_offset;
+    let ec_op_doubled_points_y_column = dynamic_params.ec_op_doubled_points_y_column;
     let ec_op_doubled_points_y_offset = dynamic_params.ec_op_doubled_points_y_offset;
+    let ec_op_doubling_slope_column = dynamic_params.ec_op_doubling_slope_column;
     let ec_op_doubling_slope_offset = dynamic_params.ec_op_doubling_slope_offset;
+    let ec_op_ec_subset_sum_bit_unpacking_prod_ones192_column = dynamic_params
+        .ec_op_ec_subset_sum_bit_unpacking_prod_ones192_column;
     let ec_op_ec_subset_sum_bit_unpacking_prod_ones192_offset = dynamic_params
         .ec_op_ec_subset_sum_bit_unpacking_prod_ones192_offset;
+    let ec_op_ec_subset_sum_bit_unpacking_prod_ones196_column = dynamic_params
+        .ec_op_ec_subset_sum_bit_unpacking_prod_ones196_column;
     let ec_op_ec_subset_sum_bit_unpacking_prod_ones196_offset = dynamic_params
         .ec_op_ec_subset_sum_bit_unpacking_prod_ones196_offset;
+    let ec_op_ec_subset_sum_partial_sum_x_column = dynamic_params
+        .ec_op_ec_subset_sum_partial_sum_x_column;
     let ec_op_ec_subset_sum_partial_sum_x_offset = dynamic_params
         .ec_op_ec_subset_sum_partial_sum_x_offset;
+    let ec_op_ec_subset_sum_partial_sum_y_column = dynamic_params
+        .ec_op_ec_subset_sum_partial_sum_y_column;
     let ec_op_ec_subset_sum_partial_sum_y_offset = dynamic_params
         .ec_op_ec_subset_sum_partial_sum_y_offset;
+    let ec_op_ec_subset_sum_selector_column = dynamic_params.ec_op_ec_subset_sum_selector_column;
     let ec_op_ec_subset_sum_selector_offset = dynamic_params.ec_op_ec_subset_sum_selector_offset;
+    let ec_op_ec_subset_sum_slope_column = dynamic_params.ec_op_ec_subset_sum_slope_column;
     let ec_op_ec_subset_sum_slope_offset = dynamic_params.ec_op_ec_subset_sum_slope_offset;
+    let ec_op_ec_subset_sum_x_diff_inv_column = dynamic_params
+        .ec_op_ec_subset_sum_x_diff_inv_column;
     let ec_op_ec_subset_sum_x_diff_inv_offset = dynamic_params
         .ec_op_ec_subset_sum_x_diff_inv_offset;
     let ec_op_m_suboffset = dynamic_params.ec_op_m_suboffset;
@@ -101,40 +139,75 @@ fn eval_oods_polynomial_inner(
     let ec_op_builtin_row_ratio = dynamic_params.ec_op_builtin_row_ratio;
     let ecdsa_message_suboffset = dynamic_params.ecdsa_message_suboffset;
     let ecdsa_pubkey_suboffset = dynamic_params.ecdsa_pubkey_suboffset;
+    let ecdsa_signature0_add_results_inv_column = dynamic_params
+        .ecdsa_signature0_add_results_inv_column;
     let ecdsa_signature0_add_results_inv_offset = dynamic_params
         .ecdsa_signature0_add_results_inv_offset;
+    let ecdsa_signature0_add_results_slope_column = dynamic_params
+        .ecdsa_signature0_add_results_slope_column;
     let ecdsa_signature0_add_results_slope_offset = dynamic_params
         .ecdsa_signature0_add_results_slope_offset;
+    let ecdsa_signature0_doubling_slope_column = dynamic_params
+        .ecdsa_signature0_doubling_slope_column;
     let ecdsa_signature0_doubling_slope_offset = dynamic_params
         .ecdsa_signature0_doubling_slope_offset;
+    let ecdsa_signature0_exponentiate_generator_partial_sum_x_column = dynamic_params
+        .ecdsa_signature0_exponentiate_generator_partial_sum_x_column;
     let ecdsa_signature0_exponentiate_generator_partial_sum_x_offset = dynamic_params
         .ecdsa_signature0_exponentiate_generator_partial_sum_x_offset;
+    let ecdsa_signature0_exponentiate_generator_partial_sum_y_column = dynamic_params
+        .ecdsa_signature0_exponentiate_generator_partial_sum_y_column;
     let ecdsa_signature0_exponentiate_generator_partial_sum_y_offset = dynamic_params
         .ecdsa_signature0_exponentiate_generator_partial_sum_y_offset;
+    let ecdsa_signature0_exponentiate_generator_selector_column = dynamic_params
+        .ecdsa_signature0_exponentiate_generator_selector_column;
     let ecdsa_signature0_exponentiate_generator_selector_offset = dynamic_params
         .ecdsa_signature0_exponentiate_generator_selector_offset;
+    let ecdsa_signature0_exponentiate_generator_slope_column = dynamic_params
+        .ecdsa_signature0_exponentiate_generator_slope_column;
     let ecdsa_signature0_exponentiate_generator_slope_offset = dynamic_params
         .ecdsa_signature0_exponentiate_generator_slope_offset;
+    let ecdsa_signature0_exponentiate_generator_x_diff_inv_column = dynamic_params
+        .ecdsa_signature0_exponentiate_generator_x_diff_inv_column;
     let ecdsa_signature0_exponentiate_generator_x_diff_inv_offset = dynamic_params
         .ecdsa_signature0_exponentiate_generator_x_diff_inv_offset;
+    let ecdsa_signature0_exponentiate_key_partial_sum_x_column = dynamic_params
+        .ecdsa_signature0_exponentiate_key_partial_sum_x_column;
     let ecdsa_signature0_exponentiate_key_partial_sum_x_offset = dynamic_params
         .ecdsa_signature0_exponentiate_key_partial_sum_x_offset;
+    let ecdsa_signature0_exponentiate_key_partial_sum_y_column = dynamic_params
+        .ecdsa_signature0_exponentiate_key_partial_sum_y_column;
     let ecdsa_signature0_exponentiate_key_partial_sum_y_offset = dynamic_params
         .ecdsa_signature0_exponentiate_key_partial_sum_y_offset;
+    let ecdsa_signature0_exponentiate_key_selector_column = dynamic_params
+        .ecdsa_signature0_exponentiate_key_selector_column;
     let ecdsa_signature0_exponentiate_key_selector_offset = dynamic_params
         .ecdsa_signature0_exponentiate_key_selector_offset;
+    let ecdsa_signature0_exponentiate_key_slope_column = dynamic_params
+        .ecdsa_signature0_exponentiate_key_slope_column;
     let ecdsa_signature0_exponentiate_key_slope_offset = dynamic_params
         .ecdsa_signature0_exponentiate_key_slope_offset;
+    let ecdsa_signature0_exponentiate_key_x_diff_inv_column = dynamic_params
+        .ecdsa_signature0_exponentiate_key_x_diff_inv_column;
     let ecdsa_signature0_exponentiate_key_x_diff_inv_offset = dynamic_params
         .ecdsa_signature0_exponentiate_key_x_diff_inv_offset;
+    let ecdsa_signature0_extract_r_inv_column = dynamic_params
+        .ecdsa_signature0_extract_r_inv_column;
     let ecdsa_signature0_extract_r_inv_offset = dynamic_params
         .ecdsa_signature0_extract_r_inv_offset;
+    let ecdsa_signature0_extract_r_slope_column = dynamic_params
+        .ecdsa_signature0_extract_r_slope_column;
     let ecdsa_signature0_extract_r_slope_offset = dynamic_params
         .ecdsa_signature0_extract_r_slope_offset;
+    let ecdsa_signature0_key_points_x_column = dynamic_params.ecdsa_signature0_key_points_x_column;
     let ecdsa_signature0_key_points_x_offset = dynamic_params.ecdsa_signature0_key_points_x_offset;
+    let ecdsa_signature0_key_points_y_column = dynamic_params.ecdsa_signature0_key_points_y_column;
     let ecdsa_signature0_key_points_y_offset = dynamic_params.ecdsa_signature0_key_points_y_offset;
+    let ecdsa_signature0_q_x_squared_column = dynamic_params.ecdsa_signature0_q_x_squared_column;
     let ecdsa_signature0_q_x_squared_offset = dynamic_params.ecdsa_signature0_q_x_squared_offset;
+    let ecdsa_signature0_r_w_inv_column = dynamic_params.ecdsa_signature0_r_w_inv_column;
     let ecdsa_signature0_r_w_inv_offset = dynamic_params.ecdsa_signature0_r_w_inv_offset;
+    let ecdsa_signature0_z_inv_column = dynamic_params.ecdsa_signature0_z_inv_column;
     let ecdsa_signature0_z_inv_offset = dynamic_params.ecdsa_signature0_z_inv_offset;
     let ecdsa_builtin_row_ratio = dynamic_params.ecdsa_builtin_row_ratio;
     let keccak_input_output_suboffset = dynamic_params.keccak_input_output_suboffset;
@@ -146,23 +219,40 @@ fn eval_oods_polynomial_inner(
         .keccak_keccak_diluted_column2_suboffset;
     let keccak_keccak_diluted_column3_suboffset = dynamic_params
         .keccak_keccak_diluted_column3_suboffset;
+    let keccak_keccak_parse_to_diluted_cumulative_sum_column = dynamic_params
+        .keccak_keccak_parse_to_diluted_cumulative_sum_column;
     let keccak_keccak_parse_to_diluted_cumulative_sum_offset = dynamic_params
         .keccak_keccak_parse_to_diluted_cumulative_sum_offset;
+    let keccak_keccak_parse_to_diluted_final_reshaped_input_column = dynamic_params
+        .keccak_keccak_parse_to_diluted_final_reshaped_input_column;
     let keccak_keccak_parse_to_diluted_final_reshaped_input_offset = dynamic_params
         .keccak_keccak_parse_to_diluted_final_reshaped_input_offset;
+    let keccak_keccak_parse_to_diluted_reshaped_intermediate_column = dynamic_params
+        .keccak_keccak_parse_to_diluted_reshaped_intermediate_column;
     let keccak_keccak_parse_to_diluted_reshaped_intermediate_offset = dynamic_params
         .keccak_keccak_parse_to_diluted_reshaped_intermediate_offset;
+    let keccak_keccak_rotated_parity0_column = dynamic_params.keccak_keccak_rotated_parity0_column;
     let keccak_keccak_rotated_parity0_offset = dynamic_params.keccak_keccak_rotated_parity0_offset;
+    let keccak_keccak_rotated_parity1_column = dynamic_params.keccak_keccak_rotated_parity1_column;
     let keccak_keccak_rotated_parity1_offset = dynamic_params.keccak_keccak_rotated_parity1_offset;
+    let keccak_keccak_rotated_parity2_column = dynamic_params.keccak_keccak_rotated_parity2_column;
     let keccak_keccak_rotated_parity2_offset = dynamic_params.keccak_keccak_rotated_parity2_offset;
+    let keccak_keccak_rotated_parity3_column = dynamic_params.keccak_keccak_rotated_parity3_column;
     let keccak_keccak_rotated_parity3_offset = dynamic_params.keccak_keccak_rotated_parity3_offset;
+    let keccak_keccak_rotated_parity4_column = dynamic_params.keccak_keccak_rotated_parity4_column;
     let keccak_keccak_rotated_parity4_offset = dynamic_params.keccak_keccak_rotated_parity4_offset;
     let keccak_row_ratio = dynamic_params.keccak_row_ratio;
+    let mem_pool_addr_column = dynamic_params.mem_pool_addr_column;
     let mem_pool_addr_offset = dynamic_params.mem_pool_addr_offset;
+    let mem_pool_value_column = dynamic_params.mem_pool_value_column;
     let mem_pool_value_offset = dynamic_params.mem_pool_value_offset;
+    let memory_multi_column_perm_perm_cum_prod0_column = dynamic_params
+        .memory_multi_column_perm_perm_cum_prod0_column;
     let memory_multi_column_perm_perm_cum_prod0_offset = dynamic_params
         .memory_multi_column_perm_perm_cum_prod0_offset;
+    let memory_sorted_addr_column = dynamic_params.memory_sorted_addr_column;
     let memory_sorted_addr_offset = dynamic_params.memory_sorted_addr_offset;
+    let memory_sorted_value_column = dynamic_params.memory_sorted_value_column;
     let memory_sorted_value_offset = dynamic_params.memory_sorted_value_offset;
     let memory_units_row_ratio = dynamic_params.memory_units_row_ratio;
     let mul_mod_a0_suboffset = dynamic_params.mul_mod_a0_suboffset;
@@ -278,17 +368,31 @@ fn eval_oods_polynomial_inner(
         .mul_mod_p_multiplier3_part5_suboffset;
     let mul_mod_row_ratio = dynamic_params.mul_mod_row_ratio;
     let mul_mod_values_ptr_suboffset = dynamic_params.mul_mod_values_ptr_suboffset;
+    let num_columns_first = dynamic_params.num_columns_first;
+    let num_columns_second = dynamic_params.num_columns_second;
     let orig_public_memory_suboffset = dynamic_params.orig_public_memory_suboffset;
+    let pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_column = dynamic_params
+        .pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_column;
     let pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_offset = dynamic_params
         .pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_offset;
+    let pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_column = dynamic_params
+        .pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_column;
     let pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_offset = dynamic_params
         .pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_offset;
+    let pedersen_hash0_ec_subset_sum_partial_sum_x_column = dynamic_params
+        .pedersen_hash0_ec_subset_sum_partial_sum_x_column;
     let pedersen_hash0_ec_subset_sum_partial_sum_x_offset = dynamic_params
         .pedersen_hash0_ec_subset_sum_partial_sum_x_offset;
+    let pedersen_hash0_ec_subset_sum_partial_sum_y_column = dynamic_params
+        .pedersen_hash0_ec_subset_sum_partial_sum_y_column;
     let pedersen_hash0_ec_subset_sum_partial_sum_y_offset = dynamic_params
         .pedersen_hash0_ec_subset_sum_partial_sum_y_offset;
+    let pedersen_hash0_ec_subset_sum_selector_column = dynamic_params
+        .pedersen_hash0_ec_subset_sum_selector_column;
     let pedersen_hash0_ec_subset_sum_selector_offset = dynamic_params
         .pedersen_hash0_ec_subset_sum_selector_offset;
+    let pedersen_hash0_ec_subset_sum_slope_column = dynamic_params
+        .pedersen_hash0_ec_subset_sum_slope_column;
     let pedersen_hash0_ec_subset_sum_slope_offset = dynamic_params
         .pedersen_hash0_ec_subset_sum_slope_offset;
     let pedersen_input0_suboffset = dynamic_params.pedersen_input0_suboffset;
@@ -301,29 +405,52 @@ fn eval_oods_polynomial_inner(
         .poseidon_param_1_input_output_suboffset;
     let poseidon_param_2_input_output_suboffset = dynamic_params
         .poseidon_param_2_input_output_suboffset;
+    let poseidon_poseidon_full_rounds_state0_column = dynamic_params
+        .poseidon_poseidon_full_rounds_state0_column;
     let poseidon_poseidon_full_rounds_state0_offset = dynamic_params
         .poseidon_poseidon_full_rounds_state0_offset;
+    let poseidon_poseidon_full_rounds_state0_squared_column = dynamic_params
+        .poseidon_poseidon_full_rounds_state0_squared_column;
     let poseidon_poseidon_full_rounds_state0_squared_offset = dynamic_params
         .poseidon_poseidon_full_rounds_state0_squared_offset;
+    let poseidon_poseidon_full_rounds_state1_column = dynamic_params
+        .poseidon_poseidon_full_rounds_state1_column;
     let poseidon_poseidon_full_rounds_state1_offset = dynamic_params
         .poseidon_poseidon_full_rounds_state1_offset;
+    let poseidon_poseidon_full_rounds_state1_squared_column = dynamic_params
+        .poseidon_poseidon_full_rounds_state1_squared_column;
     let poseidon_poseidon_full_rounds_state1_squared_offset = dynamic_params
         .poseidon_poseidon_full_rounds_state1_squared_offset;
+    let poseidon_poseidon_full_rounds_state2_column = dynamic_params
+        .poseidon_poseidon_full_rounds_state2_column;
     let poseidon_poseidon_full_rounds_state2_offset = dynamic_params
         .poseidon_poseidon_full_rounds_state2_offset;
+    let poseidon_poseidon_full_rounds_state2_squared_column = dynamic_params
+        .poseidon_poseidon_full_rounds_state2_squared_column;
     let poseidon_poseidon_full_rounds_state2_squared_offset = dynamic_params
         .poseidon_poseidon_full_rounds_state2_squared_offset;
+    let poseidon_poseidon_partial_rounds_state0_column = dynamic_params
+        .poseidon_poseidon_partial_rounds_state0_column;
     let poseidon_poseidon_partial_rounds_state0_offset = dynamic_params
         .poseidon_poseidon_partial_rounds_state0_offset;
+    let poseidon_poseidon_partial_rounds_state0_squared_column = dynamic_params
+        .poseidon_poseidon_partial_rounds_state0_squared_column;
     let poseidon_poseidon_partial_rounds_state0_squared_offset = dynamic_params
         .poseidon_poseidon_partial_rounds_state0_squared_offset;
+    let poseidon_poseidon_partial_rounds_state1_column = dynamic_params
+        .poseidon_poseidon_partial_rounds_state1_column;
     let poseidon_poseidon_partial_rounds_state1_offset = dynamic_params
         .poseidon_poseidon_partial_rounds_state1_offset;
+    let poseidon_poseidon_partial_rounds_state1_squared_column = dynamic_params
+        .poseidon_poseidon_partial_rounds_state1_squared_column;
     let poseidon_poseidon_partial_rounds_state1_squared_offset = dynamic_params
         .poseidon_poseidon_partial_rounds_state1_squared_offset;
     let poseidon_row_ratio = dynamic_params.poseidon_row_ratio;
+    let range_check16_perm_cum_prod0_column = dynamic_params.range_check16_perm_cum_prod0_column;
     let range_check16_perm_cum_prod0_offset = dynamic_params.range_check16_perm_cum_prod0_offset;
+    let range_check16_sorted_column = dynamic_params.range_check16_sorted_column;
     let range_check16_sorted_offset = dynamic_params.range_check16_sorted_offset;
+    let range_check16_pool_column = dynamic_params.range_check16_pool_column;
     let range_check16_pool_offset = dynamic_params.range_check16_pool_offset;
     let range_check96_builtin_inner_range_check0_suboffset = dynamic_params
         .range_check96_builtin_inner_range_check0_suboffset;
@@ -1147,28 +1274,6 @@ fn eval_oods_polynomial_inner(
         * pow375; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512))).
     let pow379 = pow228
         * pow378; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512))).
-    let pow380 = pow192
-        * pow350; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow381 = pow192
-        * pow352; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow382 = pow192
-        * pow353; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow383 = pow192
-        * pow354; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow384 = pow192
-        * pow356; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow385 = pow192
-        * pow358; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow386 = pow192
-        * pow360; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow387 = pow192
-        * pow361; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow388 = pow192
-        * pow362; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow389 = pow192
-        * pow363; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow390 = pow192
-        * pow364; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
     let pow391 = pow247
         * pow379; // pow(trace_generator, (safe_div((safe_mult(5, keccak_row_ratio)), 16))).
     let pow392 = pow244
@@ -1236,60 +1341,6 @@ fn eval_oods_polynomial_inner(
         * pow422; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
     let pow424 = pow228
         * pow422; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128))).
-    let pow425 = pow191
-        * pow350; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow426 = pow191
-        * pow354; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow427 = pow191
-        * pow356; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow428 = pow191
-        * pow358; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow429 = pow191
-        * pow360; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow430 = pow191
-        * pow361; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow431 = pow191
-        * pow362; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow432 = pow191
-        * pow363; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow433 = pow191
-        * pow364; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow434 = pow191
-        * pow410; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow435 = pow191
-        * pow395; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow436 = pow193
-        * pow362; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow437 = pow193
-        * pow363; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow438 = pow193
-        * pow364; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow439 = pow193
-        * pow370; // pow(trace_generator, (safe_div((safe_mult(33, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow440 = pow193
-        * pow372; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_div(keccak_row_ratio, 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow441 = pow193
-        * pow406; // pow(trace_generator, (safe_div(keccak_row_ratio, 2)) + (safe_div((safe_mult(3, keccak_row_ratio)), 16)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow442 = pow193
-        * pow407; // pow(trace_generator, (safe_div(keccak_row_ratio, 2)) + (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 16)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow443 = pow193
-        * pow408; // pow(trace_generator, (safe_div(keccak_row_ratio, 2)) + (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(3, keccak_row_ratio)), 16)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow444 = pow193
-        * pow392; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_div((safe_mult(5, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow445 = pow193
-        * pow403; // pow(trace_generator, (safe_div(keccak_row_ratio, 2)) + (safe_div((safe_mult(43, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow446 = pow193
-        * pow410; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow447 = pow193
-        * pow424; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow448 = pow193
-        * pow404; // pow(trace_generator, (safe_div(keccak_row_ratio, 2)) + (safe_div((safe_mult(47, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow449 = pow193
-        * pow415; // pow(trace_generator, (safe_div((safe_mult(97, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow450 = pow193
-        * pow416; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow451 = pow193
-        * pow417; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div((safe_mult(7, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
     let pow452 = pow273 * pow422; // pow(trace_generator, keccak_row_ratio).
     let pow453 = pow396
         * pow452; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 2))).
@@ -1699,20 +1750,6 @@ fn eval_oods_polynomial_inner(
         * pow656; // pow(trace_generator, (safe_div((safe_mult(37, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 32))).
     let pow660 = pow254
         * pow652; // pow(trace_generator, (safe_mult(7, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128))).
-    let pow661 = pow192
-        * pow660; // pow(trace_generator, (safe_mult(7, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow662 = pow193
-        * pow609; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 32)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow663 = pow193
-        * pow654; // pow(trace_generator, (safe_mult(7, keccak_row_ratio)) + (safe_div((safe_mult(5, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow664 = pow193
-        * pow655; // pow(trace_generator, (safe_mult(9, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow665 = pow210
-        * pow594; // pow(trace_generator, (safe_div(keccak_row_ratio, 2048)) + (safe_mult(6, keccak_row_ratio)) + (safe_div((safe_mult(9, keccak_row_ratio)), 128))).
-    let pow666 = pow210
-        * pow636; // pow(trace_generator, (safe_div(keccak_row_ratio, 2048)) + (safe_mult(8, keccak_row_ratio))).
-    let pow667 = pow210
-        * pow637; // pow(trace_generator, (safe_div(keccak_row_ratio, 2048)) + (safe_mult(8, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 32))).
     let pow668 = pow396
         * pow656; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4))).
     let pow669 = pow220
@@ -1797,44 +1834,6 @@ fn eval_oods_polynomial_inner(
         * pow707; // pow(trace_generator, (safe_mult(11, keccak_row_ratio)) + (safe_div((safe_mult(9, keccak_row_ratio)), 128))).
     let pow710 = pow249
         * pow708; // pow(trace_generator, (safe_mult(11, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128))).
-    let pow711 = pow192
-        * pow710; // pow(trace_generator, (safe_mult(11, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow712 = pow193
-        * pow671; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div((safe_mult(15, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow713 = pow193
-        * pow672; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div((safe_mult(19, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow714 = pow193
-        * pow673; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div((safe_mult(23, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow715 = pow193
-        * pow684; // pow(trace_generator, (safe_div((safe_mult(41, keccak_row_ratio)), 4)) + (safe_div((safe_mult(27, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow716 = pow193
-        * pow685; // pow(trace_generator, (safe_div((safe_mult(41, keccak_row_ratio)), 4)) + (safe_div((safe_mult(31, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow717 = pow193
-        * pow686; // pow(trace_generator, (safe_div((safe_mult(41, keccak_row_ratio)), 4)) + (safe_div((safe_mult(35, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow718 = pow210
-        * pow679; // pow(trace_generator, (safe_div(keccak_row_ratio, 2048)) + (safe_mult(10, keccak_row_ratio))).
-    let pow719 = pow210
-        * pow680; // pow(trace_generator, (safe_div(keccak_row_ratio, 2048)) + (safe_mult(10, keccak_row_ratio)) + (safe_div((safe_mult(15, keccak_row_ratio)), 128))).
-    let pow720 = pow193
-        * pow675; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div((safe_mult(11, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow721 = pow193
-        * pow676; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(11, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow722 = pow193
-        * pow677; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(11, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow723 = pow193
-        * pow687; // pow(trace_generator, (safe_div((safe_mult(41, keccak_row_ratio)), 4)) + (safe_div((safe_mult(23, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow724 = pow193
-        * pow688; // pow(trace_generator, (safe_div((safe_mult(41, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(23, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow725 = pow193
-        * pow703; // pow(trace_generator, (safe_mult(11, keccak_row_ratio)) + (safe_div(keccak_row_ratio, 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow726 = pow193
-        * pow689; // pow(trace_generator, (safe_div((safe_mult(41, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(23, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow727 = pow191
-        * pow678; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow728 = pow191
-        * pow699; // pow(trace_generator, (safe_div((safe_mult(43, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow729 = pow191
-        * pow700; // pow(trace_generator, (safe_div((safe_mult(43, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
     let pow730 = pow329
         * pow709; // pow(trace_generator, (safe_div((safe_mult(45, keccak_row_ratio)), 4))).
     let pow731 = pow228
@@ -2061,232 +2060,6 @@ fn eval_oods_polynomial_inner(
         * pow842; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128))).
     let pow844 = pow192
         * pow843; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow845 = pow228
-        * pow843; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128))).
-    let pow846 = pow191
-        * pow843; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column2_suboffset, diluted_units_row_ratio))).
-    let pow847 = pow192
-        * pow845; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column1_suboffset, diluted_units_row_ratio))).
-    let pow848 = pow193
-        * pow832; // pow(trace_generator, (safe_div((safe_mult(31, keccak_row_ratio)), 2)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow849 = pow193
-        * pow833; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow850 = pow193
-        * pow841; // pow(trace_generator, (safe_div((safe_mult(2017, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow851 = pow193
-        * pow842; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 64)) + (safe_mult(keccak_keccak_diluted_column3_suboffset, diluted_units_row_ratio))).
-    let pow852 = pow194
-        * pow202; // pow(trace_generator, (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow853 = pow194
-        * pow235; // pow(trace_generator, (safe_div(keccak_row_ratio, 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow854 = pow194
-        * pow244; // pow(trace_generator, (safe_div(keccak_row_ratio, 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow855 = pow194
-        * pow249; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow856 = pow194
-        * pow645; // pow(trace_generator, (safe_mult(9, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow857 = pow194
-        * pow252; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 128)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow858 = pow194
-        * pow256; // pow(trace_generator, (safe_div(keccak_row_ratio, 32)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow859 = pow194
-        * pow261; // pow(trace_generator, (safe_div(keccak_row_ratio, 32)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow860 = pow194
-        * pow264; // pow(trace_generator, (safe_div((safe_mult(5, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow861 = pow194
-        * pow269; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow862 = pow194
-        * pow273; // pow(trace_generator, (safe_div((safe_mult(7, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow863 = pow194
-        * pow277; // pow(trace_generator, (safe_div(keccak_row_ratio, 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow864 = pow194
-        * pow279; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div(keccak_row_ratio, 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow865 = pow194
-        * pow280; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div(keccak_row_ratio, 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow866 = pow194
-        * pow283; // pow(trace_generator, (safe_div((safe_mult(9, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow867 = pow194
-        * pow287; // pow(trace_generator, (safe_div((safe_mult(5, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow868 = pow194
-        * pow809; // pow(trace_generator, (safe_div((safe_mult(61, keccak_row_ratio)), 4)) + (safe_div((safe_mult(5, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow869 = pow194
-        * pow291; // pow(trace_generator, (safe_div((safe_mult(11, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow870 = pow194
-        * pow295; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 32)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow871 = pow194
-        * pow297; // pow(trace_generator, (safe_div((safe_mult(13, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow872 = pow194
-        * pow299; // pow(trace_generator, (safe_div((safe_mult(7, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow873 = pow194
-        * pow301; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(7, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow874 = pow194
-        * pow302; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(7, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow875 = pow194
-        * pow303; // pow(trace_generator, (safe_div((safe_mult(15, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow876 = pow194
-        * pow304; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(15, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow877 = pow194
-        * pow305; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(15, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow878 = pow194
-        * pow307; // pow(trace_generator, (safe_div(keccak_row_ratio, 8)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow879 = pow194
-        * pow309; // pow(trace_generator, (safe_div((safe_mult(17, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow880 = pow194
-        * pow557; // pow(trace_generator, (safe_div((safe_mult(19, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 8)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow881 = pow194
-        * pow311; // pow(trace_generator, (safe_div((safe_mult(9, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow882 = pow194
-        * pow313; // pow(trace_generator, (safe_div((safe_mult(19, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow883 = pow194
-        * pow315; // pow(trace_generator, (safe_div((safe_mult(5, keccak_row_ratio)), 32)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow884 = pow194
-        * pow317; // pow(trace_generator, (safe_div((safe_mult(21, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow885 = pow194
-        * pow319; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(21, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow886 = pow194
-        * pow321; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(21, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow887 = pow194
-        * pow323; // pow(trace_generator, (safe_div((safe_mult(11, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow888 = pow194
-        * pow329; // pow(trace_generator, (safe_div((safe_mult(23, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow889 = pow194
-        * pow335; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow890 = pow194
-        * pow341; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow891 = pow194
-        * pow346; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow892 = pow194
-        * pow348; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow893 = pow194
-        * pow481; // pow(trace_generator, (safe_mult(2, keccak_row_ratio)) + (safe_div((safe_mult(23, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow894 = pow194
-        * pow490; // pow(trace_generator, (safe_div((safe_mult(9, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow895 = pow194
-        * pow759; // pow(trace_generator, (safe_div((safe_mult(27, keccak_row_ratio)), 2)) + (safe_div((safe_mult(11, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow896 = pow194
-        * pow760; // pow(trace_generator, (safe_div((safe_mult(27, keccak_row_ratio)), 2)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow897 = pow194
-        * pow610; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 4)) + (safe_div((safe_mult(7, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow898 = pow194
-        * pow350; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow899 = pow194
-        * pow352; // pow(trace_generator, (safe_div(keccak_row_ratio, 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow900 = pow194
-        * pow353; // pow(trace_generator, (safe_div(keccak_row_ratio, 256)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow901 = pow194
-        * pow558; // pow(trace_generator, (safe_div((safe_mult(19, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow902 = pow194
-        * pow566; // pow(trace_generator, (safe_mult(5, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow903 = pow194
-        * pow568; // pow(trace_generator, (safe_mult(5, keccak_row_ratio)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow904 = pow194
-        * pow577; // pow(trace_generator, (safe_div((safe_mult(21, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 32)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow905 = pow194
-        * pow354; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow906 = pow194
-        * pow356; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow907 = pow194
-        * pow491; // pow(trace_generator, (safe_div((safe_mult(1153, keccak_row_ratio)), 512)) + (safe_div(keccak_row_ratio, 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow908 = pow194
-        * pow611; // pow(trace_generator, (safe_div((safe_mult(3201, keccak_row_ratio)), 512)) + (safe_div((safe_mult(7, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow909 = pow194
-        * pow492; // pow(trace_generator, (safe_div((safe_mult(577, keccak_row_ratio)), 256)) + (safe_div(keccak_row_ratio, 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow910 = pow194
-        * pow358; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow911 = pow194
-        * pow365; // pow(trace_generator, (safe_div(keccak_row_ratio, 4)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow912 = pow194
-        * pow411; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow913 = pow194
-        * pow464; // pow(trace_generator, (safe_div((safe_mult(7, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow914 = pow194
-        * pow525; // pow(trace_generator, (safe_div((safe_mult(15, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow915 = pow194
-        * pow631; // pow(trace_generator, (safe_div((safe_mult(31, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow916 = pow194
-        * pow360; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow917 = pow194
-        * pow361; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow918 = pow194
-        * pow420; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 4)) + (safe_div((safe_mult(11, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow919 = pow194
-        * pow581; // pow(trace_generator, (safe_div((safe_mult(23, keccak_row_ratio)), 4)) + (safe_div((safe_mult(15, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow920 = pow194
-        * pow582; // pow(trace_generator, (safe_div((safe_mult(2945, keccak_row_ratio)), 512)) + (safe_div((safe_mult(15, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow921 = pow194
-        * pow825; // pow(trace_generator, (safe_div((safe_mult(31, keccak_row_ratio)), 2)) + (safe_div((safe_mult(21, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow922 = pow194
-        * pow583; // pow(trace_generator, (safe_div((safe_mult(1473, keccak_row_ratio)), 256)) + (safe_div((safe_mult(15, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow923 = pow194
-        * pow674; // pow(trace_generator, (safe_div((safe_mult(39, keccak_row_ratio)), 4)) + (safe_div((safe_mult(13, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow924 = pow194
-        * pow827; // pow(trace_generator, (safe_div((safe_mult(7937, keccak_row_ratio)), 512)) + (safe_div((safe_mult(21, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow925 = pow194
-        * pow828; // pow(trace_generator, (safe_div((safe_mult(3969, keccak_row_ratio)), 256)) + (safe_div((safe_mult(21, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow926 = pow194
-        * pow829; // pow(trace_generator, (safe_div((safe_mult(31, keccak_row_ratio)), 2)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow927 = pow194
-        * pow830; // pow(trace_generator, (safe_div((safe_mult(7937, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow928 = pow194
-        * pow831; // pow(trace_generator, (safe_div((safe_mult(3969, keccak_row_ratio)), 256)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow929 = pow194
-        * pow833; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow930 = pow194
-        * pow834; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 4096)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow931 = pow194
-        * pow838; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow932 = pow194
-        * pow841; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow933 = pow194
-        * pow613; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow934 = pow194
-        * pow614; // pow(trace_generator, (safe_div((safe_mult(3201, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow935 = pow194
-        * pow658; // pow(trace_generator, (safe_div((safe_mult(37, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow936 = pow194
-        * pow708; // pow(trace_generator, (safe_mult(11, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow937 = pow194
-        * pow698; // pow(trace_generator, (safe_div((safe_mult(43, keccak_row_ratio)), 4)) + (safe_div((safe_mult(9, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow938 = pow194
-        * pow742; // pow(trace_generator, (safe_div((safe_mult(23, keccak_row_ratio)), 2)) + (safe_div((safe_mult(5, keccak_row_ratio)), 32)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow939 = pow194
-        * pow709; // pow(trace_generator, (safe_mult(11, keccak_row_ratio)) + (safe_div((safe_mult(9, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow940 = pow194
-        * pow843; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow941 = pow194
-        * pow518; // pow(trace_generator, (safe_div((safe_mult(7, keccak_row_ratio)), 2)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow942 = pow194
-        * pow612; // pow(trace_generator, (safe_div((safe_mult(1601, keccak_row_ratio)), 256)) + (safe_div((safe_mult(7, keccak_row_ratio)), 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow943 = pow194
-        * pow615; // pow(trace_generator, (safe_div((safe_mult(1601, keccak_row_ratio)), 256)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow944 = pow194
-        * pow654; // pow(trace_generator, (safe_mult(7, keccak_row_ratio)) + (safe_div((safe_mult(5, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow945 = pow194
-        * pow659; // pow(trace_generator, (safe_div((safe_mult(37, keccak_row_ratio)), 4)) + (safe_div(keccak_row_ratio, 32)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow946 = pow194
-        * pow778; // pow(trace_generator, (safe_div((safe_mult(29, keccak_row_ratio)), 2)) + (safe_div((safe_mult(7, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow947 = pow194
-        * pow362; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow948 = pow194
-        * pow363; // pow(trace_generator, (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow949 = pow194
-        * pow399; // pow(trace_generator, (safe_div(keccak_row_ratio, 2)) + (safe_div(keccak_row_ratio, 64)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow950 = pow194
-        * pow756; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 2)) + (safe_div((safe_mult(3, keccak_row_ratio)), 16)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow951 = pow194
-        * pow786; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 2)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow952 = pow194
-        * pow749; // pow(trace_generator, (safe_div((safe_mult(49, keccak_row_ratio)), 4)) + (safe_div((safe_mult(17, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow953 = pow194
-        * pow800; // pow(trace_generator, (safe_mult(14, keccak_row_ratio)) + (safe_div((safe_mult(19, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow954 = pow194
-        * pow803; // pow(trace_generator, (safe_mult(14, keccak_row_ratio)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow955 = pow194
-        * pow845; // pow(trace_generator, (safe_div((safe_mult(63, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow956 = pow194
-        * pow616; // pow(trace_generator, (safe_div((safe_mult(25, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
-    let pow957 = pow194
-        * pow740; // pow(trace_generator, (safe_div((safe_mult(45, keccak_row_ratio)), 4)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(3, keccak_row_ratio)), 512)) + (safe_div((safe_mult(25, keccak_row_ratio)), 128)) + (safe_mult(keccak_keccak_diluted_column0_suboffset, diluted_units_row_ratio))).
     let pow958 = pow(
         trace_generator, (keccak_input_output_suboffset * memory_units_row_ratio).into()
     );
@@ -2451,13 +2224,9 @@ fn eval_oods_polynomial_inner(
         * pow1042; // pow(trace_generator, (safe_div((safe_mult(5, range_check_builtin_row_ratio)), 8)) + (safe_mult(range_check_builtin_inner_range_check_suboffset, range_check_units_row_ratio))).
     let pow1044 = pow30
         * pow1043; // pow(trace_generator, (safe_div((safe_mult(3, range_check_builtin_row_ratio)), 4)) + (safe_mult(range_check_builtin_inner_range_check_suboffset, range_check_units_row_ratio))).
-    let pow1045 = pow30
-        * pow1044; // pow(trace_generator, (safe_div((safe_mult(7, range_check_builtin_row_ratio)), 8)) + (safe_mult(range_check_builtin_inner_range_check_suboffset, range_check_units_row_ratio))).
     let pow1046 = pow(
         trace_generator, (range_check_builtin_mem_suboffset * memory_units_row_ratio).into()
     );
-    let pow1047 = pow37
-        * pow1046; // pow(trace_generator, range_check_builtin_row_ratio + (safe_mult(range_check_builtin_mem_suboffset, memory_units_row_ratio))).
     let pow1048 = pow(trace_generator, (pedersen_input1_suboffset * memory_units_row_ratio).into());
     let pow1049 = pow(trace_generator, (pedersen_output_suboffset * memory_units_row_ratio).into());
     let pow1050 = pow(trace_generator, (pedersen_input0_suboffset * memory_units_row_ratio).into());
@@ -2466,19 +2235,11 @@ fn eval_oods_polynomial_inner(
     let pow1053 = pow(trace_generator, (49 * pedersen_builtin_row_ratio / 128).into());
     let pow1054 = pow(trace_generator, (3 * pedersen_builtin_row_ratio / 8).into());
     let pow1055 = pow(trace_generator, (pedersen_builtin_row_ratio / 512).into());
-    let pow1056 = pow1054
-        * pow1055; // pow(trace_generator, (safe_div((safe_mult(193, pedersen_builtin_row_ratio)), 512))).
     let pow1057 = pow1051
         * pow1055; // pow(trace_generator, (safe_div(pedersen_builtin_row_ratio, 2))).
     let pow1058 = pow1051
         * pow1057; // pow(trace_generator, (safe_div(pedersen_builtin_row_ratio, 2)) + (safe_div((safe_mult(255, pedersen_builtin_row_ratio)), 512))).
     let pow1059 = pow1055 * pow1058; // pow(trace_generator, pedersen_builtin_row_ratio).
-    let pow1060 = pow1050
-        * pow1059; // pow(trace_generator, pedersen_builtin_row_ratio + (safe_mult(pedersen_input0_suboffset, memory_units_row_ratio))).
-    let pow1061 = pow1053
-        * pow1055; // pow(trace_generator, (safe_div((safe_mult(197, pedersen_builtin_row_ratio)), 512))).
-    let pow1062 = pow1052
-        * pow1055; // pow(trace_generator, (safe_div((safe_mult(63, pedersen_builtin_row_ratio)), 128))).
     let pow1063 = pow(trace_generator, diluted_units_row_ratio.into());
     let pow1064 = pow(trace_generator, range_check_units_row_ratio.into());
     let pow1065 = pow(
@@ -2532,8 +2293,6 @@ fn eval_oods_polynomial_inner(
     let pow1088 = pow1074
         * pow1087; // pow(trace_generator, (safe_mult(14, cpu_component_step)) + cpu_component_step).
     let pow1089 = pow1074 * pow1088; // pow(trace_generator, (safe_mult(16, cpu_component_step))).
-    let pow1090 = pow1073
-        * pow1089; // pow(trace_generator, (safe_mult(16, cpu_component_step)) + (safe_mult(cpu_decode_mem_inst_suboffset, memory_units_row_ratio))).
     let pow1091 = pow(trace_generator, diluted_check_cumulative_value_offset.into());
     let pow1092 = pow1063
         * pow1091; // pow(trace_generator, diluted_units_row_ratio + diluted_check_cumulative_value_offset).
