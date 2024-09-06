@@ -30,6 +30,22 @@ use cairo_verifier::{
     },
 };
 
+pub fn get_builtins() -> Array<felt252> {
+    array![
+        'output',
+        'pedersen',
+        'range_check',
+        'ecdsa',
+        'bitwise',
+        'ec_op',
+        'keccak',
+        'poseidon',
+        'range_check96',
+        'add_mod',
+        'mul_mod'
+    ]
+}
+
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 
@@ -68,7 +84,9 @@ trait PublicInputTrait {
 }
 
 // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
-fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
+fn get_public_input_hash(
+    public_input: @PublicInput, n_verifier_friendly_commitment_layers: felt252
+) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
     let mut i: u32 = 0;
@@ -84,6 +102,7 @@ fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
     let main_page_hash = main_page_hash_state.finalize();
 
     let mut hash_data = ArrayTrait::<felt252>::new();
+    hash_data.append(n_verifier_friendly_commitment_layers);
     hash_data.append(*public_input.log_n_steps);
     hash_data.append(*public_input.range_check_min);
     hash_data.append(*public_input.range_check_max);
@@ -177,29 +196,32 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 
     // 1. Program segment
     assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
-    let program = memory
-        .extract_range_unchecked(initial_pc.try_into().unwrap(), memory.len() - output_len);
+    let program = memory.extract_range_unchecked(0, memory.len() - output_len);
     let program_hash = poseidon_hash_span(program);
 
-    // 2. Output segment 
+    // 2. Output segment
     let output = memory.extract_range_unchecked(memory.len() - output_len, output_len);
     let output_hash = poseidon_hash_span(output);
     (program_hash, output_hash)
 }
 
+// === RECURSIVE BEGIN ===
 #[cfg(test)]
 mod tests {
+    use core::debug::PrintTrait;
     use super::get_public_input_hash;
     use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
-    // test data from cairo0-verifier run on stone-prover generated proof
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
         let public_input = get();
-        let hash = get_public_input_hash(@public_input);
-
+        let hash = get_public_input_hash(@public_input, 20);
         assert(
-            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
+            hash == 0x113b1d4f79ee0dac11d2677f9f6dc8ffacb6ea129f3ae1e45e1158ad500791f,
+            'Hash invalid'
         )
     }
 }
+// === RECURSIVE END ===
+
+
