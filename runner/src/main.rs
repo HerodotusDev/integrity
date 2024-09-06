@@ -13,7 +13,9 @@ use std::{
     io::{stdin, Read},
 };
 use swiftness_proof_parser::parse;
-use transform::ParsedStarkProof;
+use transform::StarkProofExprs;
+
+const ENTRYPOINT: &str = "main";
 
 #[derive(Parser)]
 #[command(author, version, about)]
@@ -30,15 +32,14 @@ fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     let mut input = String::new();
     stdin().read_to_string(&mut input)?;
-    let parsed: ParsedStarkProof = parse(input)?.into();
 
-    let function = "main";
-
-    let config: VecFelt252 = serde_json::from_str(&parsed.config.to_string()).unwrap();
-    let public_input: VecFelt252 = serde_json::from_str(&parsed.public_input.to_string()).unwrap();
+    let stark_proof: StarkProofExprs = parse(input)?.into();
+    let config: VecFelt252 = serde_json::from_str(&stark_proof.config.to_string()).unwrap();
+    let public_input: VecFelt252 =
+        serde_json::from_str(&stark_proof.public_input.to_string()).unwrap();
     let unsent_commitment: VecFelt252 =
-        serde_json::from_str(&parsed.unsent_commitment.to_string()).unwrap();
-    let witness: VecFelt252 = serde_json::from_str(&parsed.witness.to_string()).unwrap();
+        serde_json::from_str(&stark_proof.unsent_commitment.to_string()).unwrap();
+    let witness: VecFelt252 = serde_json::from_str(&stark_proof.witness.to_string()).unwrap();
 
     let proof = chain!(
         config.into_iter(),
@@ -61,16 +62,14 @@ fn main() -> anyhow::Result<()> {
     )
     .unwrap();
 
-    let func = runner.find_function(function).unwrap();
-    let proof_arg = Arg::Array(proof.into_iter().map(Arg::Value).collect_vec());
-    let cairo_version_arg = Arg::Value(cli.cairo_version.into());
-    let args = &[proof_arg, cairo_version_arg];
+    let func = runner.find_function(ENTRYPOINT).unwrap();
+    let args = &[
+        Arg::Array(proof.into_iter().map(Arg::Value).collect_vec()),
+        Arg::Value(cli.cairo_version.into()),
+    ];
     let result = runner
         .run_function_with_starknet_context(func, args, Some(u32::MAX as usize), Default::default())
         .unwrap();
-    // let profiling_processor =
-    //     ProfilingInfoProcessor::new(None, sierra_program.program, UnorderedHashMap::default());
-    // let processed_profiling_info = profiling_processor.process(&result.profiling_info.unwrap());
 
     println!("gas_counter: {}", result.gas_counter.unwrap());
     println!("n_steps: {}", result.memory.len());

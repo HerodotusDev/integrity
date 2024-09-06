@@ -381,14 +381,14 @@ impl DerefMut for Exprs {
     }
 }
 
-pub struct ParsedStarkProof {
+pub struct StarkProofExprs {
     pub config: Exprs,
     pub public_input: Exprs,
     pub unsent_commitment: Exprs,
     pub witness: Exprs,
 }
 
-impl From<StarkProof> for ParsedStarkProof {
+impl From<StarkProof> for StarkProofExprs {
     fn from(value: StarkProof) -> Self {
         Self {
             config: Exprs::from(value.config),
