@@ -25,4 +25,7 @@ starknet_with_keccak = []
 keccak = []
 blake2s = []
 
+monolit = []
+split = []
+
 default = ["recursive", "keccak"]
