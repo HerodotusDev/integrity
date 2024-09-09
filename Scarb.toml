@@ -2,12 +2,27 @@
 name = "cairo_verifier"
 version = "0.1.0"
 
-[lib]
-sierra = true
-
-[[target.starknet-contract]]
-sierra = true
-casm = true
-
 [dependencies]
 snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.24.0" }
+
+[[target.starknet-contract]]
+casm = true
+# sierra = true
+
+[lib]
+sierra = true
+casm = false
+
+[features]
+
+recursive = []
+recursive_with_poseidon = []
+dex = []
+small = []
+starknet = []
+starknet_with_keccak = []
+
+keccak = []
+blake2s = []
+
+default = ["recursive", "keccak"]

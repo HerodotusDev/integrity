@@ -2,20 +2,20 @@ use cairo_verifier::{
     fri::fri::fri_verify_initial, tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
-// === BLAKE2S BEGIN ===
-// #[test]
-// #[available_gas(9999999999)]
-// fn test_fri_verify() {
-//     let queries = stone_proof_fibonacci::queries::get().span();
-//     let commitment = stone_proof_fibonacci::fri::commitment::get();
-//     let decommitment = stone_proof_fibonacci::fri::decommitment::get();
-//     let _witness = stone_proof_fibonacci::fri::witness::get();
+#[cfg(feature: 'blake2s')]
+#[test]
+#[available_gas(9999999999)]
+fn test_fri_verify() {
+    let queries = stone_proof_fibonacci::queries::get().span();
+    let commitment = stone_proof_fibonacci::fri::commitment::get();
+    let decommitment = stone_proof_fibonacci::fri::decommitment::get();
+    let _witness = stone_proof_fibonacci::fri::witness::get();
 
-//     fri_verify_initial(queries, commitment, decommitment)
-// }
-// === BLAKE2S END ===
+    fri_verify_initial(queries, commitment, decommitment);
+    // TODO: next steps
+}
 
-// === KECCAK BEGIN ===
+#[cfg(feature: 'keccak')]
 #[test]
 #[available_gas(9999999999)]
 fn test_fri_verify() {
@@ -27,6 +27,3 @@ fn test_fri_verify() {
     fri_verify_initial(queries, commitment, decommitment);
     // TODO: next steps
 }
-// === KECCAK END ===
-
-

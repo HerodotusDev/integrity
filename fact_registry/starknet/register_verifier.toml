@@ -1,0 +1,18 @@
+[[call]]
+call_type = "deploy"
+class_hash = "VERIFIER CLASS HASH"
+inputs = []
+unique = false
+id = "verifier"
+
+[[call]]
+call_type = "invoke"
+contract_address = "REPLACE WITH FACT REGISTRY ADDRESS"
+function = "register_verifier"
+inputs = [
+    "SETTINGS.LAYOUT",
+    "SETTINGS.HASHER",
+    "SETTINGS.SECURITY_BITS",
+    "SETTINGS.VERSION",
+    "verifier"
+]
