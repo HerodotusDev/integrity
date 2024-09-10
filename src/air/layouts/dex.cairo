@@ -12,7 +12,7 @@ use cairo_verifier::{
             global_values::{GlobalValues, InteractionElements, EcPoint, EcdsaSigConfig},
             public_input::DexPublicInputImpl,
             constants::{
-                PUBLIC_MEMORY_STEP, PEDERSEN_BUILTIN_RATIO, ECDSA_BUILTIN_RATIO,
+                DynamicParams, PUBLIC_MEMORY_STEP, PEDERSEN_BUILTIN_RATIO, ECDSA_BUILTIN_RATIO,
                 ECDSA_BUILTIN_REPETITIONS, PEDERSEN_BUILTIN_REPETITIONS, segments,
             },
         },
@@ -95,7 +95,7 @@ impl DexAIRCompositionImpl of AIRComposition<InteractionElements, PublicInput> {
     }
 }
 
-impl DexAIROodsImpl of AIROods {
+impl DexAIROodsImpl of AIROods<DynamicParams> {
     fn eval_oods_polynomial(
         column_values: Span<felt252>,
         oods_values: Span<felt252>,
@@ -103,9 +103,10 @@ impl DexAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        dynamic_params: DynamicParams,
     ) -> felt252 {
         eval_oods_polynomial_inner(
-            column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator,
+            column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator
         )
     }
 }

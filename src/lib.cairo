@@ -39,6 +39,9 @@ use cairo_verifier::{
 // === STARKNET_WITH_KECCAK BEGIN ===
 // air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl,
 // === STARKNET_WITH_KECCAK END ===
+// === DYNAMIC BEGIN ===
+// air::layouts::dynamic::public_input::DynamicPublicInputImpl as PublicInputImpl,
+// === DYNAMIC END ===
 };
 
 const SECURITY_BITS: felt252 = 50;

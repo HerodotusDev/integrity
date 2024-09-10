@@ -10,7 +10,7 @@ trait AIRComposition<IE, PI> {
     ) -> felt252;
 }
 
-trait AIROods {
+trait AIROods<DY> {
     fn eval_oods_polynomial(
         column_values: Span<felt252>,
         oods_values: Span<felt252>,
@@ -18,5 +18,6 @@ trait AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        dynamic_params: DY,
     ) -> felt252;
 }

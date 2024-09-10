@@ -29,6 +29,11 @@ use cairo_verifier::{
     // traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
     // },
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // air::layouts::dynamic::{
+    // traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    // },
+    // === DYNAMIC END ===
     deserialization::{
         vector::{
             VectorCommitmentConfig, VectorCommitmentWitness, VectorCommitmentConfigWithSerde,

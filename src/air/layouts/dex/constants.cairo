@@ -33,6 +33,9 @@ const RANGE_CHECK_BUILTIN_RATIO: felt252 = 8;
 const RANGE_CHECK_BUILTIN_ROW_RATIO: felt252 = 128;
 const RANGE_CHECK_N_PARTS: felt252 = 8;
 
+#[derive(Drop, Copy, Serde)]
+struct DynamicParams {}
+
 mod segments {
     const ECDSA: usize = 5;
     const EXECUTION: usize = 1;

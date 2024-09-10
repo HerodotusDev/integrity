@@ -12,8 +12,8 @@ use cairo_verifier::{
             global_values::{GlobalValues, InteractionElements, EcPoint},
             public_input::RecursivePublicInputImpl,
             constants::{
-                PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING, PEDERSEN_BUILTIN_RATIO,
-                PEDERSEN_BUILTIN_REPETITIONS, segments,
+                DynamicParams, PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING,
+                PEDERSEN_BUILTIN_RATIO, PEDERSEN_BUILTIN_REPETITIONS, segments,
             },
         },
         air::{AIRComposition, AIROods}, diluted::get_diluted_product,
@@ -96,7 +96,7 @@ impl RecursiveAIRCompositionImpl of AIRComposition<InteractionElements, PublicIn
     }
 }
 
-impl RecursiveAIROodsImpl of AIROods {
+impl RecursiveAIROodsImpl of AIROods<DynamicParams> {
     fn eval_oods_polynomial(
         column_values: Span<felt252>,
         oods_values: Span<felt252>,
@@ -104,9 +104,10 @@ impl RecursiveAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        dynamic_params: DynamicParams,
     ) -> felt252 {
         eval_oods_polynomial_inner(
-            column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator,
+            column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator
         )
     }
 }

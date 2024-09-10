@@ -11,14 +11,12 @@ use cairo_verifier::{
         // layouts::dex::{
         // traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,
         // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-        // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
         // },
         // === DEX END ===
         // === RECURSIVE BEGIN ===
         layouts::recursive::{
             traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
             traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-            constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
         },
     // === RECURSIVE END ===
     // === RECURSIVE_WITH_POSEIDON BEGIN ===
@@ -26,21 +24,18 @@ use cairo_verifier::{
     // traces::{TracesConfig, TracesConfigTrait},
     // public_input::RecursiveWithPoseidonPublicInputImpl,
     // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     // },
     // === RECURSIVE_WITH_POSEIDON END ===
     // === SMALL BEGIN ===
     // layouts::small::{
     // traces::{TracesConfig, TracesConfigTrait}, public_input::SmallPublicInputImpl,
     // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     // },
     // === SMALL END ===
     // === STARKNET BEGIN ===
     // layouts::starknet::{
     // traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetPublicInputImpl,
     // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     // },
     // === STARKNET END ===
     // === STARKNET_WITH_KECCAK BEGIN ===
@@ -48,9 +43,15 @@ use cairo_verifier::{
     // traces::{TracesConfig, TracesConfigTrait},
     // public_input::StarknetWithKeccakPublicInputImpl,
     // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
     // },
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // layouts::dynamic::{
+    // traces::{TracesConfig, TracesConfigTrait},
+    // public_input::DynamicPublicInputImpl,
+    // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    // },
+    // === DYNAMIC END ===
     },
     channel::channel::{Channel, ChannelImpl},
     fri::{
@@ -80,7 +81,7 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify(self: @StarkProof, security_bits: felt252) {
         // Validate config.
-        self.config.validate(security_bits);
+        self.config.validate(self.public_input, security_bits);
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
@@ -89,7 +90,9 @@ impl StarkProofImpl of StarkProofTrait {
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
-        let digest = get_public_input_hash(self.public_input);
+        let digest = get_public_input_hash(
+            self.public_input, *self.config.n_verifier_friendly_commitment_layers
+        );
         // Construct the channel.
         let mut channel = ChannelImpl::new(digest);
 
@@ -107,12 +110,7 @@ impl StarkProofImpl of StarkProofTrait {
 
         // STARK verify phase.
         stark_verify::stark_verify(
-            NUM_COLUMNS_FIRST,
-            NUM_COLUMNS_SECOND,
-            queries.span(),
-            stark_commitment,
-            *self.witness,
-            stark_domains
+            self.public_input, queries.span(), stark_commitment, *self.witness, stark_domains
         )
     }
 }
@@ -136,7 +134,7 @@ struct StarkConfig {
 
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
-    fn validate(self: @StarkConfig, security_bits: felt252) {
+    fn validate(self: @StarkConfig, public_input: @PublicInput, security_bits: felt252) {
         // Validate Proof of work config.
         self.proof_of_work.validate();
 
@@ -150,7 +148,11 @@ impl StarkConfigImpl of StarkConfigTrait {
 
         // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
-        self.traces.validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
+        self
+            .traces
+            .validate(
+                public_input, log_eval_domain_size, *self.n_verifier_friendly_commitment_layers
+            );
 
         // Validate composition config.
         self

@@ -14,8 +14,8 @@ use cairo_verifier::{
             },
             public_input::StarknetPublicInputImpl,
             constants::{
-                PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING, PEDERSEN_BUILTIN_RATIO,
-                PEDERSEN_BUILTIN_REPETITIONS, segments, ECDSA_BUILTIN_RATIO,
+                DynamicParams, PUBLIC_MEMORY_STEP, DILUTED_N_BITS, DILUTED_SPACING,
+                PEDERSEN_BUILTIN_RATIO, PEDERSEN_BUILTIN_REPETITIONS, segments, ECDSA_BUILTIN_RATIO,
                 ECDSA_BUILTIN_REPETITIONS, POSEIDON_RATIO
             },
         },
@@ -145,7 +145,7 @@ impl StarknetAIRCompositionImpl of AIRComposition<InteractionElements, PublicInp
     }
 }
 
-impl StarknetAIROodsImpl of AIROods {
+impl StarknetAIROodsImpl of AIROods<DynamicParams> {
     fn eval_oods_polynomial(
         column_values: Span<felt252>,
         oods_values: Span<felt252>,
@@ -153,6 +153,7 @@ impl StarknetAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        dynamic_params: DynamicParams,
     ) -> felt252 {
         eval_oods_polynomial_inner(
             column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator,

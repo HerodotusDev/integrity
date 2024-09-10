@@ -1,9 +1,7 @@
 use cairo_verifier::{
     air::{
         public_input::PublicInput,
-        layouts::recursive_with_poseidon::{
-            constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
-        }
+        layouts::dynamic::{global_values::InteractionElements, constants::DynamicParams}
     },
     channel::channel::{Channel, ChannelTrait},
     table_commitment::table_commitment::{
@@ -76,10 +74,19 @@ impl TracesConfigImpl of TracesConfigTrait {
         log_eval_domain_size: felt252,
         n_verifier_friendly_commitment_layers: felt252,
     ) {
+        let mut dynamic_params_span = public_input.dynamic_params.span();
+        let dynamic_params = Serde::<DynamicParams>::deserialize(ref dynamic_params_span).unwrap();
+
         assert_in_range(*self.original.n_columns, 1, MAX_N_COLUMNS + 1);
         assert_in_range(*self.interaction.n_columns, 1, MAX_N_COLUMNS + 1);
-        assert(*self.original.n_columns == NUM_COLUMNS_FIRST.into(), 'Wrong number of columns');
-        assert(*self.interaction.n_columns == NUM_COLUMNS_SECOND.into(), 'Wrong number of columns');
+        assert(
+            *self.original.n_columns == dynamic_params.num_columns_first.into(),
+            'Wrong number of columns'
+        );
+        assert(
+            *self.interaction.n_columns == dynamic_params.num_columns_second.into(),
+            'Wrong number of columns'
+        );
 
         self.original.vector.validate(log_eval_domain_size, n_verifier_friendly_commitment_layers);
 
@@ -107,6 +114,8 @@ fn traces_commit(
         diluted_check_permutation_interaction_elm: channel.random_felt_to_prover(),
         diluted_check_interaction_z: channel.random_felt_to_prover(),
         diluted_check_interaction_alpha: channel.random_felt_to_prover(),
+        add_mod_interaction_elm: channel.random_felt_to_prover(),
+        mul_mod_interaction_elm: channel.random_felt_to_prover(),
     };
     // Read interaction commitment.
     let interaction_commitment = table_commit(

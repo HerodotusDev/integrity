@@ -7,16 +7,6 @@ fn blake2s(data: Array<u8>) -> u256 {
     blake2s_final(state)
 }
 
-// A 160 LSB truncated version of blake2s.
-// hash:
-//   blake2s(x, y) & ~((1<<96) - 1).
-fn truncated_blake2s(data: Array<u8>) -> felt252 {
-    // Truncate hash - convert value to felt, by taking the least significant 160 bits.
-    (blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000)
-        .try_into()
-        .unwrap()
-}
-
 // internals:
 
 fn load32(p0: u8, p1: u8, p2: u8, p3: u8) -> u32 {

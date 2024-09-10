@@ -21,6 +21,9 @@ use cairo_verifier::{
     // === STARKNET_WITH_KECCAK BEGIN ===
     // air::layouts::starknet_with_keccak::traces::TracesConfig,
     // === STARKNET_WITH_KECCAK END ===
+    // === DYNAMIC BEGIN ===
+    // air::layouts::dynamic::traces::TracesConfig,
+    // === DYNAMIC END ===
     deserialization::{
         traces::{
             TracesConfigWithSerde, TracesDecommitmentWithSerde, TracesWitnessWithSerde,
