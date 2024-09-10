@@ -7,6 +7,6 @@ fn bench_fri_verify() {
     let _witness = stone_proof_fibonacci_keccak::fri::witness::get();
 
     fri_verify_initial(queries, commitment, decommitment);
-    // TODO: add next steps
+// TODO: add next steps
 }
 

@@ -33,5 +33,5 @@ fn test_stark_proof_fibonacci_verify() {
     };
 
     stark_proof.verify_initial(security_bits, 0.try_into().unwrap(), 0.try_into().unwrap());
-    // TODO: next steps
+// TODO: next steps
 }

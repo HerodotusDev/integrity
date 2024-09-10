@@ -1,4 +1,7 @@
-use cairo_verifier::{StarkProof, CairoVersion, StarkProofWithSerde, fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable}};
+use cairo_verifier::{
+    StarkProof, CairoVersion, StarkProofWithSerde,
+    fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable}
+};
 
 #[derive(Drop, Serde)]
 struct InitResult {
@@ -33,13 +36,7 @@ trait ICairoVerifier<TContractState> {
         job_id: felt252,
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
-        last_layer_coefficients: Span<felt252>,   
-    ) -> felt252;
-
-    fn verify_proof_full(
-        ref self: TContractState,
-        stark_proof_serde: StarkProofWithSerde,
-        cairo_version: CairoVersion,
+        last_layer_coefficients: Span<felt252>,
     ) -> felt252;
 }
 
@@ -47,27 +44,32 @@ trait ICairoVerifier<TContractState> {
 mod CairoVerifier {
     use starknet::ContractAddress;
     use cairo_verifier::{
-        CairoVersion, PublicInputImpl, StarkProofWithSerde,
-        stark::{StarkProof, StarkProofImpl},
-        fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable, hash_constant, hash_variable},
+        CairoVersion, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+        fri::fri::{
+            FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
+            hash_constant, hash_variable
+        },
     };
     use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
     use super::{InitResult, ICairoVerifier};
 
     #[storage]
     struct Storage {
-        contract_address_1: ContractAddress,
-        contract_address_2: ContractAddress,
-
+        composition_contract_address: ContractAddress,
+        oods_contract_address: ContractAddress,
         state_constant: LegacyMap<felt252, Option<felt252>>, // job_id => hash(constant state)
         state_variable: LegacyMap<felt252, Option<felt252>>, // job_id => hash(variable state)
-        state_fact: LegacyMap<felt252, Option<felt252>>,     // job_id => fact_hash
+        state_fact: LegacyMap<felt252, Option<felt252>>, // job_id => fact_hash
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, contract_address_1: ContractAddress, contract_address_2: ContractAddress) {
-        self.contract_address_1.write(contract_address_1);
-        self.contract_address_2.write(contract_address_2);
+    fn constructor(
+        ref self: ContractState,
+        composition_contract_address: ContractAddress,
+        oods_contract_address: ContractAddress
+    ) {
+        self.composition_contract_address.write(composition_contract_address);
+        self.oods_contract_address.write(oods_contract_address);
     }
 
     #[event]
@@ -104,9 +106,12 @@ mod CairoVerifier {
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
 
-            let (con, var, last_layer_coefficients) = stark_proof.verify_initial(
-                SECURITY_BITS, self.contract_address_1.read(), self.contract_address_2.read()
-            );
+            let (con, var, last_layer_coefficients) = stark_proof
+                .verify_initial(
+                    SECURITY_BITS,
+                    self.composition_contract_address.read(),
+                    self.oods_contract_address.read()
+                );
             self.state_constant.write(job_id, Option::Some(hash_constant(@con)));
             self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
             self.state_fact.write(job_id, Option::Some(fact));
@@ -131,8 +136,20 @@ mod CairoVerifier {
             state_variable: FriVerificationStateVariable,
             witness: FriLayerWitness,
         ) -> (FriVerificationStateVariable, u32) {
-            assert(hash_constant(@state_constant) == self.state_constant.read(job_id).expect('No state (constant) saved'), 'Invalid state (constant)');
-            assert(hash_variable(@state_variable) == self.state_variable.read(job_id).expect('No state (variable) saved'), 'Invalid state (variable)');
+            assert(
+                hash_constant(@state_constant) == self
+                    .state_constant
+                    .read(job_id)
+                    .expect('No state (constant) saved'),
+                'Invalid state (constant)'
+            );
+            assert(
+                hash_variable(@state_variable) == self
+                    .state_variable
+                    .read(job_id)
+                    .expect('No state (variable) saved'),
+                'Invalid state (variable)'
+            );
 
             let (con, var) = StarkProofImpl::verify_step(state_constant, state_variable, witness);
             self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
@@ -149,11 +166,19 @@ mod CairoVerifier {
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
         ) -> felt252 {
-            assert(hash_constant(@state_constant) == self.state_constant.read(job_id).unwrap(), 'Invalid state (constant)');
-            assert(hash_variable(@state_variable) == self.state_variable.read(job_id).unwrap(), 'Invalid state (variable)');
+            assert(
+                hash_constant(@state_constant) == self.state_constant.read(job_id).unwrap(),
+                'Invalid state (constant)'
+            );
+            assert(
+                hash_variable(@state_variable) == self.state_variable.read(job_id).unwrap(),
+                'Invalid state (variable)'
+            );
             let fact = self.state_fact.read(job_id).expect('No fact saved');
 
-            let (new_con, new_var) = StarkProofImpl::verify_final(state_constant, state_variable, last_layer_coefficients);
+            let (new_con, new_var) = StarkProofImpl::verify_final(
+                state_constant, state_variable, last_layer_coefficients
+            );
             assert(new_var.iter.into() == new_con.n_layers + 1, 'Verification not finalized');
 
             self.state_variable.write(job_id, Option::None);
@@ -161,26 +186,6 @@ mod CairoVerifier {
             self.state_fact.write(job_id, Option::None);
 
             self.emit(ProofVerified { job_id, fact });
-            fact
-        }
-
-        fn verify_proof_full(
-            ref self: ContractState,
-            stark_proof_serde: StarkProofWithSerde,
-            cairo_version: CairoVersion,
-        ) -> felt252 {
-            let stark_proof: StarkProof = stark_proof_serde.into();
-            let (program_hash, output_hash) = match cairo_version {
-                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
-            };
-            stark_proof.verify_full(
-                SECURITY_BITS, self.contract_address_1.read(), self.contract_address_2.read()
-            );
-
-            let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
-
-            self.emit(ProofVerified { job_id: 0, fact });
             fact
         }
     }

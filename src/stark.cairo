@@ -5,13 +5,14 @@ mod stark_verify;
 mod tests;
 
 use cairo_verifier::{
-    air::{
-        public_input::{PublicInput, get_public_input_hash},
-    },
+    air::{public_input::{PublicInput, get_public_input_hash},},
     channel::channel::{Channel, ChannelImpl},
     fri::{
         fri_config::{FriConfig, FriConfigTrait},
-        fri::{FriUnsentCommitment, FriWitness, FriCommitment, FriVerificationStateConstant, FriVerificationStateVariable, FriLayerWitness, fri_verify_step, fri_verify_final}
+        fri::{
+            FriUnsentCommitment, FriWitness, FriCommitment, FriVerificationStateConstant,
+            FriVerificationStateVariable, FriLayerWitness, fri_verify_step, fri_verify_final
+        }
     },
     queries::queries, domains::StarkDomainsImpl,
     table_commitment::table_commitment::{
@@ -38,8 +39,7 @@ use cairo_verifier::air::layouts::recursive::{
 };
 #[cfg(feature: 'recursive_with_poseidon')]
 use cairo_verifier::air::layouts::recursive_with_poseidon::{
-    traces::{TracesConfig, TracesConfigTrait},
-    public_input::RecursiveWithPoseidonPublicInputImpl,
+    traces::{TracesConfig, TracesConfigTrait}, public_input::RecursiveWithPoseidonPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
@@ -57,8 +57,7 @@ use cairo_verifier::air::layouts::starknet::{
 };
 #[cfg(feature: 'starknet_with_keccak')]
 use cairo_verifier::air::layouts::starknet_with_keccak::{
-    traces::{TracesConfig, TracesConfigTrait},
-    public_input::StarknetWithKeccakPublicInputImpl,
+    traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
@@ -73,7 +72,12 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify_initial(self: @StarkProof, security_bits: felt252, contract_address_1: ContractAddress, contract_address_2: ContractAddress) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>) {
+    fn verify_initial(
+        self: @StarkProof,
+        security_bits: felt252,
+        composition_contract_address: ContractAddress,
+        oods_contract_address: ContractAddress
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>) {
         // Validate config.
         self.config.validate(security_bits);
 
@@ -90,7 +94,12 @@ impl StarkProofImpl of StarkProofTrait {
 
         // STARK commitment phase.
         let stark_commitment = stark_commit::stark_commit(
-            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains, contract_address_1
+            ref channel,
+            self.public_input,
+            self.unsent_commitment,
+            self.config,
+            @stark_domains,
+            composition_contract_address
         );
 
         let last_layer_coefficients = stark_commitment.fri.last_layer_coefficients;
@@ -110,7 +119,7 @@ impl StarkProofImpl of StarkProofTrait {
             stark_commitment,
             *self.witness,
             stark_domains,
-            contract_address_2
+            oods_contract_address
         );
         (con, var, last_layer_coefficients)
     }
@@ -131,17 +140,25 @@ impl StarkProofImpl of StarkProofTrait {
         fri_verify_final(stateConstant, stateVariable, last_layer_coefficients)
     }
 
-    fn verify_full(self: @StarkProof, security_bits: felt252, contract_address_1: ContractAddress, contract_address_2: ContractAddress) {
-        let (mut con, mut var, last_layer_coefficients) = self.verify_initial(security_bits, contract_address_1, contract_address_2);
-        
+    fn verify(
+        self: @StarkProof,
+        security_bits: felt252,
+        composition_contract_address: ContractAddress,
+        oods_contract_address: ContractAddress
+    ) {
+        let (mut con, mut var, last_layer_coefficients) = self
+            .verify_initial(security_bits, composition_contract_address, oods_contract_address);
+
         let n = con.n_layers;
         let mut i = 0;
         loop {
             if i == n {
                 break;
             }
-            
-            let (new_con, new_var) = StarkProofTrait::verify_step(con, var, *(*self.witness.fri_witness.layers).at(i));
+
+            let (new_con, new_var) = StarkProofTrait::verify_step(
+                con, var, *(*self.witness.fri_witness.layers).at(i)
+            );
             var = new_var;
             con = new_con;
 

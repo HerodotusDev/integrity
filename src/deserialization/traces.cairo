@@ -19,7 +19,7 @@ use cairo_verifier::air::layouts::dex::{
 };
 #[cfg(feature: 'recursive')]
 use cairo_verifier::air::layouts::recursive::{
-        traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
 };
 #[cfg(feature: 'recursive_with_poseidon')]
 use cairo_verifier::air::layouts::recursive_with_poseidon::{

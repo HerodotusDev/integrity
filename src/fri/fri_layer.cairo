@@ -51,7 +51,8 @@ fn compute_coset_elements(
             coset_elements.append(query.y_value);
             coset_x_inv = query.x_inv_value * (*fri_group.at(i));
         } else {
-            coset_elements.append(*sibling_witness.pop_front().expect('invalid sibling_withness length'));
+            coset_elements
+                .append(*sibling_witness.pop_front().expect('invalid sibling_withness length'));
         }
 
         i += 1;
