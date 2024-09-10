@@ -18,7 +18,7 @@ fn test_stark_commit() {
 
     assert(
         stark_commit(
-            ref channel, @public_input, @unsent_commitment, @config, @stark_domains, 0.try_into().unwrap()
+            ref channel, @public_input, @unsent_commitment, @config, @stark_domains
         ) == stone_proof_fibonacci::stark::commitment::get(),
         'Invalid value'
     );

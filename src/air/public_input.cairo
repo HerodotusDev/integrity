@@ -163,16 +163,18 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 
     assert(initial_ap < MAX_ADDRESS, 'Invalid initial_ap');
     assert(final_ap < MAX_ADDRESS, 'Invalid final_ap');
+
+    // TODO support continuous memory pages
     assert(public_input.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
+
     let memory = public_input.main_page;
 
     // 1. Program segment
     assert(initial_pc == INITIAL_PC, 'Invalid initial_pc');
-    let program = memory
-        .extract_range_unchecked(initial_pc.try_into().unwrap(), memory.len() - output_len);
+    let program = memory.extract_range_unchecked(0, memory.len() - output_len);
     let program_hash = poseidon_hash_span(program);
 
-    // 2. Output segment 
+    // 2. Output segment
     let output = memory.extract_range_unchecked(memory.len() - output_len, output_len);
     let output_hash = poseidon_hash_span(output);
     (program_hash, output_hash)
@@ -194,4 +196,3 @@ mod tests {
         )
     }
 }
-// === RECURSIVE END ===
