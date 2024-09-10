@@ -1,3 +1,4 @@
+use starknet::contract_address::ContractAddressZero;
 use cairo_verifier::{
     stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
@@ -23,7 +24,7 @@ fn test_stark_commit() {
             @unsent_commitment,
             @config,
             @stark_domains,
-            0.try_into().unwrap()
+            ContractAddressZero::zero(),
         ) == stone_proof_fibonacci::stark::commitment::get(),
         'Invalid value'
     );
@@ -55,7 +56,7 @@ fn test_stark_commit() {
             @unsent_commitment,
             @config,
             @stark_domains,
-            0.try_into().unwrap()
+            ContractAddressZero::zero(),
         ) == stone_proof_fibonacci_keccak::stark::commitment::get(),
         'Invalid value'
     );

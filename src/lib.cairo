@@ -11,6 +11,7 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 mod verifier;
+mod fact_registry;
 
 #[cfg(feature: 'recursive')]
 mod benches;
@@ -37,14 +38,17 @@ use cairo_verifier::air::layouts::starknet::public_input::StarknetPublicInputImp
 use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl;
 
 
-const SECURITY_BITS: felt252 = 50;
+const SECURITY_BITS: u32 = 50;
 
 #[cfg(feature: 'monolit')]
 fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
     let stark_proof: StarkProof = stark_proof_serde.into();
 
-    stark_proof.verify(SECURITY_BITS, ContractAddressZero::zero(), ContractAddressZero::zero());
+    let security_bits = stark_proof
+        .verify(ContractAddressZero::zero(), ContractAddressZero::zero());
+    assert(security_bits >= SECURITY_BITS, 'Security bits are too low');
+
     let (program_hash, output_hash) = match cairo_version {
         CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
         CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),

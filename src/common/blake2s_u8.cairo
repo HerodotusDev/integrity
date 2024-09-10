@@ -20,52 +20,33 @@ fn truncated_blake2s(data: Array<u8>) -> felt252 {
 // internals:
 
 fn load32(p0: u8, p1: u8, p2: u8, p3: u8) -> u32 {
-    let mut x: u32 = p3.into();
+    let mut x: felt252 = p3.into();
     x = x * 256 + p2.into();
     x = x * 256 + p1.into();
     x = x * 256 + p0.into();
-    x
-}
-
-fn get_sigma(r: u32) -> Array<u32> {
-    if r == 0 {
-        array![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-    } else if r == 1 {
-        array![14, 10, 4, 8, 9, 15, 13, 6, 1, 12, 0, 2, 11, 7, 5, 3]
-    } else if r == 2 {
-        array![11, 8, 12, 0, 5, 2, 15, 13, 10, 14, 3, 6, 7, 1, 9, 4]
-    } else if r == 3 {
-        array![7, 9, 3, 1, 13, 12, 11, 14, 2, 6, 5, 10, 4, 0, 15, 8]
-    } else if r == 4 {
-        array![9, 0, 5, 7, 2, 4, 10, 15, 14, 1, 11, 12, 6, 8, 3, 13]
-    } else if r == 5 {
-        array![2, 12, 6, 10, 0, 11, 8, 3, 4, 13, 7, 5, 15, 14, 1, 9]
-    } else if r == 6 {
-        array![12, 5, 1, 15, 14, 13, 4, 10, 0, 7, 6, 3, 9, 2, 8, 11]
-    } else if r == 7 {
-        array![13, 11, 7, 14, 12, 1, 3, 9, 5, 0, 15, 4, 8, 6, 2, 10]
-    } else if r == 8 {
-        array![6, 15, 14, 9, 11, 3, 0, 8, 12, 2, 13, 7, 1, 4, 10, 5]
-    } else { // r == 9
-        array![10, 2, 8, 4, 7, 6, 1, 5, 15, 11, 9, 14, 3, 12, 13, 0]
-    }
+    x.try_into().unwrap()
 }
 
 fn rotr16(n: u32) -> u32 {
-    n / 65536 + (n % 65536) * 65536
+    let (high, low) = DivRem::div_rem(n, 65536);
+    TryInto::<felt252, u32>::try_into(high.into() + low.into() * 65536).unwrap()
 }
 
 fn rotr12(n: u32) -> u32 {
-    n / 4096 + (n % 4096) * 1048576
+    let (high, low) = DivRem::div_rem(n, 4096);
+    TryInto::<felt252, u32>::try_into(high.into() + low.into() * 1048576).unwrap()
 }
 
 fn rotr8(n: u32) -> u32 {
-    n / 256 + (n % 256) * 16777216
+    let (high, low) = DivRem::div_rem(n, 256);
+    TryInto::<felt252, u32>::try_into(high.into() + low.into() * 16777216).unwrap()
 }
 
 fn rotr7(n: u32) -> u32 {
-    n / 128 + (n % 128) * 33554432
+    let (high, low) = DivRem::div_rem(n, 128);
+    TryInto::<felt252, u32>::try_into(high.into() + low.into() * 33554432).unwrap()
 }
+
 
 #[derive(Drop, Clone)]
 struct blake2s_state {
@@ -125,100 +106,257 @@ fn blake2s_compress(mut s: blake2s_state, in: Array<u8>) -> blake2s_state {
     let mut v15: u32 = 0x5BE0CD19; // f1 is always 0
 
     let m_span = m.span();
+    let mut sigma = array![
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        14,
+        10,
+        4,
+        8,
+        9,
+        15,
+        13,
+        6,
+        1,
+        12,
+        0,
+        2,
+        11,
+        7,
+        5,
+        3,
+        11,
+        8,
+        12,
+        0,
+        5,
+        2,
+        15,
+        13,
+        10,
+        14,
+        3,
+        6,
+        7,
+        1,
+        9,
+        4,
+        7,
+        9,
+        3,
+        1,
+        13,
+        12,
+        11,
+        14,
+        2,
+        6,
+        5,
+        10,
+        4,
+        0,
+        15,
+        8,
+        9,
+        0,
+        5,
+        7,
+        2,
+        4,
+        10,
+        15,
+        14,
+        1,
+        11,
+        12,
+        6,
+        8,
+        3,
+        13,
+        2,
+        12,
+        6,
+        10,
+        0,
+        11,
+        8,
+        3,
+        4,
+        13,
+        7,
+        5,
+        15,
+        14,
+        1,
+        9,
+        12,
+        5,
+        1,
+        15,
+        14,
+        13,
+        4,
+        10,
+        0,
+        7,
+        6,
+        3,
+        9,
+        2,
+        8,
+        11,
+        13,
+        11,
+        7,
+        14,
+        12,
+        1,
+        3,
+        9,
+        5,
+        0,
+        15,
+        4,
+        8,
+        6,
+        2,
+        10,
+        6,
+        15,
+        14,
+        9,
+        11,
+        3,
+        0,
+        8,
+        12,
+        2,
+        13,
+        7,
+        1,
+        4,
+        10,
+        5,
+        10,
+        2,
+        8,
+        4,
+        7,
+        6,
+        1,
+        5,
+        15,
+        11,
+        9,
+        14,
+        3,
+        12,
+        13,
+        0,
+    ]
+        .span();
 
-    let mut r = 0;
     loop {
-        if r == 10 {
+        if sigma.is_empty() {
             break;
         }
-
-        let sigma = get_sigma(r);
 
         // ROUND function begin
 
         // 0 - 0,4,8,12
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma[0]));
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma.pop_front().unwrap()));
         v12 = rotr16(v12 ^ v0);
         v8 = u32_wrapping_add(v8, v12);
         v4 = rotr12(v4 ^ v8);
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma[1]));
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v4), *m_span.at(*sigma.pop_front().unwrap()));
         v12 = rotr8(v12 ^ v0);
         v8 = u32_wrapping_add(v8, v12);
         v4 = rotr7(v4 ^ v8);
 
         // 1 - 1,5,9,13
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma[2]));
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma.pop_front().unwrap()));
         v13 = rotr16(v13 ^ v1);
         v9 = u32_wrapping_add(v9, v13);
         v5 = rotr12(v5 ^ v9);
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma[3]));
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v5), *m_span.at(*sigma.pop_front().unwrap()));
         v13 = rotr8(v13 ^ v1);
         v9 = u32_wrapping_add(v9, v13);
         v5 = rotr7(v5 ^ v9);
 
         // 2 - 2,6,10,14
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma[4]));
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma.pop_front().unwrap()));
         v14 = rotr16(v14 ^ v2);
         v10 = u32_wrapping_add(v10, v14);
         v6 = rotr12(v6 ^ v10);
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma[5]));
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v6), *m_span.at(*sigma.pop_front().unwrap()));
         v14 = rotr8(v14 ^ v2);
         v10 = u32_wrapping_add(v10, v14);
         v6 = rotr7(v6 ^ v10);
 
         // 3 - 3,7,11,15
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[6]));
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma.pop_front().unwrap()));
         v15 = rotr16(v15 ^ v3);
         v11 = u32_wrapping_add(v11, v15);
         v7 = rotr12(v7 ^ v11);
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma[7]));
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v7), *m_span.at(*sigma.pop_front().unwrap()));
         v15 = rotr8(v15 ^ v3);
         v11 = u32_wrapping_add(v11, v15);
         v7 = rotr7(v7 ^ v11);
 
         // 4 - 0,5,10,15
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma[8]));
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma.pop_front().unwrap()));
         v15 = rotr16(v15 ^ v0);
         v10 = u32_wrapping_add(v10, v15);
         v5 = rotr12(v5 ^ v10);
-        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma[9]));
+        v0 = u32_wrapping_add(u32_wrapping_add(v0, v5), *m_span.at(*sigma.pop_front().unwrap()));
         v15 = rotr8(v15 ^ v0);
         v10 = u32_wrapping_add(v10, v15);
         v5 = rotr7(v5 ^ v10);
 
         // 5 - 1,6,11,12
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma[10]));
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma.pop_front().unwrap()));
         v12 = rotr16(v12 ^ v1);
         v11 = u32_wrapping_add(v11, v12);
         v6 = rotr12(v6 ^ v11);
-        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma[11]));
+        v1 = u32_wrapping_add(u32_wrapping_add(v1, v6), *m_span.at(*sigma.pop_front().unwrap()));
         v12 = rotr8(v12 ^ v1);
         v11 = u32_wrapping_add(v11, v12);
         v6 = rotr7(v6 ^ v11);
 
         // 6 - 2,7,8,13
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma[12]));
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma.pop_front().unwrap()));
         v13 = rotr16(v13 ^ v2);
         v8 = u32_wrapping_add(v8, v13);
         v7 = rotr12(v7 ^ v8);
-        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma[13]));
+        v2 = u32_wrapping_add(u32_wrapping_add(v2, v7), *m_span.at(*sigma.pop_front().unwrap()));
         v13 = rotr8(v13 ^ v2);
         v8 = u32_wrapping_add(v8, v13);
         v7 = rotr7(v7 ^ v8);
 
         // 7 - 3,4,9,14
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma[14]));
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma.pop_front().unwrap()));
         v14 = rotr16(v14 ^ v3);
         v9 = u32_wrapping_add(v9, v14);
         v4 = rotr12(v4 ^ v9);
-        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma[15]));
+        v3 = u32_wrapping_add(u32_wrapping_add(v3, v4), *m_span.at(*sigma.pop_front().unwrap()));
         v14 = rotr8(v14 ^ v3);
         v9 = u32_wrapping_add(v9, v14);
         v4 = rotr7(v4 ^ v9);
-
-        // ROUND function end
-
-        r += 1;
+    // ROUND function end
     };
 
     let mut new_h = ArrayTrait::new();

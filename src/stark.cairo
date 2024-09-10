@@ -74,12 +74,11 @@ struct StarkProof {
 impl StarkProofImpl of StarkProofTrait {
     fn verify_initial(
         self: @StarkProof,
-        security_bits: felt252,
         composition_contract_address: ContractAddress,
         oods_contract_address: ContractAddress
-    ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>) {
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32) {
         // Validate config.
-        self.config.validate(security_bits);
+        let security_bits = self.config.validate();
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
@@ -121,7 +120,7 @@ impl StarkProofImpl of StarkProofTrait {
             stark_domains,
             oods_contract_address
         );
-        (con, var, last_layer_coefficients)
+        (con, var, last_layer_coefficients, security_bits)
     }
 
     fn verify_step(
@@ -142,12 +141,11 @@ impl StarkProofImpl of StarkProofTrait {
 
     fn verify(
         self: @StarkProof,
-        security_bits: felt252,
         composition_contract_address: ContractAddress,
         oods_contract_address: ContractAddress
-    ) {
-        let (mut con, mut var, last_layer_coefficients) = self
-            .verify_initial(security_bits, composition_contract_address, oods_contract_address);
+    ) -> u32 {
+        let (mut con, mut var, last_layer_coefficients, security_bits) = self
+            .verify_initial(composition_contract_address, oods_contract_address);
 
         let n = con.n_layers;
         let mut i = 0;
@@ -167,6 +165,7 @@ impl StarkProofImpl of StarkProofTrait {
 
         let (_, new_var) = StarkProofTrait::verify_final(con, var, last_layer_coefficients);
         assert(new_var.iter.into() == n + 1, 'Verification not finalized');
+        security_bits
     }
 }
 
@@ -189,17 +188,9 @@ struct StarkConfig {
 
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
-    fn validate(self: @StarkConfig, security_bits: felt252) {
+    fn validate(self: @StarkConfig) -> u32 {
         // Validate Proof of work config.
         self.proof_of_work.validate();
-
-        // Check security bits.
-        assert(
-            Into::<felt252, u256>::into(security_bits) <= (*self.n_queries).into()
-                * (*self.log_n_cosets).into()
-                + (*self.proof_of_work.n_bits).into(),
-            'Invalid security bits'
-        );
 
         // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
@@ -213,6 +204,13 @@ impl StarkConfigImpl of StarkConfigTrait {
 
         // Validate Fri config.
         self.fri.validate(*self.log_n_cosets, *self.n_verifier_friendly_commitment_layers);
+
+        // Security bits.
+        let n_queries: u32 = (*self.n_queries).try_into().unwrap();
+        let log_n_cosets: u32 = (*self.log_n_cosets).try_into().unwrap();
+        let proof_of_work_bits: u32 = (*self.proof_of_work.n_bits).try_into().unwrap();
+
+        n_queries * log_n_cosets + proof_of_work_bits
     }
 }
 
