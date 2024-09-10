@@ -22,10 +22,12 @@ small = []
 starknet = []
 starknet_with_keccak = []
 
-keccak = []
-blake2s = []
+keccak_160_lsb = []
+keccak_248_lsb = []
+blake2s_160_lsb = []
+blake2s_248_lsb = []
 
 monolith = []
 split = []
 
-default = ["recursive", "keccak", "monolith"]
+default = ["recursive", "keccak_160_lsb", "monolith"]
