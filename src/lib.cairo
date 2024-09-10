@@ -38,15 +38,16 @@ use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWi
 
 const SECURITY_BITS: felt252 = 50;
 
-// fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
-//     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
-//     let stark_proof: StarkProof = stark_proof_serde.into();
+#[cfg(feature: 'monolit')]
+fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
+    let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
+    let stark_proof: StarkProof = stark_proof_serde.into();
 
-//     stark_proof.verify_full(SECURITY_BITS);
-//     let (program_hash, output_hash) = match cairo_version {
-//         CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-//         CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
-//     };
+    stark_proof.verify_full(SECURITY_BITS, 0.try_into().unwrap(), 0.try_into().unwrap());
+    let (program_hash, output_hash) = match cairo_version {
+        CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
+        CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+    };
 
-//     (program_hash, output_hash)
-// }
+    (program_hash, output_hash)
+}
