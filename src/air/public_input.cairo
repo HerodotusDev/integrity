@@ -60,7 +60,10 @@ trait PublicInputTrait {
 
 // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir
 // heuristic.
-fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
+#[cfg(feature: 'stone6')]
+fn get_public_input_hash(
+    public_input: @PublicInput, n_verifier_friendly_commitment_layers: felt252
+) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
     let mut i: u32 = 0;
@@ -76,7 +79,67 @@ fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
     let main_page_hash = main_page_hash_state.finalize();
 
     let mut hash_data = ArrayTrait::<felt252>::new();
-    hash_data.append(*public_input.log_n_steps);
+    hash_data.append(n_verifier_friendly_commitment_layers);
+    hash_data.append(*public_input.range_check_min);
+    hash_data.append(*public_input.range_check_max);
+    hash_data.append(*public_input.layout);
+    hash_data.extend(public_input.dynamic_params.span());
+
+    // Segments.
+    let mut segments = public_input.segments.span();
+    loop {
+        match segments.pop_front() {
+            Option::Some(seg) => {
+                hash_data.append(*seg.begin_addr);
+                hash_data.append(*seg.stop_ptr);
+            },
+            Option::None => { break; }
+        }
+    };
+
+    hash_data.append(*public_input.padding_addr);
+    hash_data.append(*public_input.padding_value);
+    hash_data.append(1 + public_input.continuous_page_headers.len().into());
+
+    // Main page.
+    hash_data.append(public_input.main_page.len().into());
+    hash_data.append(main_page_hash);
+
+    // Add the rest of the pages.
+    let mut continuous_page_headers = public_input.continuous_page_headers.span();
+    loop {
+        match continuous_page_headers.pop_front() {
+            Option::Some(continuous_page) => {
+                hash_data.append(*continuous_page.start_address);
+                hash_data.append(*continuous_page.size);
+                hash_data.append(*continuous_page.hash);
+            },
+            Option::None => { break; }
+        }
+    };
+
+    poseidon_hash_span(hash_data.span())
+}
+
+#[cfg(feature: 'stone5')]
+fn get_public_input_hash(
+    public_input: @PublicInput, _n_verifier_friendly_commitment_layers: felt252
+) -> felt252 {
+    // Main page hash.
+    let mut main_page_hash_state = PedersenTrait::new(0);
+    let mut i: u32 = 0;
+    loop {
+        if i == public_input.main_page.len() {
+            break;
+        }
+        main_page_hash_state = main_page_hash_state.update_with(*public_input.main_page.at(i));
+        i += 1;
+    };
+    main_page_hash_state = main_page_hash_state
+        .update_with(AddrValueSize * public_input.main_page.len());
+    let main_page_hash = main_page_hash_state.finalize();
+
+    let mut hash_data = ArrayTrait::<felt252>::new();
     hash_data.append(*public_input.range_check_min);
     hash_data.append(*public_input.range_check_max);
     hash_data.append(*public_input.layout);
