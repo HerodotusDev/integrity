@@ -1,7 +1,8 @@
 use cairo_verifier::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    verifier::InitResult, fact_registry::{FactRegistered, VerifierSettings, Verification},
+    verifier::InitResult,
+    fact_registry::{FactRegistered, VerifierSettings, VerificationListElement, Verification},
 };
 use starknet::{ContractAddress, ClassHash};
 
@@ -51,8 +52,8 @@ trait IProxy<TContractState> {
 
     fn get_all_verifications_for_fact_hash(
         self: @TContractState, fact_hash: felt252
-    ) -> Array<Verification>;
-    fn is_verification_hash_registered(self: @TContractState, verification_hash: felt252) -> bool;
+    ) -> Array<VerificationListElement>;
+    fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
 
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
     fn register_verifier(
@@ -81,8 +82,8 @@ mod Proxy {
         starknet::event::EventEmitter
     };
     use super::{
-        VerifierSettings, Verification, IProxy, FactRegistered, settings_from_struct,
-        settings_to_struct
+        VerifierSettings, VerificationListElement, Verification, IProxy, FactRegistered,
+        settings_from_struct, settings_to_struct
     };
 
     #[event]
@@ -161,16 +162,16 @@ mod Proxy {
 
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: felt252
-        ) -> Array<Verification> {
+        ) -> Array<VerificationListElement> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_all_verifications_for_fact_hash(fact_hash)
         }
 
-        fn is_verification_hash_registered(
+        fn get_verification(
             self: @ContractState, verification_hash: felt252
-        ) -> bool {
+        ) -> Option<Verification> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .is_verification_hash_registered(verification_hash)
+                .get_verification(verification_hash)
         }
 
         fn get_verifier_address(

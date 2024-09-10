@@ -22,8 +22,15 @@ fn settings_from_struct(settings: VerifierSettings) -> (felt252, felt252, felt25
 }
 
 #[derive(Drop, Copy, Serde)]
-struct Verification {
+struct VerificationListElement {
     verification_hash: felt252,
+    security_bits: u32,
+    settings: VerifierSettings,
+}
+
+#[derive(Drop, Copy, Serde)]
+struct Verification {
+    fact_hash: felt252,
     security_bits: u32,
     settings: VerifierSettings,
 }
@@ -79,8 +86,8 @@ trait IFactRegistry<TContractState> {
 
     fn get_all_verifications_for_fact_hash(
         self: @TContractState, fact_hash: felt252
-    ) -> Array<Verification>;
-    fn is_verification_hash_registered(self: @TContractState, verification_hash: felt252) -> bool;
+    ) -> Array<VerificationListElement>;
+    fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
 
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
     fn register_verifier(
@@ -102,8 +109,8 @@ mod FactRegistry {
         starknet::event::EventEmitter
     };
     use super::{
-        VerifierSettings, Verification, IFactRegistry, FactRegistered, settings_from_struct,
-        settings_to_struct
+        VerifierSettings, VerificationListElement, Verification, IFactRegistry, FactRegistered,
+        settings_from_struct, settings_to_struct
     };
 
     #[storage]
@@ -208,7 +215,7 @@ mod FactRegistry {
 
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: felt252
-        ) -> Array<Verification> {
+        ) -> Array<VerificationListElement> {
             let n = self.facts.read(fact_hash);
             let mut i = 0;
             let mut arr = array![];
@@ -222,16 +229,23 @@ mod FactRegistry {
                     .read(verification_hash)
                     .unwrap();
                 let settings = settings_to_struct(settings_tuple);
-                arr.append(Verification { verification_hash, security_bits, settings });
+                arr.append(VerificationListElement { verification_hash, security_bits, settings });
                 i += 1;
             };
             arr
         }
 
-        fn is_verification_hash_registered(
+        fn get_verification(
             self: @ContractState, verification_hash: felt252
-        ) -> bool {
-            self.verification_hashes.read(verification_hash).is_some()
+        ) -> Option<Verification> {
+            match self.verification_hashes.read(verification_hash) {
+                Option::Some(x) => {
+                    let (fact_hash, security_bits, settings_tuple) = x;
+                    let settings = settings_to_struct(settings_tuple);
+                    Option::Some(Verification { fact_hash, security_bits, settings })
+                },
+                Option::None => { Option::None }
+            }
         }
 
         fn get_verifier_address(
