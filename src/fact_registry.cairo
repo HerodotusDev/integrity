@@ -56,9 +56,11 @@ trait IFactRegistry<TContractState> {
         settings: VerifierSettings,
     );
 
-    fn get_all_verifications_for_fact_hash(self: @TContractState, fact_hash: felt252) -> Array<(felt252, u32, VerifierSettings)>;
+    fn get_all_verifications_for_fact_hash(
+        self: @TContractState, fact_hash: felt252
+    ) -> Array<(felt252, u32, VerifierSettings)>;
     fn is_verification_hash_registered(self: @TContractState, verification_hash: felt252) -> bool;
-    
+
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
     fn register_verifier(
         ref self: TContractState, settings: VerifierSettings, address: ContractAddress
@@ -85,8 +87,12 @@ mod FactRegistry {
         owner: ContractAddress,
         verifiers: LegacyMap<felt252, ContractAddress>,
         facts: LegacyMap<felt252, u32>, // fact_hash => number of verifications registered
-        fact_verifications: LegacyMap<(felt252, u32), felt252>, // fact_hash, index => verification_hash
-        verification_hashes: LegacyMap<felt252, Option<(felt252, u32, (felt252, felt252, felt252))>>, // verification_hash => (fact_hash, security_bits, settings)
+        fact_verifications: LegacyMap<
+            (felt252, u32), felt252
+        >, // fact_hash, index => verification_hash
+        verification_hashes: LegacyMap<
+            felt252, Option<(felt252, u32, (felt252, felt252, felt252))>
+        >, // verification_hash => (fact_hash, security_bits, settings)
     }
 
     #[event]
@@ -187,11 +193,12 @@ mod FactRegistry {
                     job_id, state_constant, state_variable, last_layer_coefficients
                 );
 
-
             self._register_fact(fact_hash, verifier_address, security_bits, settings);
         }
 
-        fn get_all_verifications_for_fact_hash(self: @ContractState, fact_hash: felt252) -> Array<(felt252, u32, VerifierSettings)> {
+        fn get_all_verifications_for_fact_hash(
+            self: @ContractState, fact_hash: felt252
+        ) -> Array<(felt252, u32, VerifierSettings)> {
             let n = self.facts.read(fact_hash);
             let mut i = 0;
             let mut arr = array![];
@@ -200,7 +207,10 @@ mod FactRegistry {
                     break;
                 }
                 let verification_hash = self.fact_verifications.read((fact_hash, i));
-                let (_, security_bits, settings_tuple) = self.verification_hashes.read(verification_hash).unwrap();
+                let (_, security_bits, settings_tuple) = self
+                    .verification_hashes
+                    .read(verification_hash)
+                    .unwrap();
                 let settings = settings_to_struct(settings_tuple);
                 arr.append((verification_hash, security_bits, settings));
                 i += 1;
@@ -208,7 +218,9 @@ mod FactRegistry {
             arr
         }
 
-        fn is_verification_hash_registered(self: @ContractState, verification_hash: felt252) -> bool {
+        fn is_verification_hash_registered(
+            self: @ContractState, verification_hash: felt252
+        ) -> bool {
             self.verification_hashes.read(verification_hash).is_some()
         }
 
@@ -271,15 +283,24 @@ mod FactRegistry {
 
             self
                 .emit(
-                    Event::FactRegistered(FactRegistered { fact_hash, verifier_address, security_bits, settings, verification_hash })
+                    Event::FactRegistered(
+                        FactRegistered {
+                            fact_hash, verifier_address, security_bits, settings, verification_hash
+                        }
+                    )
                 );
-            
+
             if self.verification_hashes.read(verification_hash).is_some() {
                 return;
             }
             let next_index = self.facts.read(fact_hash);
             self.fact_verifications.write((fact_hash, next_index), verification_hash);
-            self.verification_hashes.write(verification_hash, Option::Some((fact_hash, security_bits, settings_from_struct(settings))));
+            self
+                .verification_hashes
+                .write(
+                    verification_hash,
+                    Option::Some((fact_hash, security_bits, settings_from_struct(settings)))
+                );
             self.facts.write(fact_hash, next_index + 1);
         }
     }
