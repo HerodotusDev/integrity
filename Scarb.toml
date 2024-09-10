@@ -28,4 +28,4 @@ blake2s = []
 monolit = []
 split = []
 
-default = ["recursive", "keccak"]
+default = ["recursive", "keccak", "monolit"]
