@@ -40,7 +40,7 @@ use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWi
 
 const SECURITY_BITS: u32 = 50;
 
-#[cfg(feature: 'monolit')]
+#[cfg(feature: 'monolith')]
 fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
     let stark_proof: StarkProof = stark_proof_serde.into();

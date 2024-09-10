@@ -58,7 +58,7 @@ cd examples/starknet
 
 ## Configure Verifier
 
-By default, the verifier is configured for monolit version, recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using scarb's features:
+By default, the verifier is configured for monolith version, recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using scarb's features:
 
 ```bash
 scarb build --no-default-features --features small,blake2s,split
@@ -66,7 +66,7 @@ scarb build --no-default-features --features small,blake2s,split
 
 layout types: [dex, recursive, recursive_with_poseidon, small, starknet, starknet_with_keccak]  
 hash types: [keccak, blake2s]
-verifier types: [monolit, split]
+verifier types: [monolith, split]
 
 ## Benchmarking
 
