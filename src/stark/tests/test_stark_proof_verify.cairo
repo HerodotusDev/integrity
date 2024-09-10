@@ -16,7 +16,7 @@ fn test_stark_proof_fibonacci_verify() {
         witness: stone_proof_fibonacci::stark::witness::get(),
     };
 
-    stark_proof.verify_initial(security_bits);
+    stark_proof.verify_initial(security_bits, 0.try_into().unwrap(), 0.try_into().unwrap());
 }
 
 #[cfg(feature: 'keccak')]
