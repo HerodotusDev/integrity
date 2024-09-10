@@ -12,6 +12,15 @@ struct VerifierSettings {
     version: felt252,
 }
 
+fn settings_to_struct(tuple: (felt252, felt252, felt252)) -> VerifierSettings {
+    let (layout, hasher, version) = tuple;
+    VerifierSettings { layout, hasher, version }
+}
+
+fn settings_from_struct(settings: VerifierSettings) -> (felt252, felt252, felt252) {
+    (settings.layout, settings.hasher, settings.version)
+}
+
 #[starknet::interface]
 trait IFactRegistry<TContractState> {
     fn verify_proof_full_and_register_fact(
@@ -47,7 +56,9 @@ trait IFactRegistry<TContractState> {
         settings: VerifierSettings,
     );
 
-    fn is_valid(self: @TContractState, fact: felt252) -> bool;
+    fn get_all_verifications_for_fact_hash(self: @TContractState, fact_hash: felt252) -> Array<(felt252, u32, VerifierSettings)>;
+    fn is_verification_hash_registered(self: @TContractState, verification_hash: felt252) -> bool;
+    
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
     fn register_verifier(
         ref self: TContractState, settings: VerifierSettings, address: ContractAddress
@@ -67,13 +78,15 @@ mod FactRegistry {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use super::{VerifierSettings, IFactRegistry};
+    use super::{VerifierSettings, IFactRegistry, settings_from_struct, settings_to_struct};
 
     #[storage]
     struct Storage {
         owner: ContractAddress,
         verifiers: LegacyMap<felt252, ContractAddress>,
-        facts: LegacyMap<felt252, bool>,
+        facts: LegacyMap<felt252, u32>, // fact_hash => number of verifications registered
+        fact_verifications: LegacyMap<(felt252, u32), felt252>, // fact_hash, index => verification_hash
+        verification_hashes: LegacyMap<felt252, Option<(felt252, u32, (felt252, felt252, felt252))>>, // verification_hash => (fact_hash, security_bits, settings)
     }
 
     #[event]
@@ -87,11 +100,15 @@ mod FactRegistry {
     #[derive(Drop, starknet::Event)]
     struct FactRegistered {
         #[key]
-        fact: felt252,
+        fact_hash: felt252,
         #[key]
         verifier_address: ContractAddress,
         #[key]
         security_bits: u32,
+        #[key]
+        settings: VerifierSettings,
+        #[key]
+        verification_hash: felt252,
     }
 
     #[derive(Drop, starknet::Event)]
@@ -122,16 +139,12 @@ mod FactRegistry {
             settings: VerifierSettings,
         ) {
             let verifier_address = self.get_verifier_address(settings);
-            let (fact, security_bits) = ICairoVerifierDispatcher {
+            let (fact_hash, security_bits) = ICairoVerifierDispatcher {
                 contract_address: verifier_address
             }
                 .verify_proof_full(stark_proof.into(), cairo_version);
 
-            self
-                .emit(
-                    Event::FactRegistered(FactRegistered { fact, verifier_address, security_bits })
-                );
-            self.facts.write(fact, true);
+            self._register_fact(fact_hash, verifier_address, security_bits, settings);
         }
 
         fn verify_proof_initial(
@@ -167,22 +180,36 @@ mod FactRegistry {
         ) {
             let verifier_address = self.get_verifier_address(settings);
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
-            let (fact, security_bits) = ICairoVerifierDispatcher {
+            let (fact_hash, security_bits) = ICairoVerifierDispatcher {
                 contract_address: verifier_address
             }
                 .verify_proof_final(
                     job_id, state_constant, state_variable, last_layer_coefficients
                 );
 
-            self
-                .emit(
-                    Event::FactRegistered(FactRegistered { fact, verifier_address, security_bits })
-                );
-            self.facts.write(fact, true);
+
+            self._register_fact(fact_hash, verifier_address, security_bits, settings);
         }
 
-        fn is_valid(self: @ContractState, fact: felt252) -> bool {
-            self.facts.read(fact)
+        fn get_all_verifications_for_fact_hash(self: @ContractState, fact_hash: felt252) -> Array<(felt252, u32, VerifierSettings)> {
+            let n = self.facts.read(fact_hash);
+            let mut i = 0;
+            let mut arr = array![];
+            loop {
+                if i == n {
+                    break;
+                }
+                let verification_hash = self.fact_verifications.read((fact_hash, i));
+                let (_, security_bits, settings_tuple) = self.verification_hashes.read(verification_hash).unwrap();
+                let settings = settings_to_struct(settings_tuple);
+                arr.append((verification_hash, security_bits, settings));
+                i += 1;
+            };
+            arr
+        }
+
+        fn is_verification_hash_registered(self: @ContractState, verification_hash: felt252) -> bool {
+            self.verification_hashes.read(verification_hash).is_some()
         }
 
         fn get_verifier_address(
@@ -226,6 +253,34 @@ mod FactRegistry {
                 .update(settings.hasher)
                 .update(settings.version)
                 .finalize()
+        }
+
+        fn _register_fact(
+            ref self: ContractState,
+            fact_hash: felt252,
+            verifier_address: ContractAddress,
+            security_bits: u32,
+            settings: VerifierSettings
+        ) {
+            let settings_hash = self._hash_settings(settings);
+            let verification_hash = PoseidonImpl::new()
+                .update(fact_hash)
+                .update(settings_hash)
+                .update(security_bits.into())
+                .finalize();
+
+            self
+                .emit(
+                    Event::FactRegistered(FactRegistered { fact_hash, verifier_address, security_bits, settings, verification_hash })
+                );
+            
+            if self.verification_hashes.read(verification_hash).is_some() {
+                return;
+            }
+            let next_index = self.facts.read(fact_hash);
+            self.fact_verifications.write((fact_hash, next_index), verification_hash);
+            self.verification_hashes.write(verification_hash, Option::Some((fact_hash, security_bits, settings_from_struct(settings))));
+            self.facts.write(fact_hash, next_index + 1);
         }
     }
 }
