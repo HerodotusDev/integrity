@@ -1,7 +1,7 @@
 use cairo_verifier::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    verifier::InitResult, fact_registry::{FactRegistered, VerifierSettings},
+    verifier::InitResult, fact_registry::{FactRegistered, VerifierSettings, Verification},
 };
 use starknet::{ContractAddress, ClassHash};
 
@@ -51,7 +51,7 @@ trait IProxy<TContractState> {
 
     fn get_all_verifications_for_fact_hash(
         self: @TContractState, fact_hash: felt252
-    ) -> Array<(felt252, u32, VerifierSettings)>;
+    ) -> Array<Verification>;
     fn is_verification_hash_registered(self: @TContractState, verification_hash: felt252) -> bool;
 
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
@@ -80,7 +80,7 @@ mod Proxy {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use super::{VerifierSettings, IProxy, FactRegistered, settings_from_struct, settings_to_struct};
+    use super::{VerifierSettings, Verification, IProxy, FactRegistered, settings_from_struct, settings_to_struct};
 
     #[event]
     #[derive(Drop, starknet::Event)]
@@ -158,7 +158,7 @@ mod Proxy {
 
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: felt252
-        ) -> Array<(felt252, u32, VerifierSettings)> {
+        ) -> Array<Verification> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_all_verifications_for_fact_hash(fact_hash)
         }

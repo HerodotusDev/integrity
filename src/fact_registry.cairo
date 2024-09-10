@@ -21,6 +21,13 @@ fn settings_from_struct(settings: VerifierSettings) -> (felt252, felt252, felt25
     (settings.layout, settings.hasher, settings.version)
 }
 
+#[derive(Drop, Copy, Serde)]
+struct Verification {
+    verification_hash: felt252,
+    security_bits: u32,
+    settings: VerifierSettings,
+}
+
 #[derive(Drop, Copy, Serde, starknet::Event)]
 struct FactRegistered {
     #[key]
@@ -72,7 +79,7 @@ trait IFactRegistry<TContractState> {
 
     fn get_all_verifications_for_fact_hash(
         self: @TContractState, fact_hash: felt252
-    ) -> Array<(felt252, u32, VerifierSettings)>;
+    ) -> Array<Verification>;
     fn is_verification_hash_registered(self: @TContractState, verification_hash: felt252) -> bool;
 
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
@@ -95,7 +102,7 @@ mod FactRegistry {
         starknet::event::EventEmitter
     };
     use super::{
-        VerifierSettings, IFactRegistry, FactRegistered, settings_from_struct, settings_to_struct
+        VerifierSettings, Verification, IFactRegistry, FactRegistered, settings_from_struct, settings_to_struct
     };
 
     #[storage]
@@ -200,7 +207,7 @@ mod FactRegistry {
 
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: felt252
-        ) -> Array<(felt252, u32, VerifierSettings)> {
+        ) -> Array<Verification> {
             let n = self.facts.read(fact_hash);
             let mut i = 0;
             let mut arr = array![];
@@ -214,7 +221,9 @@ mod FactRegistry {
                     .read(verification_hash)
                     .unwrap();
                 let settings = settings_to_struct(settings_tuple);
-                arr.append((verification_hash, security_bits, settings));
+                arr.append(Verification {
+                    verification_hash, security_bits, settings
+                });
                 i += 1;
             };
             arr
