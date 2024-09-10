@@ -21,6 +21,20 @@ fn settings_from_struct(settings: VerifierSettings) -> (felt252, felt252, felt25
     (settings.layout, settings.hasher, settings.version)
 }
 
+#[derive(Drop, Copy, Serde, starknet::Event)]
+struct FactRegistered {
+    #[key]
+    fact_hash: felt252,
+    #[key]
+    verifier_address: ContractAddress,
+    #[key]
+    security_bits: u32,
+    #[key]
+    settings: VerifierSettings,
+    #[key]
+    verification_hash: felt252,
+}
+
 #[starknet::interface]
 trait IFactRegistry<TContractState> {
     fn verify_proof_full_and_register_fact(
@@ -28,7 +42,7 @@ trait IFactRegistry<TContractState> {
         stark_proof: StarkProofWithSerde,
         cairo_version: CairoVersion,
         settings: VerifierSettings,
-    );
+    ) -> FactRegistered;
 
     fn verify_proof_initial(
         self: @TContractState,
@@ -54,7 +68,7 @@ trait IFactRegistry<TContractState> {
         state_variable: FriVerificationStateVariable,
         last_layer_coefficients: Span<felt252>,
         settings: VerifierSettings,
-    );
+    ) -> FactRegistered;
 
     fn get_all_verifications_for_fact_hash(
         self: @TContractState, fact_hash: felt252
@@ -80,7 +94,9 @@ mod FactRegistry {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use super::{VerifierSettings, IFactRegistry, settings_from_struct, settings_to_struct};
+    use super::{
+        VerifierSettings, IFactRegistry, FactRegistered, settings_from_struct, settings_to_struct
+    };
 
     #[storage]
     struct Storage {
@@ -101,20 +117,6 @@ mod FactRegistry {
         FactRegistered: FactRegistered,
         OwnershipTransferred: OwnershipTransferred,
         VerifierRegistered: VerifierRegistered,
-    }
-
-    #[derive(Drop, starknet::Event)]
-    struct FactRegistered {
-        #[key]
-        fact_hash: felt252,
-        #[key]
-        verifier_address: ContractAddress,
-        #[key]
-        security_bits: u32,
-        #[key]
-        settings: VerifierSettings,
-        #[key]
-        verification_hash: felt252,
     }
 
     #[derive(Drop, starknet::Event)]
@@ -143,14 +145,14 @@ mod FactRegistry {
             stark_proof: StarkProofWithSerde,
             cairo_version: CairoVersion,
             settings: VerifierSettings,
-        ) {
+        ) -> FactRegistered {
             let verifier_address = self.get_verifier_address(settings);
             let (fact_hash, security_bits) = ICairoVerifierDispatcher {
                 contract_address: verifier_address
             }
                 .verify_proof_full(stark_proof.into(), cairo_version);
 
-            self._register_fact(fact_hash, verifier_address, security_bits, settings);
+            self._register_fact(fact_hash, verifier_address, security_bits, settings)
         }
 
         fn verify_proof_initial(
@@ -183,7 +185,7 @@ mod FactRegistry {
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
             settings: VerifierSettings,
-        ) {
+        ) -> FactRegistered {
             let verifier_address = self.get_verifier_address(settings);
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             let (fact_hash, security_bits) = ICairoVerifierDispatcher {
@@ -193,7 +195,7 @@ mod FactRegistry {
                     job_id, state_constant, state_variable, last_layer_coefficients
                 );
 
-            self._register_fact(fact_hash, verifier_address, security_bits, settings);
+            self._register_fact(fact_hash, verifier_address, security_bits, settings)
         }
 
         fn get_all_verifications_for_fact_hash(
@@ -273,7 +275,7 @@ mod FactRegistry {
             verifier_address: ContractAddress,
             security_bits: u32,
             settings: VerifierSettings
-        ) {
+        ) -> FactRegistered {
             let settings_hash = self._hash_settings(settings);
             let verification_hash = PoseidonImpl::new()
                 .update(fact_hash)
@@ -281,27 +283,23 @@ mod FactRegistry {
                 .update(security_bits.into())
                 .finalize();
 
-            self
-                .emit(
-                    Event::FactRegistered(
-                        FactRegistered {
-                            fact_hash, verifier_address, security_bits, settings, verification_hash
-                        }
-                    )
-                );
+            let event = FactRegistered {
+                fact_hash, verifier_address, security_bits, settings, verification_hash
+            };
+            self.emit(Event::FactRegistered(event));
 
-            if self.verification_hashes.read(verification_hash).is_some() {
-                return;
+            if self.verification_hashes.read(verification_hash).is_none() {
+                let next_index = self.facts.read(fact_hash);
+                self.fact_verifications.write((fact_hash, next_index), verification_hash);
+                self
+                    .verification_hashes
+                    .write(
+                        verification_hash,
+                        Option::Some((fact_hash, security_bits, settings_from_struct(settings)))
+                    );
+                self.facts.write(fact_hash, next_index + 1);
             }
-            let next_index = self.facts.read(fact_hash);
-            self.fact_verifications.write((fact_hash, next_index), verification_hash);
-            self
-                .verification_hashes
-                .write(
-                    verification_hash,
-                    Option::Some((fact_hash, security_bits, settings_from_struct(settings)))
-                );
-            self.facts.write(fact_hash, next_index + 1);
+            event
         }
     }
 }

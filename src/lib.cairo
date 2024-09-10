@@ -10,8 +10,10 @@ mod queries;
 mod stark;
 mod table_commitment;
 mod vector_commitment;
+
 mod verifier;
 mod fact_registry;
+mod proxy;
 
 #[cfg(feature: 'recursive')]
 mod benches;
