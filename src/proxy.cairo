@@ -80,7 +80,10 @@ mod Proxy {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use super::{VerifierSettings, Verification, IProxy, FactRegistered, settings_from_struct, settings_to_struct};
+    use super::{
+        VerifierSettings, Verification, IProxy, FactRegistered, settings_from_struct,
+        settings_to_struct
+    };
 
     #[event]
     #[derive(Drop, starknet::Event)]

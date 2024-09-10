@@ -102,7 +102,8 @@ mod FactRegistry {
         starknet::event::EventEmitter
     };
     use super::{
-        VerifierSettings, Verification, IFactRegistry, FactRegistered, settings_from_struct, settings_to_struct
+        VerifierSettings, Verification, IFactRegistry, FactRegistered, settings_from_struct,
+        settings_to_struct
     };
 
     #[storage]
@@ -221,9 +222,7 @@ mod FactRegistry {
                     .read(verification_hash)
                     .unwrap();
                 let settings = settings_to_struct(settings_tuple);
-                arr.append(Verification {
-                    verification_hash, security_bits, settings
-                });
+                arr.append(Verification { verification_hash, security_bits, settings });
                 i += 1;
             };
             arr
