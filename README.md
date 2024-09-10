@@ -16,6 +16,8 @@ To build the Cairo Verifier, follow these steps:
 scarb build
 ```
 
+If you want to build for other layouts, refer to [Configure Verifier](/README.md#configure-verifier)
+
 2. (Optional) Test the project to ensure everything works correctly:
 
 ```bash
@@ -56,14 +58,15 @@ cd examples/starknet
 
 ## Configure Verifier
 
-By default, the verifier is configured for recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using the configure python script (this script is in Experimental stage):
+By default, the verifier is configured for monolit version, recursive layout and keccak hash for verifier unfriendly commitment layers. You can easily change that by using scarb's features:
 
 ```bash
-python configure.py -l recursive -s keccak
+scarb build --no-default-features --features small,blake2s,split
 ```
 
 layout types: [dex, recursive, recursive_with_poseidon, small, starknet, starknet_with_keccak]  
 hash types: [keccak, blake2s]
+verifier types: [monolit, split]
 
 ## Benchmarking
 
