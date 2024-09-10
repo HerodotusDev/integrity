@@ -1,3 +1,4 @@
+use starknet::contract_address::ContractAddressZero;
 use cairo_verifier::{stark::{StarkProof, StarkProofTrait}, tests::stone_proof_fibonacci_keccak};
 
 fn bench_stark_proof_verify() {
@@ -10,6 +11,7 @@ fn bench_stark_proof_verify() {
         witness: stone_proof_fibonacci_keccak::stark::witness::get(),
     };
 
-    let security_bits = stark_proof.verify_full(0.try_into().unwrap(), 0.try_into().unwrap());
+    let security_bits = stark_proof
+        .verify(ContractAddressZero::zero(), ContractAddressZero::zero());
     assert(security_bits >= SECURITY_BITS, 'Security bits too low');
 }

@@ -43,7 +43,7 @@ impl StarknetWithKeccakAIRCompositionImpl of AIRComposition<InteractionElements,
         point: felt252,
         trace_domain_size: felt252,
         trace_generator: felt252,
-        contract_address_1: ContractAddress,
+        contract_address: ContractAddress,
     ) -> felt252 {
         let memory_z = interaction_elements.memory_multi_column_perm_perm_interaction_elm;
         let memory_alpha = interaction_elements.memory_multi_column_perm_hash_interaction_elm0;
@@ -177,7 +177,7 @@ impl StarknetWithKeccakAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
-        contract_address_2: ContractAddress,
+        contract_address: ContractAddress,
     ) -> felt252 {
         eval_oods_polynomial_inner(
             column_values, oods_values, constraint_coefficients, point, oods_point, trace_generator,

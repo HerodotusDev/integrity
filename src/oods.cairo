@@ -1,6 +1,5 @@
 use cairo_verifier::{
-    common::array_extend::ArrayExtendTrait,
-    table_commitment::table_commitment::TableDecommitment
+    common::array_extend::ArrayExtendTrait, table_commitment::table_commitment::TableDecommitment
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
@@ -18,8 +17,8 @@ use cairo_verifier::air::layouts::recursive::{
 #[cfg(feature: 'recursive_with_poseidon')]
 use cairo_verifier::air::layouts::recursive_with_poseidon::{
     AIRComposition, AIROods, RecursiveWithPoseidonAIRCompositionImpl,
-    RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements,
-    public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements, public_input::PublicInput,
+    traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
 };
 #[cfg(feature: 'small')]
 use cairo_verifier::air::layouts::small::{
@@ -35,9 +34,9 @@ use cairo_verifier::air::layouts::starknet::{
 };
 #[cfg(feature: 'starknet_with_keccak')]
 use cairo_verifier::air::layouts::starknet_with_keccak::{
-    AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl,
-    StarknetWithKeccakAIROodsImpl, global_values::InteractionElements,
-    public_input::PublicInput, traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl, StarknetWithKeccakAIROodsImpl,
+    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+    constants::CONSTRAINT_DEGREE,
 };
 
 #[derive(Drop)]
@@ -58,7 +57,7 @@ fn verify_oods(
     oods_point: felt252,
     trace_domain_size: felt252,
     trace_generator: felt252,
-    contract_address_1: ContractAddress,
+    contract_address: ContractAddress,
 ) {
     let composition_from_trace = AIRComposition::eval_composition_polynomial(
         interaction_elements,
@@ -68,7 +67,7 @@ fn verify_oods(
         oods_point,
         trace_domain_size,
         trace_generator,
-        contract_address_1,
+        contract_address,
     );
 
     // TODO support degree > 2?
@@ -84,7 +83,7 @@ fn eval_oods_boundary_poly_at_points(
     points: Span<felt252>,
     decommitment: TracesDecommitment,
     composition_decommitment: TableDecommitment,
-    contract_address_2: ContractAddress,
+    contract_address: ContractAddress,
 ) -> Array<felt252> {
     assert(
         decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
@@ -130,7 +129,7 @@ fn eval_oods_boundary_poly_at_points(
                     *points.at(i),
                     eval_info.oods_point,
                     eval_info.trace_generator,
-                    contract_address_2,
+                    contract_address,
                 )
             );
 

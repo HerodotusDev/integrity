@@ -1,1 +1,0 @@
-mod fact_registry;

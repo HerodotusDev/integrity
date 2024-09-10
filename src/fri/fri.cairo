@@ -151,9 +151,7 @@ fn fri_verify_layer_step(
 
     // Params.
     let coset_size = pow(2, step_size);
-    let params = FriLayerComputationParams {
-        coset_size, fri_group, eval_point: eval_point
-    };
+    let params = FriLayerComputationParams { coset_size, fri_group, eval_point: eval_point };
 
     // Compute next layer queries.
     let (next_queries, verify_indices, verify_y_values) = compute_next_layer(
@@ -173,9 +171,7 @@ fn fri_verify_layer_step(
 
 // FRI protocol component decommitment.
 fn fri_verify_initial(
-    queries: Span<felt252>,
-    commitment: FriCommitment,
-    decommitment: FriDecommitment,
+    queries: Span<felt252>, commitment: FriCommitment, decommitment: FriDecommitment,
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(queries.len() == decommitment.values.len(), 'Invalid value');
 
@@ -198,13 +194,13 @@ fn fri_verify_initial(
             n_layers: (commitment.config.n_layers - 1).try_into().unwrap(),
             commitment: commitment.inner_layers,
             eval_points: commitment.eval_points,
-            step_sizes: commitment.config.fri_step_sizes.slice(1, commitment.config.fri_step_sizes.len() - 1),
+            step_sizes: commitment
+                .config
+                .fri_step_sizes
+                .slice(1, commitment.config.fri_step_sizes.len() - 1),
             last_layer_coefficients_hash: hash_array(commitment.last_layer_coefficients),
         },
-        FriVerificationStateVariable {
-            iter: 0,
-            queries: fri_queries.span(),
-        }
+        FriVerificationStateVariable { iter: 0, queries: fri_queries.span(), }
     )
 }
 
@@ -224,10 +220,10 @@ fn fri_verify_step(
         witness,
     );
 
-    (stateConstant, FriVerificationStateVariable {
-        iter: stateVariable.iter + 1,
-        queries: queries.span(),
-    })
+    (
+        stateConstant,
+        FriVerificationStateVariable { iter: stateVariable.iter + 1, queries: queries.span(), }
+    )
 }
 
 fn fri_verify_final(
@@ -236,31 +232,31 @@ fn fri_verify_final(
     last_layer_coefficients: Span<felt252>,
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(stateVariable.iter == stateConstant.n_layers, 'Fri final called at wrong time');
-    assert(hash_array(last_layer_coefficients) == stateConstant.last_layer_coefficients_hash, 'Invalid last_layer_coefficients');
+    assert(
+        hash_array(last_layer_coefficients) == stateConstant.last_layer_coefficients_hash,
+        'Invalid last_layer_coefficients'
+    );
 
     verify_last_layer(stateVariable.queries, last_layer_coefficients);
 
-    (stateConstant, FriVerificationStateVariable {
-        iter: stateVariable.iter + 1,
-        queries: array![].span(),
-    })
+    (
+        stateConstant,
+        FriVerificationStateVariable { iter: stateVariable.iter + 1, queries: array![].span(), }
+    )
 }
 
 fn hash_array(mut array: Span<felt252>) -> felt252 {
     let mut hash = PoseidonImpl::new();
     loop {
         match array.pop_front() {
-            Option::Some(value) => {
-                hash = hash.update(*value);
-            },
-            Option::None => {
-                break hash.finalize();
-            }
+            Option::Some(value) => { hash = hash.update(*value); },
+            Option::None => { break hash.finalize(); }
         }
     }
 }
 
-// TODO: probably commitment can be moved to separate struct StateFinalize together with last_layer_coefficients
+// TODO: probably commitment can be moved to separate struct StateFinalize together with
+// last_layer_coefficients
 
 #[derive(Drop, Serde)]
 struct FriVerificationStateConstant {
@@ -285,12 +281,11 @@ fn hash_constant(state: @FriVerificationStateConstant) -> felt252 {
                 hash = hash.update(*value.config.vector.height);
                 hash = hash.update(*value.config.vector.n_verifier_friendly_commitment_layers);
                 hash = hash.update(*value.vector_commitment.config.height);
-                hash = hash.update(*value.vector_commitment.config.n_verifier_friendly_commitment_layers);
+                hash = hash
+                    .update(*value.vector_commitment.config.n_verifier_friendly_commitment_layers);
                 hash = hash.update(*value.vector_commitment.commitment_hash);
             },
-            Option::None => {
-                break hash.finalize();
-            }
+            Option::None => { break hash.finalize(); }
         }
     }
 }
@@ -311,9 +306,7 @@ fn hash_variable(state: @FriVerificationStateVariable) -> felt252 {
                 hash = hash.update(*query.y_value);
                 hash = hash.update(*query.x_inv_value);
             },
-            Option::None => {
-                break hash.finalize();
-            }
+            Option::None => { break hash.finalize(); }
         }
     }
 }

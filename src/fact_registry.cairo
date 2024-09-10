@@ -43,13 +43,15 @@ trait IFactRegistry<TContractState> {
         job_id: felt252,
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
-        last_layer_coefficients: Span<felt252>,   
+        last_layer_coefficients: Span<felt252>,
         settings: VerifierSettings,
     );
 
     fn is_valid(self: @TContractState, fact: felt252) -> bool;
     fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
-    fn register_verifier(ref self: TContractState, settings: VerifierSettings, address: ContractAddress);
+    fn register_verifier(
+        ref self: TContractState, settings: VerifierSettings, address: ContractAddress
+    );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 }
 
@@ -57,9 +59,7 @@ trait IFactRegistry<TContractState> {
 mod FactRegistry {
     use cairo_verifier::{
         StarkProofWithSerde, StarkProof, CairoVersion,
-        verifier::{
-            InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait
-        },
+        verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     };
     use starknet::{ContractAddress, get_caller_address};
@@ -124,9 +124,13 @@ mod FactRegistry {
             let verifier_address = self.get_verifier_address(settings);
             let (fact, security_bits) = ICairoVerifierDispatcher {
                 contract_address: verifier_address
-            }.verify_proof_full(stark_proof.into(), cairo_version);
+            }
+                .verify_proof_full(stark_proof.into(), cairo_version);
 
-            self.emit(Event::FactRegistered(FactRegistered { fact, verifier_address, security_bits }));
+            self
+                .emit(
+                    Event::FactRegistered(FactRegistered { fact, verifier_address, security_bits })
+                );
             self.facts.write(fact, true);
         }
 
@@ -137,9 +141,8 @@ mod FactRegistry {
             cairo_version: CairoVersion,
             settings: VerifierSettings,
         ) -> InitResult {
-            ICairoVerifierDispatcher {
-                contract_address: self.get_verifier_address(settings)
-            }.verify_proof_initial(job_id, stark_proof_serde, cairo_version)
+            ICairoVerifierDispatcher { contract_address: self.get_verifier_address(settings) }
+                .verify_proof_initial(job_id, stark_proof_serde, cairo_version)
         }
 
         fn verify_proof_step(
@@ -150,9 +153,8 @@ mod FactRegistry {
             witness: FriLayerWitness,
             settings: VerifierSettings,
         ) -> (FriVerificationStateVariable, u32) {
-            ICairoVerifierDispatcher {
-                contract_address: self.get_verifier_address(settings)
-            }.verify_proof_step(job_id, state_constant, state_variable, witness)
+            ICairoVerifierDispatcher { contract_address: self.get_verifier_address(settings) }
+                .verify_proof_step(job_id, state_constant, state_variable, witness)
         }
 
         fn verify_proof_final_and_register_fact(
@@ -167,9 +169,15 @@ mod FactRegistry {
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             let (fact, security_bits) = ICairoVerifierDispatcher {
                 contract_address: verifier_address
-            }.verify_proof_final(job_id, state_constant, state_variable, last_layer_coefficients);
+            }
+                .verify_proof_final(
+                    job_id, state_constant, state_variable, last_layer_coefficients
+                );
 
-            self.emit(Event::FactRegistered(FactRegistered { fact, verifier_address, security_bits }));
+            self
+                .emit(
+                    Event::FactRegistered(FactRegistered { fact, verifier_address, security_bits })
+                );
             self.facts.write(fact, true);
         }
 
@@ -177,21 +185,23 @@ mod FactRegistry {
             self.facts.read(fact)
         }
 
-        fn get_verifier_address(self: @ContractState, settings: VerifierSettings) -> ContractAddress {
+        fn get_verifier_address(
+            self: @ContractState, settings: VerifierSettings
+        ) -> ContractAddress {
             let verifier_address = self.verifiers.read(self._hash_settings(settings));
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             verifier_address
         }
 
-        fn register_verifier(ref self: ContractState, settings: VerifierSettings, address: ContractAddress) {
+        fn register_verifier(
+            ref self: ContractState, settings: VerifierSettings, address: ContractAddress
+        ) {
             assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
             assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');
             let settings_hash = self._hash_settings(settings);
             assert(self.verifiers.read(settings_hash).into() == 0, 'VERIFIER_ALREADY_EXISTS');
             self.verifiers.write(settings_hash, address);
-            self.emit(Event::VerifierRegistered(VerifierRegistered {
-                settings, address
-            }));
+            self.emit(Event::VerifierRegistered(VerifierRegistered { settings, address }));
         }
 
         fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {

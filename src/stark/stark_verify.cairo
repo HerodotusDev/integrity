@@ -1,6 +1,9 @@
 use cairo_verifier::{
     queries::queries::queries_to_points, domains::StarkDomains,
-    fri::fri::{FriDecommitment, fri_verify_initial, FriVerificationStateConstant, FriVerificationStateVariable},
+    fri::fri::{
+        FriDecommitment, fri_verify_initial, FriVerificationStateConstant,
+        FriVerificationStateVariable
+    },
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
     table_commitment::table_commitment::table_decommit,
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
@@ -67,8 +70,6 @@ fn stark_verify(
         values: oods_poly_evals.span(), points: points.span(),
     };
     fri_verify_initial(
-        queries: queries,
-        commitment: commitment.fri,
-        decommitment: fri_decommitment,
+        queries: queries, commitment: commitment.fri, decommitment: fri_decommitment,
     )
 }

@@ -22,6 +22,7 @@ use cairo_verifier::{
     air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
     stark::{StarkProof, StarkProofImpl},
 };
+use starknet::contract_address::ContractAddressZero;
 
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl;
@@ -44,7 +45,8 @@ fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252,
     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
     let stark_proof: StarkProof = stark_proof_serde.into();
 
-    let security_bits = stark_proof.verify_full(0.try_into().unwrap(), 0.try_into().unwrap());
+    let security_bits = stark_proof
+        .verify(ContractAddressZero::zero(), ContractAddressZero::zero());
     assert(security_bits >= SECURITY_BITS, 'Security bits are too low');
 
     let (program_hash, output_hash) = match cairo_version {
