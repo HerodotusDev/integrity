@@ -1,5 +1,5 @@
 use cairo_verifier::common::{
-    array_append::ArrayAppendTrait, blake2s::{blake2s, truncated_blake2s}, blake2s_u8::load32,
+    array_append::ArrayAppendTrait, blake2s::blake2s, hasher::hash_truncated, blake2s_u8::load32,
 };
 
 fn get_arr_v1(n: u32) -> Array<u32> {
@@ -84,14 +84,24 @@ fn test_blake2s_v2() {
     );
 }
 
+#[cfg(feature: 'blake2s_160_lsb')]
 #[test]
 #[available_gas(9999999999)]
-fn test_truncated_blake2s() {
+fn test_blake2s_160_lsb() {
     let mut data = ArrayTrait::<u32>::new();
-    data.append_big_endian(1157029198022238202306346125123666191662554108005_u256);
-    data.append_big_endian(129252051435949032402481343903845417193011527432_u256);
     assert(
-        truncated_blake2s(data) == 642191007116032514313255519742888271333651019057,
-        'invalid truncated_blake2s'
+        hash_truncated(data) == 0x00000000000000000000000042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9,
+        'invalid value'
+    );
+}
+
+#[cfg(feature: 'blake2s_248_lsb')]
+#[test]
+#[available_gas(9999999999)]
+fn test_blake2s_248_lsb() {
+    let mut data = ArrayTrait::<u32>::new();
+    assert(
+        hash_truncated(data) == 0x00217a3079908094e11121d042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9,
+        'invalid value'
     );
 }

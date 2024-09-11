@@ -7,17 +7,6 @@ fn blake2s(data: Array<u32>) -> u256 {
     blake2s_final(state)
 }
 
-// A 160 LSB truncated version of blake2s.
-// hash:
-//   blake2s(x, y) & ~((1<<96) - 1).
-fn truncated_blake2s(data: Array<u32>) -> felt252 {
-    // Truncate hash - convert value to felt, by taking the least significant 160 bits.
-    let hash = blake2s(data).flip_endianness() % 0x10000000000000000000000000000000000000000;
-    hash.try_into().unwrap()
-}
-
-// internals:
-
 #[inline(always)]
 fn rotr16(n: u32) -> u32 {
     let (high, low) = DivRem::div_rem(n, 65536);

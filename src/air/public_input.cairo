@@ -60,7 +60,9 @@ trait PublicInputTrait {
 
 // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir
 // heuristic.
-fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
+fn get_public_input_hash(
+    public_input: @PublicInput, n_verifier_friendly_commitment_layers: felt252
+) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
     let mut i: u32 = 0;
@@ -76,10 +78,9 @@ fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
     let main_page_hash = main_page_hash_state.finalize();
 
     let mut hash_data = ArrayTrait::<felt252>::new();
-    hash_data.append(*public_input.log_n_steps);
-    hash_data.append(*public_input.range_check_min);
-    hash_data.append(*public_input.range_check_max);
-    hash_data.append(*public_input.layout);
+
+    hash_data_init(ref hash_data, public_input, n_verifier_friendly_commitment_layers);
+
     hash_data.extend(public_input.dynamic_params.span());
 
     // Segments.
@@ -116,6 +117,31 @@ fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
     };
 
     poseidon_hash_span(hash_data.span())
+}
+
+// Stone6 Prover version specific hash_data initialization
+#[cfg(feature: 'stone6')]
+fn hash_data_init(
+    ref hash_data: Array<felt252>,
+    public_input: @PublicInput,
+    n_verifier_friendly_commitment_layers: felt252
+) {
+    hash_data.append(n_verifier_friendly_commitment_layers);
+    hash_data.append(*public_input.range_check_min);
+    hash_data.append(*public_input.range_check_max);
+    hash_data.append(*public_input.layout);
+}
+
+// Stone5 Prover version specific hash_data initialization
+#[cfg(feature: 'stone5')]
+fn hash_data_init(
+    ref hash_data: Array<felt252>,
+    public_input: @PublicInput,
+    _n_verifier_friendly_commitment_layers: felt252
+) {
+    hash_data.append(*public_input.range_check_min);
+    hash_data.append(*public_input.range_check_max);
+    hash_data.append(*public_input.layout);
 }
 
 // Returns the ratio between the product of all public memory cells and z^|public_memory|.
@@ -181,8 +207,9 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     (program_hash, output_hash)
 }
 
+
+#[cfg(feature: 'stone5')]
 #[cfg(feature: 'recursive')]
-#[cfg(feature: 'keccak')]
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
@@ -191,9 +218,10 @@ mod tests {
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
         let public_input = get();
-        let hash = get_public_input_hash(@public_input);
+        let hash = get_public_input_hash(@public_input, 0);
         assert(
-            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
+            hash == 0x1c3097c2a1665c78d69edc47ff35a3f3c9c0678e3daaa74d2b68331a5757a37,
+            'Hash invalid'
         )
     }
 }
