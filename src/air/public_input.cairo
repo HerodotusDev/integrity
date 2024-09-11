@@ -257,7 +257,8 @@ mod tests {
         let public_input = get();
         let hash = get_public_input_hash(@public_input, 0);
         assert(
-            hash == 0x1c3097c2a1665c78d69edc47ff35a3f3c9c0678e3daaa74d2b68331a5757a37, 'Hash invalid'
+            hash == 0x1c3097c2a1665c78d69edc47ff35a3f3c9c0678e3daaa74d2b68331a5757a37,
+            'Hash invalid'
         )
     }
 }
