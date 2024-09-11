@@ -538,579 +538,662 @@ fn eval_composition_polynomial_inner(
     // Sum constraints.
     let mut total_sum = 0;
 
-    let constraints = array![(cpu_decode_opcode_range_check_bit_0 * cpu_decode_opcode_range_check_bit_0
-        - cpu_decode_opcode_range_check_bit_0)
-        * domain4
-        , domain0,
-        (column0_row0) , domain4,
+    let constraints = array![
+        (cpu_decode_opcode_range_check_bit_0 * cpu_decode_opcode_range_check_bit_0
+            - cpu_decode_opcode_range_check_bit_0)
+            * domain4,
+        domain0,
+        (column0_row0),
+        domain4,
         (column5_row1
-        - (((column0_row0 * global_values.offset_size + column7_row4) * global_values.offset_size
-            + column7_row8)
-            * global_values.offset_size
-            + column7_row0))
-        , domain5,
+            - (((column0_row0 * global_values.offset_size + column7_row4)
+                * global_values.offset_size
+                + column7_row8)
+                * global_values.offset_size
+                + column7_row0)),
+        domain5,
         (cpu_decode_flag_op1_base_op0_0 * cpu_decode_flag_op1_base_op0_0
-        - cpu_decode_flag_op1_base_op0_0)
-        , domain5,
-        (cpu_decode_flag_res_op1_0 * cpu_decode_flag_res_op1_0 - cpu_decode_flag_res_op1_0)
-        , domain5,
+            - cpu_decode_flag_op1_base_op0_0),
+        domain5,
+        (cpu_decode_flag_res_op1_0 * cpu_decode_flag_res_op1_0 - cpu_decode_flag_res_op1_0),
+        domain5,
         (cpu_decode_flag_pc_update_regular_0 * cpu_decode_flag_pc_update_regular_0
-        - cpu_decode_flag_pc_update_regular_0)
-        , domain5,
+            - cpu_decode_flag_pc_update_regular_0),
+        domain5,
         (cpu_decode_fp_update_regular_0 * cpu_decode_fp_update_regular_0
-        - cpu_decode_fp_update_regular_0)
-        , domain5,
+            - cpu_decode_fp_update_regular_0),
+        domain5,
         (column5_row8
-        + global_values.half_offset_size
-        - (cpu_decode_opcode_range_check_bit_0 * column8_row8
-            + (1 - cpu_decode_opcode_range_check_bit_0) * column8_row0
-            + column7_row0))
-        , domain5,
+            + global_values.half_offset_size
+            - (cpu_decode_opcode_range_check_bit_0 * column8_row8
+                + (1 - cpu_decode_opcode_range_check_bit_0) * column8_row0
+                + column7_row0)),
+        domain5,
         (column5_row4
-        + global_values.half_offset_size
-        - (cpu_decode_opcode_range_check_bit_1 * column8_row8
-            + (1 - cpu_decode_opcode_range_check_bit_1) * column8_row0
-            + column7_row8))
-        , domain5,
+            + global_values.half_offset_size
+            - (cpu_decode_opcode_range_check_bit_1 * column8_row8
+                + (1 - cpu_decode_opcode_range_check_bit_1) * column8_row0
+                + column7_row8)),
+        domain5,
         (column5_row12
-        + global_values.half_offset_size
-        - (cpu_decode_opcode_range_check_bit_2 * column5_row0
-            + cpu_decode_opcode_range_check_bit_4 * column8_row0
-            + cpu_decode_opcode_range_check_bit_3 * column8_row8
-            + cpu_decode_flag_op1_base_op0_0 * column5_row5
-            + column7_row4))
-        , domain5,
-        (column8_row4 - column5_row5 * column5_row13) , domain5, 
+            + global_values.half_offset_size
+            - (cpu_decode_opcode_range_check_bit_2 * column5_row0
+                + cpu_decode_opcode_range_check_bit_4 * column8_row0
+                + cpu_decode_opcode_range_check_bit_3 * column8_row8
+                + cpu_decode_flag_op1_base_op0_0 * column5_row5
+                + column7_row4)),
+        domain5,
+        (column8_row4 - column5_row5 * column5_row13),
+        domain5,
         ((1 - cpu_decode_opcode_range_check_bit_9) * column8_row12
-        - (cpu_decode_opcode_range_check_bit_5 * (column5_row5 + column5_row13)
-            + cpu_decode_opcode_range_check_bit_6 * column8_row4
-            + cpu_decode_flag_res_op1_0 * column5_row13))
-        , domain5,
-        (column8_row2 - cpu_decode_opcode_range_check_bit_9 * column5_row9)
-        * domain28
-        , domain5,
-        (column8_row10 - column8_row2 * column8_row12) * domain28 , domain5,
+            - (cpu_decode_opcode_range_check_bit_5 * (column5_row5 + column5_row13)
+                + cpu_decode_opcode_range_check_bit_6 * column8_row4
+                + cpu_decode_flag_res_op1_0 * column5_row13)),
+        domain5,
+        (column8_row2 - cpu_decode_opcode_range_check_bit_9 * column5_row9) * domain28,
+        domain5,
+        (column8_row10 - column8_row2 * column8_row12) * domain28,
+        domain5,
         ((1 - cpu_decode_opcode_range_check_bit_9) * column5_row16
-        + column8_row2 * (column5_row16 - (column5_row0 + column5_row13))
-        - (cpu_decode_flag_pc_update_regular_0 * npc_reg_0
-            + cpu_decode_opcode_range_check_bit_7 * column8_row12
-            + cpu_decode_opcode_range_check_bit_8 * (column5_row0 + column8_row12)))
-        * domain28
-        , domain5,
-        ((column8_row10 - cpu_decode_opcode_range_check_bit_9)
-        * (column5_row16 - npc_reg_0))
-        * domain28
-        , domain5,
+            + column8_row2 * (column5_row16 - (column5_row0 + column5_row13))
+            - (cpu_decode_flag_pc_update_regular_0 * npc_reg_0
+                + cpu_decode_opcode_range_check_bit_7 * column8_row12
+                + cpu_decode_opcode_range_check_bit_8 * (column5_row0 + column8_row12)))
+            * domain28,
+        domain5,
+        ((column8_row10 - cpu_decode_opcode_range_check_bit_9) * (column5_row16 - npc_reg_0))
+            * domain28,
+        domain5,
         (column8_row16
-        - (column8_row0
-            + cpu_decode_opcode_range_check_bit_10 * column8_row12
-            + cpu_decode_opcode_range_check_bit_11
-            + cpu_decode_opcode_range_check_bit_12 * 2))
-        * domain28
-        , domain5,
+            - (column8_row0
+                + cpu_decode_opcode_range_check_bit_10 * column8_row12
+                + cpu_decode_opcode_range_check_bit_11
+                + cpu_decode_opcode_range_check_bit_12 * 2))
+            * domain28,
+        domain5,
         (column8_row24
-        - (cpu_decode_fp_update_regular_0 * column8_row8
-            + cpu_decode_opcode_range_check_bit_13 * column5_row9
-            + cpu_decode_opcode_range_check_bit_12 * (column8_row0 + 2)))
-        * domain28
-        , domain5,
-        (cpu_decode_opcode_range_check_bit_12 * (column5_row9 - column8_row8)) , domain5,
+            - (cpu_decode_fp_update_regular_0 * column8_row8
+                + cpu_decode_opcode_range_check_bit_13 * column5_row9
+                + cpu_decode_opcode_range_check_bit_12 * (column8_row0 + 2)))
+            * domain28,
+        domain5,
+        (cpu_decode_opcode_range_check_bit_12 * (column5_row9 - column8_row8)),
+        domain5,
         (cpu_decode_opcode_range_check_bit_12
-        * (column5_row5 - (column5_row0 + cpu_decode_opcode_range_check_bit_2 + 1)))
-        , domain5,
+            * (column5_row5 - (column5_row0 + cpu_decode_opcode_range_check_bit_2 + 1))),
+        domain5,
+        (cpu_decode_opcode_range_check_bit_12 * (column7_row0 - global_values.half_offset_size)),
+        domain5,
         (cpu_decode_opcode_range_check_bit_12
-        * (column7_row0 - global_values.half_offset_size))
-        , domain5,
+            * (column7_row8 - (global_values.half_offset_size + 1))),
+        domain5,
         (cpu_decode_opcode_range_check_bit_12
-        * (column7_row8 - (global_values.half_offset_size + 1)))
-        , domain5,
-        (cpu_decode_opcode_range_check_bit_12
-        * (cpu_decode_opcode_range_check_bit_12
-            + cpu_decode_opcode_range_check_bit_12
-            + 1
-            + 1
-            - (cpu_decode_opcode_range_check_bit_0 + cpu_decode_opcode_range_check_bit_1 + 4)))
-        , domain5,
+            * (cpu_decode_opcode_range_check_bit_12
+                + cpu_decode_opcode_range_check_bit_12
+                + 1
+                + 1
+                - (cpu_decode_opcode_range_check_bit_0 + cpu_decode_opcode_range_check_bit_1 + 4))),
+        domain5,
         (cpu_decode_opcode_range_check_bit_13
-        * (column7_row0 + 2 - global_values.half_offset_size))
-        , domain5,
+            * (column7_row0 + 2 - global_values.half_offset_size)),
+        domain5,
         (cpu_decode_opcode_range_check_bit_13
-        * (column7_row4 + 1 - global_values.half_offset_size))
-        , domain5,
+            * (column7_row4 + 1 - global_values.half_offset_size)),
+        domain5,
         (cpu_decode_opcode_range_check_bit_13
-        * (cpu_decode_opcode_range_check_bit_7
-            + cpu_decode_opcode_range_check_bit_0
-            + cpu_decode_opcode_range_check_bit_3
-            + cpu_decode_flag_res_op1_0
-            - 4))
-        , domain5,
-        (cpu_decode_opcode_range_check_bit_14 * (column5_row9 - column8_row12)) , domain5,
-        (column8_row0 - global_values.initial_ap) , domain29,
-        (column8_row8 - global_values.initial_ap) , domain29,
-        (column5_row0 - global_values.initial_pc) , domain29,
-        (column8_row0 - global_values.final_ap) , domain28,
-        (column8_row8 - global_values.initial_ap) , domain28,
-        (column5_row0 - global_values.final_pc) , domain28,
+            * (cpu_decode_opcode_range_check_bit_7
+                + cpu_decode_opcode_range_check_bit_0
+                + cpu_decode_opcode_range_check_bit_3
+                + cpu_decode_flag_res_op1_0
+                - 4)),
+        domain5,
+        (cpu_decode_opcode_range_check_bit_14 * (column5_row9 - column8_row12)),
+        domain5,
+        (column8_row0 - global_values.initial_ap),
+        domain29,
+        (column8_row8 - global_values.initial_ap),
+        domain29,
+        (column5_row0 - global_values.initial_pc),
+        domain29,
+        (column8_row0 - global_values.final_ap),
+        domain28,
+        (column8_row8 - global_values.initial_ap),
+        domain28,
+        (column5_row0 - global_values.final_pc),
+        domain28,
         ((global_values.memory_multi_column_perm_perm_interaction_elm
-        - (column6_row0
-            + global_values.memory_multi_column_perm_hash_interaction_elm0 * column6_row1))
-        * column9_inter1_row0
-        + column5_row0
-        + global_values.memory_multi_column_perm_hash_interaction_elm0 * column5_row1
-        - global_values.memory_multi_column_perm_perm_interaction_elm)
-        , domain29,
+            - (column6_row0
+                + global_values.memory_multi_column_perm_hash_interaction_elm0 * column6_row1))
+            * column9_inter1_row0
+            + column5_row0
+            + global_values.memory_multi_column_perm_hash_interaction_elm0 * column5_row1
+            - global_values.memory_multi_column_perm_perm_interaction_elm),
+        domain29,
         ((global_values.memory_multi_column_perm_perm_interaction_elm
-        - (column6_row2
-            + global_values.memory_multi_column_perm_hash_interaction_elm0 * column6_row3))
-        * column9_inter1_row2
-        - (global_values.memory_multi_column_perm_perm_interaction_elm
-            - (column5_row2
-                + global_values.memory_multi_column_perm_hash_interaction_elm0 * column5_row3))
-            * column9_inter1_row0)
-        * domain30
-        , domain1,
-        (column9_inter1_row0
-        - global_values.memory_multi_column_perm_perm_public_memory_prod)
-        , domain30,
-        (memory_address_diff_0 * memory_address_diff_0 - memory_address_diff_0)
-        * domain30
-        , domain1,
-        ((memory_address_diff_0 - 1) * (column6_row1 - column6_row3)) * domain30 , domain1,
-        (column6_row0 - 1) , domain29,
-        (column5_row2) , domain3,
-        (column5_row3) , domain3,
-        ((global_values.range_check16_perm_interaction_elm - column7_row2)
-        * column9_inter1_row1
-        + column7_row0
-        - global_values.range_check16_perm_interaction_elm)
-        , domain29,
-        ((global_values.range_check16_perm_interaction_elm - column7_row6)
-        * column9_inter1_row5
-        - (global_values.range_check16_perm_interaction_elm - column7_row4) * column9_inter1_row1)
-        * domain31
-        , domain2,
-        (column9_inter1_row1 - global_values.range_check16_perm_public_memory_prod)
-        , domain31,
-        (range_check16_diff_0 * range_check16_diff_0 - range_check16_diff_0)
-        * domain31
-        , domain2,
-        (column7_row2 - global_values.range_check_min) , domain29,
-        (column7_row2 - global_values.range_check_max) , domain31,
+            - (column6_row2
+                + global_values.memory_multi_column_perm_hash_interaction_elm0 * column6_row3))
+            * column9_inter1_row2
+            - (global_values.memory_multi_column_perm_perm_interaction_elm
+                - (column5_row2
+                    + global_values.memory_multi_column_perm_hash_interaction_elm0 * column5_row3))
+                * column9_inter1_row0)
+            * domain30,
+        domain1,
+        (column9_inter1_row0 - global_values.memory_multi_column_perm_perm_public_memory_prod),
+        domain30,
+        (memory_address_diff_0 * memory_address_diff_0 - memory_address_diff_0) * domain30,
+        domain1,
+        ((memory_address_diff_0 - 1) * (column6_row1 - column6_row3)) * domain30,
+        domain1,
+        (column6_row0 - 1),
+        domain29,
+        (column5_row2),
+        domain3,
+        (column5_row3),
+        domain3,
+        ((global_values.range_check16_perm_interaction_elm - column7_row2) * column9_inter1_row1
+            + column7_row0
+            - global_values.range_check16_perm_interaction_elm),
+        domain29,
+        ((global_values.range_check16_perm_interaction_elm - column7_row6) * column9_inter1_row5
+            - (global_values.range_check16_perm_interaction_elm - column7_row4)
+                * column9_inter1_row1)
+            * domain31,
+        domain2,
+        (column9_inter1_row1 - global_values.range_check16_perm_public_memory_prod),
+        domain31,
+        (range_check16_diff_0 * range_check16_diff_0 - range_check16_diff_0) * domain31,
+        domain2,
+        (column7_row2 - global_values.range_check_min),
+        domain29,
+        (column7_row2 - global_values.range_check_max),
+        domain31,
         ((global_values.diluted_check_permutation_interaction_elm - column7_row5)
-        * column9_inter1_row7
-        + column7_row1
-        - global_values.diluted_check_permutation_interaction_elm)
-        , domain29,
+            * column9_inter1_row7
+            + column7_row1
+            - global_values.diluted_check_permutation_interaction_elm),
+        domain29,
         ((global_values.diluted_check_permutation_interaction_elm - column7_row13)
-        * column9_inter1_row15
-        - (global_values.diluted_check_permutation_interaction_elm - column7_row9)
-            * column9_inter1_row7)
-        * domain32
-        , domain3,
-        (column9_inter1_row7 - global_values.diluted_check_permutation_public_memory_prod)
-        , domain32,
-        (column9_inter1_row3 - 1) , domain29,
-        (column7_row5 - global_values.diluted_check_first_elm) , domain29,
+            * column9_inter1_row15
+            - (global_values.diluted_check_permutation_interaction_elm - column7_row9)
+                * column9_inter1_row7)
+            * domain32,
+        domain3,
+        (column9_inter1_row7 - global_values.diluted_check_permutation_public_memory_prod),
+        domain32,
+        (column9_inter1_row3 - 1),
+        domain29,
+        (column7_row5 - global_values.diluted_check_first_elm),
+        domain29,
         (column9_inter1_row11
-        - (column9_inter1_row3
-            * (1 + global_values.diluted_check_interaction_z * (column7_row13 - column7_row5))
-            + global_values.diluted_check_interaction_alpha
-                * (column7_row13 - column7_row5)
-                * (column7_row13 - column7_row5)))
-        * domain32
-        , domain3,
-        (column9_inter1_row3 - global_values.diluted_check_final_cum_val) , domain32,
-        (column8_row71 * (column3_row0 - (column3_row1 + column3_row1))) , domain8,
+            - (column9_inter1_row3
+                * (1 + global_values.diluted_check_interaction_z * (column7_row13 - column7_row5))
+                + global_values.diluted_check_interaction_alpha
+                    * (column7_row13 - column7_row5)
+                    * (column7_row13 - column7_row5)))
+            * domain32,
+        domain3,
+        (column9_inter1_row3 - global_values.diluted_check_final_cum_val),
+        domain32,
+        (column8_row71 * (column3_row0 - (column3_row1 + column3_row1))),
+        domain8,
         (column8_row71
-        * (column3_row1
-            - 3138550867693340381917894711603833208051177722232017256448 * column3_row192))
-        , domain8,
-        (column8_row71
-        - column4_row255 * (column3_row192 - (column3_row193 + column3_row193)))
-        , domain8,
-        (column4_row255 * (column3_row193 - 8 * column3_row196)) , domain8,
+            * (column3_row1
+                - 3138550867693340381917894711603833208051177722232017256448 * column3_row192)),
+        domain8,
+        (column8_row71 - column4_row255 * (column3_row192 - (column3_row193 + column3_row193))),
+        domain8,
+        (column4_row255 * (column3_row193 - 8 * column3_row196)),
+        domain8,
         (column4_row255
-        - (column3_row251 - (column3_row252 + column3_row252))
-            * (column3_row196 - (column3_row197 + column3_row197)))
-        , domain8,
+            - (column3_row251 - (column3_row252 + column3_row252))
+                * (column3_row196 - (column3_row197 + column3_row197))),
+        domain8,
         ((column3_row251 - (column3_row252 + column3_row252))
-        * (column3_row197 - 18014398509481984 * column3_row251))
-        , domain8,
-        (pedersen_hash0_ec_subset_sum_bit_0 * (pedersen_hash0_ec_subset_sum_bit_0 - 1))
-        * domain9
-        , domain0,
-        (column3_row0) , domain10,
-        (column3_row0) , domain9,
-        (pedersen_hash0_ec_subset_sum_bit_0
-        * (column2_row0 - global_values.pedersen_points_y)
-        - column4_row0 * (column1_row0 - global_values.pedersen_points_x))
-        * domain9
-        , domain0,
+            * (column3_row197 - 18014398509481984 * column3_row251)),
+        domain8,
+        (pedersen_hash0_ec_subset_sum_bit_0 * (pedersen_hash0_ec_subset_sum_bit_0 - 1)) * domain9,
+        domain0,
+        (column3_row0),
+        domain10,
+        (column3_row0),
+        domain9,
+        (pedersen_hash0_ec_subset_sum_bit_0 * (column2_row0 - global_values.pedersen_points_y)
+            - column4_row0 * (column1_row0 - global_values.pedersen_points_x))
+            * domain9,
+        domain0,
         (column4_row0 * column4_row0
-        - pedersen_hash0_ec_subset_sum_bit_0
-            * (column1_row0 + global_values.pedersen_points_x + column1_row1))
-        * domain9
-        , domain0,
+            - pedersen_hash0_ec_subset_sum_bit_0
+                * (column1_row0 + global_values.pedersen_points_x + column1_row1))
+            * domain9,
+        domain0,
         (pedersen_hash0_ec_subset_sum_bit_0 * (column2_row0 + column2_row1)
-        - column4_row0 * (column1_row0 - column1_row1))
-        * domain9
-        , domain0,
-        (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column1_row1 - column1_row0))
-        * domain9
-        , domain0,
-        (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column2_row1 - column2_row0))
-        * domain9
-        , domain0,
-        (column1_row256 - column1_row255) * domain12 , domain8,
-        (column2_row256 - column2_row255) * domain12 , domain8,
-        (column1_row0 - global_values.pedersen_shift_point.x) , domain13,
-        (column2_row0 - global_values.pedersen_shift_point.y) , domain13,
-        (column5_row7 - column3_row0) , domain13,
-        (column5_row518 - (column5_row134 + 1)) * domain33 , domain13,
-        (column5_row6 - global_values.initial_pedersen_addr) , domain29,
-        (column5_row263 - column3_row256) , domain13,
-        (column5_row262 - (column5_row6 + 1)) , domain13,
-        (column5_row135 - column1_row511) , domain13,
-        (column5_row134 - (column5_row262 + 1)) , domain13,
-        (range_check_builtin_value7_0 - column5_row71) , domain8,
-        (column5_row326 - (column5_row70 + 1)) * domain34 , domain8,
-        (column5_row70 - global_values.initial_range_check_addr) , domain29,
+            - column4_row0 * (column1_row0 - column1_row1))
+            * domain9,
+        domain0,
+        (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column1_row1 - column1_row0)) * domain9,
+        domain0,
+        (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column2_row1 - column2_row0)) * domain9,
+        domain0,
+        (column1_row256 - column1_row255) * domain12,
+        domain8,
+        (column2_row256 - column2_row255) * domain12,
+        domain8,
+        (column1_row0 - global_values.pedersen_shift_point.x),
+        domain13,
+        (column2_row0 - global_values.pedersen_shift_point.y),
+        domain13,
+        (column5_row7 - column3_row0),
+        domain13,
+        (column5_row518 - (column5_row134 + 1)) * domain33,
+        domain13,
+        (column5_row6 - global_values.initial_pedersen_addr),
+        domain29,
+        (column5_row263 - column3_row256),
+        domain13,
+        (column5_row262 - (column5_row6 + 1)),
+        domain13,
+        (column5_row135 - column1_row511),
+        domain13,
+        (column5_row134 - (column5_row262 + 1)),
+        domain13,
+        (range_check_builtin_value7_0 - column5_row71),
+        domain8,
+        (column5_row326 - (column5_row70 + 1)) * domain34,
+        domain8,
+        (column5_row70 - global_values.initial_range_check_addr),
+        domain29,
         (ecdsa_signature0_doubling_key_x_squared
-        + ecdsa_signature0_doubling_key_x_squared
-        + ecdsa_signature0_doubling_key_x_squared
-        + global_values.ecdsa_sig_config.alpha
-        - (column8_row33 + column8_row33) * column8_row35)
-        * domain21
-        , domain6,
-        (column8_row35 * column8_row35 - (column8_row1 + column8_row1 + column8_row65))
-        * domain21
-        , domain6,
-        (column8_row33 + column8_row97 - column8_row35 * (column8_row1 - column8_row65))
-        * domain21
-        , domain6,
+            + ecdsa_signature0_doubling_key_x_squared
+            + ecdsa_signature0_doubling_key_x_squared
+            + global_values.ecdsa_sig_config.alpha
+            - (column8_row33 + column8_row33) * column8_row35)
+            * domain21,
+        domain6,
+        (column8_row35 * column8_row35 - (column8_row1 + column8_row1 + column8_row65)) * domain21,
+        domain6,
+        (column8_row33 + column8_row97 - column8_row35 * (column8_row1 - column8_row65)) * domain21,
+        domain6,
         (ecdsa_signature0_exponentiate_generator_bit_0
-        * (ecdsa_signature0_exponentiate_generator_bit_0 - 1))
-        * domain25
-        , domain7,
-        (column8_row59) , domain26,
-        (column8_row59) , domain25,
+            * (ecdsa_signature0_exponentiate_generator_bit_0 - 1))
+            * domain25,
+        domain7,
+        (column8_row59),
+        domain26,
+        (column8_row59),
+        domain25,
         (ecdsa_signature0_exponentiate_generator_bit_0
-        * (column8_row91 - global_values.ecdsa_generator_points_y)
-        - column8_row123 * (column8_row27 - global_values.ecdsa_generator_points_x))
-        * domain25
-        , domain7,
+            * (column8_row91 - global_values.ecdsa_generator_points_y)
+            - column8_row123 * (column8_row27 - global_values.ecdsa_generator_points_x))
+            * domain25,
+        domain7,
         (column8_row123 * column8_row123
-        - ecdsa_signature0_exponentiate_generator_bit_0
-            * (column8_row27 + global_values.ecdsa_generator_points_x + column8_row155))
-        * domain25
-        , domain7,
+            - ecdsa_signature0_exponentiate_generator_bit_0
+                * (column8_row27 + global_values.ecdsa_generator_points_x + column8_row155))
+            * domain25,
+        domain7,
         (ecdsa_signature0_exponentiate_generator_bit_0 * (column8_row91 + column8_row219)
-        - column8_row123 * (column8_row27 - column8_row155))
-        * domain25
-        , domain7,
-        (column8_row7 * (column8_row27 - global_values.ecdsa_generator_points_x) - 1)
-        * domain25
-        , domain7,
-        (ecdsa_signature0_exponentiate_generator_bit_neg_0
-        * (column8_row155 - column8_row27))
-        * domain25
-        , domain7,
-        (ecdsa_signature0_exponentiate_generator_bit_neg_0
-        * (column8_row219 - column8_row91))
-        * domain25
-        , domain7,
-        (ecdsa_signature0_exponentiate_key_bit_0
-        * (ecdsa_signature0_exponentiate_key_bit_0 - 1))
-        * domain21
-        , domain6,
-        (column8_row9) , domain22,
-        (column8_row9) , domain21,
+            - column8_row123 * (column8_row27 - column8_row155))
+            * domain25,
+        domain7,
+        (column8_row7 * (column8_row27 - global_values.ecdsa_generator_points_x) - 1) * domain25,
+        domain7,
+        (ecdsa_signature0_exponentiate_generator_bit_neg_0 * (column8_row155 - column8_row27))
+            * domain25,
+        domain7,
+        (ecdsa_signature0_exponentiate_generator_bit_neg_0 * (column8_row219 - column8_row91))
+            * domain25,
+        domain7,
+        (ecdsa_signature0_exponentiate_key_bit_0 * (ecdsa_signature0_exponentiate_key_bit_0 - 1))
+            * domain21,
+        domain6,
+        (column8_row9),
+        domain22,
+        (column8_row9),
+        domain21,
         (ecdsa_signature0_exponentiate_key_bit_0 * (column8_row49 - column8_row33)
-        - column8_row19 * (column8_row17 - column8_row1))
-        * domain21
-        , domain6,
+            - column8_row19 * (column8_row17 - column8_row1))
+            * domain21,
+        domain6,
         (column8_row19 * column8_row19
-        - ecdsa_signature0_exponentiate_key_bit_0 * (column8_row17 + column8_row1 + column8_row81))
-        * domain21
-        , domain6,
+            - ecdsa_signature0_exponentiate_key_bit_0
+                * (column8_row17 + column8_row1 + column8_row81))
+            * domain21,
+        domain6,
         (ecdsa_signature0_exponentiate_key_bit_0 * (column8_row49 + column8_row113)
-        - column8_row19 * (column8_row17 - column8_row81))
-        * domain21
-        , domain6,
-        (column8_row51 * (column8_row17 - column8_row1) - 1) * domain21 , domain6,
-        (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row81 - column8_row17))
-        * domain21
-        , domain6,
-        (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row113 - column8_row49))
-        * domain21
-        , domain6,
-        (column8_row27 - global_values.ecdsa_sig_config.shift_point.x) , domain27,
-        (column8_row91 + global_values.ecdsa_sig_config.shift_point.y) , domain27,
-        (column8_row17 - global_values.ecdsa_sig_config.shift_point.x) , domain23,
-        (column8_row49 - global_values.ecdsa_sig_config.shift_point.y) , domain23,
+            - column8_row19 * (column8_row17 - column8_row81))
+            * domain21,
+        domain6,
+        (column8_row51 * (column8_row17 - column8_row1) - 1) * domain21,
+        domain6,
+        (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row81 - column8_row17)) * domain21,
+        domain6,
+        (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row113 - column8_row49)) * domain21,
+        domain6,
+        (column8_row27 - global_values.ecdsa_sig_config.shift_point.x),
+        domain27,
+        (column8_row91 + global_values.ecdsa_sig_config.shift_point.y),
+        domain27,
+        (column8_row17 - global_values.ecdsa_sig_config.shift_point.x),
+        domain23,
+        (column8_row49 - global_values.ecdsa_sig_config.shift_point.y),
+        domain23,
         (column8_row32731
-        - (column8_row16369 + column8_row32763 * (column8_row32667 - column8_row16337)))
-        , domain27,
+            - (column8_row16369 + column8_row32763 * (column8_row32667 - column8_row16337))),
+        domain27,
         (column8_row32763 * column8_row32763
-        - (column8_row32667 + column8_row16337 + column8_row16385))
-        , domain27,
+            - (column8_row32667 + column8_row16337 + column8_row16385)),
+        domain27,
         (column8_row32731
-        + column8_row16417
-        - column8_row32763 * (column8_row32667 - column8_row16385))
-        , domain27,
-        (column8_row32647 * (column8_row32667 - column8_row16337) - 1) , domain27,
+            + column8_row16417
+            - column8_row32763 * (column8_row32667 - column8_row16385)),
+        domain27,
+        (column8_row32647 * (column8_row32667 - column8_row16337) - 1),
+        domain27,
         (column8_row32753
-        + global_values.ecdsa_sig_config.shift_point.y
-        - column8_row16331 * (column8_row32721 - global_values.ecdsa_sig_config.shift_point.x))
-        , domain27,
+            + global_values.ecdsa_sig_config.shift_point.y
+            - column8_row16331 * (column8_row32721 - global_values.ecdsa_sig_config.shift_point.x)),
+        domain27,
         (column8_row16331 * column8_row16331
-        - (column8_row32721 + global_values.ecdsa_sig_config.shift_point.x + column8_row9))
-        , domain27,
-        (column8_row32715
-        * (column8_row32721 - global_values.ecdsa_sig_config.shift_point.x)
-        - 1)
-        , domain27,
-        (column8_row59 * column8_row16363 - 1) , domain27,
-        (column8_row9 * column8_row16355 - 1) , domain23,
-        (column8_row32747 - column8_row1 * column8_row1) , domain27,
+            - (column8_row32721 + global_values.ecdsa_sig_config.shift_point.x + column8_row9)),
+        domain27,
+        (column8_row32715 * (column8_row32721 - global_values.ecdsa_sig_config.shift_point.x) - 1),
+        domain27,
+        (column8_row59 * column8_row16363 - 1),
+        domain27,
+        (column8_row9 * column8_row16355 - 1),
+        domain23,
+        (column8_row32747 - column8_row1 * column8_row1),
+        domain27,
         (column8_row33 * column8_row33
-        - (column8_row1 * column8_row32747
-            + global_values.ecdsa_sig_config.alpha * column8_row1
-            + global_values.ecdsa_sig_config.beta))
-        , domain27,
-        (column5_row390 - global_values.initial_ecdsa_addr) , domain29,
-        (column5_row16774 - (column5_row390 + 1)) , domain27,
-        (column5_row33158 - (column5_row16774 + 1)) * domain35 , domain27,
-        (column5_row16775 - column8_row59) , domain27,
-        (column5_row391 - column8_row1) , domain27,
-        (column5_row198 - global_values.initial_bitwise_addr) , domain29,
-        (column5_row454 - (column5_row198 + 1)) * domain18 , domain8,
-        (column5_row902 - (column5_row966 + 1)) , domain19,
-        (column5_row1222 - (column5_row902 + 1)) * domain36 , domain19,
-        (bitwise_sum_var_0_0 + bitwise_sum_var_8_0 - column5_row199) , domain8,
-        (column5_row903 - (column5_row711 + column5_row967)) , domain19,
-        (column7_row1 + column7_row257 - (column7_row769 + column7_row513 + column7_row513))
-        , domain20,
-        ((column7_row705 + column7_row961) * 16 - column7_row9) , domain19,
-        ((column7_row721 + column7_row977) * 16 - column7_row521) , domain19,
-        ((column7_row737 + column7_row993) * 16 - column7_row265) , domain19,
-        ((column7_row753 + column7_row1009) * 256 - column7_row777) , domain19,
-        (column5_row8582 - global_values.initial_ec_op_addr) , domain29,
-        (column5_row24966 - (column5_row8582 + 7)) * domain37 , domain23,
-        (column5_row4486 - (column5_row8582 + 1)) , domain23,
-        (column5_row12678 - (column5_row4486 + 1)) , domain23,
-        (column5_row2438 - (column5_row12678 + 1)) , domain23,
-        (column5_row10630 - (column5_row2438 + 1)) , domain23,
-        (column5_row6534 - (column5_row10630 + 1)) , domain23,
-        (column5_row14726 - (column5_row6534 + 1)) , domain23,
+            - (column8_row1 * column8_row32747
+                + global_values.ecdsa_sig_config.alpha * column8_row1
+                + global_values.ecdsa_sig_config.beta)),
+        domain27,
+        (column5_row390 - global_values.initial_ecdsa_addr),
+        domain29,
+        (column5_row16774 - (column5_row390 + 1)),
+        domain27,
+        (column5_row33158 - (column5_row16774 + 1)) * domain35,
+        domain27,
+        (column5_row16775 - column8_row59),
+        domain27,
+        (column5_row391 - column8_row1),
+        domain27,
+        (column5_row198 - global_values.initial_bitwise_addr),
+        domain29,
+        (column5_row454 - (column5_row198 + 1)) * domain18,
+        domain8,
+        (column5_row902 - (column5_row966 + 1)),
+        domain19,
+        (column5_row1222 - (column5_row902 + 1)) * domain36,
+        domain19,
+        (bitwise_sum_var_0_0 + bitwise_sum_var_8_0 - column5_row199),
+        domain8,
+        (column5_row903 - (column5_row711 + column5_row967)),
+        domain19,
+        (column7_row1 + column7_row257 - (column7_row769 + column7_row513 + column7_row513)),
+        domain20,
+        ((column7_row705 + column7_row961) * 16 - column7_row9),
+        domain19,
+        ((column7_row721 + column7_row977) * 16 - column7_row521),
+        domain19,
+        ((column7_row737 + column7_row993) * 16 - column7_row265),
+        domain19,
+        ((column7_row753 + column7_row1009) * 256 - column7_row777),
+        domain19,
+        (column5_row8582 - global_values.initial_ec_op_addr),
+        domain29,
+        (column5_row24966 - (column5_row8582 + 7)) * domain37,
+        domain23,
+        (column5_row4486 - (column5_row8582 + 1)),
+        domain23,
+        (column5_row12678 - (column5_row4486 + 1)),
+        domain23,
+        (column5_row2438 - (column5_row12678 + 1)),
+        domain23,
+        (column5_row10630 - (column5_row2438 + 1)),
+        domain23,
+        (column5_row6534 - (column5_row10630 + 1)),
+        domain23,
+        (column5_row14726 - (column5_row6534 + 1)),
+        domain23,
         (ec_op_doubling_q_x_squared_0
-        + ec_op_doubling_q_x_squared_0
-        + ec_op_doubling_q_x_squared_0
-        + global_values.ec_op_curve_config.alpha
-        - (column8_row25 + column8_row25) * column8_row57)
-        * domain21
-        , domain6,
+            + ec_op_doubling_q_x_squared_0
+            + ec_op_doubling_q_x_squared_0
+            + global_values.ec_op_curve_config.alpha
+            - (column8_row25 + column8_row25) * column8_row57)
+            * domain21,
+        domain6,
         (column8_row57 * column8_row57 - (column8_row41 + column8_row41 + column8_row105))
-        * domain21
-        , domain6,
+            * domain21,
+        domain6,
         (column8_row25 + column8_row89 - column8_row57 * (column8_row41 - column8_row105))
-        * domain21
-        , domain6,
-        (column5_row12679 - column8_row41) , domain23,
-        (column5_row2439 - column8_row25) , domain23,
-        (column8_row16371 * (column8_row21 - (column8_row85 + column8_row85))) , domain23,
+            * domain21,
+        domain6,
+        (column5_row12679 - column8_row41),
+        domain23,
+        (column5_row2439 - column8_row25),
+        domain23,
+        (column8_row16371 * (column8_row21 - (column8_row85 + column8_row85))),
+        domain23,
         (column8_row16371
-        * (column8_row85
-            - 3138550867693340381917894711603833208051177722232017256448 * column8_row12309))
-        , domain23,
+            * (column8_row85
+                - 3138550867693340381917894711603833208051177722232017256448 * column8_row12309)),
+        domain23,
         (column8_row16371
-        - column8_row16339 * (column8_row12309 - (column8_row12373 + column8_row12373)))
-        , domain23,
-        (column8_row16339 * (column8_row12373 - 8 * column8_row12565)) , domain23,
+            - column8_row16339 * (column8_row12309 - (column8_row12373 + column8_row12373))),
+        domain23,
+        (column8_row16339 * (column8_row12373 - 8 * column8_row12565)),
+        domain23,
         (column8_row16339
-        - (column8_row16085 - (column8_row16149 + column8_row16149))
-            * (column8_row12565 - (column8_row12629 + column8_row12629)))
-        , domain23,
+            - (column8_row16085 - (column8_row16149 + column8_row16149))
+                * (column8_row12565 - (column8_row12629 + column8_row12629))),
+        domain23,
         ((column8_row16085 - (column8_row16149 + column8_row16149))
-        * (column8_row12629 - 18014398509481984 * column8_row16085))
-        , domain23,
-        (ec_op_ec_subset_sum_bit_0 * (ec_op_ec_subset_sum_bit_0 - 1)) * domain21 , domain6,
-        (column8_row21) , domain24,
-        (column8_row21) , domain21,
+            * (column8_row12629 - 18014398509481984 * column8_row16085)),
+        domain23,
+        (ec_op_ec_subset_sum_bit_0 * (ec_op_ec_subset_sum_bit_0 - 1)) * domain21,
+        domain6,
+        (column8_row21),
+        domain24,
+        (column8_row21),
+        domain21,
         (ec_op_ec_subset_sum_bit_0 * (column8_row37 - column8_row25)
-        - column8_row11 * (column8_row5 - column8_row41))
-        * domain21
-        , domain6,
+            - column8_row11 * (column8_row5 - column8_row41))
+            * domain21,
+        domain6,
         (column8_row11 * column8_row11
-        - ec_op_ec_subset_sum_bit_0 * (column8_row5 + column8_row41 + column8_row69))
-        * domain21
-        , domain6,
+            - ec_op_ec_subset_sum_bit_0 * (column8_row5 + column8_row41 + column8_row69))
+            * domain21,
+        domain6,
         (ec_op_ec_subset_sum_bit_0 * (column8_row37 + column8_row101)
-        - column8_row11 * (column8_row5 - column8_row69))
-        * domain21
-        , domain6,
-        (column8_row43 * (column8_row5 - column8_row41) - 1) * domain21 , domain6,
-        (ec_op_ec_subset_sum_bit_neg_0 * (column8_row69 - column8_row5))
-        * domain21
-        , domain6,
-        (ec_op_ec_subset_sum_bit_neg_0 * (column8_row101 - column8_row37))
-        * domain21
-        , domain6,
-        (column8_row21 - column5_row10631) , domain23,
-        (column5_row8583 - column8_row5) , domain23,
-        (column5_row4487 - column8_row37) , domain23,
-        (column5_row6535 - column8_row16325) , domain23,
-        (column5_row14727 - column8_row16357) , domain23,
-        (column5_row38 - global_values.initial_poseidon_addr) , domain29,
-        (column5_row294 - (column5_row38 + 3)) * domain34 , domain8,
-        (column5_row166 - (global_values.initial_poseidon_addr + 1)) , domain29,
-        (column5_row422 - (column5_row166 + 3)) * domain34 , domain8,
-        (column5_row102 - (global_values.initial_poseidon_addr + 2)) , domain29,
-        (column5_row358 - (column5_row102 + 3)) * domain34 , domain8,
-        (column8_row53 * column8_row53 - column8_row29) , domain6,
-        (column8_row13 * column8_row13 - column8_row61) , domain6,
-        (column8_row45 * column8_row45 - column8_row3) , domain6,
-        (column7_row3 * column7_row3 - column7_row7) , domain3,
-        (column8_row6 * column8_row6 - column8_row14) * domain15 , domain5,
+            - column8_row11 * (column8_row5 - column8_row69))
+            * domain21,
+        domain6,
+        (column8_row43 * (column8_row5 - column8_row41) - 1) * domain21,
+        domain6,
+        (ec_op_ec_subset_sum_bit_neg_0 * (column8_row69 - column8_row5)) * domain21,
+        domain6,
+        (ec_op_ec_subset_sum_bit_neg_0 * (column8_row101 - column8_row37)) * domain21,
+        domain6,
+        (column8_row21 - column5_row10631),
+        domain23,
+        (column5_row8583 - column8_row5),
+        domain23,
+        (column5_row4487 - column8_row37),
+        domain23,
+        (column5_row6535 - column8_row16325),
+        domain23,
+        (column5_row14727 - column8_row16357),
+        domain23,
+        (column5_row38 - global_values.initial_poseidon_addr),
+        domain29,
+        (column5_row294 - (column5_row38 + 3)) * domain34,
+        domain8,
+        (column5_row166 - (global_values.initial_poseidon_addr + 1)),
+        domain29,
+        (column5_row422 - (column5_row166 + 3)) * domain34,
+        domain8,
+        (column5_row102 - (global_values.initial_poseidon_addr + 2)),
+        domain29,
+        (column5_row358 - (column5_row102 + 3)) * domain34,
+        domain8,
+        (column8_row53 * column8_row53 - column8_row29),
+        domain6,
+        (column8_row13 * column8_row13 - column8_row61),
+        domain6,
+        (column8_row45 * column8_row45 - column8_row3),
+        domain6,
+        (column7_row3 * column7_row3 - column7_row7),
+        domain3,
+        (column8_row6 * column8_row6 - column8_row14) * domain15,
+        domain5,
         (column5_row39
-        + 2950795762459345168613727575620414179244544320470208355568817838579231751791
-        - column8_row53)
-        , domain13,
+            + 2950795762459345168613727575620414179244544320470208355568817838579231751791
+            - column8_row53),
+        domain13,
         (column5_row167
-        + 1587446564224215276866294500450702039420286416111469274423465069420553242820
-        - column8_row13)
-        , domain13,
+            + 1587446564224215276866294500450702039420286416111469274423465069420553242820
+            - column8_row13),
+        domain13,
         (column5_row103
-        + 1645965921169490687904413452218868659025437693527479459426157555728339600137
-        - column8_row45)
-        , domain13,
+            + 1645965921169490687904413452218868659025437693527479459426157555728339600137
+            - column8_row45),
+        domain13,
         (column8_row117
-        - (poseidon_poseidon_full_rounds_state0_cubed_0
-            + poseidon_poseidon_full_rounds_state0_cubed_0
-            + poseidon_poseidon_full_rounds_state0_cubed_0
-            + poseidon_poseidon_full_rounds_state1_cubed_0
-            + poseidon_poseidon_full_rounds_state2_cubed_0
-            + global_values.poseidon_poseidon_full_round_key0))
-        * domain11
-        , domain6,
+            - (poseidon_poseidon_full_rounds_state0_cubed_0
+                + poseidon_poseidon_full_rounds_state0_cubed_0
+                + poseidon_poseidon_full_rounds_state0_cubed_0
+                + poseidon_poseidon_full_rounds_state1_cubed_0
+                + poseidon_poseidon_full_rounds_state2_cubed_0
+                + global_values.poseidon_poseidon_full_round_key0))
+            * domain11,
+        domain6,
         (column8_row77
-        + poseidon_poseidon_full_rounds_state1_cubed_0
-        - (poseidon_poseidon_full_rounds_state0_cubed_0
-            + poseidon_poseidon_full_rounds_state2_cubed_0
-            + global_values.poseidon_poseidon_full_round_key1))
-        * domain11
-        , domain6,
-        (column8_row109
-        + poseidon_poseidon_full_rounds_state2_cubed_0
-        + poseidon_poseidon_full_rounds_state2_cubed_0
-        - (poseidon_poseidon_full_rounds_state0_cubed_0
             + poseidon_poseidon_full_rounds_state1_cubed_0
-            + global_values.poseidon_poseidon_full_round_key2))
-        * domain11
-        , domain6,
+            - (poseidon_poseidon_full_rounds_state0_cubed_0
+                + poseidon_poseidon_full_rounds_state2_cubed_0
+                + global_values.poseidon_poseidon_full_round_key1))
+            * domain11,
+        domain6,
+        (column8_row109
+            + poseidon_poseidon_full_rounds_state2_cubed_0
+            + poseidon_poseidon_full_rounds_state2_cubed_0
+            - (poseidon_poseidon_full_rounds_state0_cubed_0
+                + poseidon_poseidon_full_rounds_state1_cubed_0
+                + global_values.poseidon_poseidon_full_round_key2))
+            * domain11,
+        domain6,
         (column5_row295
-        - (poseidon_poseidon_full_rounds_state0_cubed_7
-            + poseidon_poseidon_full_rounds_state0_cubed_7
-            + poseidon_poseidon_full_rounds_state0_cubed_7
-            + poseidon_poseidon_full_rounds_state1_cubed_7
-            + poseidon_poseidon_full_rounds_state2_cubed_7))
-        , domain13,
+            - (poseidon_poseidon_full_rounds_state0_cubed_7
+                + poseidon_poseidon_full_rounds_state0_cubed_7
+                + poseidon_poseidon_full_rounds_state0_cubed_7
+                + poseidon_poseidon_full_rounds_state1_cubed_7
+                + poseidon_poseidon_full_rounds_state2_cubed_7)),
+        domain13,
         (column5_row423
-        + poseidon_poseidon_full_rounds_state1_cubed_7
-        - (poseidon_poseidon_full_rounds_state0_cubed_7
-            + poseidon_poseidon_full_rounds_state2_cubed_7))
-        , domain13,
+            + poseidon_poseidon_full_rounds_state1_cubed_7
+            - (poseidon_poseidon_full_rounds_state0_cubed_7
+                + poseidon_poseidon_full_rounds_state2_cubed_7)),
+        domain13,
         (column5_row359
-        + poseidon_poseidon_full_rounds_state2_cubed_7
-        + poseidon_poseidon_full_rounds_state2_cubed_7
-        - (poseidon_poseidon_full_rounds_state0_cubed_7
-            + poseidon_poseidon_full_rounds_state1_cubed_7))
-        , domain13,
-        (column7_row491 - column8_row6) , domain13,
-        (column7_row499 - column8_row22) , domain13,
-        (column7_row507 - column8_row38) , domain13,
+            + poseidon_poseidon_full_rounds_state2_cubed_7
+            + poseidon_poseidon_full_rounds_state2_cubed_7
+            - (poseidon_poseidon_full_rounds_state0_cubed_7
+                + poseidon_poseidon_full_rounds_state1_cubed_7)),
+        domain13,
+        (column7_row491 - column8_row6),
+        domain13,
+        (column7_row499 - column8_row22),
+        domain13,
+        (column7_row507 - column8_row38),
+        domain13,
         (column7_row3
-        + poseidon_poseidon_full_rounds_state2_cubed_3
-        + poseidon_poseidon_full_rounds_state2_cubed_3
-        - (poseidon_poseidon_full_rounds_state0_cubed_3
-            + poseidon_poseidon_full_rounds_state1_cubed_3
-            + 2121140748740143694053732746913428481442990369183417228688865837805149503386))
-        , domain13,
+            + poseidon_poseidon_full_rounds_state2_cubed_3
+            + poseidon_poseidon_full_rounds_state2_cubed_3
+            - (poseidon_poseidon_full_rounds_state0_cubed_3
+                + poseidon_poseidon_full_rounds_state1_cubed_3
+                + 2121140748740143694053732746913428481442990369183417228688865837805149503386)),
+        domain13,
         (column7_row11
-        - (3618502788666131213697322783095070105623107215331596699973092056135872020477
-            * poseidon_poseidon_full_rounds_state1_cubed_3
-            + 10 * poseidon_poseidon_full_rounds_state2_cubed_3
-            + 4 * column7_row3
-            + 3618502788666131213697322783095070105623107215331596699973092056135872020479
-                * poseidon_poseidon_partial_rounds_state0_cubed_0
-            + 2006642341318481906727563724340978325665491359415674592697055778067937914672))
-        , domain13,
+            - (3618502788666131213697322783095070105623107215331596699973092056135872020477
+                * poseidon_poseidon_full_rounds_state1_cubed_3
+                + 10 * poseidon_poseidon_full_rounds_state2_cubed_3
+                + 4 * column7_row3
+                + 3618502788666131213697322783095070105623107215331596699973092056135872020479
+                    * poseidon_poseidon_partial_rounds_state0_cubed_0
+                + 2006642341318481906727563724340978325665491359415674592697055778067937914672)),
+        domain13,
         (column7_row19
-        - (8 * poseidon_poseidon_full_rounds_state2_cubed_3
-            + 4 * column7_row3
-            + 6 * poseidon_poseidon_partial_rounds_state0_cubed_0
-            + column7_row11
-            + column7_row11
-            + 3618502788666131213697322783095070105623107215331596699973092056135872020479
-                * poseidon_poseidon_partial_rounds_state0_cubed_1
-            + 427751140904099001132521606468025610873158555767197326325930641757709538586))
-        , domain13,
+            - (8 * poseidon_poseidon_full_rounds_state2_cubed_3
+                + 4 * column7_row3
+                + 6 * poseidon_poseidon_partial_rounds_state0_cubed_0
+                + column7_row11
+                + column7_row11
+                + 3618502788666131213697322783095070105623107215331596699973092056135872020479
+                    * poseidon_poseidon_partial_rounds_state0_cubed_1
+                + 427751140904099001132521606468025610873158555767197326325930641757709538586)),
+        domain13,
         (column7_row27
-        - (8 * poseidon_poseidon_partial_rounds_state0_cubed_0
-            + 4 * column7_row11
-            + 6 * poseidon_poseidon_partial_rounds_state0_cubed_1
-            + column7_row19
-            + column7_row19
-            + 3618502788666131213697322783095070105623107215331596699973092056135872020479
-                * poseidon_poseidon_partial_rounds_state0_cubed_2
-            + global_values.poseidon_poseidon_partial_round_key0))
-        * domain16
-        , domain3,
+            - (8 * poseidon_poseidon_partial_rounds_state0_cubed_0
+                + 4 * column7_row11
+                + 6 * poseidon_poseidon_partial_rounds_state0_cubed_1
+                + column7_row19
+                + column7_row19
+                + 3618502788666131213697322783095070105623107215331596699973092056135872020479
+                    * poseidon_poseidon_partial_rounds_state0_cubed_2
+                + global_values.poseidon_poseidon_partial_round_key0))
+            * domain16,
+        domain3,
         (column8_row54
-        - (8 * poseidon_poseidon_partial_rounds_state1_cubed_0
-            + 4 * column8_row22
-            + 6 * poseidon_poseidon_partial_rounds_state1_cubed_1
-            + column8_row38
-            + column8_row38
-            + 3618502788666131213697322783095070105623107215331596699973092056135872020479
-                * poseidon_poseidon_partial_rounds_state1_cubed_2
-            + global_values.poseidon_poseidon_partial_round_key1))
-        * domain17
-        , domain5,
+            - (8 * poseidon_poseidon_partial_rounds_state1_cubed_0
+                + 4 * column8_row22
+                + 6 * poseidon_poseidon_partial_rounds_state1_cubed_1
+                + column8_row38
+                + column8_row38
+                + 3618502788666131213697322783095070105623107215331596699973092056135872020479
+                    * poseidon_poseidon_partial_rounds_state1_cubed_2
+                + global_values.poseidon_poseidon_partial_round_key1))
+            * domain17,
+        domain5,
         (column8_row309
-        - (16 * poseidon_poseidon_partial_rounds_state1_cubed_19
-            + 8 * column8_row326
-            + 16 * poseidon_poseidon_partial_rounds_state1_cubed_20
-            + 6 * column8_row342
-            + poseidon_poseidon_partial_rounds_state1_cubed_21
-            + 560279373700919169769089400651532183647886248799764942664266404650165812023))
-        , domain13,
+            - (16 * poseidon_poseidon_partial_rounds_state1_cubed_19
+                + 8 * column8_row326
+                + 16 * poseidon_poseidon_partial_rounds_state1_cubed_20
+                + 6 * column8_row342
+                + poseidon_poseidon_partial_rounds_state1_cubed_21
+                + 560279373700919169769089400651532183647886248799764942664266404650165812023)),
+        domain13,
         (column8_row269
-        - (4 * poseidon_poseidon_partial_rounds_state1_cubed_20
-            + column8_row342
-            + column8_row342
-            + poseidon_poseidon_partial_rounds_state1_cubed_21
-            + 1401754474293352309994371631695783042590401941592571735921592823982231996415))
-        , domain13,
+            - (4 * poseidon_poseidon_partial_rounds_state1_cubed_20
+                + column8_row342
+                + column8_row342
+                + poseidon_poseidon_partial_rounds_state1_cubed_21
+                + 1401754474293352309994371631695783042590401941592571735921592823982231996415)),
+        domain13,
         (column8_row301
-        - (8 * poseidon_poseidon_partial_rounds_state1_cubed_19
-            + 4 * column8_row326
-            + 6 * poseidon_poseidon_partial_rounds_state1_cubed_20
-            + column8_row342
-            + column8_row342
-            + 3618502788666131213697322783095070105623107215331596699973092056135872020479
-                * poseidon_poseidon_partial_rounds_state1_cubed_21
-            + 1246177936547655338400308396717835700699368047388302793172818304164989556526))
-        , domain13];
+            - (8 * poseidon_poseidon_partial_rounds_state1_cubed_19
+                + 4 * column8_row326
+                + 6 * poseidon_poseidon_partial_rounds_state1_cubed_20
+                + column8_row342
+                + column8_row342
+                + 3618502788666131213697322783095070105623107215331596699973092056135872020479
+                    * poseidon_poseidon_partial_rounds_state1_cubed_21
+                + 1246177936547655338400308396717835700699368047388302793172818304164989556526)),
+        domain13
+    ];
     let mut i = 0;
-    while i < constraints.len() {
-        total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * ((*constraints.at(i)) / (*constraints.at(i + 1)));
-        i += 2;
-    };
+    while i < constraints
+        .len() {
+            total_sum = total_sum
+                + *constraint_coefficients.pop_front().unwrap()
+                    * ((*constraints.at(i)) / (*constraints.at(i + 1)));
+            i += 2;
+        };
 
     total_sum
 }
-
 
 
 fn eval_oods_polynomial_inner(
@@ -1122,19 +1205,201 @@ fn eval_oods_polynomial_inner(
     trace_generator: felt252,
 ) -> felt252 {
     let pow_exps = array![
-        0, 32715, 32667, 32647, 16325, 16149, 16085, 12373, 12309, 24966, 16774, 14726, 10630, 
-        8582, 6534, 4486, 2438, 1, 14727, 10631, 8583, 6535, 4487, 2439, 2, 3, 4, 5, 6, 16331, 
-        7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22, 23, 24, 25, 27, 29, 30, 33, 35, 
-        37, 38, 39, 41, 43, 44, 45, 46, 49, 51, 53, 54, 32721, 32731, 32747, 32753, 32763, 57, 
-        59, 61, 65, 69, 70, 71, 73, 76, 77, 81, 85, 89, 91, 97, 101, 102, 103, 105, 108, 109, 
-        113, 117, 123, 129, 134, 135, 140, 145, 155, 161, 166, 167, 172, 177, 187, 192, 193, 
-        195, 196, 197, 198, 199, 204, 205, 209, 219, 221, 225, 236, 237, 241, 245, 251, 252, 
-        16337, 16339, 16355, 16357, 16363, 16369, 16371, 16385, 16417, 253, 255, 256, 257, 
-        12629, 12565, 12678, 12679, 262, 263, 265, 269, 294, 295, 301, 309, 310, 318, 422, 390, 
-        326, 334, 342, 350, 358, 423, 391, 359, 16775, 451, 454, 461, 477, 491, 493, 499, 501, 
-        507, 509, 511, 33158, 513, 518, 705, 902, 711, 721, 737, 753, 769, 961, 966, 967, 977, 
-        1222, 903, 993, 1009, 521, 777
-    ].span();
+        0,
+        32715,
+        32667,
+        32647,
+        16325,
+        16149,
+        16085,
+        12373,
+        12309,
+        24966,
+        16774,
+        14726,
+        10630,
+        8582,
+        6534,
+        4486,
+        2438,
+        1,
+        14727,
+        10631,
+        8583,
+        6535,
+        4487,
+        2439,
+        2,
+        3,
+        4,
+        5,
+        6,
+        16331,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        21,
+        22,
+        23,
+        24,
+        25,
+        27,
+        29,
+        30,
+        33,
+        35,
+        37,
+        38,
+        39,
+        41,
+        43,
+        44,
+        45,
+        46,
+        49,
+        51,
+        53,
+        54,
+        32721,
+        32731,
+        32747,
+        32753,
+        32763,
+        57,
+        59,
+        61,
+        65,
+        69,
+        70,
+        71,
+        73,
+        76,
+        77,
+        81,
+        85,
+        89,
+        91,
+        97,
+        101,
+        102,
+        103,
+        105,
+        108,
+        109,
+        113,
+        117,
+        123,
+        129,
+        134,
+        135,
+        140,
+        145,
+        155,
+        161,
+        166,
+        167,
+        172,
+        177,
+        187,
+        192,
+        193,
+        195,
+        196,
+        197,
+        198,
+        199,
+        204,
+        205,
+        209,
+        219,
+        221,
+        225,
+        236,
+        237,
+        241,
+        245,
+        251,
+        252,
+        16337,
+        16339,
+        16355,
+        16357,
+        16363,
+        16369,
+        16371,
+        16385,
+        16417,
+        253,
+        255,
+        256,
+        257,
+        12629,
+        12565,
+        12678,
+        12679,
+        262,
+        263,
+        265,
+        269,
+        294,
+        295,
+        301,
+        309,
+        310,
+        318,
+        422,
+        390,
+        326,
+        334,
+        342,
+        350,
+        358,
+        423,
+        391,
+        359,
+        16775,
+        451,
+        454,
+        461,
+        477,
+        491,
+        493,
+        499,
+        501,
+        507,
+        509,
+        511,
+        33158,
+        513,
+        518,
+        705,
+        902,
+        711,
+        721,
+        737,
+        753,
+        769,
+        961,
+        966,
+        967,
+        977,
+        1222,
+        903,
+        993,
+        1009,
+        521,
+        777
+    ]
+        .span();
 
     // Sum the OODS constraints on the trace polynomials.
     let mut total_sum = 0;
@@ -1143,36 +1408,265 @@ fn eval_oods_polynomial_inner(
     let pow_list2 = array![0, 17, 134, 135];
     let pow_list3 = array![0, 17, 105, 106, 108, 109, 122, 123, 135];
     let pow_list4 = array![0, 134];
-    let pow_list5 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 35, 36, 39, 53, 54, 74, 
-        75, 85, 86, 94, 95, 100, 101, 110, 111, 141, 142, 145, 146, 153, 
-        157, 160, 152, 159, 151, 158, 163, 175, 178, 177, 188, 184, 185, 
-        187, 16, 23, 15, 22, 14, 21, 13, 20, 12, 19, 139, 140, 11, 18, 
-        10, 161, 9, 173];
+    let pow_list5 = array![
+        0,
+        17,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        32,
+        35,
+        36,
+        39,
+        53,
+        54,
+        74,
+        75,
+        85,
+        86,
+        94,
+        95,
+        100,
+        101,
+        110,
+        111,
+        141,
+        142,
+        145,
+        146,
+        153,
+        157,
+        160,
+        152,
+        159,
+        151,
+        158,
+        163,
+        175,
+        178,
+        177,
+        188,
+        184,
+        185,
+        187,
+        16,
+        23,
+        15,
+        22,
+        14,
+        21,
+        13,
+        20,
+        12,
+        19,
+        139,
+        140,
+        11,
+        18,
+        10,
+        161,
+        9,
+        173
+    ];
     let pow_list6 = array![0, 17, 24, 25];
-    let pow_list7 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 36, 38, 
-        40, 41, 44, 47, 50,
-        57, 60, 72, 77, 79, 83, 88, 90, 93, 96, 97, 99, 102, 103, 106, 112, 114, 117,
-        118, 120, 136, 143, 166, 168, 170, 174, 191, 176, 179, 180, 181, 182, 192,
-        183, 186, 189, 190];
-    let pow_list8 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 
-        37, 39, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52, 53, 55, 56, 58, 59, 
-        60, 61, 62, 63, 69, 70, 71, 72, 73, 75, 76, 78, 79,
-        80, 81, 82, 83, 84, 87, 89, 90, 91, 92, 98, 104, 107, 113, 115, 116, 119, 121, 
-        133, 144, 147, 148, 149, 150, 153, 154, 155, 156, 162, 164, 165, 167, 169, 171, 
-        8, 7, 138, 137, 6, 5, 4, 29, 124, 125, 126, 127, 128, 129, 130, 131, 132, 3, 2, 
-        1, 64, 65, 66, 67, 68];
+    let pow_list7 = array![
+        0,
+        17,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        32,
+        34,
+        35,
+        36,
+        38,
+        40,
+        41,
+        44,
+        47,
+        50,
+        57,
+        60,
+        72,
+        77,
+        79,
+        83,
+        88,
+        90,
+        93,
+        96,
+        97,
+        99,
+        102,
+        103,
+        106,
+        112,
+        114,
+        117,
+        118,
+        120,
+        136,
+        143,
+        166,
+        168,
+        170,
+        174,
+        191,
+        176,
+        179,
+        180,
+        181,
+        182,
+        192,
+        183,
+        186,
+        189,
+        190
+    ];
+    let pow_list8 = array![
+        0,
+        17,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        42,
+        43,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        55,
+        56,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        69,
+        70,
+        71,
+        72,
+        73,
+        75,
+        76,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        87,
+        89,
+        90,
+        91,
+        92,
+        98,
+        104,
+        107,
+        113,
+        115,
+        116,
+        119,
+        121,
+        133,
+        144,
+        147,
+        148,
+        149,
+        150,
+        153,
+        154,
+        155,
+        156,
+        162,
+        164,
+        165,
+        167,
+        169,
+        171,
+        8,
+        7,
+        138,
+        137,
+        6,
+        5,
+        4,
+        29,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        3,
+        2,
+        1,
+        64,
+        65,
+        66,
+        67,
+        68
+    ];
     let pow_list9 = array![0, 17, 24, 25, 27, 30, 34, 38];
-    let pow_list = array![pow_list0, pow_list1, pow_list2, pow_list3, pow_list4, pow_list5, pow_list6, pow_list7, pow_list8, pow_list9].span();
+    let pow_list = array![
+        pow_list0,
+        pow_list1,
+        pow_list2,
+        pow_list3,
+        pow_list4,
+        pow_list5,
+        pow_list6,
+        pow_list7,
+        pow_list8,
+        pow_list9
+    ]
+        .span();
     let mut i = 0;
-    while i < pow_list.len() {
-        let mut j = 0;
-        while j < (pow_list.at(i)).len() {
-            let value = (*column_values.at(i) - *oods_values.pop_front().unwrap()) / (point - pow(trace_generator, *pow_exps.at(*pow_list.at(i).at(j))) * oods_point);
-            total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-            j += 1;
+    while i < pow_list
+        .len() {
+            let mut j = 0;
+            while j < (pow_list.at(i))
+                .len() {
+                    let value = (*column_values.at(i) - *oods_values.pop_front().unwrap())
+                        / (point
+                            - pow(trace_generator, *pow_exps.at(*pow_list.at(i).at(j)))
+                                * oods_point);
+                    total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
+                    j += 1;
+                };
+            i += 1;
         };
-        i += 1;
-    };
 
     // Sum the OODS boundary constraints on the composition polynomials.
     let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());
