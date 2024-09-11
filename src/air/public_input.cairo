@@ -244,8 +244,9 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     (program_hash, output_hash)
 }
 
+
+#[cfg(feature: 'stone5')]
 #[cfg(feature: 'recursive')]
-#[cfg(feature: 'keccak')]
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
@@ -254,9 +255,9 @@ mod tests {
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
         let public_input = get();
-        let hash = get_public_input_hash(@public_input);
+        let hash = get_public_input_hash(@public_input, 0);
         assert(
-            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
+            hash == 0x1c3097c2a1665c78d69edc47ff35a3f3c9c0678e3daaa74d2b68331a5757a37, 'Hash invalid'
         )
     }
 }

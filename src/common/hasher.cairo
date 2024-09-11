@@ -13,7 +13,7 @@ fn hash_n_bytes(mut data: Array<u8>, n: u8, hash_len: bool) -> u256 {
 #[cfg(feature: 'blake2s_160_lsb')]
 fn hash_truncated(data: Array<u32>) -> felt252 {
     (blake2s(data).flip_endianness()
-        & 0x0000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+        & 0x000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
         .try_into()
         .unwrap()
 }
