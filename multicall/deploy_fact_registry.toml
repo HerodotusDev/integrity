@@ -1,6 +1,0 @@
-[[call]]
-call_type = "deploy"
-class_hash = "0x49cc114a5b78d679c970e22b7fd0d6e503b29a7d96aaa3efda46381c36d8407"
-inputs = ["REPLACE WITH DEPLOYER ADDRESS"]
-unique = true
-id = "fact_registry"
