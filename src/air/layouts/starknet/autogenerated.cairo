@@ -1,3 +1,5 @@
+use core::array::SpanTrait;
+use core::array::ArrayTrait;
 use cairo_verifier::{
     air::layouts::starknet::{
         global_values::GlobalValues,
@@ -534,233 +536,130 @@ fn eval_composition_polynomial_inner(
     let poseidon_poseidon_partial_rounds_state1_cubed_21 = column8_row342 * column8_row350;
 
     // Sum constraints.
-    let total_sum = 0;
+    let mut total_sum = 0;
 
-    // Constraint: cpu/decode/opcode_range_check/bit.
-    let value = (cpu_decode_opcode_range_check_bit_0 * cpu_decode_opcode_range_check_bit_0
+    let constraints = array![(cpu_decode_opcode_range_check_bit_0 * cpu_decode_opcode_range_check_bit_0
         - cpu_decode_opcode_range_check_bit_0)
         * domain4
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/decode/opcode_range_check/zero.
-    let value = (column0_row0) / domain4;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/decode/opcode_range_check_input.
-    let value = (column5_row1
+        , domain0,
+        (column0_row0) , domain4,
+        (column5_row1
         - (((column0_row0 * global_values.offset_size + column7_row4) * global_values.offset_size
             + column7_row8)
             * global_values.offset_size
             + column7_row0))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/decode/flag_op1_base_op0_bit.
-    let value = (cpu_decode_flag_op1_base_op0_0 * cpu_decode_flag_op1_base_op0_0
+        , domain5,
+        (cpu_decode_flag_op1_base_op0_0 * cpu_decode_flag_op1_base_op0_0
         - cpu_decode_flag_op1_base_op0_0)
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/decode/flag_res_op1_bit.
-    let value = (cpu_decode_flag_res_op1_0 * cpu_decode_flag_res_op1_0 - cpu_decode_flag_res_op1_0)
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/decode/flag_pc_update_regular_bit.
-    let value = (cpu_decode_flag_pc_update_regular_0 * cpu_decode_flag_pc_update_regular_0
+        , domain5,
+        (cpu_decode_flag_res_op1_0 * cpu_decode_flag_res_op1_0 - cpu_decode_flag_res_op1_0)
+        , domain5,
+        (cpu_decode_flag_pc_update_regular_0 * cpu_decode_flag_pc_update_regular_0
         - cpu_decode_flag_pc_update_regular_0)
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/decode/fp_update_regular_bit.
-    let value = (cpu_decode_fp_update_regular_0 * cpu_decode_fp_update_regular_0
+        , domain5,
+        (cpu_decode_fp_update_regular_0 * cpu_decode_fp_update_regular_0
         - cpu_decode_fp_update_regular_0)
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/operands/mem_dst_addr.
-    let value = (column5_row8
+        , domain5,
+        (column5_row8
         + global_values.half_offset_size
         - (cpu_decode_opcode_range_check_bit_0 * column8_row8
             + (1 - cpu_decode_opcode_range_check_bit_0) * column8_row0
             + column7_row0))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/operands/mem0_addr.
-    let value = (column5_row4
+        , domain5,
+        (column5_row4
         + global_values.half_offset_size
         - (cpu_decode_opcode_range_check_bit_1 * column8_row8
             + (1 - cpu_decode_opcode_range_check_bit_1) * column8_row0
             + column7_row8))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/operands/mem1_addr.
-    let value = (column5_row12
+        , domain5,
+        (column5_row12
         + global_values.half_offset_size
         - (cpu_decode_opcode_range_check_bit_2 * column5_row0
             + cpu_decode_opcode_range_check_bit_4 * column8_row0
             + cpu_decode_opcode_range_check_bit_3 * column8_row8
             + cpu_decode_flag_op1_base_op0_0 * column5_row5
             + column7_row4))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/operands/ops_mul.
-    let value = (column8_row4 - column5_row5 * column5_row13) / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/operands/res.
-    let value = ((1 - cpu_decode_opcode_range_check_bit_9) * column8_row12
+        , domain5,
+        (column8_row4 - column5_row5 * column5_row13) , domain5, 
+        ((1 - cpu_decode_opcode_range_check_bit_9) * column8_row12
         - (cpu_decode_opcode_range_check_bit_5 * (column5_row5 + column5_row13)
             + cpu_decode_opcode_range_check_bit_6 * column8_row4
             + cpu_decode_flag_res_op1_0 * column5_row13))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/update_registers/update_pc/tmp0.
-    let value = (column8_row2 - cpu_decode_opcode_range_check_bit_9 * column5_row9)
+        , domain5,
+        (column8_row2 - cpu_decode_opcode_range_check_bit_9 * column5_row9)
         * domain28
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/update_registers/update_pc/tmp1.
-    let value = (column8_row10 - column8_row2 * column8_row12) * domain28 / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/update_registers/update_pc/pc_cond_negative.
-    let value = ((1 - cpu_decode_opcode_range_check_bit_9) * column5_row16
+        , domain5,
+        (column8_row10 - column8_row2 * column8_row12) * domain28 , domain5,
+        ((1 - cpu_decode_opcode_range_check_bit_9) * column5_row16
         + column8_row2 * (column5_row16 - (column5_row0 + column5_row13))
         - (cpu_decode_flag_pc_update_regular_0 * npc_reg_0
             + cpu_decode_opcode_range_check_bit_7 * column8_row12
             + cpu_decode_opcode_range_check_bit_8 * (column5_row0 + column8_row12)))
         * domain28
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/update_registers/update_pc/pc_cond_positive.
-    let value = ((column8_row10 - cpu_decode_opcode_range_check_bit_9)
+        , domain5,
+        ((column8_row10 - cpu_decode_opcode_range_check_bit_9)
         * (column5_row16 - npc_reg_0))
         * domain28
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/update_registers/update_ap/ap_update.
-    let value = (column8_row16
+        , domain5,
+        (column8_row16
         - (column8_row0
             + cpu_decode_opcode_range_check_bit_10 * column8_row12
             + cpu_decode_opcode_range_check_bit_11
             + cpu_decode_opcode_range_check_bit_12 * 2))
         * domain28
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/update_registers/update_fp/fp_update.
-    let value = (column8_row24
+        , domain5,
+        (column8_row24
         - (cpu_decode_fp_update_regular_0 * column8_row8
             + cpu_decode_opcode_range_check_bit_13 * column5_row9
             + cpu_decode_opcode_range_check_bit_12 * (column8_row0 + 2)))
         * domain28
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/call/push_fp.
-    let value = (cpu_decode_opcode_range_check_bit_12 * (column5_row9 - column8_row8)) / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/call/push_pc.
-    let value = (cpu_decode_opcode_range_check_bit_12
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_12 * (column5_row9 - column8_row8)) , domain5,
+        (cpu_decode_opcode_range_check_bit_12
         * (column5_row5 - (column5_row0 + cpu_decode_opcode_range_check_bit_2 + 1)))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/call/off0.
-    let value = (cpu_decode_opcode_range_check_bit_12
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_12
         * (column7_row0 - global_values.half_offset_size))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/call/off1.
-    let value = (cpu_decode_opcode_range_check_bit_12
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_12
         * (column7_row8 - (global_values.half_offset_size + 1)))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/call/flags.
-    let value = (cpu_decode_opcode_range_check_bit_12
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_12
         * (cpu_decode_opcode_range_check_bit_12
             + cpu_decode_opcode_range_check_bit_12
             + 1
             + 1
             - (cpu_decode_opcode_range_check_bit_0 + cpu_decode_opcode_range_check_bit_1 + 4)))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/ret/off0.
-    let value = (cpu_decode_opcode_range_check_bit_13
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_13
         * (column7_row0 + 2 - global_values.half_offset_size))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/ret/off2.
-    let value = (cpu_decode_opcode_range_check_bit_13
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_13
         * (column7_row4 + 1 - global_values.half_offset_size))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/ret/flags.
-    let value = (cpu_decode_opcode_range_check_bit_13
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_13
         * (cpu_decode_opcode_range_check_bit_7
             + cpu_decode_opcode_range_check_bit_0
             + cpu_decode_opcode_range_check_bit_3
             + cpu_decode_flag_res_op1_0
             - 4))
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: cpu/opcodes/assert_eq/assert_eq.
-    let value = (cpu_decode_opcode_range_check_bit_14 * (column5_row9 - column8_row12)) / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: initial_ap.
-    let value = (column8_row0 - global_values.initial_ap) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: initial_fp.
-    let value = (column8_row8 - global_values.initial_ap) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: initial_pc.
-    let value = (column5_row0 - global_values.initial_pc) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: final_ap.
-    let value = (column8_row0 - global_values.final_ap) / domain28;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: final_fp.
-    let value = (column8_row8 - global_values.initial_ap) / domain28;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: final_pc.
-    let value = (column5_row0 - global_values.final_pc) / domain28;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: memory/multi_column_perm/perm/init0.
-    let value = ((global_values.memory_multi_column_perm_perm_interaction_elm
+        , domain5,
+        (cpu_decode_opcode_range_check_bit_14 * (column5_row9 - column8_row12)) , domain5,
+        (column8_row0 - global_values.initial_ap) , domain29,
+        (column8_row8 - global_values.initial_ap) , domain29,
+        (column5_row0 - global_values.initial_pc) , domain29,
+        (column8_row0 - global_values.final_ap) , domain28,
+        (column8_row8 - global_values.initial_ap) , domain28,
+        (column5_row0 - global_values.final_pc) , domain28,
+        ((global_values.memory_multi_column_perm_perm_interaction_elm
         - (column6_row0
             + global_values.memory_multi_column_perm_hash_interaction_elm0 * column6_row1))
         * column9_inter1_row0
         + column5_row0
         + global_values.memory_multi_column_perm_hash_interaction_elm0 * column5_row1
         - global_values.memory_multi_column_perm_perm_interaction_elm)
-        / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: memory/multi_column_perm/perm/step0.
-    let value = ((global_values.memory_multi_column_perm_perm_interaction_elm
+        , domain29,
+        ((global_values.memory_multi_column_perm_perm_interaction_elm
         - (column6_row2
             + global_values.memory_multi_column_perm_hash_interaction_elm0 * column6_row3))
         * column9_inter1_row2
@@ -769,764 +668,323 @@ fn eval_composition_polynomial_inner(
                 + global_values.memory_multi_column_perm_hash_interaction_elm0 * column5_row3))
             * column9_inter1_row0)
         * domain30
-        / domain1;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: memory/multi_column_perm/perm/last.
-    let value = (column9_inter1_row0
+        , domain1,
+        (column9_inter1_row0
         - global_values.memory_multi_column_perm_perm_public_memory_prod)
-        / domain30;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: memory/diff_is_bit.
-    let value = (memory_address_diff_0 * memory_address_diff_0 - memory_address_diff_0)
+        , domain30,
+        (memory_address_diff_0 * memory_address_diff_0 - memory_address_diff_0)
         * domain30
-        / domain1;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: memory/is_func.
-    let value = ((memory_address_diff_0 - 1) * (column6_row1 - column6_row3)) * domain30 / domain1;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: memory/initial_addr.
-    let value = (column6_row0 - 1) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: public_memory_addr_zero.
-    let value = (column5_row2) / domain3;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: public_memory_value_zero.
-    let value = (column5_row3) / domain3;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check16/perm/init0.
-    let value = ((global_values.range_check16_perm_interaction_elm - column7_row2)
+        , domain1,
+        ((memory_address_diff_0 - 1) * (column6_row1 - column6_row3)) * domain30 , domain1,
+        (column6_row0 - 1) , domain29,
+        (column5_row2) , domain3,
+        (column5_row3) , domain3,
+        ((global_values.range_check16_perm_interaction_elm - column7_row2)
         * column9_inter1_row1
         + column7_row0
         - global_values.range_check16_perm_interaction_elm)
-        / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check16/perm/step0.
-    let value = ((global_values.range_check16_perm_interaction_elm - column7_row6)
+        , domain29,
+        ((global_values.range_check16_perm_interaction_elm - column7_row6)
         * column9_inter1_row5
         - (global_values.range_check16_perm_interaction_elm - column7_row4) * column9_inter1_row1)
         * domain31
-        / domain2;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check16/perm/last.
-    let value = (column9_inter1_row1 - global_values.range_check16_perm_public_memory_prod)
-        / domain31;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check16/diff_is_bit.
-    let value = (range_check16_diff_0 * range_check16_diff_0 - range_check16_diff_0)
+        , domain2,
+        (column9_inter1_row1 - global_values.range_check16_perm_public_memory_prod)
+        , domain31,
+        (range_check16_diff_0 * range_check16_diff_0 - range_check16_diff_0)
         * domain31
-        / domain2;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check16/minimum.
-    let value = (column7_row2 - global_values.range_check_min) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check16/maximum.
-    let value = (column7_row2 - global_values.range_check_max) / domain31;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/permutation/init0.
-    let value = ((global_values.diluted_check_permutation_interaction_elm - column7_row5)
+        , domain2,
+        (column7_row2 - global_values.range_check_min) , domain29,
+        (column7_row2 - global_values.range_check_max) , domain31,
+        ((global_values.diluted_check_permutation_interaction_elm - column7_row5)
         * column9_inter1_row7
         + column7_row1
         - global_values.diluted_check_permutation_interaction_elm)
-        / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/permutation/step0.
-    let value = ((global_values.diluted_check_permutation_interaction_elm - column7_row13)
+        , domain29,
+        ((global_values.diluted_check_permutation_interaction_elm - column7_row13)
         * column9_inter1_row15
         - (global_values.diluted_check_permutation_interaction_elm - column7_row9)
             * column9_inter1_row7)
         * domain32
-        / domain3;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/permutation/last.
-    let value = (column9_inter1_row7 - global_values.diluted_check_permutation_public_memory_prod)
-        / domain32;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/init.
-    let value = (column9_inter1_row3 - 1) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/first_element.
-    let value = (column7_row5 - global_values.diluted_check_first_elm) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/step.
-    let value = (column9_inter1_row11
+        , domain3,
+        (column9_inter1_row7 - global_values.diluted_check_permutation_public_memory_prod)
+        , domain32,
+        (column9_inter1_row3 - 1) , domain29,
+        (column7_row5 - global_values.diluted_check_first_elm) , domain29,
+        (column9_inter1_row11
         - (column9_inter1_row3
             * (1 + global_values.diluted_check_interaction_z * (column7_row13 - column7_row5))
             + global_values.diluted_check_interaction_alpha
                 * (column7_row13 - column7_row5)
                 * (column7_row13 - column7_row5)))
         * domain32
-        / domain3;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: diluted_check/last.
-    let value = (column9_inter1_row3 - global_values.diluted_check_final_cum_val) / domain32;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_unpacking/last_one_is_zero.
-    let value = (column8_row71 * (column3_row0 - (column3_row1 + column3_row1))) / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_unpacking/zeroes_between_ones0.
-    let value = (column8_row71
+        , domain3,
+        (column9_inter1_row3 - global_values.diluted_check_final_cum_val) , domain32,
+        (column8_row71 * (column3_row0 - (column3_row1 + column3_row1))) , domain8,
+        (column8_row71
         * (column3_row1
             - 3138550867693340381917894711603833208051177722232017256448 * column3_row192))
-        / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_unpacking/cumulative_bit192.
-    let value = (column8_row71
+        , domain8,
+        (column8_row71
         - column4_row255 * (column3_row192 - (column3_row193 + column3_row193)))
-        / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_unpacking/zeroes_between_ones192.
-    let value = (column4_row255 * (column3_row193 - 8 * column3_row196)) / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_unpacking/cumulative_bit196.
-    let value = (column4_row255
+        , domain8,
+        (column4_row255 * (column3_row193 - 8 * column3_row196)) , domain8,
+        (column4_row255
         - (column3_row251 - (column3_row252 + column3_row252))
             * (column3_row196 - (column3_row197 + column3_row197)))
-        / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_unpacking/zeroes_between_ones196.
-    let value = ((column3_row251 - (column3_row252 + column3_row252))
+        , domain8,
+        ((column3_row251 - (column3_row252 + column3_row252))
         * (column3_row197 - 18014398509481984 * column3_row251))
-        / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/booleanity_test.
-    let value = (pedersen_hash0_ec_subset_sum_bit_0 * (pedersen_hash0_ec_subset_sum_bit_0 - 1))
+        , domain8,
+        (pedersen_hash0_ec_subset_sum_bit_0 * (pedersen_hash0_ec_subset_sum_bit_0 - 1))
         * domain9
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/bit_extraction_end.
-    let value = (column3_row0) / domain10;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/zeros_tail.
-    let value = (column3_row0) / domain9;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/add_points/slope.
-    let value = (pedersen_hash0_ec_subset_sum_bit_0
+        , domain0,
+        (column3_row0) , domain10,
+        (column3_row0) , domain9,
+        (pedersen_hash0_ec_subset_sum_bit_0
         * (column2_row0 - global_values.pedersen_points_y)
         - column4_row0 * (column1_row0 - global_values.pedersen_points_x))
         * domain9
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/add_points/x.
-    let value = (column4_row0 * column4_row0
+        , domain0,
+        (column4_row0 * column4_row0
         - pedersen_hash0_ec_subset_sum_bit_0
             * (column1_row0 + global_values.pedersen_points_x + column1_row1))
         * domain9
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/add_points/y.
-    let value = (pedersen_hash0_ec_subset_sum_bit_0 * (column2_row0 + column2_row1)
+        , domain0,
+        (pedersen_hash0_ec_subset_sum_bit_0 * (column2_row0 + column2_row1)
         - column4_row0 * (column1_row0 - column1_row1))
         * domain9
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/copy_point/x.
-    let value = (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column1_row1 - column1_row0))
+        , domain0,
+        (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column1_row1 - column1_row0))
         * domain9
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/ec_subset_sum/copy_point/y.
-    let value = (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column2_row1 - column2_row0))
+        , domain0,
+        (pedersen_hash0_ec_subset_sum_bit_neg_0 * (column2_row1 - column2_row0))
         * domain9
-        / domain0;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/copy_point/x.
-    let value = (column1_row256 - column1_row255) * domain12 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/copy_point/y.
-    let value = (column2_row256 - column2_row255) * domain12 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/init/x.
-    let value = (column1_row0 - global_values.pedersen_shift_point.x) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/hash0/init/y.
-    let value = (column2_row0 - global_values.pedersen_shift_point.y) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/input0_value0.
-    let value = (column5_row7 - column3_row0) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/input0_addr.
-    let value = (column5_row518 - (column5_row134 + 1)) * domain33 / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/init_addr.
-    let value = (column5_row6 - global_values.initial_pedersen_addr) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/input1_value0.
-    let value = (column5_row263 - column3_row256) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/input1_addr.
-    let value = (column5_row262 - (column5_row6 + 1)) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/output_value0.
-    let value = (column5_row135 - column1_row511) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: pedersen/output_addr.
-    let value = (column5_row134 - (column5_row262 + 1)) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check_builtin/value.
-    let value = (range_check_builtin_value7_0 - column5_row71) / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check_builtin/addr_step.
-    let value = (column5_row326 - (column5_row70 + 1)) * domain34 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: range_check_builtin/init_addr.
-    let value = (column5_row70 - global_values.initial_range_check_addr) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/doubling_key/slope.
-    let value = (ecdsa_signature0_doubling_key_x_squared
+        , domain0,
+        (column1_row256 - column1_row255) * domain12 , domain8,
+        (column2_row256 - column2_row255) * domain12 , domain8,
+        (column1_row0 - global_values.pedersen_shift_point.x) , domain13,
+        (column2_row0 - global_values.pedersen_shift_point.y) , domain13,
+        (column5_row7 - column3_row0) , domain13,
+        (column5_row518 - (column5_row134 + 1)) * domain33 , domain13,
+        (column5_row6 - global_values.initial_pedersen_addr) , domain29,
+        (column5_row263 - column3_row256) , domain13,
+        (column5_row262 - (column5_row6 + 1)) , domain13,
+        (column5_row135 - column1_row511) , domain13,
+        (column5_row134 - (column5_row262 + 1)) , domain13,
+        (range_check_builtin_value7_0 - column5_row71) , domain8,
+        (column5_row326 - (column5_row70 + 1)) * domain34 , domain8,
+        (column5_row70 - global_values.initial_range_check_addr) , domain29,
+        (ecdsa_signature0_doubling_key_x_squared
         + ecdsa_signature0_doubling_key_x_squared
         + ecdsa_signature0_doubling_key_x_squared
         + global_values.ecdsa_sig_config.alpha
         - (column8_row33 + column8_row33) * column8_row35)
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/doubling_key/x.
-    let value = (column8_row35 * column8_row35 - (column8_row1 + column8_row1 + column8_row65))
+        , domain6,
+        (column8_row35 * column8_row35 - (column8_row1 + column8_row1 + column8_row65))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/doubling_key/y.
-    let value = (column8_row33 + column8_row97 - column8_row35 * (column8_row1 - column8_row65))
+        , domain6,
+        (column8_row33 + column8_row97 - column8_row35 * (column8_row1 - column8_row65))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/booleanity_test.
-    let value = (ecdsa_signature0_exponentiate_generator_bit_0
+        , domain6,
+        (ecdsa_signature0_exponentiate_generator_bit_0
         * (ecdsa_signature0_exponentiate_generator_bit_0 - 1))
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/bit_extraction_end.
-    let value = (column8_row59) / domain26;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/zeros_tail.
-    let value = (column8_row59) / domain25;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/add_points/slope.
-    let value = (ecdsa_signature0_exponentiate_generator_bit_0
+        , domain7,
+        (column8_row59) , domain26,
+        (column8_row59) , domain25,
+        (ecdsa_signature0_exponentiate_generator_bit_0
         * (column8_row91 - global_values.ecdsa_generator_points_y)
         - column8_row123 * (column8_row27 - global_values.ecdsa_generator_points_x))
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/add_points/x.
-    let value = (column8_row123 * column8_row123
+        , domain7,
+        (column8_row123 * column8_row123
         - ecdsa_signature0_exponentiate_generator_bit_0
             * (column8_row27 + global_values.ecdsa_generator_points_x + column8_row155))
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/add_points/y.
-    let value = (ecdsa_signature0_exponentiate_generator_bit_0 * (column8_row91 + column8_row219)
+        , domain7,
+        (ecdsa_signature0_exponentiate_generator_bit_0 * (column8_row91 + column8_row219)
         - column8_row123 * (column8_row27 - column8_row155))
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/add_points/x_diff_inv.
-    let value = (column8_row7 * (column8_row27 - global_values.ecdsa_generator_points_x) - 1)
+        , domain7,
+        (column8_row7 * (column8_row27 - global_values.ecdsa_generator_points_x) - 1)
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/copy_point/x.
-    let value = (ecdsa_signature0_exponentiate_generator_bit_neg_0
+        , domain7,
+        (ecdsa_signature0_exponentiate_generator_bit_neg_0
         * (column8_row155 - column8_row27))
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_generator/copy_point/y.
-    let value = (ecdsa_signature0_exponentiate_generator_bit_neg_0
+        , domain7,
+        (ecdsa_signature0_exponentiate_generator_bit_neg_0
         * (column8_row219 - column8_row91))
         * domain25
-        / domain7;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/booleanity_test.
-    let value = (ecdsa_signature0_exponentiate_key_bit_0
+        , domain7,
+        (ecdsa_signature0_exponentiate_key_bit_0
         * (ecdsa_signature0_exponentiate_key_bit_0 - 1))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/bit_extraction_end.
-    let value = (column8_row9) / domain22;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/zeros_tail.
-    let value = (column8_row9) / domain21;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/add_points/slope.
-    let value = (ecdsa_signature0_exponentiate_key_bit_0 * (column8_row49 - column8_row33)
+        , domain6,
+        (column8_row9) , domain22,
+        (column8_row9) , domain21,
+        (ecdsa_signature0_exponentiate_key_bit_0 * (column8_row49 - column8_row33)
         - column8_row19 * (column8_row17 - column8_row1))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/add_points/x.
-    let value = (column8_row19 * column8_row19
+        , domain6,
+        (column8_row19 * column8_row19
         - ecdsa_signature0_exponentiate_key_bit_0 * (column8_row17 + column8_row1 + column8_row81))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/add_points/y.
-    let value = (ecdsa_signature0_exponentiate_key_bit_0 * (column8_row49 + column8_row113)
+        , domain6,
+        (ecdsa_signature0_exponentiate_key_bit_0 * (column8_row49 + column8_row113)
         - column8_row19 * (column8_row17 - column8_row81))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/add_points/x_diff_inv.
-    let value = (column8_row51 * (column8_row17 - column8_row1) - 1) * domain21 / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/copy_point/x.
-    let value = (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row81 - column8_row17))
+        , domain6,
+        (column8_row51 * (column8_row17 - column8_row1) - 1) * domain21 , domain6,
+        (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row81 - column8_row17))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/exponentiate_key/copy_point/y.
-    let value = (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row113 - column8_row49))
+        , domain6,
+        (ecdsa_signature0_exponentiate_key_bit_neg_0 * (column8_row113 - column8_row49))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/init_gen/x.
-    let value = (column8_row27 - global_values.ecdsa_sig_config.shift_point.x) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/init_gen/y.
-    let value = (column8_row91 + global_values.ecdsa_sig_config.shift_point.y) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/init_key/x.
-    let value = (column8_row17 - global_values.ecdsa_sig_config.shift_point.x) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/init_key/y.
-    let value = (column8_row49 - global_values.ecdsa_sig_config.shift_point.y) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/add_results/slope.
-    let value = (column8_row32731
+        , domain6,
+        (column8_row27 - global_values.ecdsa_sig_config.shift_point.x) , domain27,
+        (column8_row91 + global_values.ecdsa_sig_config.shift_point.y) , domain27,
+        (column8_row17 - global_values.ecdsa_sig_config.shift_point.x) , domain23,
+        (column8_row49 - global_values.ecdsa_sig_config.shift_point.y) , domain23,
+        (column8_row32731
         - (column8_row16369 + column8_row32763 * (column8_row32667 - column8_row16337)))
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/add_results/x.
-    let value = (column8_row32763 * column8_row32763
+        , domain27,
+        (column8_row32763 * column8_row32763
         - (column8_row32667 + column8_row16337 + column8_row16385))
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/add_results/y.
-    let value = (column8_row32731
+        , domain27,
+        (column8_row32731
         + column8_row16417
         - column8_row32763 * (column8_row32667 - column8_row16385))
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/add_results/x_diff_inv.
-    let value = (column8_row32647 * (column8_row32667 - column8_row16337) - 1) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/extract_r/slope.
-    let value = (column8_row32753
+        , domain27,
+        (column8_row32647 * (column8_row32667 - column8_row16337) - 1) , domain27,
+        (column8_row32753
         + global_values.ecdsa_sig_config.shift_point.y
         - column8_row16331 * (column8_row32721 - global_values.ecdsa_sig_config.shift_point.x))
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/extract_r/x.
-    let value = (column8_row16331 * column8_row16331
+        , domain27,
+        (column8_row16331 * column8_row16331
         - (column8_row32721 + global_values.ecdsa_sig_config.shift_point.x + column8_row9))
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/extract_r/x_diff_inv.
-    let value = (column8_row32715
+        , domain27,
+        (column8_row32715
         * (column8_row32721 - global_values.ecdsa_sig_config.shift_point.x)
         - 1)
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/z_nonzero.
-    let value = (column8_row59 * column8_row16363 - 1) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/r_and_w_nonzero.
-    let value = (column8_row9 * column8_row16355 - 1) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/q_on_curve/x_squared.
-    let value = (column8_row32747 - column8_row1 * column8_row1) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/signature0/q_on_curve/on_curve.
-    let value = (column8_row33 * column8_row33
+        , domain27,
+        (column8_row59 * column8_row16363 - 1) , domain27,
+        (column8_row9 * column8_row16355 - 1) , domain23,
+        (column8_row32747 - column8_row1 * column8_row1) , domain27,
+        (column8_row33 * column8_row33
         - (column8_row1 * column8_row32747
             + global_values.ecdsa_sig_config.alpha * column8_row1
             + global_values.ecdsa_sig_config.beta))
-        / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/init_addr.
-    let value = (column5_row390 - global_values.initial_ecdsa_addr) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/message_addr.
-    let value = (column5_row16774 - (column5_row390 + 1)) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/pubkey_addr.
-    let value = (column5_row33158 - (column5_row16774 + 1)) * domain35 / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/message_value0.
-    let value = (column5_row16775 - column8_row59) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ecdsa/pubkey_value0.
-    let value = (column5_row391 - column8_row1) / domain27;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/init_var_pool_addr.
-    let value = (column5_row198 - global_values.initial_bitwise_addr) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/step_var_pool_addr.
-    let value = (column5_row454 - (column5_row198 + 1)) * domain18 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/x_or_y_addr.
-    let value = (column5_row902 - (column5_row966 + 1)) / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/next_var_pool_addr.
-    let value = (column5_row1222 - (column5_row902 + 1)) * domain36 / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/partition.
-    let value = (bitwise_sum_var_0_0 + bitwise_sum_var_8_0 - column5_row199) / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/or_is_and_plus_xor.
-    let value = (column5_row903 - (column5_row711 + column5_row967)) / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/addition_is_xor_with_and.
-    let value = (column7_row1 + column7_row257 - (column7_row769 + column7_row513 + column7_row513))
-        / domain20;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/unique_unpacking192.
-    let value = ((column7_row705 + column7_row961) * 16 - column7_row9) / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/unique_unpacking193.
-    let value = ((column7_row721 + column7_row977) * 16 - column7_row521) / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/unique_unpacking194.
-    let value = ((column7_row737 + column7_row993) * 16 - column7_row265) / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: bitwise/unique_unpacking195.
-    let value = ((column7_row753 + column7_row1009) * 256 - column7_row777) / domain19;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/init_addr.
-    let value = (column5_row8582 - global_values.initial_ec_op_addr) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/p_x_addr.
-    let value = (column5_row24966 - (column5_row8582 + 7)) * domain37 / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/p_y_addr.
-    let value = (column5_row4486 - (column5_row8582 + 1)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/q_x_addr.
-    let value = (column5_row12678 - (column5_row4486 + 1)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/q_y_addr.
-    let value = (column5_row2438 - (column5_row12678 + 1)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/m_addr.
-    let value = (column5_row10630 - (column5_row2438 + 1)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/r_x_addr.
-    let value = (column5_row6534 - (column5_row10630 + 1)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/r_y_addr.
-    let value = (column5_row14726 - (column5_row6534 + 1)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/doubling_q/slope.
-    let value = (ec_op_doubling_q_x_squared_0
+        , domain27,
+        (column5_row390 - global_values.initial_ecdsa_addr) , domain29,
+        (column5_row16774 - (column5_row390 + 1)) , domain27,
+        (column5_row33158 - (column5_row16774 + 1)) * domain35 , domain27,
+        (column5_row16775 - column8_row59) , domain27,
+        (column5_row391 - column8_row1) , domain27,
+        (column5_row198 - global_values.initial_bitwise_addr) , domain29,
+        (column5_row454 - (column5_row198 + 1)) * domain18 , domain8,
+        (column5_row902 - (column5_row966 + 1)) , domain19,
+        (column5_row1222 - (column5_row902 + 1)) * domain36 , domain19,
+        (bitwise_sum_var_0_0 + bitwise_sum_var_8_0 - column5_row199) , domain8,
+        (column5_row903 - (column5_row711 + column5_row967)) , domain19,
+        (column7_row1 + column7_row257 - (column7_row769 + column7_row513 + column7_row513))
+        , domain20,
+        ((column7_row705 + column7_row961) * 16 - column7_row9) , domain19,
+        ((column7_row721 + column7_row977) * 16 - column7_row521) , domain19,
+        ((column7_row737 + column7_row993) * 16 - column7_row265) , domain19,
+        ((column7_row753 + column7_row1009) * 256 - column7_row777) , domain19,
+        (column5_row8582 - global_values.initial_ec_op_addr) , domain29,
+        (column5_row24966 - (column5_row8582 + 7)) * domain37 , domain23,
+        (column5_row4486 - (column5_row8582 + 1)) , domain23,
+        (column5_row12678 - (column5_row4486 + 1)) , domain23,
+        (column5_row2438 - (column5_row12678 + 1)) , domain23,
+        (column5_row10630 - (column5_row2438 + 1)) , domain23,
+        (column5_row6534 - (column5_row10630 + 1)) , domain23,
+        (column5_row14726 - (column5_row6534 + 1)) , domain23,
+        (ec_op_doubling_q_x_squared_0
         + ec_op_doubling_q_x_squared_0
         + ec_op_doubling_q_x_squared_0
         + global_values.ec_op_curve_config.alpha
         - (column8_row25 + column8_row25) * column8_row57)
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/doubling_q/x.
-    let value = (column8_row57 * column8_row57 - (column8_row41 + column8_row41 + column8_row105))
+        , domain6,
+        (column8_row57 * column8_row57 - (column8_row41 + column8_row41 + column8_row105))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/doubling_q/y.
-    let value = (column8_row25 + column8_row89 - column8_row57 * (column8_row41 - column8_row105))
+        , domain6,
+        (column8_row25 + column8_row89 - column8_row57 * (column8_row41 - column8_row105))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/get_q_x.
-    let value = (column5_row12679 - column8_row41) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/get_q_y.
-    let value = (column5_row2439 - column8_row25) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_unpacking/last_one_is_zero.
-    let value = (column8_row16371 * (column8_row21 - (column8_row85 + column8_row85))) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_unpacking/zeroes_between_ones0.
-    let value = (column8_row16371
+        , domain6,
+        (column5_row12679 - column8_row41) , domain23,
+        (column5_row2439 - column8_row25) , domain23,
+        (column8_row16371 * (column8_row21 - (column8_row85 + column8_row85))) , domain23,
+        (column8_row16371
         * (column8_row85
             - 3138550867693340381917894711603833208051177722232017256448 * column8_row12309))
-        / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_unpacking/cumulative_bit192.
-    let value = (column8_row16371
+        , domain23,
+        (column8_row16371
         - column8_row16339 * (column8_row12309 - (column8_row12373 + column8_row12373)))
-        / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_unpacking/zeroes_between_ones192.
-    let value = (column8_row16339 * (column8_row12373 - 8 * column8_row12565)) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_unpacking/cumulative_bit196.
-    let value = (column8_row16339
+        , domain23,
+        (column8_row16339 * (column8_row12373 - 8 * column8_row12565)) , domain23,
+        (column8_row16339
         - (column8_row16085 - (column8_row16149 + column8_row16149))
             * (column8_row12565 - (column8_row12629 + column8_row12629)))
-        / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_unpacking/zeroes_between_ones196.
-    let value = ((column8_row16085 - (column8_row16149 + column8_row16149))
+        , domain23,
+        ((column8_row16085 - (column8_row16149 + column8_row16149))
         * (column8_row12629 - 18014398509481984 * column8_row16085))
-        / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/booleanity_test.
-    let value = (ec_op_ec_subset_sum_bit_0 * (ec_op_ec_subset_sum_bit_0 - 1)) * domain21 / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/bit_extraction_end.
-    let value = (column8_row21) / domain24;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/zeros_tail.
-    let value = (column8_row21) / domain21;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/add_points/slope.
-    let value = (ec_op_ec_subset_sum_bit_0 * (column8_row37 - column8_row25)
+        , domain23,
+        (ec_op_ec_subset_sum_bit_0 * (ec_op_ec_subset_sum_bit_0 - 1)) * domain21 , domain6,
+        (column8_row21) , domain24,
+        (column8_row21) , domain21,
+        (ec_op_ec_subset_sum_bit_0 * (column8_row37 - column8_row25)
         - column8_row11 * (column8_row5 - column8_row41))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/add_points/x.
-    let value = (column8_row11 * column8_row11
+        , domain6,
+        (column8_row11 * column8_row11
         - ec_op_ec_subset_sum_bit_0 * (column8_row5 + column8_row41 + column8_row69))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/add_points/y.
-    let value = (ec_op_ec_subset_sum_bit_0 * (column8_row37 + column8_row101)
+        , domain6,
+        (ec_op_ec_subset_sum_bit_0 * (column8_row37 + column8_row101)
         - column8_row11 * (column8_row5 - column8_row69))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/add_points/x_diff_inv.
-    let value = (column8_row43 * (column8_row5 - column8_row41) - 1) * domain21 / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/copy_point/x.
-    let value = (ec_op_ec_subset_sum_bit_neg_0 * (column8_row69 - column8_row5))
+        , domain6,
+        (column8_row43 * (column8_row5 - column8_row41) - 1) * domain21 , domain6,
+        (ec_op_ec_subset_sum_bit_neg_0 * (column8_row69 - column8_row5))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/ec_subset_sum/copy_point/y.
-    let value = (ec_op_ec_subset_sum_bit_neg_0 * (column8_row101 - column8_row37))
+        , domain6,
+        (ec_op_ec_subset_sum_bit_neg_0 * (column8_row101 - column8_row37))
         * domain21
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/get_m.
-    let value = (column8_row21 - column5_row10631) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/get_p_x.
-    let value = (column5_row8583 - column8_row5) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/get_p_y.
-    let value = (column5_row4487 - column8_row37) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/set_r_x.
-    let value = (column5_row6535 - column8_row16325) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: ec_op/set_r_y.
-    let value = (column5_row14727 - column8_row16357) / domain23;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/param_0/init_input_output_addr.
-    let value = (column5_row38 - global_values.initial_poseidon_addr) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/param_0/addr_input_output_step.
-    let value = (column5_row294 - (column5_row38 + 3)) * domain34 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/param_1/init_input_output_addr.
-    let value = (column5_row166 - (global_values.initial_poseidon_addr + 1)) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/param_1/addr_input_output_step.
-    let value = (column5_row422 - (column5_row166 + 3)) * domain34 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/param_2/init_input_output_addr.
-    let value = (column5_row102 - (global_values.initial_poseidon_addr + 2)) / domain29;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/param_2/addr_input_output_step.
-    let value = (column5_row358 - (column5_row102 + 3)) * domain34 / domain8;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/full_rounds_state0_squaring.
-    let value = (column8_row53 * column8_row53 - column8_row29) / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/full_rounds_state1_squaring.
-    let value = (column8_row13 * column8_row13 - column8_row61) / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/full_rounds_state2_squaring.
-    let value = (column8_row45 * column8_row45 - column8_row3) / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/partial_rounds_state0_squaring.
-    let value = (column7_row3 * column7_row3 - column7_row7) / domain3;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/partial_rounds_state1_squaring.
-    let value = (column8_row6 * column8_row6 - column8_row14) * domain15 / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/add_first_round_key0.
-    let value = (column5_row39
+        , domain6,
+        (column8_row21 - column5_row10631) , domain23,
+        (column5_row8583 - column8_row5) , domain23,
+        (column5_row4487 - column8_row37) , domain23,
+        (column5_row6535 - column8_row16325) , domain23,
+        (column5_row14727 - column8_row16357) , domain23,
+        (column5_row38 - global_values.initial_poseidon_addr) , domain29,
+        (column5_row294 - (column5_row38 + 3)) * domain34 , domain8,
+        (column5_row166 - (global_values.initial_poseidon_addr + 1)) , domain29,
+        (column5_row422 - (column5_row166 + 3)) * domain34 , domain8,
+        (column5_row102 - (global_values.initial_poseidon_addr + 2)) , domain29,
+        (column5_row358 - (column5_row102 + 3)) * domain34 , domain8,
+        (column8_row53 * column8_row53 - column8_row29) , domain6,
+        (column8_row13 * column8_row13 - column8_row61) , domain6,
+        (column8_row45 * column8_row45 - column8_row3) , domain6,
+        (column7_row3 * column7_row3 - column7_row7) , domain3,
+        (column8_row6 * column8_row6 - column8_row14) * domain15 , domain5,
+        (column5_row39
         + 2950795762459345168613727575620414179244544320470208355568817838579231751791
         - column8_row53)
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/add_first_round_key1.
-    let value = (column5_row167
+        , domain13,
+        (column5_row167
         + 1587446564224215276866294500450702039420286416111469274423465069420553242820
         - column8_row13)
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/add_first_round_key2.
-    let value = (column5_row103
+        , domain13,
+        (column5_row103
         + 1645965921169490687904413452218868659025437693527479459426157555728339600137
         - column8_row45)
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/full_round0.
-    let value = (column8_row117
+        , domain13,
+        (column8_row117
         - (poseidon_poseidon_full_rounds_state0_cubed_0
             + poseidon_poseidon_full_rounds_state0_cubed_0
             + poseidon_poseidon_full_rounds_state0_cubed_0
@@ -1534,81 +992,51 @@ fn eval_composition_polynomial_inner(
             + poseidon_poseidon_full_rounds_state2_cubed_0
             + global_values.poseidon_poseidon_full_round_key0))
         * domain11
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/full_round1.
-    let value = (column8_row77
+        , domain6,
+        (column8_row77
         + poseidon_poseidon_full_rounds_state1_cubed_0
         - (poseidon_poseidon_full_rounds_state0_cubed_0
             + poseidon_poseidon_full_rounds_state2_cubed_0
             + global_values.poseidon_poseidon_full_round_key1))
         * domain11
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/full_round2.
-    let value = (column8_row109
+        , domain6,
+        (column8_row109
         + poseidon_poseidon_full_rounds_state2_cubed_0
         + poseidon_poseidon_full_rounds_state2_cubed_0
         - (poseidon_poseidon_full_rounds_state0_cubed_0
             + poseidon_poseidon_full_rounds_state1_cubed_0
             + global_values.poseidon_poseidon_full_round_key2))
         * domain11
-        / domain6;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/last_full_round0.
-    let value = (column5_row295
+        , domain6,
+        (column5_row295
         - (poseidon_poseidon_full_rounds_state0_cubed_7
             + poseidon_poseidon_full_rounds_state0_cubed_7
             + poseidon_poseidon_full_rounds_state0_cubed_7
             + poseidon_poseidon_full_rounds_state1_cubed_7
             + poseidon_poseidon_full_rounds_state2_cubed_7))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/last_full_round1.
-    let value = (column5_row423
+        , domain13,
+        (column5_row423
         + poseidon_poseidon_full_rounds_state1_cubed_7
         - (poseidon_poseidon_full_rounds_state0_cubed_7
             + poseidon_poseidon_full_rounds_state2_cubed_7))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/last_full_round2.
-    let value = (column5_row359
+        , domain13,
+        (column5_row359
         + poseidon_poseidon_full_rounds_state2_cubed_7
         + poseidon_poseidon_full_rounds_state2_cubed_7
         - (poseidon_poseidon_full_rounds_state0_cubed_7
             + poseidon_poseidon_full_rounds_state1_cubed_7))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/copy_partial_rounds0_i0.
-    let value = (column7_row491 - column8_row6) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/copy_partial_rounds0_i1.
-    let value = (column7_row499 - column8_row22) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/copy_partial_rounds0_i2.
-    let value = (column7_row507 - column8_row38) / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/margin_full_to_partial0.
-    let value = (column7_row3
+        , domain13,
+        (column7_row491 - column8_row6) , domain13,
+        (column7_row499 - column8_row22) , domain13,
+        (column7_row507 - column8_row38) , domain13,
+        (column7_row3
         + poseidon_poseidon_full_rounds_state2_cubed_3
         + poseidon_poseidon_full_rounds_state2_cubed_3
         - (poseidon_poseidon_full_rounds_state0_cubed_3
             + poseidon_poseidon_full_rounds_state1_cubed_3
             + 2121140748740143694053732746913428481442990369183417228688865837805149503386))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/margin_full_to_partial1.
-    let value = (column7_row11
+        , domain13,
+        (column7_row11
         - (3618502788666131213697322783095070105623107215331596699973092056135872020477
             * poseidon_poseidon_full_rounds_state1_cubed_3
             + 10 * poseidon_poseidon_full_rounds_state2_cubed_3
@@ -1616,11 +1044,8 @@ fn eval_composition_polynomial_inner(
             + 3618502788666131213697322783095070105623107215331596699973092056135872020479
                 * poseidon_poseidon_partial_rounds_state0_cubed_0
             + 2006642341318481906727563724340978325665491359415674592697055778067937914672))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/margin_full_to_partial2.
-    let value = (column7_row19
+        , domain13,
+        (column7_row19
         - (8 * poseidon_poseidon_full_rounds_state2_cubed_3
             + 4 * column7_row3
             + 6 * poseidon_poseidon_partial_rounds_state0_cubed_0
@@ -1629,11 +1054,8 @@ fn eval_composition_polynomial_inner(
             + 3618502788666131213697322783095070105623107215331596699973092056135872020479
                 * poseidon_poseidon_partial_rounds_state0_cubed_1
             + 427751140904099001132521606468025610873158555767197326325930641757709538586))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/partial_round0.
-    let value = (column7_row27
+        , domain13,
+        (column7_row27
         - (8 * poseidon_poseidon_partial_rounds_state0_cubed_0
             + 4 * column7_row11
             + 6 * poseidon_poseidon_partial_rounds_state0_cubed_1
@@ -1643,11 +1065,8 @@ fn eval_composition_polynomial_inner(
                 * poseidon_poseidon_partial_rounds_state0_cubed_2
             + global_values.poseidon_poseidon_partial_round_key0))
         * domain16
-        / domain3;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/partial_round1.
-    let value = (column8_row54
+        , domain3,
+        (column8_row54
         - (8 * poseidon_poseidon_partial_rounds_state1_cubed_0
             + 4 * column8_row22
             + 6 * poseidon_poseidon_partial_rounds_state1_cubed_1
@@ -1657,32 +1076,23 @@ fn eval_composition_polynomial_inner(
                 * poseidon_poseidon_partial_rounds_state1_cubed_2
             + global_values.poseidon_poseidon_partial_round_key1))
         * domain17
-        / domain5;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/margin_partial_to_full0.
-    let value = (column8_row309
+        , domain5,
+        (column8_row309
         - (16 * poseidon_poseidon_partial_rounds_state1_cubed_19
             + 8 * column8_row326
             + 16 * poseidon_poseidon_partial_rounds_state1_cubed_20
             + 6 * column8_row342
             + poseidon_poseidon_partial_rounds_state1_cubed_21
             + 560279373700919169769089400651532183647886248799764942664266404650165812023))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/margin_partial_to_full1.
-    let value = (column8_row269
+        , domain13,
+        (column8_row269
         - (4 * poseidon_poseidon_partial_rounds_state1_cubed_20
             + column8_row342
             + column8_row342
             + poseidon_poseidon_partial_rounds_state1_cubed_21
             + 1401754474293352309994371631695783042590401941592571735921592823982231996415))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    // Constraint: poseidon/poseidon/margin_partial_to_full2.
-    let value = (column8_row301
+        , domain13,
+        (column8_row301
         - (8 * poseidon_poseidon_partial_rounds_state1_cubed_19
             + 4 * column8_row326
             + 6 * poseidon_poseidon_partial_rounds_state1_cubed_20
@@ -1691,11 +1101,17 @@ fn eval_composition_polynomial_inner(
             + 3618502788666131213697322783095070105623107215331596699973092056135872020479
                 * poseidon_poseidon_partial_rounds_state1_cubed_21
             + 1246177936547655338400308396717835700699368047388302793172818304164989556526))
-        / domain13;
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
+        , domain13];
+    let mut i = 0;
+    while i < constraints.len() {
+        total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * ((*constraints.at(i)) / (*constraints.at(i + 1)));
+        i += 2;
+    };
 
     total_sum
 }
+
+
 
 fn eval_oods_polynomial_inner(
     mut column_values: Span<felt252>,
@@ -1705,1037 +1121,67 @@ fn eval_oods_polynomial_inner(
     oods_point: felt252,
     trace_generator: felt252,
 ) -> felt252 {
-    // Compute powers.
-    let pow0 = pow(trace_generator, 0);
-    let pow1 = pow(trace_generator, 32715);
-    let pow2 = pow(trace_generator, 32667);
-    let pow3 = pow(trace_generator, 32647);
-    let pow4 = pow(trace_generator, 16325);
-    let pow5 = pow(trace_generator, 16149);
-    let pow6 = pow(trace_generator, 16085);
-    let pow7 = pow(trace_generator, 12373);
-    let pow8 = pow(trace_generator, 12309);
-    let pow9 = pow(trace_generator, 24966);
-    let pow10 = pow(trace_generator, 16774);
-    let pow11 = pow(trace_generator, 14726);
-    let pow12 = pow(trace_generator, 10630);
-    let pow13 = pow(trace_generator, 8582);
-    let pow14 = pow(trace_generator, 6534);
-    let pow15 = pow(trace_generator, 4486);
-    let pow16 = pow(trace_generator, 2438);
-    let pow17 = pow(trace_generator, 1);
-    let pow18 = pow11 * pow17; // pow(trace_generator, 14727).
-    let pow19 = pow12 * pow17; // pow(trace_generator, 10631).
-    let pow20 = pow13 * pow17; // pow(trace_generator, 8583).
-    let pow21 = pow14 * pow17; // pow(trace_generator, 6535).
-    let pow22 = pow15 * pow17; // pow(trace_generator, 4487).
-    let pow23 = pow16 * pow17; // pow(trace_generator, 2439).
-    let pow24 = pow17 * pow17; // pow(trace_generator, 2).
-    let pow25 = pow17 * pow24; // pow(trace_generator, 3).
-    let pow26 = pow17 * pow25; // pow(trace_generator, 4).
-    let pow27 = pow17 * pow26; // pow(trace_generator, 5).
-    let pow28 = pow17 * pow27; // pow(trace_generator, 6).
-    let pow29 = pow4 * pow28; // pow(trace_generator, 16331).
-    let pow30 = pow17 * pow28; // pow(trace_generator, 7).
-    let pow31 = pow17 * pow30; // pow(trace_generator, 8).
-    let pow32 = pow17 * pow31; // pow(trace_generator, 9).
-    let pow33 = pow17 * pow32; // pow(trace_generator, 10).
-    let pow34 = pow17 * pow33; // pow(trace_generator, 11).
-    let pow35 = pow17 * pow34; // pow(trace_generator, 12).
-    let pow36 = pow17 * pow35; // pow(trace_generator, 13).
-    let pow37 = pow17 * pow36; // pow(trace_generator, 14).
-    let pow38 = pow17 * pow37; // pow(trace_generator, 15).
-    let pow39 = pow17 * pow38; // pow(trace_generator, 16).
-    let pow40 = pow17 * pow39; // pow(trace_generator, 17).
-    let pow41 = pow24 * pow40; // pow(trace_generator, 19).
-    let pow42 = pow24 * pow41; // pow(trace_generator, 21).
-    let pow43 = pow17 * pow42; // pow(trace_generator, 22).
-    let pow44 = pow17 * pow43; // pow(trace_generator, 23).
-    let pow45 = pow17 * pow44; // pow(trace_generator, 24).
-    let pow46 = pow17 * pow45; // pow(trace_generator, 25).
-    let pow47 = pow24 * pow46; // pow(trace_generator, 27).
-    let pow48 = pow24 * pow47; // pow(trace_generator, 29).
-    let pow49 = pow17 * pow48; // pow(trace_generator, 30).
-    let pow50 = pow25 * pow49; // pow(trace_generator, 33).
-    let pow51 = pow24 * pow50; // pow(trace_generator, 35).
-    let pow52 = pow24 * pow51; // pow(trace_generator, 37).
-    let pow53 = pow17 * pow52; // pow(trace_generator, 38).
-    let pow54 = pow17 * pow53; // pow(trace_generator, 39).
-    let pow55 = pow24 * pow54; // pow(trace_generator, 41).
-    let pow56 = pow24 * pow55; // pow(trace_generator, 43).
-    let pow57 = pow17 * pow56; // pow(trace_generator, 44).
-    let pow58 = pow17 * pow57; // pow(trace_generator, 45).
-    let pow59 = pow17 * pow58; // pow(trace_generator, 46).
-    let pow60 = pow25 * pow59; // pow(trace_generator, 49).
-    let pow61 = pow24 * pow60; // pow(trace_generator, 51).
-    let pow62 = pow24 * pow61; // pow(trace_generator, 53).
-    let pow63 = pow17 * pow62; // pow(trace_generator, 54).
-    let pow64 = pow1 * pow28; // pow(trace_generator, 32721).
-    let pow65 = pow1 * pow39; // pow(trace_generator, 32731).
-    let pow66 = pow39 * pow65; // pow(trace_generator, 32747).
-    let pow67 = pow1 * pow53; // pow(trace_generator, 32753).
-    let pow68 = pow33 * pow67; // pow(trace_generator, 32763).
-    let pow69 = pow25 * pow63; // pow(trace_generator, 57).
-    let pow70 = pow24 * pow69; // pow(trace_generator, 59).
-    let pow71 = pow24 * pow70; // pow(trace_generator, 61).
-    let pow72 = pow26 * pow71; // pow(trace_generator, 65).
-    let pow73 = pow26 * pow72; // pow(trace_generator, 69).
-    let pow74 = pow17 * pow73; // pow(trace_generator, 70).
-    let pow75 = pow17 * pow74; // pow(trace_generator, 71).
-    let pow76 = pow24 * pow75; // pow(trace_generator, 73).
-    let pow77 = pow25 * pow76; // pow(trace_generator, 76).
-    let pow78 = pow17 * pow77; // pow(trace_generator, 77).
-    let pow79 = pow26 * pow78; // pow(trace_generator, 81).
-    let pow80 = pow26 * pow79; // pow(trace_generator, 85).
-    let pow81 = pow26 * pow80; // pow(trace_generator, 89).
-    let pow82 = pow24 * pow81; // pow(trace_generator, 91).
-    let pow83 = pow28 * pow82; // pow(trace_generator, 97).
-    let pow84 = pow26 * pow83; // pow(trace_generator, 101).
-    let pow85 = pow17 * pow84; // pow(trace_generator, 102).
-    let pow86 = pow17 * pow85; // pow(trace_generator, 103).
-    let pow87 = pow24 * pow86; // pow(trace_generator, 105).
-    let pow88 = pow25 * pow87; // pow(trace_generator, 108).
-    let pow89 = pow17 * pow88; // pow(trace_generator, 109).
-    let pow90 = pow26 * pow89; // pow(trace_generator, 113).
-    let pow91 = pow26 * pow90; // pow(trace_generator, 117).
-    let pow92 = pow28 * pow91; // pow(trace_generator, 123).
-    let pow93 = pow28 * pow92; // pow(trace_generator, 129).
-    let pow94 = pow27 * pow93; // pow(trace_generator, 134).
-    let pow95 = pow17 * pow94; // pow(trace_generator, 135).
-    let pow96 = pow27 * pow95; // pow(trace_generator, 140).
-    let pow97 = pow27 * pow96; // pow(trace_generator, 145).
-    let pow98 = pow33 * pow97; // pow(trace_generator, 155).
-    let pow99 = pow28 * pow98; // pow(trace_generator, 161).
-    let pow100 = pow27 * pow99; // pow(trace_generator, 166).
-    let pow101 = pow17 * pow100; // pow(trace_generator, 167).
-    let pow102 = pow27 * pow101; // pow(trace_generator, 172).
-    let pow103 = pow27 * pow102; // pow(trace_generator, 177).
-    let pow104 = pow33 * pow103; // pow(trace_generator, 187).
-    let pow105 = pow27 * pow104; // pow(trace_generator, 192).
-    let pow106 = pow17 * pow105; // pow(trace_generator, 193).
-    let pow107 = pow24 * pow106; // pow(trace_generator, 195).
-    let pow108 = pow17 * pow107; // pow(trace_generator, 196).
-    let pow109 = pow17 * pow108; // pow(trace_generator, 197).
-    let pow110 = pow17 * pow109; // pow(trace_generator, 198).
-    let pow111 = pow17 * pow110; // pow(trace_generator, 199).
-    let pow112 = pow27 * pow111; // pow(trace_generator, 204).
-    let pow113 = pow17 * pow112; // pow(trace_generator, 205).
-    let pow114 = pow26 * pow113; // pow(trace_generator, 209).
-    let pow115 = pow33 * pow114; // pow(trace_generator, 219).
-    let pow116 = pow24 * pow115; // pow(trace_generator, 221).
-    let pow117 = pow26 * pow116; // pow(trace_generator, 225).
-    let pow118 = pow34 * pow117; // pow(trace_generator, 236).
-    let pow119 = pow17 * pow118; // pow(trace_generator, 237).
-    let pow120 = pow26 * pow119; // pow(trace_generator, 241).
-    let pow121 = pow26 * pow120; // pow(trace_generator, 245).
-    let pow122 = pow28 * pow121; // pow(trace_generator, 251).
-    let pow123 = pow17 * pow122; // pow(trace_generator, 252).
-    let pow124 = pow4 * pow35; // pow(trace_generator, 16337).
-    let pow125 = pow4 * pow37; // pow(trace_generator, 16339).
-    let pow126 = pow4 * pow49; // pow(trace_generator, 16355).
-    let pow127 = pow24 * pow126; // pow(trace_generator, 16357).
-    let pow128 = pow4 * pow53; // pow(trace_generator, 16363).
-    let pow129 = pow4 * pow57; // pow(trace_generator, 16369).
-    let pow130 = pow4 * pow59; // pow(trace_generator, 16371).
-    let pow131 = pow5 * pow118; // pow(trace_generator, 16385).
-    let pow132 = pow59 * pow130; // pow(trace_generator, 16417).
-    let pow133 = pow17 * pow123; // pow(trace_generator, 253).
-    let pow134 = pow24 * pow133; // pow(trace_generator, 255).
-    let pow135 = pow17 * pow134; // pow(trace_generator, 256).
-    let pow136 = pow17 * pow135; // pow(trace_generator, 257).
-    let pow137 = pow7 * pow135; // pow(trace_generator, 12629).
-    let pow138 = pow7 * pow105; // pow(trace_generator, 12565).
-    let pow139 = pow60 * pow137; // pow(trace_generator, 12678).
-    let pow140 = pow17 * pow139; // pow(trace_generator, 12679).
-    let pow141 = pow27 * pow136; // pow(trace_generator, 262).
-    let pow142 = pow17 * pow141; // pow(trace_generator, 263).
-    let pow143 = pow24 * pow142; // pow(trace_generator, 265).
-    let pow144 = pow26 * pow143; // pow(trace_generator, 269).
-    let pow145 = pow46 * pow144; // pow(trace_generator, 294).
-    let pow146 = pow17 * pow145; // pow(trace_generator, 295).
-    let pow147 = pow28 * pow146; // pow(trace_generator, 301).
-    let pow148 = pow31 * pow147; // pow(trace_generator, 309).
-    let pow149 = pow17 * pow148; // pow(trace_generator, 310).
-    let pow150 = pow31 * pow149; // pow(trace_generator, 318).
-    let pow151 = pow90 * pow148; // pow(trace_generator, 422).
-    let pow152 = pow79 * pow148; // pow(trace_generator, 390).
-    let pow153 = pow31 * pow150; // pow(trace_generator, 326).
-    let pow154 = pow31 * pow153; // pow(trace_generator, 334).
-    let pow155 = pow31 * pow154; // pow(trace_generator, 342).
-    let pow156 = pow31 * pow155; // pow(trace_generator, 350).
-    let pow157 = pow31 * pow156; // pow(trace_generator, 358).
-    let pow158 = pow17 * pow151; // pow(trace_generator, 423).
-    let pow159 = pow17 * pow152; // pow(trace_generator, 391).
-    let pow160 = pow17 * pow157; // pow(trace_generator, 359).
-    let pow161 = pow10 * pow17; // pow(trace_generator, 16775).
-    let pow162 = pow48 * pow151; // pow(trace_generator, 451).
-    let pow163 = pow25 * pow162; // pow(trace_generator, 454).
-    let pow164 = pow30 * pow163; // pow(trace_generator, 461).
-    let pow165 = pow39 * pow164; // pow(trace_generator, 477).
-    let pow166 = pow37 * pow165; // pow(trace_generator, 491).
-    let pow167 = pow24 * pow166; // pow(trace_generator, 493).
-    let pow168 = pow28 * pow167; // pow(trace_generator, 499).
-    let pow169 = pow24 * pow168; // pow(trace_generator, 501).
-    let pow170 = pow28 * pow169; // pow(trace_generator, 507).
-    let pow171 = pow24 * pow170; // pow(trace_generator, 509).
-    let pow172 = pow24 * pow171; // pow(trace_generator, 511).
-    let pow173 = pow2 * pow166; // pow(trace_generator, 33158).
-    let pow174 = pow24 * pow172; // pow(trace_generator, 513).
-    let pow175 = pow27 * pow174; // pow(trace_generator, 518).
-    let pow176 = pow104 * pow175; // pow(trace_generator, 705).
-    let pow177 = pow109 * pow176; // pow(trace_generator, 902).
-    let pow178 = pow28 * pow176; // pow(trace_generator, 711).
-    let pow179 = pow33 * pow178; // pow(trace_generator, 721).
-    let pow180 = pow39 * pow179; // pow(trace_generator, 737).
-    let pow181 = pow39 * pow180; // pow(trace_generator, 753).
-    let pow182 = pow39 * pow181; // pow(trace_generator, 769).
-    let pow183 = pow70 * pow177; // pow(trace_generator, 961).
-    let pow184 = pow27 * pow183; // pow(trace_generator, 966).
-    let pow185 = pow17 * pow184; // pow(trace_generator, 967).
-    let pow186 = pow33 * pow185; // pow(trace_generator, 977).
-    let pow187 = pow121 * pow186; // pow(trace_generator, 1222).
-    let pow188 = pow17 * pow177; // pow(trace_generator, 903).
-    let pow189 = pow39 * pow186; // pow(trace_generator, 993).
-    let pow190 = pow39 * pow189; // pow(trace_generator, 1009).
-    let pow191 = pow25 * pow175; // pow(trace_generator, 521).
-    let pow192 = pow31 * pow182; // pow(trace_generator, 777).
-
-    // Fetch columns.
-    let column0 = *column_values.pop_front().unwrap();
-    let column1 = *column_values.pop_front().unwrap();
-    let column2 = *column_values.pop_front().unwrap();
-    let column3 = *column_values.pop_front().unwrap();
-    let column4 = *column_values.pop_front().unwrap();
-    let column5 = *column_values.pop_front().unwrap();
-    let column6 = *column_values.pop_front().unwrap();
-    let column7 = *column_values.pop_front().unwrap();
-    let column8 = *column_values.pop_front().unwrap();
-    let column9 = *column_values.pop_front().unwrap();
+    let pow_exps = array![
+        0, 32715, 32667, 32647, 16325, 16149, 16085, 12373, 12309, 24966, 16774, 14726, 10630, 
+        8582, 6534, 4486, 2438, 1, 14727, 10631, 8583, 6535, 4487, 2439, 2, 3, 4, 5, 6, 16331, 
+        7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22, 23, 24, 25, 27, 29, 30, 33, 35, 
+        37, 38, 39, 41, 43, 44, 45, 46, 49, 51, 53, 54, 32721, 32731, 32747, 32753, 32763, 57, 
+        59, 61, 65, 69, 70, 71, 73, 76, 77, 81, 85, 89, 91, 97, 101, 102, 103, 105, 108, 109, 
+        113, 117, 123, 129, 134, 135, 140, 145, 155, 161, 166, 167, 172, 177, 187, 192, 193, 
+        195, 196, 197, 198, 199, 204, 205, 209, 219, 221, 225, 236, 237, 241, 245, 251, 252, 
+        16337, 16339, 16355, 16357, 16363, 16369, 16371, 16385, 16417, 253, 255, 256, 257, 
+        12629, 12565, 12678, 12679, 262, 263, 265, 269, 294, 295, 301, 309, 310, 318, 422, 390, 
+        326, 334, 342, 350, 358, 423, 391, 359, 16775, 451, 454, 461, 477, 491, 493, 499, 501, 
+        507, 509, 511, 33158, 513, 518, 705, 902, 711, 721, 737, 753, 769, 961, 966, 967, 977, 
+        1222, 903, 993, 1009, 521, 777
+    ].span();
 
     // Sum the OODS constraints on the trace polynomials.
-    let total_sum = 0;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow24 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow25 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow26 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow27 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow28 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow30 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow31 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow32 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow33 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow34 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow35 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow36 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow37 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column0 - *oods_values.pop_front().unwrap()) / (point - pow38 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column1 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column1 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column1 - *oods_values.pop_front().unwrap()) / (point - pow134 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column1 - *oods_values.pop_front().unwrap()) / (point - pow135 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column1 - *oods_values.pop_front().unwrap()) / (point - pow172 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column2 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column2 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column2 - *oods_values.pop_front().unwrap()) / (point - pow134 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column2 - *oods_values.pop_front().unwrap()) / (point - pow135 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow105 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow106 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow108 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow109 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow122 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow123 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column3 - *oods_values.pop_front().unwrap()) / (point - pow135 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column4 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column4 - *oods_values.pop_front().unwrap()) / (point - pow134 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow24 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow25 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow26 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow27 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow28 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow30 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow31 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow32 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow35 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow36 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow39 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow53 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow54 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow74 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow75 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow85 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow86 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow94 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow95 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow100 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow101 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow110 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow111 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow141 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow142 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow145 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow146 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow153 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow157 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow160 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow152 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow159 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow151 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow158 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow163 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow175 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow178 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow177 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow188 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow184 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow185 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow187 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow16 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow23 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow15 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow22 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow14 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow21 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow13 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow20 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow12 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow19 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow139 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow140 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow11 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow18 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow10 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow161 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow9 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column5 - *oods_values.pop_front().unwrap()) / (point - pow173 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column6 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column6 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column6 - *oods_values.pop_front().unwrap()) / (point - pow24 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column6 - *oods_values.pop_front().unwrap()) / (point - pow25 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow24 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow25 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow26 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow27 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow28 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow30 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow31 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow32 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow34 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow35 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow36 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow38 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow40 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow41 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow44 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow47 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow50 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow57 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow60 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow72 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow77 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow79 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow83 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow88 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow90 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow93 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow96 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow97 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow99 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow102 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow103 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow106 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow112 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow114 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow117 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow118 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow120 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow136 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow143 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow166 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow168 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow170 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow174 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow191 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow176 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow179 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow180 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow181 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow182 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow192 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow183 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow186 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow189 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column7 - *oods_values.pop_front().unwrap()) / (point - pow190 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow24 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow25 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow26 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow27 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow28 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow30 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow31 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow32 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow33 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow34 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow35 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow36 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow37 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow39 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow40 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow41 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow42 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow43 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow45 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow46 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow47 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow48 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow49 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow50 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow51 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow52 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow53 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow55 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow56 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow58 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow59 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow60 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow61 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow62 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow63 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow69 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow70 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow71 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow72 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow73 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow75 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow76 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow78 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow79 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow80 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow81 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow82 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow83 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow84 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow87 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow89 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow90 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow91 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow92 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow98 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow104 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow107 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow113 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow115 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow116 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow119 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow121 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow133 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow144 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow147 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow148 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow149 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow150 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow153 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow154 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow155 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow156 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow162 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow164 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow165 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow167 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow169 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow171 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow8 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow7 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow138 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow137 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow6 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow5 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow4 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow29 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow124 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow125 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow126 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow127 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow128 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow129 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow130 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow131 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow132 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow3 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow2 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow1 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow64 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow65 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow66 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow67 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column8 - *oods_values.pop_front().unwrap()) / (point - pow68 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow0 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow17 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow24 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow25 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow27 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow30 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow34 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
-
-    let value = (column9 - *oods_values.pop_front().unwrap()) / (point - pow38 * oods_point);
-    let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
+    let mut total_sum = 0;
+    let pow_list0 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38];
+    let pow_list1 = array![0, 17, 134, 135, 172];
+    let pow_list2 = array![0, 17, 134, 135];
+    let pow_list3 = array![0, 17, 105, 106, 108, 109, 122, 123, 135];
+    let pow_list4 = array![0, 134];
+    let pow_list5 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 35, 36, 39, 53, 54, 74, 
+        75, 85, 86, 94, 95, 100, 101, 110, 111, 141, 142, 145, 146, 153, 
+        157, 160, 152, 159, 151, 158, 163, 175, 178, 177, 188, 184, 185, 
+        187, 16, 23, 15, 22, 14, 21, 13, 20, 12, 19, 139, 140, 11, 18, 
+        10, 161, 9, 173];
+    let pow_list6 = array![0, 17, 24, 25];
+    let pow_list7 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 36, 38, 
+        40, 41, 44, 47, 50,
+        57, 60, 72, 77, 79, 83, 88, 90, 93, 96, 97, 99, 102, 103, 106, 112, 114, 117,
+        118, 120, 136, 143, 166, 168, 170, 174, 191, 176, 179, 180, 181, 182, 192,
+        183, 186, 189, 190];
+    let pow_list8 = array![0, 17, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 
+        37, 39, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52, 53, 55, 56, 58, 59, 
+        60, 61, 62, 63, 69, 70, 71, 72, 73, 75, 76, 78, 79,
+        80, 81, 82, 83, 84, 87, 89, 90, 91, 92, 98, 104, 107, 113, 115, 116, 119, 121, 
+        133, 144, 147, 148, 149, 150, 153, 154, 155, 156, 162, 164, 165, 167, 169, 171, 
+        8, 7, 138, 137, 6, 5, 4, 29, 124, 125, 126, 127, 128, 129, 130, 131, 132, 3, 2, 
+        1, 64, 65, 66, 67, 68];
+    let pow_list9 = array![0, 17, 24, 25, 27, 30, 34, 38];
+    let pow_list = array![pow_list0, pow_list1, pow_list2, pow_list3, pow_list4, pow_list5, pow_list6, pow_list7, pow_list8, pow_list9].span();
+    let mut i = 0;
+    while i < pow_list.len() {
+        let mut j = 0;
+        while j < (pow_list.at(i)).len() {
+            let value = (*column_values.at(i) - *oods_values.pop_front().unwrap()) / (point - pow(trace_generator, *pow_exps.at(*pow_list.at(i).at(j))) * oods_point);
+            total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
+            j += 1;
+        };
+        i += 1;
+    };
 
     // Sum the OODS boundary constraints on the composition polynomials.
     let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());
 
-    let value = (*column_values.pop_front().unwrap() - *oods_values.pop_front().unwrap())
+    let value = (*column_values.at(10) - *oods_values.pop_front().unwrap())
         / (point - oods_point_to_deg);
     let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    let value = (*column_values.pop_front().unwrap() - *oods_values.pop_front().unwrap())
+    let value = (*column_values.at(11) - *oods_values.pop_front().unwrap())
         / (point - oods_point_to_deg);
     let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
