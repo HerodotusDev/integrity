@@ -75,7 +75,7 @@ fn eval_composition_polynomial_inner(
     global_values: GlobalValues,
     contract_address: ContractAddress,
 ) -> felt252 {
-    ILayoutCompositionContractDispatcherTrait { contract_address }
+    ILayoutCompositionContractDispatcher { contract_address }
         .eval_composition_polynomial_inner(
             mask_values, constraint_coefficients, point, trace_generator, global_values
         )
