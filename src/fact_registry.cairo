@@ -59,7 +59,7 @@ trait IFactRegistry<TContractState> {
     ) -> FactRegistered;
 
     fn verify_proof_initial(
-        self: @TContractState,
+        ref self: TContractState,
         job_id: felt252,
         stark_proof_serde: StarkProofWithSerde,
         cairo_version: CairoVersion,
@@ -67,7 +67,7 @@ trait IFactRegistry<TContractState> {
     ) -> InitResult;
 
     fn verify_proof_step(
-        self: @TContractState,
+        ref self: TContractState,
         job_id: felt252,
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
@@ -171,7 +171,7 @@ mod FactRegistry {
         }
 
         fn verify_proof_initial(
-            self: @ContractState,
+            ref self: ContractState,
             job_id: felt252,
             stark_proof_serde: StarkProofWithSerde,
             cairo_version: CairoVersion,
@@ -182,7 +182,7 @@ mod FactRegistry {
         }
 
         fn verify_proof_step(
-            self: @ContractState,
+            ref self: ContractState,
             job_id: felt252,
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
