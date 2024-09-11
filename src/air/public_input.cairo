@@ -127,6 +127,7 @@ fn hash_data_init(
     n_verifier_friendly_commitment_layers: felt252
 ) {
     hash_data.append(n_verifier_friendly_commitment_layers);
+    hash_data.append(*public_input.log_n_steps);
     hash_data.append(*public_input.range_check_min);
     hash_data.append(*public_input.range_check_max);
     hash_data.append(*public_input.layout);
@@ -139,6 +140,7 @@ fn hash_data_init(
     public_input: @PublicInput,
     _n_verifier_friendly_commitment_layers: felt252
 ) {
+    hash_data.append(*public_input.log_n_steps);
     hash_data.append(*public_input.range_check_min);
     hash_data.append(*public_input.range_check_max);
     hash_data.append(*public_input.layout);
@@ -220,8 +222,7 @@ mod tests {
         let public_input = get();
         let hash = get_public_input_hash(@public_input, 0);
         assert(
-            hash == 0x1c3097c2a1665c78d69edc47ff35a3f3c9c0678e3daaa74d2b68331a5757a37,
-            'Hash invalid'
+            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
         )
     }
 }
