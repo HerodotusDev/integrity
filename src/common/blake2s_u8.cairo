@@ -356,7 +356,7 @@ fn blake2s_compress(mut s: blake2s_state, in: Array<u8>) -> blake2s_state {
         v14 = rotr8(v14 ^ v3);
         v9 = u32_wrapping_add(v9, v14);
         v4 = rotr7(v4 ^ v9);
-        // ROUND function end
+    // ROUND function end
     };
 
     let mut new_h = ArrayTrait::new();

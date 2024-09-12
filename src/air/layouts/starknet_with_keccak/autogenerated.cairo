@@ -15135,7 +15135,7 @@ fn eval_oods_polynomial_inner(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part1(
+fn eval_composition_polynomial_inner_part_1(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -21611,7 +21611,7 @@ fn eval_composition_polynomial_inner_part1(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part2(
+fn eval_composition_polynomial_inner_part_2(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -28030,7 +28030,7 @@ fn eval_composition_polynomial_inner_part2(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part3(
+fn eval_composition_polynomial_inner_part_3(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -36594,7 +36594,7 @@ fn eval_composition_polynomial_inner_part3(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part4(
+fn eval_composition_polynomial_inner_part_4(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -43625,7 +43625,7 @@ fn eval_composition_polynomial_inner_part4(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part5(
+fn eval_composition_polynomial_inner_part_5(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -50298,7 +50298,7 @@ fn eval_composition_polynomial_inner_part5(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part6(
+fn eval_composition_polynomial_inner_part_6(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -56734,7 +56734,7 @@ fn eval_composition_polynomial_inner_part6(
 }
 
 #[cfg(feature: 'split')]
-fn eval_composition_polynomial_inner_part7(
+fn eval_composition_polynomial_inner_part_7(
     mut mask_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
@@ -62088,7 +62088,7 @@ fn eval_composition_polynomial_inner_part7(
 }
 
 #[cfg(feature: 'split')]
-fn eval_oods_polynomial_inner_part1(
+fn eval_oods_polynomial_inner_part_1(
     mut column_values: Span<felt252>,
     mut oods_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,
@@ -63127,7 +63127,7 @@ fn eval_oods_polynomial_inner_part1(
 }
 
 #[cfg(feature: 'split')]
-fn eval_oods_polynomial_inner_part2(
+fn eval_oods_polynomial_inner_part_2(
     mut column_values: Span<felt252>,
     mut oods_values: Span<felt252>,
     mut constraint_coefficients: Span<felt252>,

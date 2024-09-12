@@ -42,5 +42,5 @@ fn test_stark_verify() {
         stark_domains,
         0.try_into().unwrap()
     );
-    // TODO: next steps
+// TODO: next steps
 }

@@ -48,10 +48,7 @@ trait ICairoVerifier<TContractState> {
 
 #[starknet::contract]
 mod CairoVerifier {
-    use starknet::{
-        ContractAddress,
-        storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map}
-    };
+    use starknet::ContractAddress;
     use cairo_verifier::{
         CairoVersion, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
         fri::fri::{
@@ -66,10 +63,10 @@ mod CairoVerifier {
     struct Storage {
         composition_contract_address: ContractAddress,
         oods_contract_address: ContractAddress,
-        state_constant: Map<felt252, Option<felt252>>, // job_id => hash(constant state)
-        state_variable: Map<felt252, Option<felt252>>, // job_id => hash(variable state)
-        state_fact: Map<felt252, Option<felt252>>, // job_id => fact_hash
-        state_security_bits: Map<felt252, Option<u32>>, // job_id => security_bits
+        state_constant: LegacyMap<felt252, Option<felt252>>, // job_id => hash(constant state)
+        state_variable: LegacyMap<felt252, Option<felt252>>, // job_id => hash(variable state)
+        state_fact: LegacyMap<felt252, Option<felt252>>, // job_id => fact_hash
+        state_security_bits: LegacyMap<felt252, Option<u32>>, // job_id => security_bits
     }
 
     #[constructor]
