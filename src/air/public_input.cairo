@@ -82,7 +82,7 @@ fn get_public_input_hash(
 
     let mut hash_data = ArrayTrait::<felt252>::new();
 
-    if settings.stone_version == StoneVersion::Stone5 {
+    if settings.stone_version == StoneVersion::Stone6 {
         hash_data.append(n_verifier_friendly_commitment_layers);
     }
     hash_data.append(*public_input.log_n_steps);
