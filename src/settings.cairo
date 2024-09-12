@@ -19,14 +19,6 @@ struct VerifierSettings {
     stone_version: StoneVersion,
 }
 
-fn get_random_settings() -> VerifierSettings {
-    VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
-        hasher_bit_length: HasherBitLength::Lsb160,
-        stone_version: StoneVersion::Stone5,
-    }
-}
-
 fn verifier_settings_to_tuple(settings: VerifierSettings) -> (felt252, felt252, felt252) {
     let cairo_version = match settings.cairo_version {
         CairoVersion::Cairo0 => 0,

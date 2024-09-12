@@ -25,10 +25,7 @@ starknet_with_keccak = []
 keccak = []
 blake2s = []
 
-stone5 = []
-stone6 = []
-
 monolith = []
 split = []
 
-default = ["recursive", "keccak", "stone5", "monolith"]
+default = ["recursive", "keccak", "monolith"]

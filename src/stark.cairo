@@ -90,7 +90,7 @@ impl StarkProofImpl of StarkProofTrait {
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
         let digest = get_public_input_hash(
-            self.public_input, *self.config.n_verifier_friendly_commitment_layers
+            self.public_input, *self.config.n_verifier_friendly_commitment_layers, settings
         );
 
         // Construct the channel.
