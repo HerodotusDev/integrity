@@ -7,8 +7,7 @@ use cairo_verifier::{
         VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
         VectorQuery, vector_commitment_decommit
     },
-    channel::channel::Channel,
-    settings::VerifierSettings,
+    channel::channel::Channel, settings::VerifierSettings,
 };
 use poseidon::poseidon_hash_span;
 
@@ -96,7 +95,9 @@ fn table_decommit(
         settings,
     );
 
-    vector_commitment_decommit(commitment.vector_commitment, vector_queries.span(), witness.vector, settings);
+    vector_commitment_decommit(
+        commitment.vector_commitment, vector_queries.span(), witness.vector, settings
+    );
 }
 
 fn to_montgomery(mut arr: Span<felt252>) -> Array<felt252> {
@@ -111,7 +112,11 @@ fn to_montgomery(mut arr: Span<felt252>) -> Array<felt252> {
 }
 
 fn generate_vector_queries(
-    queries: Span<felt252>, values: Span<felt252>, n_columns: u32, is_verifier_friendly: bool, settings: VerifierSettings
+    queries: Span<felt252>,
+    values: Span<felt252>,
+    n_columns: u32,
+    is_verifier_friendly: bool,
+    settings: VerifierSettings
 ) -> Array<VectorQuery> {
     let queries_len = queries.len();
     let mut vector_queries = ArrayTrait::new();

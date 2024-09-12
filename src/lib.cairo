@@ -23,8 +23,7 @@ mod tests;
 
 use cairo_verifier::{
     air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
-    stark::{StarkProof, StarkProofImpl},
-    settings::VerifierSettings,
+    stark::{StarkProof, StarkProofImpl}, settings::VerifierSettings,
 };
 use starknet::contract_address::ContractAddressZero;
 
@@ -64,7 +63,8 @@ fn main(mut serialized: Span<felt252>, settings: VerifierSettings) -> (felt252, 
 //     FriVerificationStateConstant, FriVerificationStateVariable,
 // };
 
-// fn testing(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252, (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32)) {
+// fn testing(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252,
+// (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32)) {
 //     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
 //     let stark_proof: StarkProof = stark_proof_serde.into();
 
@@ -78,3 +78,5 @@ fn main(mut serialized: Span<felt252>, settings: VerifierSettings) -> (felt252, 
 
 //     (program_hash, output_hash, out)
 // }
+
+

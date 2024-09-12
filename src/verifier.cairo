@@ -81,7 +81,9 @@ mod CairoVerifier {
         state_variable: LegacyMap<felt252, Option<felt252>>, // job_id => hash(variable state)
         state_fact: LegacyMap<felt252, Option<felt252>>, // job_id => fact_hash
         state_security_bits: LegacyMap<felt252, Option<u32>>, // job_id => security_bits
-        state_settings: LegacyMap<felt252, Option<(felt252, felt252, felt252)>>, // job_id => verifier_settings
+        state_settings: LegacyMap<
+            felt252, Option<(felt252, felt252, felt252)>
+        >, // job_id => verifier_settings
     }
 
     #[constructor]
@@ -114,7 +116,9 @@ mod CairoVerifier {
             };
             let security_bits = stark_proof
                 .verify(
-                    self.composition_contract_address.read(), self.oods_contract_address.read(), settings
+                    self.composition_contract_address.read(),
+                    self.oods_contract_address.read(),
+                    settings
                 );
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
@@ -142,7 +146,9 @@ mod CairoVerifier {
 
             let (con, var, last_layer_coefficients, security_bits) = stark_proof
                 .verify_initial(
-                    self.composition_contract_address.read(), self.oods_contract_address.read(), settings
+                    self.composition_contract_address.read(),
+                    self.oods_contract_address.read(),
+                    settings
                 );
             self.state_constant.write(job_id, Option::Some(hash_constant(@con)));
             self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
@@ -184,12 +190,13 @@ mod CairoVerifier {
                     .expect('No state (variable) saved'),
                 'Invalid state (variable)'
             );
-            let settings = tuple_to_verifier_settings(self
-                .state_settings
-                .read(job_id)
-                .expect('No settings saved'));
+            let settings = tuple_to_verifier_settings(
+                self.state_settings.read(job_id).expect('No settings saved')
+            );
 
-            let (con, var) = StarkProofImpl::verify_step(state_constant, state_variable, witness, settings);
+            let (con, var) = StarkProofImpl::verify_step(
+                state_constant, state_variable, witness, settings
+            );
             self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
 
             let layers_left = con.n_layers - var.iter;
@@ -223,10 +230,9 @@ mod CairoVerifier {
             );
             assert(new_var.iter.into() == new_con.n_layers + 1, 'Verification not finalized');
 
-            let settings = tuple_to_verifier_settings(self
-                .state_settings
-                .read(job_id)
-                .expect('No settings saved'));
+            let settings = tuple_to_verifier_settings(
+                self.state_settings.read(job_id).expect('No settings saved')
+            );
 
             self.state_variable.write(job_id, Option::None);
             self.state_constant.write(job_id, Option::None);

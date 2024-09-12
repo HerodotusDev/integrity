@@ -1,10 +1,9 @@
 use cairo_verifier::{
     vector_commitment::vector_commitment::{
-        VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit, VectorQuery,
-        vector_commitment_decommit,
+        VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
+        VectorQuery, vector_commitment_decommit,
     },
-    settings::{VerifierSettings, HasherBitLength, StoneVersion},
-    air::public_input::CairoVersion,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion}, air::public_input::CairoVersion,
 };
 
 #[cfg(feature: 'blake2s')]

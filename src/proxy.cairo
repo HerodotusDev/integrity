@@ -2,16 +2,16 @@ use cairo_verifier::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     verifier::InitResult,
-    fact_registry::{FactRegistered, Settings, VerificationListElement, Verification, VerifierVersion},
+    fact_registry::{
+        FactRegistered, Settings, VerificationListElement, Verification, VerifierVersion
+    },
 };
 use starknet::{ContractAddress, ClassHash};
 
 #[starknet::interface]
 trait IProxy<TContractState> {
     fn verify_proof_full_and_register_fact(
-        ref self: TContractState,
-        settings: Settings,
-        stark_proof: StarkProofWithSerde,
+        ref self: TContractState, settings: Settings, stark_proof: StarkProofWithSerde,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
@@ -57,8 +57,8 @@ mod Proxy {
     use cairo_verifier::{
         fact_registry::{
             IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
-            FactRegistry::{VerifierRegistered, OwnershipTransferred},
-            VerifierSettings, Settings, FactRegistered, VerificationListElement, Verification, VerifierVersion
+            FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings, Settings,
+            FactRegistered, VerificationListElement, Verification, VerifierVersion
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
@@ -93,9 +93,7 @@ mod Proxy {
     #[abi(embed_v0)]
     impl Proxy of IProxy<ContractState> {
         fn verify_proof_full_and_register_fact(
-            ref self: ContractState,
-            settings: Settings,
-            stark_proof: StarkProofWithSerde,
+            ref self: ContractState, settings: Settings, stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
             let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .verify_proof_full_and_register_fact(settings, stark_proof);
@@ -155,9 +153,7 @@ mod Proxy {
                 .get_verification(verification_hash)
         }
 
-        fn get_verifier_address(
-            self: @ContractState, version: VerifierVersion
-        ) -> ContractAddress {
+        fn get_verifier_address(self: @ContractState, version: VerifierVersion) -> ContractAddress {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_verifier_address(version)
         }

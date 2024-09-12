@@ -6,8 +6,7 @@ use cairo_verifier::{
     },
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
     table_commitment::table_commitment::table_decommit,
-    oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
-    settings::VerifierSettings,
+    oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points}, settings::VerifierSettings,
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]

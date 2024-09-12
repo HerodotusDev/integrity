@@ -8,8 +8,7 @@ use cairo_verifier::{
         TableCommitmentConfig
     },
     vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
-    common::asserts::assert_in_range,
-    settings::VerifierSettings,
+    common::asserts::assert_in_range, settings::VerifierSettings,
 };
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
@@ -127,5 +126,7 @@ fn traces_decommit(
     settings: VerifierSettings,
 ) {
     table_decommit(commitment.original, queries, decommitment.original, witness.original, settings);
-    table_decommit(commitment.interaction, queries, decommitment.interaction, witness.interaction, settings)
+    table_decommit(
+        commitment.interaction, queries, decommitment.interaction, witness.interaction, settings
+    )
 }

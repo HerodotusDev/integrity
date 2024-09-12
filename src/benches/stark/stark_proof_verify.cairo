@@ -1,5 +1,8 @@
 use starknet::contract_address::ContractAddressZero;
-use cairo_verifier::{stark::{StarkProof, StarkProofTrait}, tests::stone_proof_fibonacci_keccak, settings::{VerifierSettings, HasherBitLength, StoneVersion}, air::public_input::CairoVersion};
+use cairo_verifier::{
+    stark::{StarkProof, StarkProofTrait}, tests::stone_proof_fibonacci_keccak,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion}, air::public_input::CairoVersion
+};
 
 fn bench_stark_proof_verify() {
     let SECURITY_BITS: u32 = 50;

@@ -7,8 +7,7 @@ use cairo_verifier::{
         TableCommitmentWitness
     },
     tests::{stone_proof_fibonacci_keccak, stone_proof_fibonacci},
-    settings::{VerifierSettings, HasherBitLength, StoneVersion},
-    air::public_input::CairoVersion,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion}, air::public_input::CairoVersion,
 };
 
 #[cfg(feature: 'blake2s')]

@@ -22,8 +22,7 @@ use cairo_verifier::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
         proof_of_work::ProofOfWorkUnsentCommitment
     },
-    vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
-    settings::VerifierSettings,
+    vector_commitment::vector_commitment::VectorCommitmentConfigTrait, settings::VerifierSettings,
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]

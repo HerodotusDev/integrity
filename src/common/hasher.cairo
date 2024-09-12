@@ -23,10 +23,7 @@ fn hash_truncated(data: Array<u32>, settings: VerifierSettings) -> felt252 {
     } else {
         0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     };
-    (blake2s(data).flip_endianness()
-        & mask)
-        .try_into()
-        .unwrap()
+    (blake2s(data).flip_endianness() & mask).try_into().unwrap()
 }
 
 #[cfg(feature: 'keccak')]
@@ -36,10 +33,7 @@ fn hash_truncated(mut data: Array<u64>, settings: VerifierSettings) -> felt252 {
     } else {
         0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     };
-    (keccak::cairo_keccak(ref data, 0, 0).flip_endianness()
-        & mask)
-        .try_into()
-        .unwrap()
+    (keccak::cairo_keccak(ref data, 0, 0).flip_endianness() & mask).try_into().unwrap()
 }
 
 #[cfg(feature: 'blake2s')]

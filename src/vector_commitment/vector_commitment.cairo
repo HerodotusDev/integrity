@@ -3,8 +3,7 @@ use cairo_verifier::{
         array_append::ArrayAppendTrait, math::pow, hasher::hash_truncated, math::DivRemFelt252,
         math::Felt252PartialOrd,
     },
-    channel::channel::{Channel, ChannelImpl},
-    settings::VerifierSettings,
+    channel::channel::{Channel, ChannelImpl}, settings::VerifierSettings,
 };
 use poseidon::hades_permutation;
 
@@ -71,7 +70,10 @@ fn vector_commit(
 // Decommits a VectorCommitment at multiple indices.
 // Indices must be sorted and unique.
 fn vector_commitment_decommit(
-    commitment: VectorCommitment, queries: Span<VectorQuery>, witness: VectorCommitmentWitness, settings: VerifierSettings
+    commitment: VectorCommitment,
+    queries: Span<VectorQuery>,
+    witness: VectorCommitmentWitness,
+    settings: VerifierSettings
 ) {
     let shift = pow(2, commitment.config.height);
     let shifted_queries = shift_queries(queries, shift, commitment.config.height);
@@ -115,7 +117,9 @@ fn compute_root_from_queries(
             let next: VectorQueryWithDepth = *queue[start + 1];
             if current.index + 1 == next.index {
                 // next is a sibling of current
-                let hash = hash_blake_or_poseidon(current.value, next.value, is_verifier_friendly, settings);
+                let hash = hash_blake_or_poseidon(
+                    current.value, next.value, is_verifier_friendly, settings
+                );
                 queue
                     .append(
                         VectorQueryWithDepth {
@@ -123,15 +127,24 @@ fn compute_root_from_queries(
                         }
                     );
                 return compute_root_from_queries(
-                    queue, start + 2, n_verifier_friendly_layers, authentications, auth_start, settings
+                    queue,
+                    start + 2,
+                    n_verifier_friendly_layers,
+                    authentications,
+                    auth_start,
+                    settings
                 );
             }
         }
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_poseidon(current.value, *authentications[auth_start], is_verifier_friendly, settings)
+        hash_blake_or_poseidon(
+            current.value, *authentications[auth_start], is_verifier_friendly, settings
+        )
     } else {
         assert(auth_start != authentications.len(), 'authentications is too short');
-        hash_blake_or_poseidon(*authentications[auth_start], current.value, is_verifier_friendly, settings)
+        hash_blake_or_poseidon(
+            *authentications[auth_start], current.value, is_verifier_friendly, settings
+        )
     };
     queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
     compute_root_from_queries(
@@ -161,7 +174,9 @@ fn shift_queries(
     shifted_queries
 }
 
-fn hash_blake_or_poseidon(x: felt252, y: felt252, is_verifier_friendly: bool, settings: VerifierSettings) -> felt252 {
+fn hash_blake_or_poseidon(
+    x: felt252, y: felt252, is_verifier_friendly: bool, settings: VerifierSettings
+) -> felt252 {
     if is_verifier_friendly {
         let (hash, _, _) = hades_permutation(x, y, 2);
         hash

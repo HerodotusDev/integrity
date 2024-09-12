@@ -12,6 +12,7 @@ enum StoneVersion {
     Stone6,
 }
 
+// settings accepted by verifier (parameters for verification)
 #[derive(Drop, Copy, Serde)]
 struct VerifierSettings {
     cairo_version: CairoVersion,
@@ -61,9 +62,5 @@ fn tuple_to_verifier_settings(tuple: (felt252, felt252, felt252)) -> VerifierSet
             StoneVersion::Stone5
         }
     };
-    VerifierSettings {
-        cairo_version,
-        hasher_bit_length,
-        stone_version,
-    }
+    VerifierSettings { cairo_version, hasher_bit_length, stone_version, }
 }
