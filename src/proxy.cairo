@@ -2,34 +2,23 @@ use cairo_verifier::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     verifier::InitResult,
-    fact_registry::{FactRegistered, VerifierSettings, VerificationListElement, Verification},
+    fact_registry::{FactRegistered, Settings, VerificationListElement, Verification, VerifierVersion},
 };
 use starknet::{ContractAddress, ClassHash};
-
-fn settings_to_struct(tuple: (felt252, felt252, felt252)) -> VerifierSettings {
-    let (layout, hasher, version) = tuple;
-    VerifierSettings { layout, hasher, version }
-}
-
-fn settings_from_struct(settings: VerifierSettings) -> (felt252, felt252, felt252) {
-    (settings.layout, settings.hasher, settings.version)
-}
 
 #[starknet::interface]
 trait IProxy<TContractState> {
     fn verify_proof_full_and_register_fact(
         ref self: TContractState,
+        settings: Settings,
         stark_proof: StarkProofWithSerde,
-        cairo_version: CairoVersion,
-        settings: VerifierSettings,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        stark_proof_serde: StarkProofWithSerde,
-        cairo_version: CairoVersion,
-        settings: VerifierSettings,
+        settings: Settings,
+        stark_proof: StarkProofWithSerde,
     ) -> InitResult;
 
     fn verify_proof_step(
@@ -38,7 +27,6 @@ trait IProxy<TContractState> {
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         witness: FriLayerWitness,
-        settings: VerifierSettings,
     ) -> (FriVerificationStateVariable, u32);
 
     fn verify_proof_final_and_register_fact(
@@ -47,7 +35,6 @@ trait IProxy<TContractState> {
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         last_layer_coefficients: Span<felt252>,
-        settings: VerifierSettings,
     ) -> FactRegistered;
 
     fn get_all_verifications_for_fact_hash(
@@ -55,9 +42,9 @@ trait IProxy<TContractState> {
     ) -> Array<VerificationListElement>;
     fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
 
-    fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
+    fn get_verifier_address(self: @TContractState, version: VerifierVersion) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, settings: VerifierSettings, address: ContractAddress
+        ref self: TContractState, version: VerifierVersion, address: ContractAddress
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
@@ -71,6 +58,7 @@ mod Proxy {
         fact_registry::{
             IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
             FactRegistry::{VerifierRegistered, OwnershipTransferred},
+            VerifierSettings, Settings, FactRegistered, VerificationListElement, Verification, VerifierVersion
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
@@ -81,10 +69,7 @@ mod Proxy {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
     };
-    use super::{
-        VerifierSettings, VerificationListElement, Verification, IProxy, FactRegistered,
-        settings_from_struct, settings_to_struct
-    };
+    use super::IProxy;
 
     #[event]
     #[derive(Drop, starknet::Event)]
@@ -109,12 +94,11 @@ mod Proxy {
     impl Proxy of IProxy<ContractState> {
         fn verify_proof_full_and_register_fact(
             ref self: ContractState,
+            settings: Settings,
             stark_proof: StarkProofWithSerde,
-            cairo_version: CairoVersion,
-            settings: VerifierSettings,
         ) -> FactRegistered {
             let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_full_and_register_fact(stark_proof, cairo_version, settings);
+                .verify_proof_full_and_register_fact(settings, stark_proof);
 
             self.emit(fact);
             fact
@@ -123,12 +107,11 @@ mod Proxy {
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            stark_proof_serde: StarkProofWithSerde,
-            cairo_version: CairoVersion,
-            settings: VerifierSettings,
+            settings: Settings,
+            stark_proof: StarkProofWithSerde,
         ) -> InitResult {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_initial(job_id, stark_proof_serde, cairo_version, settings)
+                .verify_proof_initial(job_id, settings, stark_proof)
         }
 
         fn verify_proof_step(
@@ -137,10 +120,9 @@ mod Proxy {
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             witness: FriLayerWitness,
-            settings: VerifierSettings,
         ) -> (FriVerificationStateVariable, u32) {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_step(job_id, state_constant, state_variable, witness, settings)
+                .verify_proof_step(job_id, state_constant, state_variable, witness)
         }
 
         fn verify_proof_final_and_register_fact(
@@ -149,11 +131,10 @@ mod Proxy {
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
-            settings: VerifierSettings,
         ) -> FactRegistered {
             let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .verify_proof_final_and_register_fact(
-                    job_id, state_constant, state_variable, last_layer_coefficients, settings
+                    job_id, state_constant, state_variable, last_layer_coefficients
                 );
 
             self.emit(fact);
@@ -175,18 +156,18 @@ mod Proxy {
         }
 
         fn get_verifier_address(
-            self: @ContractState, settings: VerifierSettings
+            self: @ContractState, version: VerifierVersion
         ) -> ContractAddress {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .get_verifier_address(settings)
+                .get_verifier_address(version)
         }
 
         fn register_verifier(
-            ref self: ContractState, settings: VerifierSettings, address: ContractAddress
+            ref self: ContractState, version: VerifierVersion, address: ContractAddress
         ) {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .register_verifier(settings, address);
-            self.emit(Event::VerifierRegistered(VerifierRegistered { settings, address }));
+                .register_verifier(version, address);
+            self.emit(Event::VerifierRegistered(VerifierRegistered { version, address }));
         }
 
         fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {

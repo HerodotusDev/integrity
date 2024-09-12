@@ -7,7 +7,8 @@ use cairo_verifier::{
         VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
         VectorQuery, vector_commitment_decommit
     },
-    channel::channel::Channel
+    channel::channel::Channel,
+    settings::VerifierSettings,
 };
 use poseidon::poseidon_hash_span;
 
@@ -59,6 +60,7 @@ fn table_decommit(
     queries: Span<felt252>,
     decommitment: TableDecommitment,
     witness: TableCommitmentWitness,
+    settings: VerifierSettings,
 ) {
     let n_queries: felt252 = queries.len().into();
 
@@ -90,10 +92,11 @@ fn table_decommit(
         queries,
         montgomery_values.span(),
         n_columns.try_into().unwrap(),
-        is_bottom_layer_verifier_friendly
+        is_bottom_layer_verifier_friendly,
+        settings,
     );
 
-    vector_commitment_decommit(commitment.vector_commitment, vector_queries.span(), witness.vector);
+    vector_commitment_decommit(commitment.vector_commitment, vector_queries.span(), witness.vector, settings);
 }
 
 fn to_montgomery(mut arr: Span<felt252>) -> Array<felt252> {
@@ -108,7 +111,7 @@ fn to_montgomery(mut arr: Span<felt252>) -> Array<felt252> {
 }
 
 fn generate_vector_queries(
-    queries: Span<felt252>, values: Span<felt252>, n_columns: u32, is_verifier_friendly: bool
+    queries: Span<felt252>, values: Span<felt252>, n_columns: u32, is_verifier_friendly: bool, settings: VerifierSettings
 ) -> Array<VectorQuery> {
     let queries_len = queries.len();
     let mut vector_queries = ArrayTrait::new();
@@ -129,7 +132,7 @@ fn generate_vector_queries(
             let slice = values.slice(i * n_columns, n_columns);
             let mut data = ArrayTrait::new(); // u32 for blake, u64 for keccak
             data.append_big_endian(slice);
-            hash_truncated(data)
+            hash_truncated(data, settings)
         };
         vector_queries.append(VectorQuery { index: *queries[i], value: hash });
         i += 1;

@@ -1,6 +1,8 @@
 use cairo_verifier::{
     channel::channel::ChannelImpl, air::layouts::recursive::{traces::traces_decommit},
     tests::stone_proof_fibonacci,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion},
+    air::public_input::CairoVersion,
 };
 
 fn bench_air_traces_decommit() {
@@ -9,5 +11,10 @@ fn bench_air_traces_decommit() {
     let decommitment = stone_proof_fibonacci::traces::decommitment::get();
     let witness = stone_proof_fibonacci::traces::witness::get();
 
-    traces_decommit(queries, commitment, decommitment, witness);
+    let settings = VerifierSettings {
+        cairo_version: CairoVersion::Cairo0,
+        hasher_bit_length: HasherBitLength::Lsb160,
+        stone_version: StoneVersion::Stone5,
+    };
+    traces_decommit(queries, commitment, decommitment, witness, settings);
 }

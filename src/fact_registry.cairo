@@ -2,37 +2,91 @@ use cairo_verifier::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     verifier::InitResult,
+    settings::{
+        // settings accepted by verifier (parameters for verification)
+        VerifierSettings,
+        HasherBitLength, StoneVersion,
+    },
 };
 use starknet::ContractAddress;
 
+// settings that identify the verifier (hardcoded in verifier)
 #[derive(Drop, Copy, Serde)]
-struct VerifierSettings {
+struct VerifierVersion {
     layout: felt252,
     hasher: felt252,
-    version: felt252,
 }
 
-fn settings_to_struct(tuple: (felt252, felt252, felt252)) -> VerifierSettings {
-    let (layout, hasher, version) = tuple;
-    VerifierSettings { layout, hasher, version }
+// both hardcoded settings and parameters merged together
+#[derive(Drop, Copy, Serde)]
+struct Settings {
+    layout: felt252, // string encoded as hex
+    hasher: felt252, // function and number of bits
+    stone_version: felt252, // stone5 or stone6
+    cairo_version: CairoVersion, // 0 or 1
 }
 
-fn settings_from_struct(settings: VerifierSettings) -> (felt252, felt252, felt252) {
-    (settings.layout, settings.hasher, settings.version)
+fn tuple_to_settings(tuple: (felt252, felt252, felt252, felt252)) -> Settings {
+    let (layout, hasher, stone_version, cairo_version) = tuple;
+    let cairo_version = if cairo_version == 0 {
+        CairoVersion::Cairo0
+    } else {
+        assert(cairo_version == 1, 'Invalid cairo version');
+        CairoVersion::Cairo1
+    };
+    Settings { layout, hasher, stone_version, cairo_version }
+}
+
+fn settings_to_tuple(settings: Settings) -> (felt252, felt252, felt252, felt252) {
+    let cairo_version = match settings.cairo_version {
+        CairoVersion::Cairo0 => 0,
+        CairoVersion::Cairo1 => 1,
+    };
+    (settings.layout, settings.hasher, settings.stone_version, cairo_version )
+}
+
+fn split_settings(settings: Settings) -> (VerifierSettings, VerifierVersion) {
+    let (hash_function, hash_bits) = if settings.layout == 'keccak_160_lsb' {
+        ('keccak', HasherBitLength::Lsb160)
+    } else if settings.layout == 'keccak_248_lsb' {
+        ('keccak', HasherBitLength::Lsb248)
+    } else if settings.layout == 'blake2s_160_lsb' {
+        ('blake2s', HasherBitLength::Lsb160)
+    } else {
+        assert(settings.layout == 'blake2s_248_lsb', 'Invalid hasher');
+        ('blake2s', HasherBitLength::Lsb248)
+    };
+    let stone_version = if settings.stone_version == 'stone5' {
+        StoneVersion::Stone5
+    } else {
+        assert(settings.stone_version == 'stone6', 'Invalid stone version');
+        StoneVersion::Stone6
+    };
+    (
+        VerifierSettings {
+            cairo_version: settings.cairo_version,
+            hasher_bit_length: hash_bits,
+            stone_version: stone_version,
+        },
+        VerifierVersion {
+            layout: settings.layout,
+            hasher: hash_function,
+        }
+    )
 }
 
 #[derive(Drop, Copy, Serde)]
 struct VerificationListElement {
     verification_hash: felt252,
     security_bits: u32,
-    settings: VerifierSettings,
+    settings: Settings,
 }
 
 #[derive(Drop, Copy, Serde)]
 struct Verification {
     fact_hash: felt252,
     security_bits: u32,
-    settings: VerifierSettings,
+    settings: Settings,
 }
 
 #[derive(Drop, Copy, Serde, starknet::Event)]
@@ -44,7 +98,7 @@ struct FactRegistered {
     #[key]
     security_bits: u32,
     #[key]
-    settings: VerifierSettings,
+    settings: Settings,
     #[key]
     verification_hash: felt252,
 }
@@ -53,17 +107,15 @@ struct FactRegistered {
 trait IFactRegistry<TContractState> {
     fn verify_proof_full_and_register_fact(
         ref self: TContractState,
+        settings: Settings,
         stark_proof: StarkProofWithSerde,
-        cairo_version: CairoVersion,
-        settings: VerifierSettings,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        stark_proof_serde: StarkProofWithSerde,
-        cairo_version: CairoVersion,
-        settings: VerifierSettings,
+        settings: Settings,
+        stark_proof: StarkProofWithSerde,
     ) -> InitResult;
 
     fn verify_proof_step(
@@ -72,7 +124,6 @@ trait IFactRegistry<TContractState> {
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         witness: FriLayerWitness,
-        settings: VerifierSettings,
     ) -> (FriVerificationStateVariable, u32);
 
     fn verify_proof_final_and_register_fact(
@@ -81,7 +132,6 @@ trait IFactRegistry<TContractState> {
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         last_layer_coefficients: Span<felt252>,
-        settings: VerifierSettings,
     ) -> FactRegistered;
 
     fn get_all_verifications_for_fact_hash(
@@ -89,9 +139,9 @@ trait IFactRegistry<TContractState> {
     ) -> Array<VerificationListElement>;
     fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
 
-    fn get_verifier_address(self: @TContractState, settings: VerifierSettings) -> ContractAddress;
+    fn get_verifier_address(self: @TContractState, version: VerifierVersion) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, settings: VerifierSettings, address: ContractAddress
+        ref self: TContractState, version: VerifierVersion, address: ContractAddress
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 }
@@ -109,8 +159,8 @@ mod FactRegistry {
         starknet::event::EventEmitter
     };
     use super::{
-        VerifierSettings, VerificationListElement, Verification, IFactRegistry, FactRegistered,
-        settings_from_struct, settings_to_struct
+        VerifierVersion, VerificationListElement, Verification, IFactRegistry, FactRegistered, Settings,
+        settings_to_tuple, tuple_to_settings, split_settings
     };
 
     #[storage]
@@ -122,8 +172,9 @@ mod FactRegistry {
             (felt252, u32), felt252
         >, // fact_hash, index => verification_hash
         verification_hashes: LegacyMap<
-            felt252, Option<(felt252, u32, (felt252, felt252, felt252))>
+            felt252, Option<(felt252, u32, (felt252, felt252, felt252, felt252))>
         >, // verification_hash => (fact_hash, security_bits, settings)
+        settings: LegacyMap<felt252, Option<(felt252, felt252, felt252, felt252)>>, // job_id => Settings
     }
 
     #[event]
@@ -137,7 +188,7 @@ mod FactRegistry {
     #[derive(Drop, starknet::Event)]
     struct VerifierRegistered {
         #[key]
-        settings: VerifierSettings,
+        version: VerifierVersion,
         #[key]
         address: ContractAddress,
     }
@@ -157,28 +208,30 @@ mod FactRegistry {
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn verify_proof_full_and_register_fact(
             ref self: ContractState,
+            settings: Settings,
             stark_proof: StarkProofWithSerde,
-            cairo_version: CairoVersion,
-            settings: VerifierSettings,
         ) -> FactRegistered {
-            let verifier_address = self.get_verifier_address(settings);
-            let (fact_hash, security_bits) = ICairoVerifierDispatcher {
+            let (verifier_settings, version) = split_settings(settings);
+
+            let verifier_address = self.get_verifier_address(version);
+            let result = ICairoVerifierDispatcher {
                 contract_address: verifier_address
             }
-                .verify_proof_full(stark_proof.into(), cairo_version);
+                .verify_proof_full(stark_proof.into(), verifier_settings);
 
-            self._register_fact(fact_hash, verifier_address, security_bits, settings)
+            self._register_fact(result.fact, verifier_address, result.security_bits, settings)
         }
 
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            stark_proof_serde: StarkProofWithSerde,
-            cairo_version: CairoVersion,
-            settings: VerifierSettings,
+            settings: Settings,
+            stark_proof: StarkProofWithSerde,
         ) -> InitResult {
-            ICairoVerifierDispatcher { contract_address: self.get_verifier_address(settings) }
-                .verify_proof_initial(job_id, stark_proof_serde, cairo_version)
+            self.settings.write(job_id, Option::Some(settings_to_tuple(settings)));
+            let (verifier_settings, version) = split_settings(settings);
+            ICairoVerifierDispatcher { contract_address: self.get_verifier_address(version) }
+                .verify_proof_initial(job_id, stark_proof, verifier_settings)
         }
 
         fn verify_proof_step(
@@ -187,9 +240,10 @@ mod FactRegistry {
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             witness: FriLayerWitness,
-            settings: VerifierSettings,
         ) -> (FriVerificationStateVariable, u32) {
-            ICairoVerifierDispatcher { contract_address: self.get_verifier_address(settings) }
+            let settings = tuple_to_settings(self.settings.read(job_id).expect('Job id not found'));
+            let (_, version) = split_settings(settings);
+            ICairoVerifierDispatcher { contract_address: self.get_verifier_address(version) }
                 .verify_proof_step(job_id, state_constant, state_variable, witness)
         }
 
@@ -199,18 +253,19 @@ mod FactRegistry {
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
-            settings: VerifierSettings,
         ) -> FactRegistered {
-            let verifier_address = self.get_verifier_address(settings);
+            let settings = tuple_to_settings(self.settings.read(job_id).expect('Job id not found'));
+            let (_, version) = split_settings(settings);
+            let verifier_address = self.get_verifier_address(version);
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
-            let (fact_hash, security_bits) = ICairoVerifierDispatcher {
+            let result = ICairoVerifierDispatcher {
                 contract_address: verifier_address
             }
                 .verify_proof_final(
                     job_id, state_constant, state_variable, last_layer_coefficients
                 );
 
-            self._register_fact(fact_hash, verifier_address, security_bits, settings)
+            self._register_fact(result.fact, verifier_address, result.security_bits, settings)
         }
 
         fn get_all_verifications_for_fact_hash(
@@ -228,7 +283,7 @@ mod FactRegistry {
                     .verification_hashes
                     .read(verification_hash)
                     .unwrap();
-                let settings = settings_to_struct(settings_tuple);
+                let settings = tuple_to_settings(settings_tuple);
                 arr.append(VerificationListElement { verification_hash, security_bits, settings });
                 i += 1;
             };
@@ -241,7 +296,7 @@ mod FactRegistry {
             match self.verification_hashes.read(verification_hash) {
                 Option::Some(x) => {
                     let (fact_hash, security_bits, settings_tuple) = x;
-                    let settings = settings_to_struct(settings_tuple);
+                    let settings = tuple_to_settings(settings_tuple);
                     Option::Some(Verification { fact_hash, security_bits, settings })
                 },
                 Option::None => { Option::None }
@@ -249,22 +304,22 @@ mod FactRegistry {
         }
 
         fn get_verifier_address(
-            self: @ContractState, settings: VerifierSettings
+            self: @ContractState, version: VerifierVersion
         ) -> ContractAddress {
-            let verifier_address = self.verifiers.read(self._hash_settings(settings));
+            let verifier_address = self.verifiers.read(self._hash_version(version));
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             verifier_address
         }
 
         fn register_verifier(
-            ref self: ContractState, settings: VerifierSettings, address: ContractAddress
+            ref self: ContractState, version: VerifierVersion, address: ContractAddress
         ) {
             assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
             assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');
-            let settings_hash = self._hash_settings(settings);
-            assert(self.verifiers.read(settings_hash).into() == 0, 'VERIFIER_ALREADY_EXISTS');
-            self.verifiers.write(settings_hash, address);
-            self.emit(Event::VerifierRegistered(VerifierRegistered { settings, address }));
+            let version_hash = self._hash_version(version);
+            assert(self.verifiers.read(version_hash).into() == 0, 'VERIFIER_ALREADY_EXISTS');
+            self.verifiers.write(version_hash, address);
+            self.emit(Event::VerifierRegistered(VerifierRegistered { version, address }));
         }
 
         fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
@@ -283,11 +338,23 @@ mod FactRegistry {
 
     #[generate_trait]
     impl InternalFactRegistry of InternalFactRegistryTrait {
-        fn _hash_settings(self: @ContractState, settings: VerifierSettings) -> felt252 {
+        fn _hash_settings(self: @ContractState, settings: Settings) -> felt252 {
+            let cairo_version = match settings.cairo_version {
+                CairoVersion::Cairo0 => 0,
+                CairoVersion::Cairo1 => 1,
+            };
             PoseidonImpl::new()
                 .update(settings.layout)
                 .update(settings.hasher)
-                .update(settings.version)
+                .update(settings.stone_version)
+                .update(cairo_version)
+                .finalize()
+        }
+
+        fn _hash_version(self: @ContractState, version: VerifierVersion) -> felt252 {
+            PoseidonImpl::new()
+                .update(version.layout)
+                .update(version.hasher)
                 .finalize()
         }
 
@@ -296,7 +363,7 @@ mod FactRegistry {
             fact_hash: felt252,
             verifier_address: ContractAddress,
             security_bits: u32,
-            settings: VerifierSettings
+            settings: Settings
         ) -> FactRegistered {
             let settings_hash = self._hash_settings(settings);
             let verification_hash = PoseidonImpl::new()
@@ -317,7 +384,7 @@ mod FactRegistry {
                     .verification_hashes
                     .write(
                         verification_hash,
-                        Option::Some((fact_hash, security_bits, settings_from_struct(settings)))
+                        Option::Some((fact_hash, security_bits, settings_to_tuple(settings)))
                     );
                 self.facts.write(fact_hash, next_index + 1);
             }

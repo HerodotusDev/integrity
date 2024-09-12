@@ -23,6 +23,7 @@ use cairo_verifier::{
         proof_of_work::ProofOfWorkUnsentCommitment
     },
     vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
+    settings::VerifierSettings,
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
@@ -75,7 +76,8 @@ impl StarkProofImpl of StarkProofTrait {
     fn verify_initial(
         self: @StarkProof,
         composition_contract_address: ContractAddress,
-        oods_contract_address: ContractAddress
+        oods_contract_address: ContractAddress,
+        settings: VerifierSettings,
     ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32) {
         // Validate config.
         let security_bits = self.config.validate();
@@ -121,7 +123,8 @@ impl StarkProofImpl of StarkProofTrait {
             stark_commitment,
             *self.witness,
             stark_domains,
-            oods_contract_address
+            oods_contract_address,
+            settings,
         );
         (con, var, last_layer_coefficients, security_bits)
     }
@@ -129,9 +132,10 @@ impl StarkProofImpl of StarkProofTrait {
     fn verify_step(
         stateConstant: FriVerificationStateConstant,
         stateVariable: FriVerificationStateVariable,
-        witness: FriLayerWitness
+        witness: FriLayerWitness,
+        settings: VerifierSettings,
     ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
-        fri_verify_step(stateConstant, stateVariable, witness)
+        fri_verify_step(stateConstant, stateVariable, witness, settings)
     }
 
     fn verify_final(
@@ -145,10 +149,11 @@ impl StarkProofImpl of StarkProofTrait {
     fn verify(
         self: @StarkProof,
         composition_contract_address: ContractAddress,
-        oods_contract_address: ContractAddress
+        oods_contract_address: ContractAddress,
+        settings: VerifierSettings,
     ) -> u32 {
         let (mut con, mut var, last_layer_coefficients, security_bits) = self
-            .verify_initial(composition_contract_address, oods_contract_address);
+            .verify_initial(composition_contract_address, oods_contract_address, settings);
 
         let n = con.n_layers;
         let mut i = 0;
@@ -158,7 +163,7 @@ impl StarkProofImpl of StarkProofTrait {
             }
 
             let (new_con, new_var) = StarkProofTrait::verify_step(
-                con, var, *(*self.witness.fri_witness.layers).at(i)
+                con, var, *(*self.witness.fri_witness.layers).at(i), settings
             );
             var = new_var;
             con = new_con;
