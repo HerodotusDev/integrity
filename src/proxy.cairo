@@ -3,7 +3,7 @@ use cairo_verifier::{
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     verifier::InitResult,
     fact_registry::{
-        FactRegistered, Settings, VerificationListElement, Verification, VerifierVersion
+        FactRegistered, Configuration, VerificationListElement, Verification, VerifierProperties
     },
 };
 use starknet::{ContractAddress, ClassHash};
@@ -11,13 +11,13 @@ use starknet::{ContractAddress, ClassHash};
 #[starknet::interface]
 trait IProxy<TContractState> {
     fn verify_proof_full_and_register_fact(
-        ref self: TContractState, settings: Settings, stark_proof: StarkProofWithSerde,
+        ref self: TContractState, settings: Configuration, stark_proof: StarkProofWithSerde,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        settings: Settings,
+        settings: Configuration,
         stark_proof: StarkProofWithSerde,
     ) -> InitResult;
 
@@ -42,9 +42,9 @@ trait IProxy<TContractState> {
     ) -> Array<VerificationListElement>;
     fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
 
-    fn get_verifier_address(self: @TContractState, version: VerifierVersion) -> ContractAddress;
+    fn get_verifier_address(self: @TContractState, version: VerifierProperties) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, version: VerifierVersion, address: ContractAddress
+        ref self: TContractState, version: VerifierProperties, address: ContractAddress
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
@@ -57,8 +57,8 @@ mod Proxy {
     use cairo_verifier::{
         fact_registry::{
             IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
-            FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings, Settings,
-            FactRegistered, VerificationListElement, Verification, VerifierVersion
+            FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings, Configuration,
+            FactRegistered, VerificationListElement, Verification, VerifierProperties
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
@@ -93,7 +93,7 @@ mod Proxy {
     #[abi(embed_v0)]
     impl Proxy of IProxy<ContractState> {
         fn verify_proof_full_and_register_fact(
-            ref self: ContractState, settings: Settings, stark_proof: StarkProofWithSerde,
+            ref self: ContractState, settings: Configuration, stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
             let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .verify_proof_full_and_register_fact(settings, stark_proof);
@@ -105,7 +105,7 @@ mod Proxy {
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            settings: Settings,
+            settings: Configuration,
             stark_proof: StarkProofWithSerde,
         ) -> InitResult {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
@@ -153,13 +153,13 @@ mod Proxy {
                 .get_verification(verification_hash)
         }
 
-        fn get_verifier_address(self: @ContractState, version: VerifierVersion) -> ContractAddress {
+        fn get_verifier_address(self: @ContractState, version: VerifierProperties) -> ContractAddress {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_verifier_address(version)
         }
 
         fn register_verifier(
-            ref self: ContractState, version: VerifierVersion, address: ContractAddress
+            ref self: ContractState, version: VerifierProperties, address: ContractAddress
         ) {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .register_verifier(version, address);
