@@ -157,7 +157,7 @@ impl StarkProofImpl of StarkProofTrait {
                 break;
             }
 
-            let (new_con, new_var) = StarkProofTrait::verify_step(
+            let (new_con, new_var) = Self::verify_step(
                 con, var, *(*self.witness.fri_witness.layers).at(i)
             );
             var = new_var;
@@ -166,7 +166,7 @@ impl StarkProofImpl of StarkProofTrait {
             i += 1;
         };
 
-        let (_, new_var) = StarkProofTrait::verify_final(con, var, last_layer_coefficients);
+        let (_, new_var) = Self::verify_final(con, var, last_layer_coefficients);
         assert(new_var.iter.into() == n + 1, 'Verification not finalized');
         security_bits
     }

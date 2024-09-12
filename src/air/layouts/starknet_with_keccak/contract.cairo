@@ -29,11 +29,16 @@ trait ILayoutOodsContract<ContractState> {
 mod LayoutCompositionContract {
     use super::ILayoutCompositionContract;
     use cairo_verifier::air::layouts::starknet_with_keccak::{global_values::GlobalValues,};
-    use starknet::ContractAddress;
+    use starknet::{
+        ContractAddress,
+        storage::{
+            StoragePointerReadAccess, StoragePointerWriteAccess, Vec, VecTrait, MutableVecTrait
+        }
+    };
 
     #[storage]
     struct Storage {
-        continuation_contracts: Array<ContractAddress>,
+        continuation_contracts: Vec<ContractAddress>,
     }
 
     #[abi(embed_v0)]
@@ -46,10 +51,8 @@ mod LayoutCompositionContract {
             trace_generator: felt252,
             global_values: GlobalValues
         ) -> felt252 {
-            let mut continuation_contracts = self.continuation_contracts.read();
-
             let mut total_sum = ILayoutCompositionContractDispatcher {
-                contract_address: continuation_contracts.pop_front().unwrap()
+                contract_address: self.continuation_contracts.at(0).read()
             }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -61,7 +64,7 @@ mod LayoutCompositionContract {
 
             total_sum +=
                 ILayoutCompositionContractDispatcher {
-                    contract_address: continuation_contracts.pop_front().unwrap()
+                    contract_address: self.continuation_contracts.at(1).read()
                 }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -73,7 +76,7 @@ mod LayoutCompositionContract {
 
             total_sum +=
                 ILayoutCompositionContractDispatcher {
-                    contract_address: continuation_contracts.pop_front().unwrap()
+                    contract_address: self.continuation_contracts.at(2).read()
                 }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -85,7 +88,7 @@ mod LayoutCompositionContract {
 
             total_sum +=
                 ILayoutCompositionContractDispatcher {
-                    contract_address: continuation_contracts.pop_front().unwrap()
+                    contract_address: self.continuation_contracts.at(3).read()
                 }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -97,7 +100,7 @@ mod LayoutCompositionContract {
 
             total_sum +=
                 ILayoutCompositionContractDispatcher {
-                    contract_address: continuation_contracts.pop_front().unwrap()
+                    contract_address: self.continuation_contracts.at(4).read()
                 }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -109,7 +112,7 @@ mod LayoutCompositionContract {
 
             total_sum +=
                 ILayoutCompositionContractDispatcher {
-                    contract_address: continuation_contracts.pop_front().unwrap()
+                    contract_address: self.continuation_contracts.at(5).read()
                 }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -121,7 +124,7 @@ mod LayoutCompositionContract {
 
             total_sum +=
                 ILayoutCompositionContractDispatcher {
-                    contract_address: continuation_contracts.pop_front().unwrap()
+                    contract_address: self.continuation_contracts.at(6).read()
                 }
                 .eval_composition_polynomial_inner(
                     mask_values,

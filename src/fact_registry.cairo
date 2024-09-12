@@ -103,7 +103,6 @@ mod FactRegistry {
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     };
-    use starknet::{ContractAddress, get_caller_address};
     use core::{
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
@@ -112,16 +111,19 @@ mod FactRegistry {
         VerifierSettings, VerificationListElement, Verification, IFactRegistry, FactRegistered,
         settings_from_struct, settings_to_struct
     };
+    use starknet::{
+        ContractAddress, get_caller_address,
+        storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map}
+    };
+
 
     #[storage]
     struct Storage {
         owner: ContractAddress,
-        verifiers: LegacyMap<felt252, ContractAddress>,
-        facts: LegacyMap<felt252, u32>, // fact_hash => number of verifications registered
-        fact_verifications: LegacyMap<
-            (felt252, u32), felt252
-        >, // fact_hash, index => verification_hash
-        verification_hashes: LegacyMap<
+        verifiers: Map<felt252, ContractAddress>,
+        facts: Map<felt252, u32>, // fact_hash => number of verifications registered
+        fact_verifications: Map<(felt252, u32), felt252>, // fact_hash, index => verification_hash
+        verification_hashes: Map<
             felt252, Option<(felt252, u32, (felt252, felt252, felt252))>
         >, // verification_hash => (fact_hash, security_bits, settings)
     }
