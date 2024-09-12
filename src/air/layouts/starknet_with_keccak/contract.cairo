@@ -46,8 +46,10 @@ mod LayoutCompositionContract {
             trace_generator: felt252,
             global_values: GlobalValues
         ) -> felt252 {
+            let mut continuation_contracts = self.continuation_contracts.read();
+
             let mut total_sum = ILayoutCompositionContractDispatcher {
-                contract_address: continuation_contracts[0]
+                contract_address: continuation_contracts.pop_front().unwrap()
             }
                 .eval_composition_polynomial_inner(
                     mask_values,
@@ -58,7 +60,9 @@ mod LayoutCompositionContract {
                 );
 
             total_sum +=
-                ILayoutCompositionContractDispatcher { contract_address: continuation_contracts[1] }
+                ILayoutCompositionContractDispatcher {
+                    contract_address: continuation_contracts.pop_front().unwrap()
+                }
                 .eval_composition_polynomial_inner(
                     mask_values,
                     constraint_coefficients.slice(95, 100),
@@ -68,7 +72,9 @@ mod LayoutCompositionContract {
                 );
 
             total_sum +=
-                ILayoutCompositionContractDispatcher { contract_address: continuation_contracts[2] }
+                ILayoutCompositionContractDispatcher {
+                    contract_address: continuation_contracts.pop_front().unwrap()
+                }
                 .eval_composition_polynomial_inner(
                     mask_values,
                     constraint_coefficients.slice(195, 34),
@@ -78,7 +84,9 @@ mod LayoutCompositionContract {
                 );
 
             total_sum +=
-                ILayoutCompositionContractDispatcher { contract_address: continuation_contracts[3] }
+                ILayoutCompositionContractDispatcher {
+                    contract_address: continuation_contracts.pop_front().unwrap()
+                }
                 .eval_composition_polynomial_inner(
                     mask_values,
                     constraint_coefficients.slice(229, 31),
@@ -88,7 +96,9 @@ mod LayoutCompositionContract {
                 );
 
             total_sum +=
-                ILayoutCompositionContractDispatcher { contract_address: continuation_contracts[4] }
+                ILayoutCompositionContractDispatcher {
+                    contract_address: continuation_contracts.pop_front().unwrap()
+                }
                 .eval_composition_polynomial_inner(
                     mask_values,
                     constraint_coefficients.slice(260, 25),
@@ -98,7 +108,9 @@ mod LayoutCompositionContract {
                 );
 
             total_sum +=
-                ILayoutCompositionContractDispatcher { contract_address: continuation_contracts[5] }
+                ILayoutCompositionContractDispatcher {
+                    contract_address: continuation_contracts.pop_front().unwrap()
+                }
                 .eval_composition_polynomial_inner(
                     mask_values,
                     constraint_coefficients.slice(285, 25),
@@ -108,7 +120,9 @@ mod LayoutCompositionContract {
                 );
 
             total_sum +=
-                ILayoutCompositionContractDispatcher { contract_address: continuation_contracts[6] }
+                ILayoutCompositionContractDispatcher {
+                    contract_address: continuation_contracts.pop_front().unwrap()
+                }
                 .eval_composition_polynomial_inner(
                     mask_values,
                     constraint_coefficients.slice(310, 37),

@@ -3,18 +3,13 @@ mod constants;
 mod global_values;
 mod public_input;
 mod traces;
+#[cfg(feature: 'split')]
 mod contract;
 
 use cairo_verifier::{
     air::{
         constants::{SHIFT_POINT_X, SHIFT_POINT_Y, StarkCurve},
         layouts::starknet_with_keccak::{
-            contract::{
-                IStarknetWithKeccakLayoutContract1Dispatcher,
-                IStarknetWithKeccakLayoutContract1DispatcherTrait,
-                IStarknetWithKeccakLayoutContract2Dispatcher,
-                IStarknetWithKeccakLayoutContract2DispatcherTrait,
-            },
             global_values::{
                 GlobalValues, InteractionElements, EcPoint, EcdsaSigConfig, CurveConfig
             },
