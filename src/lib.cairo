@@ -59,24 +59,3 @@ fn main(mut serialized: Span<felt252>, settings: VerifierSettings) -> (felt252, 
 
     (program_hash, output_hash)
 }
-// use cairo_verifier::fri::fri::{
-//     FriVerificationStateConstant, FriVerificationStateVariable,
-// };
-
-// fn testing(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252,
-// (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32)) {
-//     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
-//     let stark_proof: StarkProof = stark_proof_serde.into();
-
-//     let (program_hash, output_hash) = match cairo_version {
-//         CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-//         CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
-//     };
-
-//     let out = stark_proof
-//         .verify_initial(ContractAddressZero::zero(), ContractAddressZero::zero(), settings);
-
-//     (program_hash, output_hash, out)
-// }
-
-
