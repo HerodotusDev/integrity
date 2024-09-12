@@ -57,8 +57,8 @@ mod Proxy {
     use cairo_verifier::{
         fact_registry::{
             IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
-            FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings, Configuration,
-            FactRegistered, VerificationListElement, Verification, VerifierProperties
+            FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings,
+            Configuration, FactRegistered, VerificationListElement, Verification, VerifierProperties
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
@@ -153,7 +153,9 @@ mod Proxy {
                 .get_verification(verification_hash)
         }
 
-        fn get_verifier_address(self: @ContractState, version: VerifierProperties) -> ContractAddress {
+        fn get_verifier_address(
+            self: @ContractState, version: VerifierProperties
+        ) -> ContractAddress {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_verifier_address(version)
         }

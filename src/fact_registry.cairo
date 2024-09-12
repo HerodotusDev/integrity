@@ -288,7 +288,9 @@ mod FactRegistry {
             }
         }
 
-        fn get_verifier_address(self: @ContractState, version: VerifierProperties) -> ContractAddress {
+        fn get_verifier_address(
+            self: @ContractState, version: VerifierProperties
+        ) -> ContractAddress {
             let verifier_address = self.verifiers.read(self._hash_version(version));
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             verifier_address
