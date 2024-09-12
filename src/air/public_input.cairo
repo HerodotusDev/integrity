@@ -197,7 +197,7 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 mod tests {
     use super::get_public_input_hash;
     use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
-    use cairo_verifier::settings::{CairoVersion, HasherBitLength, StoneVersion};
+    use cairo_verifier::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {

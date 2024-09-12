@@ -15,8 +15,9 @@ jobs:
       matrix:
         cairo_version: ["cairo0", "cairo1"]
         layout: ["recursive", "recursive_with_poseidon", "small", "dex", "starknet", "starknet_with_keccak"]
-        hasher: ["keccak_160_lsb"]
-        prover: ["stone5"]
+        hash_function: ["keccak"]
+        hasher_bit_length: ["lsb160"]
+        stone_version: ["stone5"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,7 +29,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
       
       - name: Build project
-        run: scarb build --no-default-features --features monolith,${{ matrix.layout }},${{ matrix.hasher }},${{ matrix.prover }}
+        run: scarb build --no-default-features --features monolith,${{ matrix.layout }},${{ matrix.hash_function }}
       
       - name: Run verification
-        run: cargo run --release --bin runner -- -p target/dev/cairo_verifier.sierra.json -c ${{ matrix.cairo_version }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_example_proof.json
+        run: cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json --cairo-version ${{ matrix.cairo_version }} --stone-version ${{ matrix.stone_version }} --hasher-bit-length ${{ matrix.hasher_bit_length }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_example_proof.json
