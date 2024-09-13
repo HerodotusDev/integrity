@@ -33,4 +33,4 @@ stone6 = []
 monolith = []
 split = []
 
-default = ["starknet", "keccak_160_lsb", "stone5", "split"]
+default = ["recursive", "keccak_160_lsb", "stone5", "monolith"]
