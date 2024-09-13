@@ -5,14 +5,14 @@ use cairo_verifier::{
 };
 use starknet::ContractAddress;
 
-// settings that identify the verifier (hardcoded in verifier)
+// preset that identify the verifier (hardcoded in verifier)
 #[derive(Drop, Copy, Serde)]
 struct VerifierPreset {
     layout: felt252,
     hasher: felt252,
 }
 
-// both hardcoded settings and parameters merged together
+// both preset and settings merged together
 #[derive(Drop, Copy, Serde)]
 struct VerifierConfiguration {
     layout: felt252, // string encoded as hex
