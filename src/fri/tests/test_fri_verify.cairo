@@ -12,7 +12,7 @@ fn test_fri_verify() {
     let _witness = stone_proof_fibonacci::fri::witness::get();
 
     fri_verify_initial(queries, commitment, decommitment);
-// TODO: next steps
+    // TODO: next steps
 }
 
 #[cfg(feature: 'keccak')]
@@ -25,5 +25,5 @@ fn test_fri_verify() {
     let _witness = stone_proof_fibonacci_keccak::fri::witness::get();
 
     fri_verify_initial(queries, commitment, decommitment);
-// TODO: next steps
+    // TODO: next steps
 }

@@ -61,7 +61,10 @@ trait ICairoVerifier<TContractState> {
 
 #[starknet::contract]
 mod CairoVerifier {
-    use starknet::ContractAddress;
+    use starknet::{
+        ContractAddress,
+        storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
+    };
     use cairo_verifier::{
         CairoVersion, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
         fri::fri::{
@@ -77,11 +80,11 @@ mod CairoVerifier {
     struct Storage {
         composition_contract_address: ContractAddress,
         oods_contract_address: ContractAddress,
-        state_constant: LegacyMap<felt252, Option<felt252>>, // job_id => hash(constant state)
-        state_variable: LegacyMap<felt252, Option<felt252>>, // job_id => hash(variable state)
-        state_fact: LegacyMap<felt252, Option<felt252>>, // job_id => fact_hash
-        state_security_bits: LegacyMap<felt252, Option<u32>>, // job_id => security_bits
-        state_settings: LegacyMap<
+        state_constant: Map<felt252, Option<felt252>>, // job_id => hash(constant state)
+        state_variable: Map<felt252, Option<felt252>>, // job_id => hash(variable state)
+        state_fact: Map<felt252, Option<felt252>>, // job_id => fact_hash
+        state_security_bits: Map<felt252, Option<u32>>, // job_id => security_bits
+        state_settings: Map<
             felt252, Option<(felt252, felt252, felt252)>
         >, // job_id => verifier_settings
     }
@@ -134,7 +137,7 @@ mod CairoVerifier {
             stark_proof_serde: StarkProofWithSerde,
             settings: VerifierSettings,
         ) -> InitResult {
-            assert(self.state_constant.read(job_id).is_none(), 'job_id already exists');
+            assert(self.state_constant.entry(job_id).read().is_none(), 'job_id already exists');
 
             let stark_proof: StarkProof = stark_proof_serde.into();
             let (program_hash, output_hash) = match settings.cairo_version {
@@ -150,10 +153,10 @@ mod CairoVerifier {
                     self.oods_contract_address.read(),
                     settings
                 );
-            self.state_constant.write(job_id, Option::Some(hash_constant(@con)));
-            self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
-            self.state_fact.write(job_id, Option::Some(fact));
-            self.state_security_bits.write(job_id, Option::Some(security_bits));
+            self.state_constant.entry(job_id).write(Option::Some(hash_constant(@con)));
+            self.state_variable.entry(job_id).write(Option::Some(hash_variable(@var)));
+            self.state_fact.entry(job_id).write(Option::Some(fact));
+            self.state_security_bits.entry(job_id).write(Option::Some(security_bits));
             self.state_settings.write(job_id, Option::Some(verifier_settings_to_tuple(settings)));
 
             let layers_left = con.n_layers - var.iter;
@@ -179,25 +182,27 @@ mod CairoVerifier {
             assert(
                 hash_constant(@state_constant) == self
                     .state_constant
-                    .read(job_id)
+                    .entry(job_id)
+                    .read()
                     .expect('No state (constant) saved'),
                 'Invalid state (constant)'
             );
             assert(
                 hash_variable(@state_variable) == self
                     .state_variable
-                    .read(job_id)
+                    .entry(job_id)
+                    .read()
                     .expect('No state (variable) saved'),
                 'Invalid state (variable)'
             );
             let settings = tuple_to_verifier_settings(
-                self.state_settings.read(job_id).expect('No settings saved')
+                self.state_settings.entry(job_id).read().expect('No settings saved')
             );
 
             let (con, var) = StarkProofImpl::verify_step(
                 state_constant, state_variable, witness, settings
             );
-            self.state_variable.write(job_id, Option::Some(hash_variable(@var)));
+            self.state_variable.entry(job_id).write(Option::Some(hash_variable(@var)));
 
             let layers_left = con.n_layers - var.iter;
 
@@ -212,17 +217,18 @@ mod CairoVerifier {
             last_layer_coefficients: Span<felt252>,
         ) -> ProofVerified {
             assert(
-                hash_constant(@state_constant) == self.state_constant.read(job_id).unwrap(),
+                hash_constant(@state_constant) == self.state_constant.entry(job_id).read().unwrap(),
                 'Invalid state (constant)'
             );
             assert(
-                hash_variable(@state_variable) == self.state_variable.read(job_id).unwrap(),
+                hash_variable(@state_variable) == self.state_variable.entry(job_id).read().unwrap(),
                 'Invalid state (variable)'
             );
-            let fact = self.state_fact.read(job_id).expect('No fact saved');
+            let fact = self.state_fact.entry(job_id).read().expect('No fact saved');
             let security_bits = self
                 .state_security_bits
-                .read(job_id)
+                .entry(job_id)
+                .read()
                 .expect('No security bits saved');
 
             let (new_con, new_var) = StarkProofImpl::verify_final(
@@ -231,14 +237,14 @@ mod CairoVerifier {
             assert(new_var.iter.into() == new_con.n_layers + 1, 'Verification not finalized');
 
             let settings = tuple_to_verifier_settings(
-                self.state_settings.read(job_id).expect('No settings saved')
+                self.state_settings.entry(job_id).read().expect('No settings saved')
             );
 
-            self.state_variable.write(job_id, Option::None);
-            self.state_constant.write(job_id, Option::None);
-            self.state_fact.write(job_id, Option::None);
-            self.state_security_bits.write(job_id, Option::None);
-            self.state_settings.write(job_id, Option::None);
+            self.state_variable.entry(job_id).write(Option::None);
+            self.state_constant.entry(job_id).write(Option::None);
+            self.state_fact.entry(job_id).write(Option::None);
+            self.state_security_bits.entry(job_id).write(Option::None);
+            self.state_settings.entry(job_id).write(Option::None);
 
             let event = ProofVerified { job_id, fact, security_bits, settings };
             self.emit(event);

@@ -151,7 +151,10 @@ mod FactRegistry {
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     };
-    use starknet::{ContractAddress, get_caller_address};
+    use starknet::{
+        ContractAddress, get_caller_address,
+        storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
+    };
     use core::{
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter
@@ -165,15 +168,13 @@ mod FactRegistry {
     #[storage]
     struct Storage {
         owner: ContractAddress,
-        verifiers: LegacyMap<felt252, ContractAddress>,
-        facts: LegacyMap<felt252, u32>, // fact_hash => number of verifications registered
-        fact_verifications: LegacyMap<
-            (felt252, u32), felt252
-        >, // fact_hash, index => verification_hash
-        verification_hashes: LegacyMap<
+        verifiers: Map<felt252, ContractAddress>,
+        facts: Map<felt252, u32>, // fact_hash => number of verifications registered
+        fact_verifications: Map<(felt252, u32), felt252>, // fact_hash, index => verification_hash
+        verification_hashes: Map<
             felt252, Option<(felt252, u32, (felt252, felt252, felt252, felt252))>
         >, // verification_hash => (fact_hash, security_bits, VerifierConfiguration)
-        verifier_configs: LegacyMap<
+        verifier_configs: Map<
             felt252, Option<(felt252, felt252, felt252, felt252)>
         >, // job_id => VerifierConfiguration
     }
@@ -232,7 +233,8 @@ mod FactRegistry {
         ) -> InitResult {
             self
                 .verifier_configs
-                .write(job_id, Option::Some(verifier_configuration_to_tuple(verifier_config)));
+                .entry(job_id)
+                .write(Option::Some(verifier_configuration_to_tuple(verifier_config)));
             let (verifier_settings, verifier_preset) = split_settings(verifier_config);
             ICairoVerifierDispatcher {
                 contract_address: self.get_verifier_address(verifier_preset)
@@ -248,7 +250,7 @@ mod FactRegistry {
             witness: FriLayerWitness,
         ) -> (FriVerificationStateVariable, u32) {
             let verifier_config = verifier_configuration_from_tuple(
-                self.verifier_configs.read(job_id).expect('Job id not found')
+                self.verifier_configs.entry(job_id).read().expect('Job id not found')
             );
             let (_, verifier_preset) = split_settings(verifier_config);
             let verifier_address = self.get_verifier_address(verifier_preset);
@@ -264,7 +266,7 @@ mod FactRegistry {
             last_layer_coefficients: Span<felt252>,
         ) -> FactRegistered {
             let verifier_config = verifier_configuration_from_tuple(
-                self.verifier_configs.read(job_id).expect('Job id not found')
+                self.verifier_configs.entry(job_id).read().expect('Job id not found')
             );
             let (_, verifier_preset) = split_settings(verifier_config);
             let verifier_address = self.get_verifier_address(verifier_preset);
@@ -282,17 +284,18 @@ mod FactRegistry {
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: felt252
         ) -> Array<VerificationListElement> {
-            let n = self.facts.read(fact_hash);
+            let n = self.facts.entry(fact_hash).read();
             let mut i = 0;
             let mut arr = array![];
             loop {
                 if i == n {
                     break;
                 }
-                let verification_hash = self.fact_verifications.read((fact_hash, i));
+                let verification_hash = self.fact_verifications.entry((fact_hash, i)).read();
                 let (_, security_bits, verifier_config_tuple) = self
                     .verification_hashes
-                    .read(verification_hash)
+                    .entry(verification_hash)
+                    .read()
                     .unwrap();
                 let verifier_config = verifier_configuration_from_tuple(verifier_config_tuple);
                 arr
@@ -309,7 +312,7 @@ mod FactRegistry {
         fn get_verification(
             self: @ContractState, verification_hash: felt252
         ) -> Option<Verification> {
-            match self.verification_hashes.read(verification_hash) {
+            match self.verification_hashes.entry(verification_hash).read() {
                 Option::Some(x) => {
                     let (fact_hash, security_bits, verifier_config_tuple) = x;
                     let verifier_config = verifier_configuration_from_tuple(verifier_config_tuple);
@@ -320,7 +323,7 @@ mod FactRegistry {
         }
 
         fn get_verifier_address(self: @ContractState, preset: VerifierPreset) -> ContractAddress {
-            let verifier_address = self.verifiers.read(self._hash_preset(preset));
+            let verifier_address = self.verifiers.entry(self._hash_preset(preset)).read();
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             verifier_address
         }
@@ -331,8 +334,8 @@ mod FactRegistry {
             assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
             assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');
             let preset_hash = self._hash_preset(preset);
-            assert(self.verifiers.read(preset_hash).into() == 0, 'VERIFIER_ALREADY_EXISTS');
-            self.verifiers.write(preset_hash, address);
+            assert(self.verifiers.entry(preset_hash).read().into() == 0, 'VERIFIER_ALREADY_EXISTS');
+            self.verifiers.entry(preset_hash).write(address);
             self.emit(Event::VerifierRegistered(VerifierRegistered { address, preset }));
         }
 
@@ -384,13 +387,13 @@ mod FactRegistry {
             };
             self.emit(Event::FactRegistered(event));
 
-            if self.verification_hashes.read(verification_hash).is_none() {
-                let next_index = self.facts.read(fact_hash);
-                self.fact_verifications.write((fact_hash, next_index), verification_hash);
+            if self.verification_hashes.entry(verification_hash).read().is_none() {
+                let next_index = self.facts.entry(fact_hash).read();
+                self.fact_verifications.entry((fact_hash, next_index)).write(verification_hash);
                 self
                     .verification_hashes
+                    .entry(verification_hash)
                     .write(
-                        verification_hash,
                         Option::Some(
                             (
                                 fact_hash,
@@ -399,7 +402,7 @@ mod FactRegistry {
                             )
                         )
                     );
-                self.facts.write(fact_hash, next_index + 1);
+                self.facts.entry(fact_hash).write(next_index + 1);
             }
             event
         }
