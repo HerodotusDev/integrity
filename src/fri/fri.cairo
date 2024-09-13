@@ -9,7 +9,8 @@ use cairo_verifier::{
     table_commitment::table_commitment::{
         TableCommitmentWitness, TableDecommitment, TableCommitment, TableCommitmentConfig,
         table_commit, table_decommit
-    }
+    },
+    settings::VerifierSettings,
 };
 use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
 
@@ -145,6 +146,7 @@ fn fri_verify_layer_step(
     eval_point: felt252,
     commitment: TableCommitment,
     layer_witness: FriLayerWitness,
+    settings: VerifierSettings,
 ) -> Array<FriLayerQuery> {
     // Compute fri_group.
     let fri_group = get_fri_group().span();
@@ -163,7 +165,8 @@ fn fri_verify_layer_step(
         commitment,
         verify_indices.span(),
         TableDecommitment { values: verify_y_values.span() },
-        layer_witness.table_witness
+        layer_witness.table_witness,
+        settings,
     );
 
     next_queries
@@ -207,7 +210,8 @@ fn fri_verify_initial(
 fn fri_verify_step(
     stateConstant: FriVerificationStateConstant,
     stateVariable: FriVerificationStateVariable,
-    witness: FriLayerWitness
+    witness: FriLayerWitness,
+    settings: VerifierSettings
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(stateVariable.iter <= stateConstant.n_layers, 'Too many fri steps called');
 
@@ -218,6 +222,7 @@ fn fri_verify_step(
         *stateConstant.eval_points.at(stateVariable.iter),
         *stateConstant.commitment.at(stateVariable.iter),
         witness,
+        settings,
     );
 
     (

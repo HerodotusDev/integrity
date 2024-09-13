@@ -7,6 +7,7 @@ use cairo_verifier::{
         array_extend::ArrayExtend, array_append::ArrayAppendTrait,
         math::{pow, Felt252PartialOrd, Felt252Div},
     },
+    settings::{StoneVersion, VerifierSettings},
 };
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
@@ -46,12 +47,6 @@ struct PublicInput {
     continuous_page_headers: Array<ContinuousPageHeader>
 }
 
-#[derive(Drop, Copy, PartialEq, Serde)]
-enum CairoVersion {
-    Cairo0,
-    Cairo1,
-}
-
 trait PublicInputTrait {
     fn verify_cairo0(self: @PublicInput) -> (felt252, felt252);
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252);
@@ -61,7 +56,9 @@ trait PublicInputTrait {
 // Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir
 // heuristic.
 fn get_public_input_hash(
-    public_input: @PublicInput, n_verifier_friendly_commitment_layers: felt252
+    public_input: @PublicInput,
+    n_verifier_friendly_commitment_layers: felt252,
+    settings: VerifierSettings,
 ) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
@@ -79,7 +76,13 @@ fn get_public_input_hash(
 
     let mut hash_data = ArrayTrait::<felt252>::new();
 
-    hash_data_init(ref hash_data, public_input, n_verifier_friendly_commitment_layers);
+    if settings.stone_version == StoneVersion::Stone6 {
+        hash_data.append(n_verifier_friendly_commitment_layers);
+    }
+    hash_data.append(*public_input.log_n_steps);
+    hash_data.append(*public_input.range_check_min);
+    hash_data.append(*public_input.range_check_max);
+    hash_data.append(*public_input.layout);
 
     hash_data.extend(public_input.dynamic_params.span());
 
@@ -117,33 +120,6 @@ fn get_public_input_hash(
     };
 
     poseidon_hash_span(hash_data.span())
-}
-
-// Stone6 Prover version specific hash_data initialization
-#[cfg(feature: 'stone6')]
-fn hash_data_init(
-    ref hash_data: Array<felt252>,
-    public_input: @PublicInput,
-    n_verifier_friendly_commitment_layers: felt252
-) {
-    hash_data.append(n_verifier_friendly_commitment_layers);
-    hash_data.append(*public_input.log_n_steps);
-    hash_data.append(*public_input.range_check_min);
-    hash_data.append(*public_input.range_check_max);
-    hash_data.append(*public_input.layout);
-}
-
-// Stone5 Prover version specific hash_data initialization
-#[cfg(feature: 'stone5')]
-fn hash_data_init(
-    ref hash_data: Array<felt252>,
-    public_input: @PublicInput,
-    _n_verifier_friendly_commitment_layers: felt252
-) {
-    hash_data.append(*public_input.log_n_steps);
-    hash_data.append(*public_input.range_check_min);
-    hash_data.append(*public_input.range_check_max);
-    hash_data.append(*public_input.layout);
 }
 
 // Returns the ratio between the product of all public memory cells and z^|public_memory|.
@@ -210,17 +186,22 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 }
 
 
-#[cfg(feature: 'stone5')]
 #[cfg(feature: 'recursive')]
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
     use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
+    use cairo_verifier::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
+        let settings = VerifierSettings {
+            cairo_version: CairoVersion::Cairo1,
+            hasher_bit_length: HasherBitLength::Lsb160,
+            stone_version: StoneVersion::Stone5,
+        };
         let public_input = get();
-        let hash = get_public_input_hash(@public_input, 0);
+        let hash = get_public_input_hash(@public_input, 0, settings);
         assert(
             hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
         )
