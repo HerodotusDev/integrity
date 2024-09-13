@@ -6,7 +6,7 @@ use cairo_verifier::{
     },
     stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
     table_commitment::table_commitment::table_decommit,
-    oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points},
+    oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points}, settings::VerifierSettings,
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
@@ -32,10 +32,11 @@ fn stark_verify(
     witness: StarkWitness,
     stark_domains: StarkDomains,
     contract_address_2: ContractAddress,
+    settings: VerifierSettings,
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     // First layer decommit.
     traces_decommit(
-        queries, commitment.traces, witness.traces_decommitment, witness.traces_witness
+        queries, commitment.traces, witness.traces_decommitment, witness.traces_witness, settings,
     );
 
     table_decommit(
@@ -43,6 +44,7 @@ fn stark_verify(
         queries,
         witness.composition_decommitment,
         witness.composition_witness,
+        settings,
     );
 
     // Compute query points.

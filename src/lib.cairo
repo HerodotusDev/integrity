@@ -10,6 +10,7 @@ mod queries;
 mod stark;
 mod table_commitment;
 mod vector_commitment;
+mod settings;
 
 mod verifier;
 mod fact_registry;
@@ -21,8 +22,8 @@ mod benches;
 mod tests;
 
 use cairo_verifier::{
-    air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
-    stark::{StarkProof, StarkProofImpl},
+    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    settings::{VerifierSettings, CairoVersion},
 };
 use starknet::contract_address::ContractAddressZero;
 
@@ -43,15 +44,15 @@ use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWi
 const SECURITY_BITS: u32 = 50;
 
 #[cfg(feature: 'monolith')]
-fn main(mut serialized: Span<felt252>, cairo_version: CairoVersion) -> (felt252, felt252) {
+fn main(mut serialized: Span<felt252>, settings: VerifierSettings) -> (felt252, felt252) {
     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
     let stark_proof: StarkProof = stark_proof_serde.into();
 
     let security_bits = stark_proof
-        .verify(ContractAddressZero::zero(), ContractAddressZero::zero());
+        .verify(ContractAddressZero::zero(), ContractAddressZero::zero(), settings);
     assert(security_bits >= SECURITY_BITS, 'Security bits are too low');
 
-    let (program_hash, output_hash) = match cairo_version {
+    let (program_hash, output_hash) = match settings.cairo_version {
         CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
         CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
     };
