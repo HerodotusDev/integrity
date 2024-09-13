@@ -22,8 +22,8 @@ mod benches;
 mod tests;
 
 use cairo_verifier::{
-    air::public_input::CairoVersion, deserialization::stark::StarkProofWithSerde,
-    stark::{StarkProof, StarkProofImpl}, settings::VerifierSettings,
+    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    settings::{VerifierSettings, CairoVersion},
 };
 use starknet::contract_address::ContractAddressZero;
 

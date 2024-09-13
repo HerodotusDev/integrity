@@ -2,7 +2,7 @@ use starknet::contract_address::ContractAddressZero;
 use cairo_verifier::{
     stark::{StarkProof, StarkProofTrait},
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
-    settings::{VerifierSettings, HasherBitLength, StoneVersion}, air::public_input::CairoVersion,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
 };
 
 #[cfg(feature: 'blake2s')]

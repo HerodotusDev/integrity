@@ -3,7 +3,7 @@ use cairo_verifier::{
         VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
         VectorQuery, vector_commitment_decommit,
     },
-    settings::{VerifierSettings, HasherBitLength, StoneVersion}, air::public_input::CairoVersion,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
 };
 
 #[cfg(feature: 'blake2s')]

@@ -1,4 +1,8 @@
-use cairo_verifier::air::public_input::CairoVersion;
+#[derive(Drop, Copy, PartialEq, Serde)]
+enum CairoVersion {
+    Cairo0,
+    Cairo1,
+}
 
 #[derive(Drop, Copy, PartialEq, Serde)]
 enum HasherBitLength {

@@ -1,7 +1,7 @@
 use cairo_verifier::{
     channel::channel::ChannelImpl, air::layouts::recursive::{traces::traces_decommit},
-    tests::stone_proof_fibonacci, settings::{VerifierSettings, HasherBitLength, StoneVersion},
-    air::public_input::CairoVersion,
+    tests::stone_proof_fibonacci,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
 };
 
 fn bench_air_traces_decommit() {

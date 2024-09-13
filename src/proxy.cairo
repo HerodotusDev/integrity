@@ -3,7 +3,7 @@ use cairo_verifier::{
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     verifier::InitResult,
     fact_registry::{
-        FactRegistered, Configuration, VerificationListElement, Verification, VerifierProperties
+        FactRegistered, VerifierConfiguration, VerificationListElement, Verification, VerifierPreset
     },
 };
 use starknet::{ContractAddress, ClassHash};
@@ -11,14 +11,16 @@ use starknet::{ContractAddress, ClassHash};
 #[starknet::interface]
 trait IProxy<TContractState> {
     fn verify_proof_full_and_register_fact(
-        ref self: TContractState, settings: Configuration, stark_proof: StarkProofWithSerde,
+        ref self: TContractState,
+        stark_proof: StarkProofWithSerde,
+        verifier_config: VerifierConfiguration,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        settings: Configuration,
         stark_proof: StarkProofWithSerde,
+        verifier_config: VerifierConfiguration,
     ) -> InitResult;
 
     fn verify_proof_step(
@@ -42,9 +44,9 @@ trait IProxy<TContractState> {
     ) -> Array<VerificationListElement>;
     fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
 
-    fn get_verifier_address(self: @TContractState, version: VerifierProperties) -> ContractAddress;
+    fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, version: VerifierProperties, address: ContractAddress
+        ref self: TContractState, address: ContractAddress, preset: VerifierPreset
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
@@ -58,7 +60,8 @@ mod Proxy {
         fact_registry::{
             IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
             FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings,
-            Configuration, FactRegistered, VerificationListElement, Verification, VerifierProperties
+            VerifierConfiguration, FactRegistered, VerificationListElement, Verification,
+            VerifierPreset
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
@@ -93,10 +96,12 @@ mod Proxy {
     #[abi(embed_v0)]
     impl Proxy of IProxy<ContractState> {
         fn verify_proof_full_and_register_fact(
-            ref self: ContractState, settings: Configuration, stark_proof: StarkProofWithSerde,
+            ref self: ContractState,
+            stark_proof: StarkProofWithSerde,
+            verifier_config: VerifierConfiguration,
         ) -> FactRegistered {
             let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_full_and_register_fact(settings, stark_proof);
+                .verify_proof_full_and_register_fact(stark_proof, verifier_config);
 
             self.emit(fact);
             fact
@@ -105,11 +110,11 @@ mod Proxy {
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            settings: Configuration,
             stark_proof: StarkProofWithSerde,
+            verifier_config: VerifierConfiguration,
         ) -> InitResult {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_initial(job_id, settings, stark_proof)
+                .verify_proof_initial(job_id, stark_proof, verifier_config)
         }
 
         fn verify_proof_step(
@@ -153,19 +158,17 @@ mod Proxy {
                 .get_verification(verification_hash)
         }
 
-        fn get_verifier_address(
-            self: @ContractState, version: VerifierProperties
-        ) -> ContractAddress {
+        fn get_verifier_address(self: @ContractState, preset: VerifierPreset) -> ContractAddress {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .get_verifier_address(version)
+                .get_verifier_address(preset)
         }
 
         fn register_verifier(
-            ref self: ContractState, version: VerifierProperties, address: ContractAddress
+            ref self: ContractState, address: ContractAddress, preset: VerifierPreset
         ) {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .register_verifier(version, address);
-            self.emit(Event::VerifierRegistered(VerifierRegistered { version, address }));
+                .register_verifier(address, preset);
+            self.emit(Event::VerifierRegistered(VerifierRegistered { address, preset }));
         }
 
         fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
