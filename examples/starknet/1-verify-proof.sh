@@ -24,5 +24,6 @@ sncast \
     --wait \
     invoke \
     --contract-address "$contract_address" \
-    --function "verify_and_register_fact" \
-    --calldata $calldata
+    --function "verify_proof_full_and_register_fact" \
+    --calldata $calldata \
+    --fee-token eth

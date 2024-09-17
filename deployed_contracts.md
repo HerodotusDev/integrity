@@ -1,14 +1,3 @@
-| Contract Address                                                                                    | Network               | Layout                         |
-|-----------------------------------------------------------------------------------------------------|-----------------------|--------------------------------|
-|                                                                                                     | **Mainnet**           | **dex**                        |
-|[0x030b6af9526e7ff98bb926f1537c2898060071df91eb7992961a891194c74fce](https://starkscan.co/contract/0x030b6af9526e7ff98bb926f1537c2898060071df91eb7992961a891194c74fce)                                   | **Mainnet**           | **recursive**                  |
-|                                                                                                     | **Mainnet**           | **recursive_with_poseidon**    |
-|                                                                                                     | **Mainnet**           | **small**                      |
-|                                                                                                     | **Mainnet**           | **starknet**                   |
-|                                                                                                     | **Mainnet**           | **starknet_with_keccak**       |
-|                                                                                                     | **Sepolia Testnet**   | **dex**                        |
-|[0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7](https://sepolia.starkscan.co/contract/0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7)                                   | **Sepolia Testnet**   | **recursive**                  |
-|                                                                                                     | **Sepolia Testnet**   | **recursive_with_poseidon**    |
-|                                                                                                     | **Sepolia Testnet**   | **small**                      |
-|                                                                                                     | **Sepolia Testnet**   | **starknet**                   |
-|                                                                                                     | **Sepolia Testnet**   | **starknet_with_keccak**       |
+fact registry: `0x7a5340bf1a500d94185cde6fc9cdc4b32c1159d1db5c056841d21bfb0d9c2bd`
+recursive,keccak: `0x0102a5157199bc7929c9f9502aac08b897606bac4e69ba45ecf088b6430e4d6d`
+recursive,blake2s: `0x035de2969a164e20bc3872502ff546f7ee190da1c7edf346b4221f869f48128e`
