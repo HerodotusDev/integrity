@@ -5,6 +5,7 @@ use cairo_verifier::{
     fact_registry::{
         FactRegistered, VerifierConfiguration, VerificationListElement, Verification, VerifierPreset
     },
+    settings::{JobId, FactHash, VerificationHash},
 };
 use starknet::{ContractAddress, ClassHash};
 
@@ -18,14 +19,14 @@ trait IProxy<TContractState> {
 
     fn verify_proof_initial(
         ref self: TContractState,
-        job_id: felt252,
+        job_id: JobId,
         verifier_config: VerifierConfiguration,
         stark_proof: StarkProofWithSerde,
     ) -> InitResult;
 
     fn verify_proof_step(
         ref self: TContractState,
-        job_id: felt252,
+        job_id: JobId,
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         witness: FriLayerWitness,
@@ -33,16 +34,18 @@ trait IProxy<TContractState> {
 
     fn verify_proof_final_and_register_fact(
         ref self: TContractState,
-        job_id: felt252,
+        job_id: JobId,
         state_constant: FriVerificationStateConstant,
         state_variable: FriVerificationStateVariable,
         last_layer_coefficients: Span<felt252>,
     ) -> FactRegistered;
 
     fn get_all_verifications_for_fact_hash(
-        self: @TContractState, fact_hash: felt252
+        self: @TContractState, fact_hash: FactHash
     ) -> Array<VerificationListElement>;
-    fn get_verification(self: @TContractState, verification_hash: felt252) -> Option<Verification>;
+    fn get_verification(
+        self: @TContractState, verification_hash: VerificationHash
+    ) -> Option<Verification>;
 
     fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
     fn register_verifier(
@@ -66,6 +69,7 @@ mod Proxy {
         StarkProofWithSerde, StarkProof, CairoVersion,
         verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
+        settings::{JobId, FactHash, VerificationHash},
     };
     use starknet::{ContractAddress, ClassHash, get_caller_address, syscalls};
     use core::{
@@ -109,7 +113,7 @@ mod Proxy {
 
         fn verify_proof_initial(
             ref self: ContractState,
-            job_id: felt252,
+            job_id: JobId,
             verifier_config: VerifierConfiguration,
             stark_proof: StarkProofWithSerde,
         ) -> InitResult {
@@ -119,7 +123,7 @@ mod Proxy {
 
         fn verify_proof_step(
             ref self: ContractState,
-            job_id: felt252,
+            job_id: JobId,
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             witness: FriLayerWitness,
@@ -130,7 +134,7 @@ mod Proxy {
 
         fn verify_proof_final_and_register_fact(
             ref self: ContractState,
-            job_id: felt252,
+            job_id: JobId,
             state_constant: FriVerificationStateConstant,
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
@@ -145,14 +149,14 @@ mod Proxy {
         }
 
         fn get_all_verifications_for_fact_hash(
-            self: @ContractState, fact_hash: felt252
+            self: @ContractState, fact_hash: FactHash
         ) -> Array<VerificationListElement> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_all_verifications_for_fact_hash(fact_hash)
         }
 
         fn get_verification(
-            self: @ContractState, verification_hash: felt252
+            self: @ContractState, verification_hash: VerificationHash
         ) -> Option<Verification> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_verification(verification_hash)
