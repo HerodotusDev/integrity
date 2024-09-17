@@ -1,0 +1,13 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x05cae9f970c8da62a83193d7faefdeac3b419ff698badd4f5d502d5b11beb74f"
+inputs = []
+id = "contract_oods"
+unique = false
+
+[[call]]
+call_type = "deploy"
+class_hash = "0x3b08718c57d44a00507d4232eec0ec59f62c9d56b56b90316f1a9a8ed4f28bb"
+inputs = ["0", "contract_oods"]
+id = "cairo_verifier"
+unique = false
