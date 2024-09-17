@@ -1,7 +1,7 @@
 pub mod transform;
 pub mod vec252;
 
-use cairo_felt::Felt252;
+use cairo_vm::Felt252;
 use clap::ValueEnum;
 pub use vec252::VecFelt252;
 

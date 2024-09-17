@@ -7,7 +7,6 @@ edition = "2021"
 
 [dependencies]
 anyhow.workspace = true
-cairo-felt.workspace = true
 cairo-lang-runner.workspace = true
 cairo-lang-sierra.workspace = true
 cairo-lang-utils.workspace = true
