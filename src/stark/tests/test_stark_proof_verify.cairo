@@ -9,7 +9,7 @@ use cairo_verifier::{
 #[test]
 #[available_gas(99999999999)]
 fn test_stark_proof_fibonacci_verify() {
-    let SECURITY_BITS: felt252 = 50;
+    let SECURITY_BITS: u32 = 50;
 
     let stark_proof = StarkProof {
         config: stone_proof_fibonacci::stark::config::get(),
