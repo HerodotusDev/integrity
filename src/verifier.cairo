@@ -31,15 +31,15 @@ struct ProofVerified {
 trait ICairoVerifier<TContractState> {
     fn verify_proof_full(
         ref self: TContractState,
-        stark_proof_serde: StarkProofWithSerde,
         settings: VerifierSettings,
+        stark_proof_serde: StarkProofWithSerde,
     ) -> ProofVerified;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        stark_proof_serde: StarkProofWithSerde,
         settings: VerifierSettings,
+        stark_proof_serde: StarkProofWithSerde,
     ) -> InitResult;
 
     fn verify_proof_step(
@@ -109,8 +109,8 @@ mod CairoVerifier {
     impl CairoVerifier of ICairoVerifier<ContractState> {
         fn verify_proof_full(
             ref self: ContractState,
-            stark_proof_serde: StarkProofWithSerde,
             settings: VerifierSettings,
+            stark_proof_serde: StarkProofWithSerde,
         ) -> ProofVerified {
             let stark_proof: StarkProof = stark_proof_serde.into();
             let (program_hash, output_hash) = match settings.cairo_version {
@@ -134,8 +134,8 @@ mod CairoVerifier {
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            stark_proof_serde: StarkProofWithSerde,
             settings: VerifierSettings,
+            stark_proof_serde: StarkProofWithSerde,
         ) -> InitResult {
             assert(self.state_constant.entry(job_id).read().is_none(), 'job_id already exists');
 

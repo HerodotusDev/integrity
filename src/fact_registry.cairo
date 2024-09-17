@@ -105,15 +105,15 @@ struct FactRegistered {
 trait IFactRegistry<TContractState> {
     fn verify_proof_full_and_register_fact(
         ref self: TContractState,
-        stark_proof: StarkProofWithSerde,
         verifier_config: VerifierConfiguration,
+        stark_proof: StarkProofWithSerde,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        stark_proof: StarkProofWithSerde,
         verifier_config: VerifierConfiguration,
+        stark_proof: StarkProofWithSerde,
     ) -> InitResult;
 
     fn verify_proof_step(
@@ -139,7 +139,7 @@ trait IFactRegistry<TContractState> {
 
     fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, address: ContractAddress, preset: VerifierPreset
+        ref self: TContractState, preset: VerifierPreset, address: ContractAddress
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 }
@@ -210,14 +210,14 @@ mod FactRegistry {
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn verify_proof_full_and_register_fact(
             ref self: ContractState,
-            stark_proof: StarkProofWithSerde,
             verifier_config: VerifierConfiguration,
+            stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
             let (verifier_settings, verifier_preset) = split_settings(verifier_config);
 
             let verifier_address = self.get_verifier_address(verifier_preset);
             let result = ICairoVerifierDispatcher { contract_address: verifier_address }
-                .verify_proof_full(stark_proof.into(), verifier_settings);
+                .verify_proof_full(verifier_settings, stark_proof.into());
 
             self
                 ._register_fact(
@@ -228,8 +228,8 @@ mod FactRegistry {
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            stark_proof: StarkProofWithSerde,
             verifier_config: VerifierConfiguration,
+            stark_proof: StarkProofWithSerde,
         ) -> InitResult {
             self
                 .verifier_configs
@@ -239,7 +239,7 @@ mod FactRegistry {
             ICairoVerifierDispatcher {
                 contract_address: self.get_verifier_address(verifier_preset)
             }
-                .verify_proof_initial(job_id, stark_proof, verifier_settings)
+                .verify_proof_initial(job_id, verifier_settings, stark_proof)
         }
 
         fn verify_proof_step(
@@ -329,7 +329,7 @@ mod FactRegistry {
         }
 
         fn register_verifier(
-            ref self: ContractState, address: ContractAddress, preset: VerifierPreset
+            ref self: ContractState, preset: VerifierPreset, address: ContractAddress
         ) {
             assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
             assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');

@@ -12,15 +12,15 @@ use starknet::{ContractAddress, ClassHash};
 trait IProxy<TContractState> {
     fn verify_proof_full_and_register_fact(
         ref self: TContractState,
-        stark_proof: StarkProofWithSerde,
         verifier_config: VerifierConfiguration,
+        stark_proof: StarkProofWithSerde,
     ) -> FactRegistered;
 
     fn verify_proof_initial(
         ref self: TContractState,
         job_id: felt252,
-        stark_proof: StarkProofWithSerde,
         verifier_config: VerifierConfiguration,
+        stark_proof: StarkProofWithSerde,
     ) -> InitResult;
 
     fn verify_proof_step(
@@ -46,7 +46,7 @@ trait IProxy<TContractState> {
 
     fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, address: ContractAddress, preset: VerifierPreset
+        ref self: TContractState, preset: VerifierPreset, address: ContractAddress
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
@@ -97,11 +97,11 @@ mod Proxy {
     impl Proxy of IProxy<ContractState> {
         fn verify_proof_full_and_register_fact(
             ref self: ContractState,
-            stark_proof: StarkProofWithSerde,
             verifier_config: VerifierConfiguration,
+            stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
             let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_full_and_register_fact(stark_proof, verifier_config);
+                .verify_proof_full_and_register_fact(verifier_config, stark_proof);
 
             self.emit(fact);
             fact
@@ -110,11 +110,11 @@ mod Proxy {
         fn verify_proof_initial(
             ref self: ContractState,
             job_id: felt252,
-            stark_proof: StarkProofWithSerde,
             verifier_config: VerifierConfiguration,
+            stark_proof: StarkProofWithSerde,
         ) -> InitResult {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .verify_proof_initial(job_id, stark_proof, verifier_config)
+                .verify_proof_initial(job_id, verifier_config, stark_proof)
         }
 
         fn verify_proof_step(
@@ -164,10 +164,10 @@ mod Proxy {
         }
 
         fn register_verifier(
-            ref self: ContractState, address: ContractAddress, preset: VerifierPreset
+            ref self: ContractState, preset: VerifierPreset, address: ContractAddress
         ) {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
-                .register_verifier(address, preset);
+                .register_verifier(preset, address);
             self.emit(Event::VerifierRegistered(VerifierRegistered { address, preset }));
         }
 
