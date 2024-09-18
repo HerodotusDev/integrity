@@ -1,8 +1,0 @@
-*trace.bin
-*memory.bin
-*proof.json
-*compiled.json
-*input.json
-!fibonacci_input.json
-cpu_air_prover
-cpu_air_verifier
