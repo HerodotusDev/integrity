@@ -6,6 +6,7 @@ import requests
 
 settings = {
     'OPTIMIZE_VALUE_ARRAY': False,
+    'OPTIMIZE_OODS_ARRAY': False,
 }
 
 global array_read_offset
@@ -44,6 +45,7 @@ use cairo_verifier::{{
 manual_corrections = {
     'let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE);\n\t': 'let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());\n\t',
     'return total_sum;\n': 'total_sum\n',
+    'let total_sum = 0;\n\t': '',
 }
 
 def apply_manual_corrections(line: str) -> str:
@@ -66,6 +68,9 @@ class LineTypeVarPop(LineType):
         self.assigned_var = assigned_var
         self.pop_var = pop_var
 
+class LineTypeVarAccessConst(LineType):
+    pass
+
 class LineTypeValueCalc(LineType):
     def __init__(self, expr: str, comment: str):
         self.expr = expr
@@ -84,6 +89,8 @@ def optimize(lines: list[tuple[str, LineType]]) -> str:
     total_sum_defined = False
     acc_values = []
     acc_total_sum = []
+    last_value_was_optimized = False
+    enable_acc = settings['OPTIMIZE_VALUE_ARRAY'] or settings['OPTIMIZE_OODS_ARRAY']
     for (line, line_type), (_, next_line_type) in zip(lines, lines[1:] + [(None, None)]):
         # If subsequent lines are pop_front() from the same array, we can combine them into a single multi_pop_front.
         if isinstance(line_type, LineTypeVarPop):
@@ -94,16 +101,18 @@ def optimize(lines: list[tuple[str, LineType]]) -> str:
                 vars_len = str(len(acc_var_pops))
                 acc += F"let [{vars_arr}] = (*{var_pops_varname}.multi_pop_front::<{vars_len}>().unwrap()).unbox();\n\t"
                 acc_var_pops = []
-        elif settings['OPTIMIZE_VALUE_ARRAY'] and isinstance(line_type, LineTypeValueCalc):
+
+        elif enable_acc and isinstance(line_type, LineTypeValueCalc):
             line_type.comment = latest_value_comment
             acc_values.append(line_type)
-        elif settings['OPTIMIZE_VALUE_ARRAY'] and isinstance(line_type, LineTypeTotalSum):
+        elif enable_acc and isinstance(line_type, LineTypeTotalSum) and last_value_was_optimized:
             acc_total_sum.append(line)
-        elif settings['OPTIMIZE_VALUE_ARRAY'] and isinstance(line_type, LineTypeComment) and isinstance(next_line_type, LineTypeValueCalc):
+        elif enable_acc and isinstance(line_type, LineTypeComment) and isinstance(next_line_type, LineTypeValueCalc):
             # comments before value calculations are moved to the value calculation line
             pass
+
         else:
-            if settings['OPTIMIZE_VALUE_ARRAY'] and not isinstance(line_type, LineTypeEmpty) and acc_values:
+            if enable_acc and not isinstance(line_type, LineTypeEmpty) and acc_values:
                 total_sum_line = None
                 # assert that all total sum calculations are the same
                 for x,y in zip(acc_total_sum, acc_total_sum[1:]):
@@ -112,16 +121,37 @@ def optimize(lines: list[tuple[str, LineType]]) -> str:
                     total_sum_line = x
                     if x != y:
                         raise Exception("Total sum calculations are not the same " + x + y)
+                total_sum_line = total_sum_line.replace('let total_sum = total_sum + ', 'total_sum += ')
+                
+                if settings['OPTIMIZE_VALUE_ARRAY']:
+                    acc += 'let values = [\n\t\t'
+                    acc += '\n\t\t'.join([f"{v.expr},{' '+v.comment.rstrip('\n\t') if v.comment is not None else ''}" for v in acc_values])
+                    acc += '\n\t].span();\n\t\n\t'
+                    if not total_sum_defined:
+                        acc += 'let mut total_sum = 0;\n\t'
+                        total_sum_defined = True
+                    acc += 'for value in values {\n\t\t'
+                    acc += total_sum_line.replace('value', '*value')
+                    acc += '};\n\t\n\t'
+
+                if settings['OPTIMIZE_OODS_ARRAY']:
+                    column = None
+                    if not total_sum_defined:
+                        acc += 'let mut total_sum = 0;\n\t'
+                        total_sum_defined = True
+                    for val in acc_values:
+                        m = re.match(r'\((\w+) - \*oods_values\.pop_front\(\)\.unwrap\(\)\) \/ \(point - (\w+) \* oods_point\)', val.expr)
+                        if m is None:
+                            raise Exception("Unexpected value calculation " + val.expr)
+                        (col, pow) = m.groups()
+                        if column != col:
+                            if column is not None:
+                                acc += f'].span();\n\tfor pow in pows {{\n\t\tlet value = ({column} - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);\n\t\t{total_sum_line}}};\n\t'
+                            acc += 'let pows = [\n\t'
+                        acc += '\t' + pow + ',\n\t'
+                        column = col
                     
-                acc += 'let values = [\n\t\t'
-                acc += '\n\t\t'.join([f"{v.expr},{' '+v.comment.rstrip('\n\t') if v.comment is not None else ''}" for v in acc_values])
-                acc += '\n\t].span();\n\t\n\t'
-                if not total_sum_defined:
-                    acc += 'let mut total_sum = 0;\n\t'
-                    total_sum_defined = True
-                acc += 'for value in values {\n\t\t'
-                acc += total_sum_line.replace('let total_sum = total_sum + ', 'total_sum += ').replace('value', '*value')
-                acc += '};\n\t'
+                    acc += f'].span();\n\tfor pow in pows {{\n\t\tlet value = ({column} - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);\n\t\t{total_sum_line}}};\n\t\n\t'
                 acc_values = []
                 acc_total_sum = []
         
@@ -130,6 +160,7 @@ def optimize(lines: list[tuple[str, LineType]]) -> str:
                 acc += apply_manual_corrections(line)
 
         latest_value_comment = line if isinstance(line_type, LineTypeComment) else None
+        last_value_was_optimized = enable_acc and isinstance(line_type, LineTypeValueCalc)
     return acc
 
 
@@ -186,7 +217,9 @@ def parse(node: AstNode, comment: str = '') -> tuple[str, LineType]:
             name = rename_var(name)
             if isinstance(parsed[1], LineTypeVarPop):
                 parsed[1].assigned_var = name
-            if name == 'value':
+            if isinstance(parsed[1], LineTypeVarAccessConst):
+                pass
+            elif name == 'value':
                 parsed[1] = LineTypeValueCalc(parsed[0], com)
             elif name == 'total_sum':
                 parsed[1] = LineTypeTotalSum()
@@ -223,8 +256,11 @@ def parse(node: AstNode, comment: str = '') -> tuple[str, LineType]:
                 return arg
             return f"{name}({', '.join([parse(remove_parenthesis(arg))[0] for arg in args])})", LineTypeUnknown()
         
-        case ExprOperator(a=a, b=b, op=op):
-            return f"{parse(a)[0]} {op} {parse(b)[0]}", LineTypeUnknown()
+        case ExprOperator(a=a, b=b, op=op): # x + y
+            parsed_a = parse(a)
+            parsed_b = parse(b)
+            line_type = parsed_a[1] if isinstance(parsed_a[1], LineTypeVarAccessConst) else parsed_b[1]
+            return f"{parsed_a[0]} {op} {parsed_b[0]}", line_type
 
         case ExprSubscript( # x[0]
             expr=ExprIdentifier(name=name),
@@ -243,7 +279,7 @@ def parse(node: AstNode, comment: str = '') -> tuple[str, LineType]:
                 print(f"Array read not subsequent. Expected {curr}, actual {evaluated_offset}")
             else:
                 array_read_offset[name] = curr + 1
-                return f"*{name}.pop_front().unwrap()", LineTypeUnknown()
+                return f"*{name}.pop_front().unwrap()", LineTypeVarAccessConst()
         
         case CodeElementStaticAssert(a=a, b=b): # static assert x == y
             return f"assert({parse(a)[0]} == {parse(b)[0]}, 'Autogenerated assert failed');\n\t", LineTypeUnknown()
@@ -293,8 +329,7 @@ def parse(node: AstNode, comment: str = '') -> tuple[str, LineType]:
 
 def handle_github_file(url, output_file, layout, settings_override={}):
     global settings
-    old_settings = settings.copy()
-    settings = {**settings, **settings_override}
+    old_settings = settings
 
     global array_read_offset
     response = requests.get(url)
@@ -314,6 +349,13 @@ def handle_github_file(url, output_file, layout, settings_override={}):
                 identifier=ExprIdentifier(name=name),
                 code_block=code_block
             ) if name in functions:
+                print(name)
+                settings = {**old_settings.copy(), **settings_override}
+                if name != 'eval_oods_polynomial':
+                    settings['OPTIMIZE_OODS_ARRAY'] = False
+                elif settings['OPTIMIZE_OODS_ARRAY']:
+                    settings['OPTIMIZE_VALUE_ARRAY'] = False
+
                 array_read_offset = {}
                 parsed = parse(code_block)[0]
                 if name in functions_result:
@@ -329,9 +371,10 @@ def handle_github_file(url, output_file, layout, settings_override={}):
 
 def main():
     # layouts = ('recursive', 'recursive_with_poseidon', 'small', 'dex', 'starknet', 'starknet_with_keccak')
-    layouts = ('recursive', )
+    layouts = ('starknet', )
     optimizations = {
-        'OPTIMIZE_VALUE_ARRAY': {'recursive'}
+        'OPTIMIZE_VALUE_ARRAY': {'recursive', 'starknet'},
+        'OPTIMIZE_OODS_ARRAY': {'starknet'},
     }
 
     for layout in layouts:
@@ -339,7 +382,10 @@ def main():
             f"https://raw.githubusercontent.com/starkware-libs/cairo-lang/master/src/starkware/cairo/stark_verifier/air/layouts/{layout}/autogenerated.cairo",
             f"../{layout}/autogenerated.cairo",
             layout,
-            {'OPTIMIZE_VALUE_ARRAY': layout in optimizations['OPTIMIZE_VALUE_ARRAY']}
+            {
+                'OPTIMIZE_VALUE_ARRAY': layout in optimizations['OPTIMIZE_VALUE_ARRAY'],
+                'OPTIMIZE_OODS_ARRAY': layout in optimizations['OPTIMIZE_OODS_ARRAY'],
+            }
         )
 
 
