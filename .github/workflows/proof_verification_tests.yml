@@ -32,4 +32,4 @@ jobs:
         run: scarb build --no-default-features --features monolith,${{ matrix.layout }},${{ matrix.hash_function }}
       
       - name: Run verification
-        run: cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json --cairo-version ${{ matrix.cairo_version }} --stone-version ${{ matrix.stone_version }} --hasher-bit-length ${{ matrix.hasher_bit_length }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_example_proof.json
+        run: cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json --cairo-version ${{ matrix.cairo_version }} --stone-version ${{ matrix.stone_version }} --hasher-bit-length ${{ matrix.hasher_bit_length }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_${{ matrix.stone_version }}_${{ matrix.hash_function }}_160_lsb_example_proof.json
