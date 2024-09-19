@@ -35,9 +35,11 @@ impl From<StoneVersion> for Felt252 {
     }
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug, ValueEnum)]
 pub enum HasherBitLength {
+    #[clap(name = "160_lsb")]
     Lsb160 = 0,
+    #[clap(name = "248_lsb")]
     Lsb248 = 1,
 }
 
