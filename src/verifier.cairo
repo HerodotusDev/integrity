@@ -119,7 +119,7 @@ mod CairoVerifier {
                 .verify(
                     self.composition_contract_address.read(),
                     self.oods_contract_address.read(),
-                    settings
+                    @settings
                 );
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
@@ -149,7 +149,7 @@ mod CairoVerifier {
                 .verify_initial(
                     self.composition_contract_address.read(),
                     self.oods_contract_address.read(),
-                    settings
+                    @settings
                 );
             self.state_constant.entry(job_id).write(Option::Some(hash_constant(@con)));
             self.state_variable.entry(job_id).write(Option::Some(hash_variable(@var)));
@@ -196,7 +196,7 @@ mod CairoVerifier {
             let settings = self.state_settings.entry(job_id).read().expect('No settings saved');
 
             let (con, var) = StarkProofImpl::verify_step(
-                state_constant, state_variable, witness, settings
+                state_constant, state_variable, witness, @settings
             );
             self.state_variable.entry(job_id).write(Option::Some(hash_variable(@var)));
 

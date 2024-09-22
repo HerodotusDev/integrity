@@ -146,7 +146,7 @@ fn fri_verify_layer_step(
     eval_point: felt252,
     commitment: TableCommitment,
     layer_witness: FriLayerWitness,
-    settings: VerifierSettings,
+    settings: @VerifierSettings,
 ) -> Array<FriLayerQuery> {
     // Compute fri_group.
     let fri_group = get_fri_group().span();
@@ -211,7 +211,7 @@ fn fri_verify_step(
     stateConstant: FriVerificationStateConstant,
     stateVariable: FriVerificationStateVariable,
     witness: FriLayerWitness,
-    settings: VerifierSettings
+    settings: @VerifierSettings
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     assert(stateVariable.iter <= stateConstant.n_layers, 'Too many fri steps called');
 

@@ -59,7 +59,7 @@ fn table_decommit(
     queries: Span<felt252>,
     decommitment: TableDecommitment,
     witness: TableCommitmentWitness,
-    settings: VerifierSettings,
+    settings: @VerifierSettings,
 ) {
     let n_queries: felt252 = queries.len().into();
 
@@ -116,7 +116,7 @@ fn generate_vector_queries(
     values: Span<felt252>,
     n_columns: u32,
     is_verifier_friendly: bool,
-    settings: VerifierSettings
+    settings: @VerifierSettings
 ) -> Array<VectorQuery> {
     let queries_len = queries.len();
     let mut vector_queries = ArrayTrait::new();

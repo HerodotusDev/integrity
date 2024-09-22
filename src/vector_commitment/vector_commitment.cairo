@@ -73,7 +73,7 @@ fn vector_commitment_decommit(
     commitment: VectorCommitment,
     queries: Span<VectorQuery>,
     witness: VectorCommitmentWitness,
-    settings: VerifierSettings
+    settings: @VerifierSettings
 ) {
     let shift = pow(2, commitment.config.height);
     let shifted_queries = shift_queries(queries, shift, commitment.config.height);
@@ -99,7 +99,7 @@ fn compute_root_from_queries(
     n_verifier_friendly_layers: felt252,
     authentications: Span<felt252>,
     auth_start: u32,
-    settings: VerifierSettings
+    settings: @VerifierSettings
 ) -> felt252 {
     let current: VectorQueryWithDepth = *queue[start];
 
@@ -175,7 +175,7 @@ fn shift_queries(
 }
 
 fn hash_blake_or_poseidon(
-    x: felt252, y: felt252, is_verifier_friendly: bool, settings: VerifierSettings
+    x: felt252, y: felt252, is_verifier_friendly: bool, settings: @VerifierSettings
 ) -> felt252 {
     if is_verifier_friendly {
         let (hash, _, _) = hades_permutation(x, y, 2);

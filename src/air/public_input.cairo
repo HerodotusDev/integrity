@@ -58,7 +58,7 @@ trait PublicInputTrait {
 fn get_public_input_hash(
     public_input: @PublicInput,
     n_verifier_friendly_commitment_layers: felt252,
-    settings: VerifierSettings,
+    settings: @VerifierSettings,
 ) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
@@ -76,7 +76,7 @@ fn get_public_input_hash(
 
     let mut hash_data = ArrayTrait::<felt252>::new();
 
-    if settings.stone_version == StoneVersion::Stone6 {
+    if *settings.stone_version == StoneVersion::Stone6 {
         hash_data.append(n_verifier_friendly_commitment_layers);
     }
     hash_data.append(*public_input.log_n_steps);
