@@ -221,5 +221,5 @@ fn test_vector_commitment_decommit() {
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
-    vector_commitment_decommit(commitment, queries, witness, settings);
+    vector_commitment_decommit(commitment, queries, witness, @settings);
 }

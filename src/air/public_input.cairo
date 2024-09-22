@@ -201,7 +201,7 @@ mod tests {
             stone_version: StoneVersion::Stone5,
         };
         let public_input = get();
-        let hash = get_public_input_hash(@public_input, 0, settings);
+        let hash = get_public_input_hash(@public_input, 0, @settings);
         assert(
             hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
         )

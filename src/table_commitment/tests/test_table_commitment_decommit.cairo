@@ -41,5 +41,5 @@ fn test_table_commitment_decommit() {
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
-    table_decommit(commitment, queries, decommitment, witness, settings);
+    table_decommit(commitment, queries, decommitment, witness, @settings);
 }
