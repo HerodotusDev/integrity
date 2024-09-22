@@ -18,7 +18,7 @@ fn hash(mut data: Array<u64>) -> u256 {
 
 #[cfg(feature: 'blake2s')]
 fn hash_truncated(data: Array<u32>, settings: @VerifierSettings) -> felt252 {
-    let mask = if settings.hasher_bit_length == HasherBitLength::Lsb160 {
+    let mask = if *settings.hasher_bit_length == HasherBitLength::Lsb160 {
         0x000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     } else {
         0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
