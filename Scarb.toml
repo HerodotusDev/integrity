@@ -32,4 +32,4 @@ blake2s = []
 monolith = []
 split = []
 
-default = ["recursive", "keccak"]
+default = ["recursive", "keccak", "monolith"]

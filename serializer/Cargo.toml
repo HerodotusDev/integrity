@@ -1,5 +1,5 @@
 [package]
-name = "snfoundry_proof_serializer"
+name = "proof_serializer"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +7,6 @@ edition = "2021"
 
 [dependencies]
 anyhow.workspace = true
-clap.workspace = true
 itertools.workspace = true
 runner.workspace = true
 serde_json.workspace = true
