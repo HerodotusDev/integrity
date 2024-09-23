@@ -24,13 +24,13 @@ struct Cli {
     #[clap(short, long)]
     program: String,
     /// Cairo version - public memory pattern
-    #[clap(value_enum, short, long, default_value_t=CairoVersion::Cairo0)]
+    #[clap(value_enum, short, long)]
     cairo_version: CairoVersion,
     /// Stone version
-    #[clap(value_enum, short, long, default_value_t=StoneVersion::Stone5)]
+    #[clap(value_enum, short, long)]
     stone_version: StoneVersion,
     /// Hasher bit length
-    #[clap(value_enum, short, long, default_value_t=HasherBitLength::Lsb160)]
+    #[clap(value_enum, short, long)]
     hasher_bit_length: HasherBitLength,
 }
 
