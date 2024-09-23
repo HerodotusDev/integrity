@@ -8,6 +8,32 @@
 
 ## Using Verifier contracts on Starknet
 
+Integrity verifier is deployed on Starknet and can be used for verifying proofs onchain. The intended way of using the verifier is through FactRegistry contract, which besides running the verification process, also stores data for all verified proofs. (For more information see [FactRegistry and Proxy contract](#factregistry-and-proxy-contract))
+
+There are two ways of serializing proof into calldata: monolith and split proof. The former should be used if possible, because it's easier and more efficient. The latter should only be used if monolith proof did not fit in a single transaction, either because of calldata limit or steps limit.
+
+### Monolith proof
+
+Calldata for monolith proof can be generated with the following command:
+
+```bash
+cargo run --release --bin proof_serializer < examples/proofs/recursive/cairo0_example_proof.json > examples/calldata
+```
+
+Then make sure that you have `sncast` installed and `snfoundry.toml` is configured correctly.
+
+After that, you can use `verify-on-starknet.sh` script to send the transaction to FactRegistry contract. Remember to select appropriate settings for your proof. For more information on supported settings, see [Verifier settings](TODO).
+
+For example, run:
+
+```bash
+./verify-on-starknet.sh 0x7a5340bf1a500d94185cde6fc9cdc4b32c1159d1db5c056841d21bfb0d9c2bd examples/calldata recursive keccak_248_lsb stone5 cairo0
+```
+
+### Split proof
+
+TODO: check if below is valid
+
 To use the Verifier for verifying proofs on starknet, you need to generate calldata for your proof. The easiest way to do that is to use [Calldata Generator](https://github.com/HerodotusDev/integrity-calldata-generator). It also provides script for automatic transaction sending (proof verification is split into multiple transactions, for more information see [Split Verifier Architecture](#split-verifier-architecture)).
 
 ## Running locally
@@ -91,3 +117,5 @@ After proof is verified, `FactRegistered` event is emitted which contains `fact_
 -   `get_all_verifications_for_fact_hash(fact_hash)` - returns list of all verification hashes, security bits and settings for given `fact_hash`. This method is useful for checking if given program has been verified by someone with secure enough proof.
 
 FactRegistry contract is trustless which means that owner of the contract can't override or change any existing behavior, they can only add new verifiers. Proxy contract on the other hand is upgradable, so every function can be changed or removed. It has the advantage of having all future updates of the verifier logic without having to replace the address of FactRegistry contract.
+
+TODO: how to read FactRegistered event

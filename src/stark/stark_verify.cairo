@@ -32,7 +32,7 @@ fn stark_verify(
     witness: StarkWitness,
     stark_domains: StarkDomains,
     contract_address_2: ContractAddress,
-    settings: VerifierSettings,
+    settings: @VerifierSettings,
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
     // First layer decommit.
     traces_decommit(

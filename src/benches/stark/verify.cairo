@@ -24,6 +24,6 @@ fn bench_stark_verify() {
         witness,
         stark_domains,
         0.try_into().unwrap(),
-        settings,
+        @settings,
     );
 }

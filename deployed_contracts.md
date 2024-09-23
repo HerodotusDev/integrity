@@ -1,14 +1,11 @@
-| Contract Address                                                                                    | Network               | Layout                         |
-|-----------------------------------------------------------------------------------------------------|-----------------------|--------------------------------|
-|                                                                                                     | **Mainnet**           | **dex**                        |
-|[0x030b6af9526e7ff98bb926f1537c2898060071df91eb7992961a891194c74fce](https://starkscan.co/contract/0x030b6af9526e7ff98bb926f1537c2898060071df91eb7992961a891194c74fce)                                   | **Mainnet**           | **recursive**                  |
-|                                                                                                     | **Mainnet**           | **recursive_with_poseidon**    |
-|                                                                                                     | **Mainnet**           | **small**                      |
-|                                                                                                     | **Mainnet**           | **starknet**                   |
-|                                                                                                     | **Mainnet**           | **starknet_with_keccak**       |
-|                                                                                                     | **Sepolia Testnet**   | **dex**                        |
-|[0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7](https://sepolia.starkscan.co/contract/0x274d8165a19590bdeaa94d1dd427e2034462d7611754ab3e15714a908c60df7)                                   | **Sepolia Testnet**   | **recursive**                  |
-|                                                                                                     | **Sepolia Testnet**   | **recursive_with_poseidon**    |
-|                                                                                                     | **Sepolia Testnet**   | **small**                      |
-|                                                                                                     | **Sepolia Testnet**   | **starknet**                   |
-|                                                                                                     | **Sepolia Testnet**   | **starknet_with_keccak**       |
+fact registry: `0x7a5340bf1a500d94185cde6fc9cdc4b32c1159d1db5c056841d21bfb0d9c2bd`
+recursive,keccak: `0x0102a5157199bc7929c9f9502aac08b897606bac4e69ba45ecf088b6430e4d6d`
+recursive,blake2s: `0x035de2969a164e20bc3872502ff546f7ee190da1c7edf346b4221f869f48128e`
+recursive_with_poseidon,keccak: `0x04351acfba77d94cd97bbed2276391ec0e7ffea39ccadb24d1cfd37695b7ab12`
+recursive_with_poseidon,blake2s: `0x076eaf28eb342e438ddc80edbdd7ff0624aa5fb0f8068b4386e729d220b2420c`
+small,keccak: `0x0453bf62aa81da89b46959a9caf6a9ce4d21bf6c274b6619f1e5ecb769c50762`
+small,blake2s: `0x7a624c9c3d7d000d4a8574a7d10478c992e68bab71a731956184a06dd49e2e`
+dex,keccak: `0x020800E4129bfCe98C6f7368D23935CB04Cd32BE5a0eD9AE00fAED2952ce961d`
+dex,blake2s: `0x027Af71c94C68c8a433ccE0a9BB77fA9e66e9bcCFC009cC01DA7500621609f45`
+starknet,keccak: `0x03df89310954C1dD19c941816f99dc96230479B6E16E16479F2C190fb5d57279` (temporary registered as starknet4)
+starknet,blake2s: `0x00e0d8c4ccCD8892205fcfA6F0C62F572612e9E1ee68F366B35b05cEbE533cf1`

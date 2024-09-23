@@ -15,5 +15,5 @@ fn bench_air_traces_decommit() {
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
-    traces_decommit(queries, commitment, decommitment, witness, settings);
+    traces_decommit(queries, commitment, decommitment, witness, @settings);
 }

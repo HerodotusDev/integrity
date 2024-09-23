@@ -123,7 +123,7 @@ fn traces_decommit(
     commitment: TracesCommitment,
     decommitment: TracesDecommitment,
     witness: TracesWitness,
-    settings: VerifierSettings,
+    settings: @VerifierSettings,
 ) {
     table_decommit(commitment.original, queries, decommitment.original, witness.original, settings);
     table_decommit(

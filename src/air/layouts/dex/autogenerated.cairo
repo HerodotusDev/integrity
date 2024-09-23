@@ -1,7 +1,7 @@
 use cairo_verifier::{
     air::layouts::dex::{
         global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE}
+        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},
     },
     common::math::{Felt252Div, pow},
 };
@@ -11,7 +11,7 @@ fn eval_composition_polynomial_inner(
     mut constraint_coefficients: Span<felt252>,
     point: felt252,
     trace_generator: felt252,
-    global_values: GlobalValues
+    global_values: GlobalValues,
 ) -> felt252 {
     // Compute powers.
     let pow0 = pow(point, global_values.trace_length / 8192);
@@ -30,11 +30,11 @@ fn eval_composition_polynomial_inner(
     let pow13 = pow(trace_generator, global_values.trace_length - 4);
     let pow14 = pow(trace_generator, global_values.trace_length - 2);
     let pow15 = pow(trace_generator, global_values.trace_length - 16);
-    let pow16 = pow(trace_generator, 251 * global_values.trace_length / 256);
+    let pow16 = pow(trace_generator, (251 * global_values.trace_length) / 256);
     let pow17 = pow(trace_generator, global_values.trace_length / 2);
-    let pow18 = pow(trace_generator, 63 * global_values.trace_length / 64);
-    let pow19 = pow(trace_generator, 255 * global_values.trace_length / 256);
-    let pow20 = pow(trace_generator, 15 * global_values.trace_length / 16);
+    let pow18 = pow(trace_generator, (63 * global_values.trace_length) / 64);
+    let pow19 = pow(trace_generator, (255 * global_values.trace_length) / 256);
+    let pow20 = pow(trace_generator, (15 * global_values.trace_length) / 16);
 
     // Compute domains.
     let domain0 = pow10 - 1;
@@ -64,206 +64,212 @@ fn eval_composition_polynomial_inner(
     let domain24 = point - pow11;
 
     // Fetch mask variables.
-    let column0_row0 = *mask_values.pop_front().unwrap();
-    let column0_row1 = *mask_values.pop_front().unwrap();
-    let column0_row2 = *mask_values.pop_front().unwrap();
-    let column0_row3 = *mask_values.pop_front().unwrap();
-    let column0_row4 = *mask_values.pop_front().unwrap();
-    let column0_row5 = *mask_values.pop_front().unwrap();
-    let column0_row6 = *mask_values.pop_front().unwrap();
-    let column0_row7 = *mask_values.pop_front().unwrap();
-    let column0_row8 = *mask_values.pop_front().unwrap();
-    let column0_row9 = *mask_values.pop_front().unwrap();
-    let column0_row10 = *mask_values.pop_front().unwrap();
-    let column0_row11 = *mask_values.pop_front().unwrap();
-    let column0_row12 = *mask_values.pop_front().unwrap();
-    let column0_row13 = *mask_values.pop_front().unwrap();
-    let column0_row14 = *mask_values.pop_front().unwrap();
-    let column0_row15 = *mask_values.pop_front().unwrap();
-    let column1_row0 = *mask_values.pop_front().unwrap();
-    let column1_row1 = *mask_values.pop_front().unwrap();
-    let column1_row255 = *mask_values.pop_front().unwrap();
-    let column1_row256 = *mask_values.pop_front().unwrap();
-    let column1_row511 = *mask_values.pop_front().unwrap();
-    let column2_row0 = *mask_values.pop_front().unwrap();
-    let column2_row1 = *mask_values.pop_front().unwrap();
-    let column2_row255 = *mask_values.pop_front().unwrap();
-    let column2_row256 = *mask_values.pop_front().unwrap();
-    let column3_row0 = *mask_values.pop_front().unwrap();
-    let column3_row1 = *mask_values.pop_front().unwrap();
-    let column3_row192 = *mask_values.pop_front().unwrap();
-    let column3_row193 = *mask_values.pop_front().unwrap();
-    let column3_row196 = *mask_values.pop_front().unwrap();
-    let column3_row197 = *mask_values.pop_front().unwrap();
-    let column3_row251 = *mask_values.pop_front().unwrap();
-    let column3_row252 = *mask_values.pop_front().unwrap();
-    let column3_row256 = *mask_values.pop_front().unwrap();
-    let column4_row0 = *mask_values.pop_front().unwrap();
-    let column4_row1 = *mask_values.pop_front().unwrap();
-    let column4_row255 = *mask_values.pop_front().unwrap();
-    let column4_row256 = *mask_values.pop_front().unwrap();
-    let column4_row511 = *mask_values.pop_front().unwrap();
-    let column5_row0 = *mask_values.pop_front().unwrap();
-    let column5_row1 = *mask_values.pop_front().unwrap();
-    let column5_row255 = *mask_values.pop_front().unwrap();
-    let column5_row256 = *mask_values.pop_front().unwrap();
-    let column6_row0 = *mask_values.pop_front().unwrap();
-    let column6_row1 = *mask_values.pop_front().unwrap();
-    let column6_row192 = *mask_values.pop_front().unwrap();
-    let column6_row193 = *mask_values.pop_front().unwrap();
-    let column6_row196 = *mask_values.pop_front().unwrap();
-    let column6_row197 = *mask_values.pop_front().unwrap();
-    let column6_row251 = *mask_values.pop_front().unwrap();
-    let column6_row252 = *mask_values.pop_front().unwrap();
-    let column6_row256 = *mask_values.pop_front().unwrap();
-    let column7_row0 = *mask_values.pop_front().unwrap();
-    let column7_row1 = *mask_values.pop_front().unwrap();
-    let column7_row255 = *mask_values.pop_front().unwrap();
-    let column7_row256 = *mask_values.pop_front().unwrap();
-    let column7_row511 = *mask_values.pop_front().unwrap();
-    let column8_row0 = *mask_values.pop_front().unwrap();
-    let column8_row1 = *mask_values.pop_front().unwrap();
-    let column8_row255 = *mask_values.pop_front().unwrap();
-    let column8_row256 = *mask_values.pop_front().unwrap();
-    let column9_row0 = *mask_values.pop_front().unwrap();
-    let column9_row1 = *mask_values.pop_front().unwrap();
-    let column9_row192 = *mask_values.pop_front().unwrap();
-    let column9_row193 = *mask_values.pop_front().unwrap();
-    let column9_row196 = *mask_values.pop_front().unwrap();
-    let column9_row197 = *mask_values.pop_front().unwrap();
-    let column9_row251 = *mask_values.pop_front().unwrap();
-    let column9_row252 = *mask_values.pop_front().unwrap();
-    let column9_row256 = *mask_values.pop_front().unwrap();
-    let column10_row0 = *mask_values.pop_front().unwrap();
-    let column10_row1 = *mask_values.pop_front().unwrap();
-    let column10_row255 = *mask_values.pop_front().unwrap();
-    let column10_row256 = *mask_values.pop_front().unwrap();
-    let column10_row511 = *mask_values.pop_front().unwrap();
-    let column11_row0 = *mask_values.pop_front().unwrap();
-    let column11_row1 = *mask_values.pop_front().unwrap();
-    let column11_row255 = *mask_values.pop_front().unwrap();
-    let column11_row256 = *mask_values.pop_front().unwrap();
-    let column12_row0 = *mask_values.pop_front().unwrap();
-    let column12_row1 = *mask_values.pop_front().unwrap();
-    let column12_row192 = *mask_values.pop_front().unwrap();
-    let column12_row193 = *mask_values.pop_front().unwrap();
-    let column12_row196 = *mask_values.pop_front().unwrap();
-    let column12_row197 = *mask_values.pop_front().unwrap();
-    let column12_row251 = *mask_values.pop_front().unwrap();
-    let column12_row252 = *mask_values.pop_front().unwrap();
-    let column12_row256 = *mask_values.pop_front().unwrap();
-    let column13_row0 = *mask_values.pop_front().unwrap();
-    let column13_row255 = *mask_values.pop_front().unwrap();
-    let column14_row0 = *mask_values.pop_front().unwrap();
-    let column14_row255 = *mask_values.pop_front().unwrap();
-    let column15_row0 = *mask_values.pop_front().unwrap();
-    let column15_row255 = *mask_values.pop_front().unwrap();
-    let column16_row0 = *mask_values.pop_front().unwrap();
-    let column16_row255 = *mask_values.pop_front().unwrap();
-    let column17_row0 = *mask_values.pop_front().unwrap();
-    let column17_row1 = *mask_values.pop_front().unwrap();
-    let column17_row2 = *mask_values.pop_front().unwrap();
-    let column17_row3 = *mask_values.pop_front().unwrap();
-    let column17_row4 = *mask_values.pop_front().unwrap();
-    let column17_row5 = *mask_values.pop_front().unwrap();
-    let column17_row6 = *mask_values.pop_front().unwrap();
-    let column17_row7 = *mask_values.pop_front().unwrap();
-    let column17_row8 = *mask_values.pop_front().unwrap();
-    let column17_row9 = *mask_values.pop_front().unwrap();
-    let column17_row12 = *mask_values.pop_front().unwrap();
-    let column17_row13 = *mask_values.pop_front().unwrap();
-    let column17_row16 = *mask_values.pop_front().unwrap();
-    let column17_row22 = *mask_values.pop_front().unwrap();
-    let column17_row23 = *mask_values.pop_front().unwrap();
-    let column17_row38 = *mask_values.pop_front().unwrap();
-    let column17_row39 = *mask_values.pop_front().unwrap();
-    let column17_row70 = *mask_values.pop_front().unwrap();
-    let column17_row71 = *mask_values.pop_front().unwrap();
-    let column17_row102 = *mask_values.pop_front().unwrap();
-    let column17_row103 = *mask_values.pop_front().unwrap();
-    let column17_row134 = *mask_values.pop_front().unwrap();
-    let column17_row135 = *mask_values.pop_front().unwrap();
-    let column17_row167 = *mask_values.pop_front().unwrap();
-    let column17_row199 = *mask_values.pop_front().unwrap();
-    let column17_row230 = *mask_values.pop_front().unwrap();
-    let column17_row263 = *mask_values.pop_front().unwrap();
-    let column17_row295 = *mask_values.pop_front().unwrap();
-    let column17_row327 = *mask_values.pop_front().unwrap();
-    let column17_row391 = *mask_values.pop_front().unwrap();
-    let column17_row423 = *mask_values.pop_front().unwrap();
-    let column17_row455 = *mask_values.pop_front().unwrap();
-    let column17_row4118 = *mask_values.pop_front().unwrap();
-    let column17_row4119 = *mask_values.pop_front().unwrap();
-    let column17_row8214 = *mask_values.pop_front().unwrap();
-    let column18_row0 = *mask_values.pop_front().unwrap();
-    let column18_row1 = *mask_values.pop_front().unwrap();
-    let column18_row2 = *mask_values.pop_front().unwrap();
-    let column18_row3 = *mask_values.pop_front().unwrap();
-    let column19_row0 = *mask_values.pop_front().unwrap();
-    let column19_row1 = *mask_values.pop_front().unwrap();
-    let column19_row2 = *mask_values.pop_front().unwrap();
-    let column19_row3 = *mask_values.pop_front().unwrap();
-    let column19_row4 = *mask_values.pop_front().unwrap();
-    let column19_row5 = *mask_values.pop_front().unwrap();
-    let column19_row6 = *mask_values.pop_front().unwrap();
-    let column19_row7 = *mask_values.pop_front().unwrap();
-    let column19_row8 = *mask_values.pop_front().unwrap();
-    let column19_row9 = *mask_values.pop_front().unwrap();
-    let column19_row11 = *mask_values.pop_front().unwrap();
-    let column19_row12 = *mask_values.pop_front().unwrap();
-    let column19_row13 = *mask_values.pop_front().unwrap();
-    let column19_row15 = *mask_values.pop_front().unwrap();
-    let column19_row17 = *mask_values.pop_front().unwrap();
-    let column19_row23 = *mask_values.pop_front().unwrap();
-    let column19_row25 = *mask_values.pop_front().unwrap();
-    let column19_row28 = *mask_values.pop_front().unwrap();
-    let column19_row31 = *mask_values.pop_front().unwrap();
-    let column19_row44 = *mask_values.pop_front().unwrap();
-    let column19_row60 = *mask_values.pop_front().unwrap();
-    let column19_row76 = *mask_values.pop_front().unwrap();
-    let column19_row92 = *mask_values.pop_front().unwrap();
-    let column19_row108 = *mask_values.pop_front().unwrap();
-    let column19_row124 = *mask_values.pop_front().unwrap();
-    let column19_row4103 = *mask_values.pop_front().unwrap();
-    let column19_row4111 = *mask_values.pop_front().unwrap();
-    let column20_row0 = *mask_values.pop_front().unwrap();
-    let column20_row1 = *mask_values.pop_front().unwrap();
-    let column20_row2 = *mask_values.pop_front().unwrap();
-    let column20_row4 = *mask_values.pop_front().unwrap();
-    let column20_row6 = *mask_values.pop_front().unwrap();
-    let column20_row8 = *mask_values.pop_front().unwrap();
-    let column20_row10 = *mask_values.pop_front().unwrap();
-    let column20_row12 = *mask_values.pop_front().unwrap();
-    let column20_row14 = *mask_values.pop_front().unwrap();
-    let column20_row16 = *mask_values.pop_front().unwrap();
-    let column20_row17 = *mask_values.pop_front().unwrap();
-    let column20_row20 = *mask_values.pop_front().unwrap();
-    let column20_row22 = *mask_values.pop_front().unwrap();
-    let column20_row24 = *mask_values.pop_front().unwrap();
-    let column20_row30 = *mask_values.pop_front().unwrap();
-    let column20_row38 = *mask_values.pop_front().unwrap();
-    let column20_row46 = *mask_values.pop_front().unwrap();
-    let column20_row54 = *mask_values.pop_front().unwrap();
-    let column20_row81 = *mask_values.pop_front().unwrap();
-    let column20_row145 = *mask_values.pop_front().unwrap();
-    let column20_row209 = *mask_values.pop_front().unwrap();
-    let column20_row4080 = *mask_values.pop_front().unwrap();
-    let column20_row4082 = *mask_values.pop_front().unwrap();
-    let column20_row4088 = *mask_values.pop_front().unwrap();
-    let column20_row4090 = *mask_values.pop_front().unwrap();
-    let column20_row4092 = *mask_values.pop_front().unwrap();
-    let column20_row8161 = *mask_values.pop_front().unwrap();
-    let column20_row8166 = *mask_values.pop_front().unwrap();
-    let column20_row8176 = *mask_values.pop_front().unwrap();
-    let column20_row8178 = *mask_values.pop_front().unwrap();
-    let column20_row8182 = *mask_values.pop_front().unwrap();
-    let column20_row8184 = *mask_values.pop_front().unwrap();
-    let column20_row8186 = *mask_values.pop_front().unwrap();
-    let column20_row8190 = *mask_values.pop_front().unwrap();
-    let column21_inter1_row0 = *mask_values.pop_front().unwrap();
-    let column21_inter1_row1 = *mask_values.pop_front().unwrap();
-    let column21_inter1_row2 = *mask_values.pop_front().unwrap();
-    let column21_inter1_row5 = *mask_values.pop_front().unwrap();
+    let [
+        column0_row0,
+        column0_row1,
+        column0_row2,
+        column0_row3,
+        column0_row4,
+        column0_row5,
+        column0_row6,
+        column0_row7,
+        column0_row8,
+        column0_row9,
+        column0_row10,
+        column0_row11,
+        column0_row12,
+        column0_row13,
+        column0_row14,
+        column0_row15,
+        column1_row0,
+        column1_row1,
+        column1_row255,
+        column1_row256,
+        column1_row511,
+        column2_row0,
+        column2_row1,
+        column2_row255,
+        column2_row256,
+        column3_row0,
+        column3_row1,
+        column3_row192,
+        column3_row193,
+        column3_row196,
+        column3_row197,
+        column3_row251,
+        column3_row252,
+        column3_row256,
+        column4_row0,
+        column4_row1,
+        column4_row255,
+        column4_row256,
+        column4_row511,
+        column5_row0,
+        column5_row1,
+        column5_row255,
+        column5_row256,
+        column6_row0,
+        column6_row1,
+        column6_row192,
+        column6_row193,
+        column6_row196,
+        column6_row197,
+        column6_row251,
+        column6_row252,
+        column6_row256,
+        column7_row0,
+        column7_row1,
+        column7_row255,
+        column7_row256,
+        column7_row511,
+        column8_row0,
+        column8_row1,
+        column8_row255,
+        column8_row256,
+        column9_row0,
+        column9_row1,
+        column9_row192,
+        column9_row193,
+        column9_row196,
+        column9_row197,
+        column9_row251,
+        column9_row252,
+        column9_row256,
+        column10_row0,
+        column10_row1,
+        column10_row255,
+        column10_row256,
+        column10_row511,
+        column11_row0,
+        column11_row1,
+        column11_row255,
+        column11_row256,
+        column12_row0,
+        column12_row1,
+        column12_row192,
+        column12_row193,
+        column12_row196,
+        column12_row197,
+        column12_row251,
+        column12_row252,
+        column12_row256,
+        column13_row0,
+        column13_row255,
+        column14_row0,
+        column14_row255,
+        column15_row0,
+        column15_row255,
+        column16_row0,
+        column16_row255,
+        column17_row0,
+        column17_row1,
+        column17_row2,
+        column17_row3,
+        column17_row4,
+        column17_row5,
+        column17_row6,
+        column17_row7,
+        column17_row8,
+        column17_row9,
+        column17_row12,
+        column17_row13,
+        column17_row16,
+        column17_row22,
+        column17_row23,
+        column17_row38,
+        column17_row39,
+        column17_row70,
+        column17_row71,
+        column17_row102,
+        column17_row103,
+        column17_row134,
+        column17_row135,
+        column17_row167,
+        column17_row199,
+        column17_row230,
+        column17_row263,
+        column17_row295,
+        column17_row327,
+        column17_row391,
+        column17_row423,
+        column17_row455,
+        column17_row4118,
+        column17_row4119,
+        column17_row8214,
+        column18_row0,
+        column18_row1,
+        column18_row2,
+        column18_row3,
+        column19_row0,
+        column19_row1,
+        column19_row2,
+        column19_row3,
+        column19_row4,
+        column19_row5,
+        column19_row6,
+        column19_row7,
+        column19_row8,
+        column19_row9,
+        column19_row11,
+        column19_row12,
+        column19_row13,
+        column19_row15,
+        column19_row17,
+        column19_row23,
+        column19_row25,
+        column19_row28,
+        column19_row31,
+        column19_row44,
+        column19_row60,
+        column19_row76,
+        column19_row92,
+        column19_row108,
+        column19_row124,
+        column19_row4103,
+        column19_row4111,
+        column20_row0,
+        column20_row1,
+        column20_row2,
+        column20_row4,
+        column20_row6,
+        column20_row8,
+        column20_row10,
+        column20_row12,
+        column20_row14,
+        column20_row16,
+        column20_row17,
+        column20_row20,
+        column20_row22,
+        column20_row24,
+        column20_row30,
+        column20_row38,
+        column20_row46,
+        column20_row54,
+        column20_row81,
+        column20_row145,
+        column20_row209,
+        column20_row4080,
+        column20_row4082,
+        column20_row4088,
+        column20_row4090,
+        column20_row4092,
+        column20_row8161,
+        column20_row8166,
+        column20_row8176,
+        column20_row8178,
+        column20_row8182,
+        column20_row8184,
+        column20_row8186,
+        column20_row8190,
+        column21_inter1_row0,
+        column21_inter1_row1,
+        column21_inter1_row2,
+        column21_inter1_row5
+    ] =
+        (*mask_values
+        .multi_pop_front::<200>()
+        .unwrap())
+        .unbox();
 
     // Compute intermediate values.
     let cpu_decode_opcode_range_check_bit_0 = column0_row0 - (column0_row1 + column0_row1);
@@ -1434,28 +1440,34 @@ fn eval_oods_polynomial_inner(
     let pow80 = pow53 * pow79; // pow(trace_generator, 455).
 
     // Fetch columns.
-    let column0 = *column_values.pop_front().unwrap();
-    let column1 = *column_values.pop_front().unwrap();
-    let column2 = *column_values.pop_front().unwrap();
-    let column3 = *column_values.pop_front().unwrap();
-    let column4 = *column_values.pop_front().unwrap();
-    let column5 = *column_values.pop_front().unwrap();
-    let column6 = *column_values.pop_front().unwrap();
-    let column7 = *column_values.pop_front().unwrap();
-    let column8 = *column_values.pop_front().unwrap();
-    let column9 = *column_values.pop_front().unwrap();
-    let column10 = *column_values.pop_front().unwrap();
-    let column11 = *column_values.pop_front().unwrap();
-    let column12 = *column_values.pop_front().unwrap();
-    let column13 = *column_values.pop_front().unwrap();
-    let column14 = *column_values.pop_front().unwrap();
-    let column15 = *column_values.pop_front().unwrap();
-    let column16 = *column_values.pop_front().unwrap();
-    let column17 = *column_values.pop_front().unwrap();
-    let column18 = *column_values.pop_front().unwrap();
-    let column19 = *column_values.pop_front().unwrap();
-    let column20 = *column_values.pop_front().unwrap();
-    let column21 = *column_values.pop_front().unwrap();
+    let [
+        column0,
+        column1,
+        column2,
+        column3,
+        column4,
+        column5,
+        column6,
+        column7,
+        column8,
+        column9,
+        column10,
+        column11,
+        column12,
+        column13,
+        column14,
+        column15,
+        column16,
+        column17,
+        column18,
+        column19,
+        column20,
+        column21
+    ] =
+        (*column_values
+        .multi_pop_front::<22>()
+        .unwrap())
+        .unbox();
 
     // Sum the OODS constraints on the trace polynomials.
     let total_sum = 0;
@@ -2071,6 +2083,7 @@ fn eval_oods_polynomial_inner(
         / (point - oods_point_to_deg);
     let total_sum = total_sum + *constraint_coefficients.pop_front().unwrap() * value;
 
-    assert(202 == MASK_SIZE + CONSTRAINT_DEGREE, 'Invalid value');
+    assert(202 == MASK_SIZE + CONSTRAINT_DEGREE, 'Autogenerated assert failed');
     total_sum
 }
+

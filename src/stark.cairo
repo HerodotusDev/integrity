@@ -76,7 +76,7 @@ impl StarkProofImpl of StarkProofTrait {
         self: @StarkProof,
         composition_contract_address: ContractAddress,
         oods_contract_address: ContractAddress,
-        settings: VerifierSettings,
+        settings: @VerifierSettings,
     ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32) {
         // Validate config.
         let security_bits = self.config.validate();
@@ -132,7 +132,7 @@ impl StarkProofImpl of StarkProofTrait {
         stateConstant: FriVerificationStateConstant,
         stateVariable: FriVerificationStateVariable,
         witness: FriLayerWitness,
-        settings: VerifierSettings,
+        settings: @VerifierSettings,
     ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
         fri_verify_step(stateConstant, stateVariable, witness, settings)
     }
@@ -149,7 +149,7 @@ impl StarkProofImpl of StarkProofTrait {
         self: @StarkProof,
         composition_contract_address: ContractAddress,
         oods_contract_address: ContractAddress,
-        settings: VerifierSettings,
+        settings: @VerifierSettings,
     ) -> u32 {
         let (mut con, mut var, last_layer_coefficients, security_bits) = self
             .verify_initial(composition_contract_address, oods_contract_address, settings);

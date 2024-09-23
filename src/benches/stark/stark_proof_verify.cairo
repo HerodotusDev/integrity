@@ -20,6 +20,6 @@ fn bench_stark_proof_verify() {
         stone_version: StoneVersion::Stone5,
     };
     let security_bits = stark_proof
-        .verify(ContractAddressZero::zero(), ContractAddressZero::zero(), settings);
+        .verify(ContractAddressZero::zero(), ContractAddressZero::zero(), @settings);
     assert(security_bits >= SECURITY_BITS, 'Security bits too low');
 }

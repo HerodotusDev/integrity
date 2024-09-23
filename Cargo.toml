@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["runner", "benches", "examples/starknet"]
+members = ["runner", "benches", "serializer"]
 
 [workspace.package]
 edition = "2021"
