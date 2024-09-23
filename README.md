@@ -6,6 +6,10 @@
 
 [![Continuous Integration - proof verification tests](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml)
 
+### Getting example proofs
+
+Because of large size of proofs, we don't store example proofs directly in this repository, but rather in [Large File Storage](https://git-lfs.com/), so you need to have it installed and then run `git lfs pull` to get all example proofs.
+
 ## Using Verifier contracts on Starknet
 
 Integrity verifier is deployed on Starknet and can be used for verifying proofs onchain. The intended way of using the verifier is through FactRegistry contract, which besides running the verification process, also stores data for all verified proofs. (For more information see [FactRegistry and Proxy contract](#factregistry-and-proxy-contract))
@@ -48,9 +52,7 @@ The verifier by default is configured in recursive layout and keccak hasher. If 
 
 ### Running the Verifier on Example Proof
 
-Because of large size of proofs, we don't store them directly in this repository, but rather in [Large File Storage](https://git-lfs.com/), so you need to have it installed and then run `git lfs pull`.
-
-Then you can use cairo runner to run the verifier on example proof:
+You can use cairo runner to run the verifier on example proof:
 
 ```bash
 cargo run --release --bin runner -- \
