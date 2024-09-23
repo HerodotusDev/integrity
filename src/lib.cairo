@@ -11,10 +11,7 @@ mod stark;
 mod table_commitment;
 mod vector_commitment;
 mod settings;
-
-mod verifier;
-mod fact_registry;
-mod proxy;
+mod contracts;
 
 #[cfg(feature: 'recursive')]
 mod benches;

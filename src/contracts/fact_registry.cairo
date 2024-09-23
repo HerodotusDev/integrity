@@ -1,7 +1,7 @@
 use cairo_verifier::{
     StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    verifier::InitResult,
+    contracts::verifier::InitResult,
     settings::{
         VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, CairoVersion,
         SecurityBits, FactHash, JobId, VerifierConfiguration, VerifierPreset,
@@ -87,7 +87,7 @@ trait IFactRegistry<TContractState> {
 mod FactRegistry {
     use cairo_verifier::{
         StarkProofWithSerde, StarkProof, CairoVersion,
-        verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
+        contracts::verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
         settings::{
             VerifierPreset, VerifierConfiguration, split_settings, JobId, FactHash,

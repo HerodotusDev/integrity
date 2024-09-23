@@ -1,9 +1,12 @@
 use cairo_verifier::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    verifier::InitResult,
-    fact_registry::{
-        FactRegistered, VerifierConfiguration, VerificationListElement, Verification, VerifierPreset
+    contracts::{
+        verifier::InitResult,
+        fact_registry::{
+            FactRegistered, VerifierConfiguration, VerificationListElement, Verification,
+            VerifierPreset
+        },
     },
     settings::{JobId, FactHash, VerificationHash},
 };
@@ -60,14 +63,16 @@ trait IProxy<TContractState> {
 #[starknet::contract]
 mod Proxy {
     use cairo_verifier::{
-        fact_registry::{
-            IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
-            FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings,
-            VerifierConfiguration, FactRegistered, VerificationListElement, Verification,
-            VerifierPreset
+        contracts::{
+            verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
+            fact_registry::{
+                IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
+                FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings,
+                VerifierConfiguration, FactRegistered, VerificationListElement, Verification,
+                VerifierPreset
+            },
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
-        verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
         settings::{JobId, FactHash, VerificationHash},
     };
