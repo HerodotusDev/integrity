@@ -22,7 +22,7 @@ cargo run --release --bin proof_serializer < examples/proofs/recursive/cairo0_ex
 
 Then make sure that you have `sncast` installed and `snfoundry.toml` is configured correctly.
 
-After that, you can use `verify-on-starknet.sh` script to send the transaction to FactRegistry contract. Remember to select appropriate settings for your proof. For more information on supported settings, see [Verifier settings](TODO).
+After that, you can use `verify-on-starknet.sh` script to send the transaction to FactRegistry contract. Remember to select appropriate settings for your proof. For more information on supported settings, see [Configure Verifier](#configure-verifier).
 
 For example, run:
 
@@ -30,37 +30,35 @@ For example, run:
 ./verify-on-starknet.sh 0x7a5340bf1a500d94185cde6fc9cdc4b32c1159d1db5c056841d21bfb0d9c2bd examples/calldata recursive keccak_248_lsb stone5 cairo0
 ```
 
+This bash script internally calls `verify_proof_full_and_register_fact` function on FactRegistry contract.
+
 ### Split proof
 
-TODO: check if below is valid
-
-To use the Verifier for verifying proofs on starknet, you need to generate calldata for your proof. The easiest way to do that is to use [Calldata Generator](https://github.com/HerodotusDev/integrity-calldata-generator). It also provides script for automatic transaction sending (proof verification is split into multiple transactions, for more information see [Split Verifier Architecture](#split-verifier-architecture)).
+To generate split calldata, please refer to [Calldata Generator README](https://github.com/HerodotusDev/integrity-calldata-generator/blob/main/README.md). This repository also provides script for automatic transaction sending (proof verification is split into multiple transactions, for more information see [Split Verifier Architecture](#split-verifier-architecture)).
 
 ## Running locally
 
-To build the Cairo Verifier, follow these steps:
-
-1. Build the project by running the following command in your terminal:
+To run the verifier locally, first you need to build cairo project using:
 
 ```bash
 scarb build
 ```
 
-If you want to build for other layouts, refer to [Configure Verifier](#configure-verifier)
-
-2. (Optional) Test the project to ensure everything works correctly:
-
-```bash
-scarb test
-```
+The verifier by default is configured in recursive layout and keccak hasher. If you want to build for other layouts, refer to [Configure Verifier](#configure-verifier)
 
 ### Running the Verifier on Example Proof
 
-Run the verifier locally using the following command on example proof, followed by the Cairo version (cairo0 or cairo1) used to generate the proof:
+Because of large size of proofs, we don't store them directly in this repository, but rather in [Large File Storage](https://git-lfs.com/), so you need to have it installed and then run `git lfs pull`.
+
+Then you can use cairo runner to run the verifier on example proof:
 
 ```bash
-cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json -c cairo0 < examples/proofs/recursive/cairo0_example_proof.json
-cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json -c cairo1 < examples/proofs/recursive/cairo1_example_proof.json
+cargo run --release --bin runner -- \
+--program target/dev/cairo_verifier.sierra.json \
+--cairo-version cairo0 \
+--stone-version stone5 \
+--hasher-bit-length 160_lsb \
+< examples/proofs/recursive/cairo0_stone5_keccak_160_lsb_example_proof.json
 ```
 
 ### Configure Verifier
@@ -71,9 +69,29 @@ By default, the verifier is configured for monolith version, recursive layout an
 scarb build --no-default-features --features small,blake2s,monolith
 ```
 
-layout types: [dex, recursive, recursive_with_poseidon, small, starknet, starknet_with_keccak]<br />
-hash types: [keccak, blake2s]<br />
-verifier types: [monolith, split]
+`layout`: [`dex`, `recursive`, `recursive_with_poseidon`, `small`, `starknet`, `starknet_with_keccak`]<br />
+hash functions: [`keccak`, `blake2s`]<br />
+verifier types: [`monolith`, `split`]
+
+There are also additional settings that can be configured at runtime:
+
+`cairo_version`: [`cairo0`, `cairo1`]<br />
+`stone_version`: [`stone5`, `stone6`]<br />
+hasher bit length: [`160_lsb`, `248_lsb`]
+
+Hash function and hasher bit length are combined into one setting:
+
+`hasher`: [`keccak_160_lsb`, `blake2s_160`, `blake2s_248_lsb`]
+
+For `stone5` available `hasher`s are `keccak_160_lsb` and `blake2s_160`, for `stone6` - `keccak_160_lsb` and `blake2s_248_lsb`.
+
+### Running tests
+
+To run tests, use the following command:
+
+```bash
+scarb test
+```
 
 ### Benchmarking
 
@@ -116,6 +134,6 @@ After proof is verified, `FactRegistered` event is emitted which contains `fact_
 -   `get_verification(verification_hash)` - returns fact hash, security bits and settings for given `verification_hash`.
 -   `get_all_verifications_for_fact_hash(fact_hash)` - returns list of all verification hashes, security bits and settings for given `fact_hash`. This method is useful for checking if given program has been verified by someone with secure enough proof.
 
-FactRegistry contract is trustless which means that owner of the contract can't override or change any existing behavior, they can only add new verifiers. Proxy contract on the other hand is upgradable, so every function can be changed or removed. It has the advantage of having all future updates of the verifier logic without having to replace the address of FactRegistry contract.
+FactRegistry contract is trustless which means that the owner of the contract can't override or change any existing behavior, they can only add new verifiers. Proxy contract on the other hand is upgradable, so every function can be changed or removed. It has the advantage of having all future updates of the verifier logic without having to replace the address of FactRegistry contract.
 
 TODO: how to read FactRegistered event
