@@ -96,7 +96,10 @@ mod FactRegistry {
     };
     use starknet::{
         ContractAddress, get_caller_address,
-        storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
+        storage::{
+            StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map, Vec,
+            VecTrait, MutableVecTrait
+        },
     };
     use core::{
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
@@ -108,16 +111,9 @@ mod FactRegistry {
     struct Storage {
         owner: ContractAddress,
         verifiers: Map<PresetHash, ContractAddress>,
-        facts: Map<FactHash, u32>, // fact_hash => number of verifications registered
-        fact_verifications: Map<
-            (FactHash, u32), VerificationHash
-        >, // fact_hash, index => verification_hash
-        verification_hashes: Map<
-            VerificationHash, Option<Verification>
-        >, // verification_hash => Verification
-        verifier_configs: Map<
-            JobId, Option<VerifierConfiguration>
-        >, // job_id => VerifierConfiguration
+        fact_verifications: Map<FactHash, Vec<VerificationHash>>,
+        verification_hashes: Map<VerificationHash, Option<Verification>>,
+        verifier_configs: Map<JobId, Option<VerifierConfiguration>>,
     }
 
     #[event]
@@ -226,14 +222,15 @@ mod FactRegistry {
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: FactHash
         ) -> Array<VerificationListElement> {
-            let n = self.facts.entry(fact_hash).read();
+            let verifications = self.fact_verifications.entry(fact_hash);
+            let n = verifications.len();
             let mut i = 0;
             let mut arr = array![];
             loop {
                 if i == n {
                     break;
                 }
-                let verification_hash = self.fact_verifications.entry((fact_hash, i)).read();
+                let verification_hash = verifications.at(i).read();
                 let verification = self
                     .verification_hashes
                     .entry(verification_hash)
@@ -322,13 +319,11 @@ mod FactRegistry {
 
             let verification_hash_entry = self.verification_hashes.entry(verification_hash);
             if verification_hash_entry.read().is_none() {
-                let next_index = self.facts.entry(fact_hash).read();
-                self.fact_verifications.entry((fact_hash, next_index)).write(verification_hash);
+                self.fact_verifications.entry(fact_hash).append().write(verification_hash);
                 verification_hash_entry
                     .write(
                         Option::Some(Verification { fact_hash, security_bits, verifier_config })
                     );
-                self.facts.entry(fact_hash).write(next_index + 1);
             }
             event
         }
