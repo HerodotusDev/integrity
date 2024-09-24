@@ -6,6 +6,21 @@
 
 [![Continuous Integration - proof verification tests](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml)
 
+## Table of contents
+
+-   [Prerequisites](#prerequisites)
+-   [Using Verifier contracts on Starknet](#using-verifier-contracts-on-starknet)
+-   [Running locally](#running-locally)
+-   [Creating a Proof](#creating-a-proof)
+-   [Deployment](#deployment)
+-   [Split Verifier Architecture](#split-verifier-architecture)
+
+## Prerequisites
+
+To use the verifier with contracts deployed on Starknet, you need to have [Rust](https://www.rust-lang.org/tools/install) and [Starknet Foundry](https://foundry-rs.github.io/starknet-foundry/getting-started/installation.html) installed. Also make sure to update [snfoundry.toml](./snfoundry.toml) file with appropriate `account` name and RPC `url`.
+
+For running locally and development, you will need [scarb](https://docs.swmansion.com/scarb/) (we recommend using [asdf](https://asdf-vm.com/) version manager).
+
 ### Getting example proofs
 
 Because of large size of proofs, we don't store example proofs directly in this repository, but rather in [Large File Storage](https://git-lfs.com/), so you need to have it installed and then run `git lfs pull` to get all example proofs.
@@ -21,17 +36,15 @@ There are two ways of serializing proof into calldata: monolith and split proof.
 Calldata for monolith proof can be generated with the following command:
 
 ```bash
-cargo run --release --bin proof_serializer < examples/proofs/recursive/cairo0_example_proof.json > examples/calldata
+cargo run --release --bin proof_serializer < examples/proofs/recursive/cairo0_stone5_keccak_160_lsb_example_proof.json > examples/calldata
 ```
-
-Then make sure that you have `sncast` installed and `snfoundry.toml` is configured correctly.
 
 After that, you can use `verify-on-starknet.sh` script to send the transaction to FactRegistry contract. Remember to select appropriate settings for your proof. For more information on supported settings, see [Configure Verifier](#configure-verifier).
 
 For example, run:
 
 ```bash
-./verify-on-starknet.sh 0x7a5340bf1a500d94185cde6fc9cdc4b32c1159d1db5c056841d21bfb0d9c2bd examples/calldata recursive keccak_248_lsb stone5 cairo0
+./verify-on-starknet.sh 0x1c74507b566047b76c625f75d6ea7987fb1e3b3f225c7dd7836bd7381f6ef44 examples/calldata recursive keccak_248_lsb stone5 cairo0
 ```
 
 This bash script internally calls `verify_proof_full_and_register_fact` function on FactRegistry contract.
@@ -112,6 +125,32 @@ For detailed instructions and examples, refer to the Stone Prover [documentation
 How to prove [Cairo0](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairozero-program) program with Stone Prover.
 
 How to prove [Cairo1](https://github.com/starkware-libs/stone-prover?tab=readme-ov-file#creating-and-verifying-a-proof-of-a-cairo-program) program with Stone Prover.
+
+## Deployment
+
+If you want to deploy the verifier yourself, please follow these steps:
+
+1. Deploy FactRegistry contract
+
+```bash
+bash deployment/fact_registry/deploy.sh
+```
+
+2. (optional) Deploy Proxy contract
+
+```bash
+bash deployment/proxy/deploy.sh
+bash deployment/proxy/set_fact_registry.sh
+```
+
+3. Deploy and register Verifier contracts
+
+Make sure to replace `<layout>` and `<hasher>` with appropriate names.
+
+```bash
+sncast multicall run --fee-token eth --path deployment/verifiers/<layout>/<hasher>/deploy.toml
+bash deployment/verifiers/<layout>/<hasher>/register.sh
+```
 
 ## Split Verifier Architecture
 

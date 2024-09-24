@@ -1,11 +1,11 @@
-fact registry: `0x7a5340bf1a500d94185cde6fc9cdc4b32c1159d1db5c056841d21bfb0d9c2bd`
-recursive,keccak: `0x0102a5157199bc7929c9f9502aac08b897606bac4e69ba45ecf088b6430e4d6d`
-recursive,blake2s: `0x035de2969a164e20bc3872502ff546f7ee190da1c7edf346b4221f869f48128e`
-recursive_with_poseidon,keccak: `0x04351acfba77d94cd97bbed2276391ec0e7ffea39ccadb24d1cfd37695b7ab12`
-recursive_with_poseidon,blake2s: `0x076eaf28eb342e438ddc80edbdd7ff0624aa5fb0f8068b4386e729d220b2420c`
-small,keccak: `0x0453bf62aa81da89b46959a9caf6a9ce4d21bf6c274b6619f1e5ecb769c50762`
-small,blake2s: `0x7a624c9c3d7d000d4a8574a7d10478c992e68bab71a731956184a06dd49e2e`
-dex,keccak: `0x020800E4129bfCe98C6f7368D23935CB04Cd32BE5a0eD9AE00fAED2952ce961d`
-dex,blake2s: `0x027Af71c94C68c8a433ccE0a9BB77fA9e66e9bcCFC009cC01DA7500621609f45`
-starknet,keccak: `0x03df89310954C1dD19c941816f99dc96230479B6E16E16479F2C190fb5d57279` (temporary registered as starknet4)
-starknet,blake2s: `0x00e0d8c4ccCD8892205fcfA6F0C62F572612e9E1ee68F366B35b05cEbE533cf1`
+## Main contracts
+
+FactRegistry: [0x5e419037d00bc53273574e5e98cdd1c9be025a974ab08382d3052f419756cd8](https://sepolia.voyager.online/contract/0x5e419037d00bc53273574e5e98cdd1c9be025a974ab08382d3052f419756cd8#readContract)
+
+Proxy: [0x1c74507b566047b76c625f75d6ea7987fb1e3b3f225c7dd7836bd7381f6ef44](https://sepolia.voyager.online/contract/0x1c74507b566047b76c625f75d6ea7987fb1e3b3f225c7dd7836bd7381f6ef44#readContract)
+
+## Verifiers
+
+| layout    | hasher | address                                                                                                                                                                                        |
+| --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| recursive | keccak | [0x05ab958fbb0ee6bdb22bbcdd2f14310332af8b4ae1df6670e6b27f85a164dea9](https://sepolia.voyager.online/contract/0x05ab958fbb0ee6bdb22bbcdd2f14310332af8b4ae1df6670e6b27f85a164dea9#writeContract) |
