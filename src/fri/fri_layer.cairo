@@ -9,7 +9,7 @@ struct FriLayerComputationParams {
     eval_point: felt252,
 }
 
-#[derive(Drop, Copy, PartialEq)]
+#[derive(Drop, Copy, PartialEq, Serde)]
 struct FriLayerQuery {
     index: felt252,
     y_value: felt252,
@@ -51,7 +51,8 @@ fn compute_coset_elements(
             coset_elements.append(query.y_value);
             coset_x_inv = query.x_inv_value * (*fri_group.at(i));
         } else {
-            coset_elements.append(*sibling_witness.pop_front().unwrap());
+            coset_elements
+                .append(*sibling_witness.pop_front().expect('invalid sibling_withness length'));
         }
 
         i += 1;

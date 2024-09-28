@@ -14,10 +14,15 @@ jobs:
     strategy:
       matrix:
         cairo_version: ["cairo0", "cairo1"]
-        layout: ["dex", "recursive", "recursive_with_poseidon", "small", "starknet", "starknet_with_keccak"]
+        layout: ["recursive", "recursive_with_poseidon", "small", "dex", "starknet", "starknet_with_keccak"]
+        hash_function: ["keccak"]
+        hasher_bit_length: ["160_lsb"]
+        stone_version: ["stone5"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          lfs: true
       
       - name: Setup Scarb
         uses: software-mansion/setup-scarb@v1
@@ -25,21 +30,8 @@ jobs:
       - name: Setup Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
       
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      
-      - name: Configure layout
-        run: python configure.py -l ${{ matrix.layout }} -s keccak
-      
       - name: Build project
-        run: scarb build
+        run: scarb build --no-default-features --features monolith,${{ matrix.layout }},${{ matrix.hash_function }}
       
       - name: Run verification
-        run: cargo run --release --bin runner -- -p target/dev/cairo_verifier.sierra.json -c ${{ matrix.cairo_version }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_example_proof.json
+        run: cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json --cairo-version ${{ matrix.cairo_version }} --stone-version ${{ matrix.stone_version }} --hasher-bit-length ${{ matrix.hasher_bit_length }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_${{ matrix.stone_version }}_${{ matrix.hash_function }}_${{ matrix.hasher_bit_length }}_example_proof.json

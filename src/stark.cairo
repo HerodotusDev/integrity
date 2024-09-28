@@ -5,57 +5,14 @@ mod stark_verify;
 mod tests;
 
 use cairo_verifier::{
-    air::{
-        public_input::{PublicInput, get_public_input_hash},
-        // === DEX BEGIN ===
-        // layouts::dex::{
-        // traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,
-        // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-        // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
-        // },
-        // === DEX END ===
-        // === RECURSIVE BEGIN ===
-        layouts::recursive::{
-            traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
-            traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-            constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
-        },
-    // === RECURSIVE END ===
-    // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // layouts::recursive_with_poseidon::{
-    // traces::{TracesConfig, TracesConfigTrait},
-    // public_input::RecursiveWithPoseidonPublicInputImpl,
-    // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
-    // },
-    // === RECURSIVE_WITH_POSEIDON END ===
-    // === SMALL BEGIN ===
-    // layouts::small::{
-    // traces::{TracesConfig, TracesConfigTrait}, public_input::SmallPublicInputImpl,
-    // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
-    // },
-    // === SMALL END ===
-    // === STARKNET BEGIN ===
-    // layouts::starknet::{
-    // traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetPublicInputImpl,
-    // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
-    // },
-    // === STARKNET END ===
-    // === STARKNET_WITH_KECCAK BEGIN ===
-    // layouts::starknet_with_keccak::{
-    // traces::{TracesConfig, TracesConfigTrait},
-    // public_input::StarknetWithKeccakPublicInputImpl,
-    // traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    // constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
-    // },
-    // === STARKNET_WITH_KECCAK END ===
-    },
+    air::{public_input::{PublicInput, get_public_input_hash},},
     channel::channel::{Channel, ChannelImpl},
     fri::{
         fri_config::{FriConfig, FriConfigTrait},
-        fri::{FriUnsentCommitment, FriWitness, FriCommitment}
+        fri::{
+            FriUnsentCommitment, FriWitness, FriCommitment, FriVerificationStateConstant,
+            FriVerificationStateVariable, FriLayerWitness, fri_verify_step, fri_verify_final
+        }
     },
     queries::queries, domains::StarkDomainsImpl,
     table_commitment::table_commitment::{
@@ -65,7 +22,44 @@ use cairo_verifier::{
         config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
         proof_of_work::ProofOfWorkUnsentCommitment
     },
-    vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
+    vector_commitment::vector_commitment::VectorCommitmentConfigTrait, settings::VerifierSettings,
+};
+use starknet::ContractAddress;
+#[cfg(feature: 'dex')]
+use cairo_verifier::air::layouts::dex::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
+#[cfg(feature: 'recursive')]
+use cairo_verifier::air::layouts::recursive::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
+};
+#[cfg(feature: 'recursive_with_poseidon')]
+use cairo_verifier::air::layouts::recursive_with_poseidon::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::RecursiveWithPoseidonPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
+#[cfg(feature: 'small')]
+use cairo_verifier::air::layouts::small::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::SmallPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
+#[cfg(feature: 'starknet')]
+use cairo_verifier::air::layouts::starknet::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
+#[cfg(feature: 'starknet_with_keccak')]
+use cairo_verifier::air::layouts::starknet_with_keccak::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 
 #[derive(Drop, Serde)]
@@ -78,9 +72,14 @@ struct StarkProof {
 
 #[generate_trait]
 impl StarkProofImpl of StarkProofTrait {
-    fn verify(self: @StarkProof, security_bits: felt252) {
+    fn verify_initial(
+        self: @StarkProof,
+        composition_contract_address: ContractAddress,
+        oods_contract_address: ContractAddress,
+        settings: @VerifierSettings,
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32) {
         // Validate config.
-        self.config.validate(security_bits);
+        let security_bits = self.config.validate();
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
@@ -89,14 +88,24 @@ impl StarkProofImpl of StarkProofTrait {
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
-        let digest = get_public_input_hash(self.public_input);
+        let digest = get_public_input_hash(
+            self.public_input, *self.config.n_verifier_friendly_commitment_layers, settings
+        );
+
         // Construct the channel.
         let mut channel = ChannelImpl::new(digest);
 
         // STARK commitment phase.
         let stark_commitment = stark_commit::stark_commit(
-            ref channel, self.public_input, self.unsent_commitment, self.config, @stark_domains,
+            ref channel,
+            self.public_input,
+            self.unsent_commitment,
+            self.config,
+            @stark_domains,
+            composition_contract_address
         );
+
+        let last_layer_coefficients = stark_commitment.fri.last_layer_coefficients;
 
         // Generate queries.
         let queries = queries::generate_queries(
@@ -106,14 +115,64 @@ impl StarkProofImpl of StarkProofTrait {
         );
 
         // STARK verify phase.
-        stark_verify::stark_verify(
+        let (con, var) = stark_verify::stark_verify(
             NUM_COLUMNS_FIRST,
             NUM_COLUMNS_SECOND,
             queries.span(),
             stark_commitment,
             *self.witness,
-            stark_domains
-        )
+            stark_domains,
+            oods_contract_address,
+            settings,
+        );
+        (con, var, last_layer_coefficients, security_bits)
+    }
+
+    fn verify_step(
+        stateConstant: FriVerificationStateConstant,
+        stateVariable: FriVerificationStateVariable,
+        witness: FriLayerWitness,
+        settings: @VerifierSettings,
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
+        fri_verify_step(stateConstant, stateVariable, witness, settings)
+    }
+
+    fn verify_final(
+        stateConstant: FriVerificationStateConstant,
+        stateVariable: FriVerificationStateVariable,
+        last_layer_coefficients: Span<felt252>,
+    ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
+        fri_verify_final(stateConstant, stateVariable, last_layer_coefficients)
+    }
+
+    fn verify(
+        self: @StarkProof,
+        composition_contract_address: ContractAddress,
+        oods_contract_address: ContractAddress,
+        settings: @VerifierSettings,
+    ) -> u32 {
+        let (mut con, mut var, last_layer_coefficients, security_bits) = self
+            .verify_initial(composition_contract_address, oods_contract_address, settings);
+
+        let n = con.n_layers;
+        let mut i = 0;
+        loop {
+            if i == n {
+                break;
+            }
+
+            let (new_con, new_var) = Self::verify_step(
+                con, var, *(*self.witness.fri_witness.layers).at(i), settings
+            );
+            var = new_var;
+            con = new_con;
+
+            i += 1;
+        };
+
+        let (_, new_var) = Self::verify_final(con, var, last_layer_coefficients);
+        assert(new_var.iter.into() == n + 1, 'Verification not finalized');
+        security_bits
     }
 }
 
@@ -136,17 +195,9 @@ struct StarkConfig {
 
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
-    fn validate(self: @StarkConfig, security_bits: felt252) {
+    fn validate(self: @StarkConfig) -> u32 {
         // Validate Proof of work config.
         self.proof_of_work.validate();
-
-        // Check security bits.
-        assert(
-            Into::<felt252, u256>::into(security_bits) <= (*self.n_queries).into()
-                * (*self.log_n_cosets).into()
-                + (*self.proof_of_work.n_bits).into(),
-            'Invalid security bits'
-        );
 
         // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
@@ -160,6 +211,13 @@ impl StarkConfigImpl of StarkConfigTrait {
 
         // Validate Fri config.
         self.fri.validate(*self.log_n_cosets, *self.n_verifier_friendly_commitment_layers);
+
+        // Security bits.
+        let n_queries: u32 = (*self.n_queries).try_into().unwrap();
+        let log_n_cosets: u32 = (*self.log_n_cosets).try_into().unwrap();
+        let proof_of_work_bits: u32 = (*self.proof_of_work.n_bits).try_into().unwrap();
+
+        n_queries * log_n_cosets + proof_of_work_bits
     }
 }
 

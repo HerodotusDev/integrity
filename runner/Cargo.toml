@@ -7,7 +7,6 @@ edition.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-cairo-felt.workspace = true
 cairo-lang-casm.workspace = true
 cairo-lang-runner.workspace = true
 cairo-lang-sierra.workspace = true
@@ -18,5 +17,6 @@ itertools.workspace = true
 num-bigint.workspace = true
 serde_json.workspace = true
 serde.workspace = true
+starknet-types-core.workspace = true
 swiftness_proof_parser.workspace = true
 thiserror.workspace = true

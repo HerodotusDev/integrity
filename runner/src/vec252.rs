@@ -1,4 +1,4 @@
-use cairo_felt::Felt252;
+use cairo_vm::Felt252;
 use serde::{de::Visitor, Deserialize};
 use serde_json::Value;
 use std::{ops::Deref, str::FromStr};
@@ -12,6 +12,8 @@ pub enum VecFelt252Error {
     BigIntParseError(#[from] num_bigint::ParseBigIntError),
     #[error("number out of range")]
     NumberOutOfRange,
+    #[error("failed to parse felt: {0}")]
+    FeltParseError(#[from] starknet_types_core::felt::FromStrError),
 }
 
 /// `VecFelt252` is a wrapper around a vector of `Arg`.
@@ -77,8 +79,7 @@ impl VecFelt252 {
                     args.push(Felt252::from(n));
                 }
                 Value::String(n) => {
-                    let n = num_bigint::BigUint::from_str(n)?;
-                    args.push(Felt252::from_bytes_be(&n.to_bytes_be()));
+                    args.push(Felt252::from_str(n)?);
                 }
                 Value::Array(a) => {
                     args.push(Felt252::from(a.len()));

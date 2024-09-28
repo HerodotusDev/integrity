@@ -2,6 +2,7 @@ use cairo_verifier::{
     stark::stark_verify::stark_verify,
     air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
     tests::stone_proof_fibonacci_keccak,
+    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
 };
 
 fn bench_stark_verify() {
@@ -10,7 +11,19 @@ fn bench_stark_verify() {
     let witness = stone_proof_fibonacci_keccak::stark::witness::get();
     let stark_domains = stone_proof_fibonacci_keccak::stark::domains::get();
 
+    let settings = VerifierSettings {
+        cairo_version: CairoVersion::Cairo0,
+        hasher_bit_length: HasherBitLength::Lsb160,
+        stone_version: StoneVersion::Stone5,
+    };
     stark_verify(
-        NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, queries, commitment, witness, stark_domains,
-    )
+        NUM_COLUMNS_FIRST,
+        NUM_COLUMNS_SECOND,
+        queries,
+        commitment,
+        witness,
+        stark_domains,
+        0.try_into().unwrap(),
+        @settings,
+    );
 }

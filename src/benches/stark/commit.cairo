@@ -13,5 +13,12 @@ fn bench_stark_commit() {
     let config = stone_proof_fibonacci_keccak::stark::config::get();
     let stark_domains = stone_proof_fibonacci_keccak::stark::domains::get();
 
-    stark_commit(ref channel, @public_input, @unsent_commitment, @config, @stark_domains);
+    stark_commit(
+        ref channel,
+        @public_input,
+        @unsent_commitment,
+        @config,
+        @stark_domains,
+        0.try_into().unwrap()
+    );
 }

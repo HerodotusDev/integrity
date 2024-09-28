@@ -1,23 +1,5 @@
 use cairo_verifier::{
     domains::StarkDomains, air::constants::{MAX_ADDRESS, INITIAL_PC},
-    // === DEX BEGIN ===
-    // air::layouts::dex::constants::segments,
-    // === DEX END ===
-    // === RECURSIVE BEGIN ===
-    air::layouts::recursive::constants::segments,
-    // === RECURSIVE END ===
-    // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // air::layouts::recursive_with_poseidon::constants::segments,
-    // === RECURSIVE_WITH_POSEIDON END ===
-    // === SMALL BEGIN ===
-    // air::layouts::small::constants::segments,
-    // === SMALL END ===
-    // === STARKNET BEGIN ===
-    // air::layouts::starknet::constants::segments,
-    // === STARKNET END ===
-    // === STARKNET_WITH_KECCAK BEGIN ===
-    // air::layouts::starknet_with_keccak::constants::segments,
-    // === STARKNET_WITH_KECCAK END ===
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
     },
@@ -25,10 +7,23 @@ use cairo_verifier::{
         array_extend::ArrayExtend, array_append::ArrayAppendTrait,
         math::{pow, Felt252PartialOrd, Felt252Div},
     },
+    settings::{StoneVersion, VerifierSettings},
 };
-
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
+#[cfg(feature: 'dex')]
+use cairo_verifier::air::layouts::dex::constants::segments;
+#[cfg(feature: 'recursive')]
+use cairo_verifier::air::layouts::recursive::constants::segments;
+#[cfg(feature: 'recursive_with_poseidon')]
+use cairo_verifier::air::layouts::recursive_with_poseidon::constants::segments;
+#[cfg(feature: 'small')]
+use cairo_verifier::air::layouts::small::constants::segments;
+#[cfg(feature: 'starknet')]
+use cairo_verifier::air::layouts::starknet::constants::segments;
+#[cfg(feature: 'starknet_with_keccak')]
+use cairo_verifier::air::layouts::starknet_with_keccak::constants::segments;
+
 
 #[derive(Drop, Copy, PartialEq, Serde)]
 struct SegmentInfo {
@@ -52,20 +47,19 @@ struct PublicInput {
     continuous_page_headers: Array<ContinuousPageHeader>
 }
 
-#[derive(Drop, Copy, PartialEq, Serde)]
-enum CairoVersion {
-    Cairo0,
-    Cairo1,
-}
-
 trait PublicInputTrait {
     fn verify_cairo0(self: @PublicInput) -> (felt252, felt252);
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252);
     fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
 
-// Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir heuristic.
-fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
+// Computes the hash of the public input, which is used as the initial seed for the Fiat-Shamir
+// heuristic.
+fn get_public_input_hash(
+    public_input: @PublicInput,
+    n_verifier_friendly_commitment_layers: felt252,
+    settings: @VerifierSettings,
+) -> felt252 {
     // Main page hash.
     let mut main_page_hash_state = PedersenTrait::new(0);
     let mut i: u32 = 0;
@@ -81,10 +75,15 @@ fn get_public_input_hash(public_input: @PublicInput) -> felt252 {
     let main_page_hash = main_page_hash_state.finalize();
 
     let mut hash_data = ArrayTrait::<felt252>::new();
+
+    if *settings.stone_version == StoneVersion::Stone6 {
+        hash_data.append(n_verifier_friendly_commitment_layers);
+    }
     hash_data.append(*public_input.log_n_steps);
     hash_data.append(*public_input.range_check_min);
     hash_data.append(*public_input.range_check_max);
     hash_data.append(*public_input.layout);
+
     hash_data.extend(public_input.dynamic_params.span());
 
     // Segments.
@@ -186,22 +185,25 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     (program_hash, output_hash)
 }
 
-// === RECURSIVE BEGIN ===
+
+#[cfg(feature: 'recursive')]
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
     use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
+    use cairo_verifier::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
+        let settings = VerifierSettings {
+            cairo_version: CairoVersion::Cairo1,
+            hasher_bit_length: HasherBitLength::Lsb160,
+            stone_version: StoneVersion::Stone5,
+        };
         let public_input = get();
-        let hash = get_public_input_hash(@public_input);
-
+        let hash = get_public_input_hash(@public_input, 0, @settings);
         assert(
             hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
         )
     }
 }
-// === RECURSIVE END ===
-
-

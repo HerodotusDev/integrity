@@ -7,7 +7,7 @@ use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use clap::Parser;
 use itertools::{chain, Itertools};
-use runner::CairoVersion;
+use runner::{CairoVersion, HasherBitLength, StoneVersion};
 use std::{
     fs,
     io::{stdin, Read},
@@ -24,8 +24,14 @@ struct Cli {
     #[clap(short, long)]
     program: String,
     /// Cairo version - public memory pattern
-    #[clap(value_enum, short, long, default_value_t=CairoVersion::Cairo0)]
+    #[clap(value_enum, short, long)]
     cairo_version: CairoVersion,
+    /// Stone version
+    #[clap(value_enum, short, long)]
+    stone_version: StoneVersion,
+    /// Hasher bit length
+    #[clap(value_enum, short, long)]
+    hasher_bit_length: HasherBitLength,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -66,6 +72,8 @@ fn main() -> anyhow::Result<()> {
     let args = &[
         Arg::Array(proof.into_iter().map(Arg::Value).collect_vec()),
         Arg::Value(cli.cairo_version.into()),
+        Arg::Value(cli.hasher_bit_length.into()),
+        Arg::Value(cli.stone_version.into()),
     ];
     let result = runner
         .run_function_with_starknet_context(func, args, Some(u32::MAX as usize), Default::default())

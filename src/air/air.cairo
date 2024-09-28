@@ -1,3 +1,5 @@
+use starknet::ContractAddress;
+
 trait AIRComposition<IE, PI> {
     fn eval_composition_polynomial(
         interaction_elements: IE,
@@ -6,7 +8,8 @@ trait AIRComposition<IE, PI> {
         constraint_coefficients: Span<felt252>,
         point: felt252,
         trace_domain_size: felt252,
-        trace_generator: felt252
+        trace_generator: felt252,
+        contract_address: ContractAddress,
     ) -> felt252;
 }
 
@@ -18,5 +21,6 @@ trait AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        contract_address: ContractAddress,
     ) -> felt252;
 }

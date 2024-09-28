@@ -1,0 +1,4 @@
+[sncast.default]
+accounts-file = "~/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+account = "my-sepolia-account"
+url = "https://free-rpc.nethermind.io/sepolia-juno/v0_7"

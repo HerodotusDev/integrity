@@ -1,47 +1,41 @@
 use cairo_verifier::{
-    // === DEX BEGIN ===
-    // air::layouts::dex::{
-    // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    // traces::traces_commit,
-    // },
-    // === DEX END ===
-    // === RECURSIVE BEGIN ===
-    air::layouts::recursive::{
-        constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-        traces::traces_commit,
-    },
-    // === RECURSIVE END ===
-    // === RECURSIVE_WITH_POSEIDON BEGIN ===
-    // air::layouts::recursive_with_poseidon::{
-    // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    // traces::traces_commit,
-    // },
-    // === RECURSIVE_WITH_POSEIDON END ===
-    // === SMALL BEGIN ===
-    // air::layouts::small::{
-    // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    // traces::traces_commit,
-    // },
-    // === SMALL END ===
-    // === STARKNET BEGIN ===
-    // air::layouts::starknet::{
-    // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    // traces::traces_commit,
-    // },
-    // === STARKNET END ===
-    // === STARKNET_WITH_KECCAK BEGIN ===
-    // air::layouts::starknet_with_keccak::{
-    // constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    // traces::traces_commit,
-    // },
-    // === STARKNET_WITH_KECCAK END ===
     channel::channel::{Channel, ChannelTrait}, common::powers_array::powers_array,
     domains::StarkDomains, fri::fri::fri_commit,
     stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
     proof_of_work::proof_of_work::proof_of_work_commit,
     table_commitment::table_commitment::table_commit, oods::verify_oods,
 };
-
+use starknet::ContractAddress;
+#[cfg(feature: 'dex')]
+use cairo_verifier::air::layouts::dex::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
+#[cfg(feature: 'recursive')]
+use cairo_verifier::air::layouts::recursive::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
+#[cfg(feature: 'recursive_with_poseidon')]
+use cairo_verifier::air::layouts::recursive_with_poseidon::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
+#[cfg(feature: 'small')]
+use cairo_verifier::air::layouts::small::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
+#[cfg(feature: 'starknet')]
+use cairo_verifier::air::layouts::starknet::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
+#[cfg(feature: 'starknet_with_keccak')]
+use cairo_verifier::air::layouts::starknet_with_keccak::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
 
 // STARK commitment phase.
 fn stark_commit(
@@ -50,6 +44,7 @@ fn stark_commit(
     unsent_commitment: @StarkUnsentCommitment,
     config: @StarkConfig,
     stark_domains: @StarkDomains,
+    contract_address: ContractAddress,
 ) -> StarkCommitment {
     // Read the commitment of the 'traces' component.
     let traces_commitment = traces_commit(ref channel, *unsent_commitment.traces, *config.traces,);
@@ -78,6 +73,7 @@ fn stark_commit(
         interaction_after_composition,
         *stark_domains.trace_domain_size,
         *stark_domains.trace_generator,
+        contract_address,
     );
 
     // Generate interaction values after OODS.
