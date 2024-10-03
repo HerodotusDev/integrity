@@ -263,7 +263,7 @@ fn hash_array(mut array: Span<felt252>) -> felt252 {
 // TODO: probably commitment can be moved to separate struct StateFinalize together with
 // last_layer_coefficients
 
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Clone)]
 struct FriVerificationStateConstant {
     n_layers: u32,
     commitment: Span<TableCommitment>,
@@ -295,7 +295,7 @@ fn hash_constant(state: @FriVerificationStateConstant) -> felt252 {
     }
 }
 
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Clone)]
 struct FriVerificationStateVariable {
     iter: u32,
     queries: Span<FriLayerQuery>,

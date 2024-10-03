@@ -56,3 +56,46 @@ fn main(mut serialized: Span<felt252>, settings: @VerifierSettings) -> (felt252,
 
     (program_hash, output_hash)
 }
+
+use cairo_verifier::fri::fri::{FriVerificationStateConstant, FriVerificationStateVariable};
+use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
+
+struct Calldata {
+    const_state: FriVerificationStateConstant,
+    variable_state: Span<FriVerificationStateVariable>,
+    fact_hash: felt252,
+}
+
+fn get_calldata(mut serialized: Span<felt252>, settings: @VerifierSettings) -> Calldata {
+    let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
+    let stark_proof: StarkProof = stark_proof_serde.into();
+    let (program_hash, output_hash) = match settings.cairo_version {
+        CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
+        CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+    };
+
+    let mut variable_states = array![];
+
+    let fact_hash = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
+    
+    let (mut const_state, mut variable_state, last_layer_coefficients, _) = stark_proof
+        .verify_initial(0.try_into().unwrap(), 0.try_into().unwrap(), settings);
+
+    for witness in stark_proof.witness.fri_witness.layers {
+        variable_states.append(variable_state.clone());
+        let (new_const_state, new_variable_state) = StarkProofImpl::verify_step(
+            const_state, variable_state, *witness, settings
+        );
+        variable_state = new_variable_state;
+        const_state = new_const_state;
+    };
+
+    variable_states.append(variable_state.clone());
+    StarkProofImpl::verify_final(const_state.clone(), variable_state, last_layer_coefficients);
+
+    Calldata {
+        const_state,
+        variable_state: variable_states.span(),
+        fact_hash,
+    }
+}
