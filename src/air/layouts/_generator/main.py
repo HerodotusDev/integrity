@@ -481,6 +481,13 @@ def handle_github_file(url, output_file, layout, settings={}):
 def main():
     # layouts = ('recursive', 'recursive_with_poseidon', 'small', 'dex', 'starknet', 'starknet_with_keccak')
     layout_settings = {
+        'all_cairo': {
+            'eval_oods_polynomial': { 'value_opt_level': OptLevel.POW_ARRAY },
+            'eval_composition_polynomial': {
+                'split': [219, 69, 132],
+                'value_opt_level': OptLevel.VALUE_ARRAY,
+            },
+        },
         'recursive': {
             'eval_oods_polynomial': { 'value_opt_level': OptLevel.VALUE_ARRAY },
             'eval_composition_polynomial': { 'value_opt_level': OptLevel.VALUE_ARRAY },

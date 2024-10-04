@@ -1,3 +1,5 @@
+#[cfg(feature: 'all_cairo')]
+mod all_cairo;
 #[cfg(feature: 'dex')]
 mod dex;
 #[cfg(feature: 'recursive')]

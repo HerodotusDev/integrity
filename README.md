@@ -84,7 +84,7 @@ By default, the verifier is configured for monolith version, recursive layout an
 scarb build --no-default-features --features small,blake2s,monolith
 ```
 
-`layout`: [`dex`, `recursive`, `recursive_with_poseidon`, `small`, `starknet`, `starknet_with_keccak`]<br />
+`layout`: [`all_cairo`, `dex`, `recursive`, `recursive_with_poseidon`, `small`, `starknet`, `starknet_with_keccak`]<br />
 hash functions: [`keccak`, `blake2s`]<br />
 verifier types: [`monolith`, `split`]
 

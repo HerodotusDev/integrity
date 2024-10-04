@@ -2,6 +2,12 @@ use cairo_verifier::{
     common::array_extend::ArrayExtendTrait, table_commitment::table_commitment::TableDecommitment
 };
 use starknet::ContractAddress;
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::{
+    AIRComposition, AIROods, AllCairoAIRCompositionImpl, AllCairoAIROodsImpl,
+    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+    constants::CONSTRAINT_DEGREE,
+};
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::{
     AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,

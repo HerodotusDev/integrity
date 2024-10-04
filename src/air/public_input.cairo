@@ -11,6 +11,8 @@ use cairo_verifier::{
 };
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::constants::segments;
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::constants::segments;
 #[cfg(feature: 'recursive')]

@@ -24,6 +24,8 @@ use cairo_verifier::{
 };
 use starknet::contract_address::ContractAddressZero;
 
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::public_input::AllCairoPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'recursive')]

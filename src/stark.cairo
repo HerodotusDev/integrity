@@ -25,6 +25,12 @@ use cairo_verifier::{
     vector_commitment::vector_commitment::VectorCommitmentConfigTrait, settings::VerifierSettings,
 };
 use starknet::ContractAddress;
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::AllCairoPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
+    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,

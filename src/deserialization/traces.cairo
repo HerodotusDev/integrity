@@ -13,6 +13,10 @@ use cairo_verifier::{
         TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
     },
 };
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::{
+    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+};
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::{
     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
