@@ -7,7 +7,7 @@ unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x8c8f78c23dc076ed1e2211724e7742f6c9e4282d105050d93c4c94c2e9dec7"
+class_hash = "0x338e2ab9e0f32f3d46ddc8eddbf022f3d337c9a608d021b7e6439043b4ee41e"
 inputs = ["0", "contract_oods"]
 id = "cairo_verifier"
 unique = false
