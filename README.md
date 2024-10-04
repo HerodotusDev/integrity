@@ -44,7 +44,7 @@ After that, you can use `verify-on-starknet.sh` script to send the transaction t
 For example, run:
 
 ```bash
-./verify-on-starknet.sh 0x1c74507b566047b76c625f75d6ea7987fb1e3b3f225c7dd7836bd7381f6ef44 examples/calldata recursive keccak_248_lsb stone5 cairo0
+./verify-on-starknet.sh 0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a examples/calldata recursive keccak_248_lsb stone5 cairo0
 ```
 
 This bash script internally calls `verify_proof_full_and_register_fact` function on FactRegistry contract.
