@@ -14,6 +14,8 @@ use cairo_verifier::{
     },
     stark::{StarkProof, StarkConfig, StarkUnsentCommitment, StarkWitness},
 };
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::traces::TracesConfig;
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::traces::TracesConfig;
 #[cfg(feature: 'recursive')]

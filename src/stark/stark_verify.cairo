@@ -9,6 +9,8 @@ use cairo_verifier::{
     oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points}, settings::VerifierSettings,
 };
 use starknet::ContractAddress;
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::traces::traces_decommit;
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::traces::traces_decommit;
 #[cfg(feature: 'recursive')]

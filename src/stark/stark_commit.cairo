@@ -6,6 +6,11 @@ use cairo_verifier::{
     table_commitment::table_commitment::table_commit, oods::verify_oods,
 };
 use starknet::ContractAddress;
+#[cfg(feature: 'all_cairo')]
+use cairo_verifier::air::layouts::all_cairo::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
