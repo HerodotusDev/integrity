@@ -1,15 +1,28 @@
+#[cfg(feature: 'feature_change_my_name')]
 mod air;
+#[cfg(feature: 'feature_change_my_name')]
 mod channel;
+#[cfg(feature: 'feature_change_my_name')]
 mod common;
+#[cfg(feature: 'feature_change_my_name')]
 mod deserialization;
+#[cfg(feature: 'feature_change_my_name')]
 mod domains;
+#[cfg(feature: 'feature_change_my_name')]
 mod fri;
+#[cfg(feature: 'feature_change_my_name')]
 mod oods;
+#[cfg(feature: 'feature_change_my_name')]
 mod proof_of_work;
+#[cfg(feature: 'feature_change_my_name')]
 mod queries;
+#[cfg(feature: 'feature_change_my_name')]
 mod stark;
+#[cfg(feature: 'feature_change_my_name')]
 mod table_commitment;
+#[cfg(feature: 'feature_change_my_name')]
 mod vector_commitment;
+
 mod settings;
 mod contracts;
 
@@ -18,6 +31,7 @@ mod benches;
 #[cfg(feature: 'recursive')]
 mod tests;
 
+#[cfg(feature: 'feature_change_my_name')]
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
     settings::{VerifierSettings, CairoVersion},
@@ -40,6 +54,7 @@ use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWi
 
 const SECURITY_BITS: u32 = 50;
 
+#[cfg(feature: 'feature_change_my_name')]
 #[cfg(feature: 'monolith')]
 fn main(mut serialized: Span<felt252>, settings: @VerifierSettings) -> (felt252, felt252) {
     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();
