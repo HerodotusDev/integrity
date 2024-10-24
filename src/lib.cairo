@@ -34,9 +34,15 @@ mod tests;
 #[cfg(feature: 'feature_change_my_name')]
 use cairo_verifier::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
-    settings::{VerifierSettings, CairoVersion},
 };
+#[cfg(feature: 'feature_change_my_name')]
 use starknet::contract_address::ContractAddressZero;
+
+// re-export
+use cairo_verifier::{
+    contracts::fact_registry_interface::{IFactRegistry, IFactRegistryDispatcher, IFactRegistryDispatcherTrait},
+    settings::{FactHash, VerificationHash, PresetHash, SecurityBits, JobId, CairoVersion, HasherBitLength, StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration, split_settings},
+};
 
 #[cfg(feature: 'dex')]
 use cairo_verifier::air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl;
@@ -52,6 +58,7 @@ use cairo_verifier::air::layouts::starknet::public_input::StarknetPublicInputImp
 use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl;
 
 
+#[cfg(feature: 'feature_change_my_name')]
 const SECURITY_BITS: u32 = 50;
 
 #[cfg(feature: 'feature_change_my_name')]
