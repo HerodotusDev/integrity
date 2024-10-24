@@ -1,7 +1,5 @@
 use cairo_verifier::{
-    settings::{
-        FactHash, VerifierPreset, VerificationHash, SecurityBits, VerifierConfiguration,
-    },
+    settings::{FactHash, VerifierPreset, VerificationHash, SecurityBits, VerifierConfiguration,},
 };
 use starknet::ContractAddress;
 

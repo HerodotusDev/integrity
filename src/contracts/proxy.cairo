@@ -71,9 +71,7 @@ mod Proxy {
                 VerifierConfiguration, FactRegistered, VerificationListElement, Verification,
                 VerifierPreset
             },
-            fact_registry_interface::{
-                IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
-            }
+            fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait,}
         },
         StarkProofWithSerde, StarkProof, CairoVersion,
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
@@ -112,7 +110,9 @@ mod Proxy {
             verifier_config: VerifierConfiguration,
             stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
-            let fact = IFactRegistryExternalDispatcher { contract_address: self.fact_registry.read() }
+            let fact = IFactRegistryExternalDispatcher {
+                contract_address: self.fact_registry.read()
+            }
                 .verify_proof_full_and_register_fact(verifier_config, stark_proof);
 
             self.emit(fact);
@@ -147,7 +147,9 @@ mod Proxy {
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
         ) -> FactRegistered {
-            let fact = IFactRegistryExternalDispatcher { contract_address: self.fact_registry.read() }
+            let fact = IFactRegistryExternalDispatcher {
+                contract_address: self.fact_registry.read()
+            }
                 .verify_proof_final_and_register_fact(
                     job_id, state_constant, state_variable, last_layer_coefficients
                 );

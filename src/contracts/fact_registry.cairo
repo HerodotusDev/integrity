@@ -2,8 +2,7 @@ use cairo_verifier::{
     StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     contracts::{
-        fact_registry_interface::{VerificationListElement, Verification},
-        verifier::InitResult,
+        fact_registry_interface::{VerificationListElement, Verification}, verifier::InitResult,
     },
     settings::{
         VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, CairoVersion,
@@ -11,7 +10,6 @@ use cairo_verifier::{
     },
 };
 use starknet::ContractAddress;
-
 
 
 #[derive(Drop, Copy, Serde, starknet::Event)]
@@ -77,7 +75,9 @@ mod FactRegistry {
             VerificationHash, PresetHash, SecurityBits,
         },
         contracts::{
-            fact_registry::{VerificationListElement, Verification, IFactRegistryExternal, FactRegistered},
+            fact_registry::{
+                VerificationListElement, Verification, IFactRegistryExternal, FactRegistered
+            },
             fact_registry_interface::IFactRegistry,
         }
     };

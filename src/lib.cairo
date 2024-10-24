@@ -40,8 +40,13 @@ use starknet::contract_address::ContractAddressZero;
 
 // re-export
 use cairo_verifier::{
-    contracts::fact_registry_interface::{IFactRegistry, IFactRegistryDispatcher, IFactRegistryDispatcherTrait},
-    settings::{FactHash, VerificationHash, PresetHash, SecurityBits, JobId, CairoVersion, HasherBitLength, StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration, split_settings},
+    contracts::fact_registry_interface::{
+        IFactRegistry, IFactRegistryDispatcher, IFactRegistryDispatcherTrait
+    },
+    settings::{
+        FactHash, VerificationHash, PresetHash, SecurityBits, JobId, CairoVersion, HasherBitLength,
+        StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration, split_settings
+    },
 };
 
 #[cfg(feature: 'dex')]
