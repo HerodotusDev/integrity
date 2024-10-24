@@ -7,7 +7,6 @@ starknet = "2.8.4"
 
 [dev-dependencies]
 cairo_test = "2.8.4"
-snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.32.0" }
 
 [[target.starknet-contract]]
 casm = true
