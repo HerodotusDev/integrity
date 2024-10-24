@@ -19,12 +19,14 @@ casm = false
 
 [features]
 
-recursive = []
-recursive_with_poseidon = []
-dex = []
-small = []
-starknet = []
-starknet_with_keccak = []
+feature_change_my_name = []
+
+recursive = ["feature_change_my_name"]
+recursive_with_poseidon = ["feature_change_my_name"]
+dex = ["feature_change_my_name"]
+small = ["feature_change_my_name"]
+starknet = ["feature_change_my_name"]
+starknet_with_keccak = ["feature_change_my_name"]
 
 keccak = []
 blake2s = []
