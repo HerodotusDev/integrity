@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     channel::channel::{Channel, ChannelTrait},
     common::{
         merge_sort::merge_sort, math::pow, consts::FIELD_GENERATOR, bit_reverse::BitReverseTrait

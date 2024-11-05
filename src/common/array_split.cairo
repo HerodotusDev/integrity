@@ -1,4 +1,4 @@
-use cairo_verifier::common::array_extend::ArrayExtendTrait;
+use integrity::common::array_extend::ArrayExtendTrait;
 
 #[generate_trait]
 impl ArraySplit<T, +Copy<T>, +Drop<T>> of ArraySplitTrait<T> {

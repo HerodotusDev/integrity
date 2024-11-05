@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::layouts::recursive::{traces::TracesCommitment, global_values::InteractionElements},
     table_commitment::table_commitment::TableCommitment,
     vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment},

@@ -1,5 +1,5 @@
 use starknet::contract_address::ContractAddressZero;
-use cairo_verifier::{
+use integrity::{
     stark::{StarkProof, StarkProofTrait}, tests::stone_proof_fibonacci_keccak,
     settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
 };

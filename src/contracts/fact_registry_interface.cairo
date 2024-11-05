@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     settings::{FactHash, VerifierPreset, VerificationHash, SecurityBits, VerifierConfiguration,},
 };
 use starknet::ContractAddress;

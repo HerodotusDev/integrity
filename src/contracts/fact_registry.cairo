@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     contracts::{
@@ -66,7 +66,7 @@ trait IFactRegistryExternal<TContractState> {
 
 #[starknet::contract]
 mod FactRegistry {
-    use cairo_verifier::{
+    use integrity::{
         StarkProofWithSerde, StarkProof, CairoVersion,
         contracts::verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},

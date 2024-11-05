@@ -1,4 +1,4 @@
-use cairo_verifier::{fri::fri_config::FriConfigTrait, tests::stone_proof_fibonacci};
+use integrity::{fri::fri_config::FriConfigTrait, tests::stone_proof_fibonacci};
 
 #[test]
 #[available_gas(9999999999)]

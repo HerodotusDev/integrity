@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{asserts::assert_in_range, math::{pow, Felt252PartialOrd}},
     table_commitment::table_commitment::TableCommitmentConfig,
     vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitmentConfigTrait},

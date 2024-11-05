@@ -69,7 +69,7 @@ You can use cairo runner to run the verifier on example proof:
 
 ```bash
 cargo run --release --bin runner -- \
---program target/dev/cairo_verifier.sierra.json \
+--program target/dev/integrity.sierra.json \
 --cairo-version cairo0 \
 --stone-version stone5 \
 --hasher-bit-length 160_lsb \
@@ -113,7 +113,7 @@ scarb test
 In order to launch benchmarking, just run this (it requires recursive layout configuration):
 
 ```bash
-cargo run --release --bin benches -- target/dev/cairo_verifier.sierra.json
+cargo run --release --bin benches -- target/dev/integrity.sierra.json
 ```
 
 ## Creating a Proof

@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     table_commitment::table_commitment::{
         TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
     },

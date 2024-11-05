@@ -1,39 +1,39 @@
-use cairo_verifier::{
+use integrity::{
     common::array_extend::ArrayExtendTrait, table_commitment::table_commitment::TableDecommitment
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::{
+use integrity::air::layouts::dex::{
     AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
 };
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::{
+use integrity::air::layouts::recursive::{
     AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
 };
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::{
+use integrity::air::layouts::recursive_with_poseidon::{
     AIRComposition, AIROods, RecursiveWithPoseidonAIRCompositionImpl,
     RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements, public_input::PublicInput,
     traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
 };
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::{
+use integrity::air::layouts::small::{
     AIRComposition, AIROods, SmallAIRCompositionImpl, SmallAIROodsImpl,
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
 };
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::{
+use integrity::air::layouts::starknet::{
     AIRComposition, AIROods, StarknetAIRCompositionImpl, StarknetAIROodsImpl,
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
 };
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::{
+use integrity::air::layouts::starknet_with_keccak::{
     AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl, StarknetWithKeccakAIROodsImpl,
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
@@ -142,8 +142,8 @@ fn eval_oods_boundary_poly_at_points(
 #[cfg(feature: 'recursive')]
 #[cfg(test)]
 mod tests {
-    use cairo_verifier::oods::verify_oods;
-    use cairo_verifier::tests::stone_proof_fibonacci;
+    use integrity::oods::verify_oods;
+    use integrity::tests::stone_proof_fibonacci;
 
     #[test]
     #[available_gas(9999999999)]

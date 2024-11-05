@@ -1,4 +1,4 @@
-use cairo_verifier::vector_commitment::vector_commitment::{
+use integrity::vector_commitment::vector_commitment::{
     VectorCommitmentConfig, VectorCommitmentWitness
 };
 

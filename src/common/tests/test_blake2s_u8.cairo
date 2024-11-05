@@ -1,4 +1,4 @@
-use cairo_verifier::common::{
+use integrity::common::{
     array_append::ArrayAppendTrait, blake2s_u8::{blake2s, truncated_blake2s, load32}
 };
 

@@ -1,4 +1,4 @@
-use cairo_verifier::common::array_append::ArrayAppendTrait;
+use integrity::common::array_append::ArrayAppendTrait;
 
 #[test]
 #[available_gas(9999999999)]

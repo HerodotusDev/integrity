@@ -1,4 +1,4 @@
-use cairo_verifier::{common::{horner_eval, math::Felt252Div}, fri::fri_layer::FriLayerQuery};
+use integrity::{common::{horner_eval, math::Felt252Div}, fri::fri_layer::FriLayerQuery};
 
 // Verifies FRI last layer by evaluating the given polynomial on the given points
 // (=inverses of x_inv_values), and comparing the results to the given values.

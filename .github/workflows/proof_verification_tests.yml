@@ -1,37 +1,37 @@
 name: Continuous Integration - proof verification tests
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
-  verify-example-proofs:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        cairo_version: ["cairo0", "cairo1"]
-        layout: ["recursive", "recursive_with_poseidon", "small", "dex", "starknet", "starknet_with_keccak"]
-        hash_function: ["keccak"]
-        hasher_bit_length: ["160_lsb"]
-        stone_version: ["stone5"]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          lfs: true
-      
-      - name: Setup Scarb
-        uses: software-mansion/setup-scarb@v1
-      
-      - name: Setup Rust toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-      
-      - name: Build project
-        run: scarb build --no-default-features --features monolith,${{ matrix.layout }},${{ matrix.hash_function }}
-      
-      - name: Run verification
-        run: cargo run --release --bin runner -- --program target/dev/cairo_verifier.sierra.json --cairo-version ${{ matrix.cairo_version }} --stone-version ${{ matrix.stone_version }} --hasher-bit-length ${{ matrix.hasher_bit_length }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_${{ matrix.stone_version }}_${{ matrix.hash_function }}_${{ matrix.hasher_bit_length }}_example_proof.json
+    verify-example-proofs:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                cairo_version: ['cairo0', 'cairo1']
+                layout: ['recursive', 'recursive_with_poseidon', 'small', 'dex', 'starknet', 'starknet_with_keccak']
+                hash_function: ['keccak']
+                hasher_bit_length: ['160_lsb']
+                stone_version: ['stone5']
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+              with:
+                  lfs: true
+
+            - name: Setup Scarb
+              uses: software-mansion/setup-scarb@v1
+
+            - name: Setup Rust toolchain
+              uses: actions-rust-lang/setup-rust-toolchain@v1
+
+            - name: Build project
+              run: scarb build --no-default-features --features monolith,${{ matrix.layout }},${{ matrix.hash_function }}
+
+            - name: Run verification
+              run: cargo run --release --bin runner -- --program target/dev/integrity.sierra.json --cairo-version ${{ matrix.cairo_version }} --stone-version ${{ matrix.stone_version }} --hasher-bit-length ${{ matrix.hasher_bit_length }} < examples/proofs/${{ matrix.layout }}/${{ matrix.cairo_version }}_${{ matrix.stone_version }}_${{ matrix.hash_function }}_${{ matrix.hasher_bit_length }}_example_proof.json

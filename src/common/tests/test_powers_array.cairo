@@ -1,4 +1,4 @@
-use cairo_verifier::common::powers_array::powers_array;
+use integrity::common::powers_array::powers_array;
 
 #[test]
 #[available_gas(9999999999)]

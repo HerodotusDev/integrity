@@ -1,4 +1,4 @@
-use cairo_verifier::common::horner_eval::horner_eval;
+use integrity::common::horner_eval::horner_eval;
 
 #[test]
 #[available_gas(9999999999)]

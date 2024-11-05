@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     queries::queries::queries_to_points, domains::StarkDomains,
     fri::fri::{
         FriDecommitment, fri_verify_initial, FriVerificationStateConstant,
@@ -10,17 +10,17 @@ use cairo_verifier::{
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::traces::traces_decommit;
+use integrity::air::layouts::dex::traces::traces_decommit;
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::traces::traces_decommit;
+use integrity::air::layouts::recursive::traces::traces_decommit;
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::traces::traces_decommit;
+use integrity::air::layouts::recursive_with_poseidon::traces::traces_decommit;
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::traces::traces_decommit;
+use integrity::air::layouts::small::traces::traces_decommit;
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::traces::traces_decommit;
+use integrity::air::layouts::starknet::traces::traces_decommit;
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::traces::traces_decommit;
+use integrity::air::layouts::starknet_with_keccak::traces::traces_decommit;
 
 // STARK verify phase.
 // NOTICE: when using splitted verifier, witness.fri_witness may be ommited (empty array)

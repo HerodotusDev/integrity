@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{consts::FIELD_GENERATOR_INVERSE, math::Felt252Div}, fri::fri_layer::FriLayerQuery,
 };
 

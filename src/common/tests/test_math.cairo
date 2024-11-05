@@ -1,4 +1,4 @@
-use cairo_verifier::common::math::{pow, DivRemFelt252};
+use integrity::common::math::{pow, DivRemFelt252};
 
 #[test]
 #[available_gas(9999999999)]

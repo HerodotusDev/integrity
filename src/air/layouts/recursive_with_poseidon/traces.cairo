@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::layouts::recursive_with_poseidon::{
         constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
     },

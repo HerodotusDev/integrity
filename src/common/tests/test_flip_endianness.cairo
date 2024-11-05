@@ -1,4 +1,4 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
+use integrity::common::flip_endianness::FlipEndiannessTrait;
 
 #[test]
 #[available_gas(9999999999)]

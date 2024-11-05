@@ -1,4 +1,4 @@
-use cairo_verifier::domains::StarkDomains;
+use integrity::domains::StarkDomains;
 
 fn get() -> StarkDomains {
     return StarkDomains {

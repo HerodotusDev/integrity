@@ -1,4 +1,4 @@
-use cairo_verifier::proof_of_work::{
+use integrity::proof_of_work::{
     config::ProofOfWorkConfig, proof_of_work::ProofOfWorkUnsentCommitment
 };
 

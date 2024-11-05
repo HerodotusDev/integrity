@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     StarkProof, CairoVersion, StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     settings::{VerifierSettings, FactHash, JobId, SecurityBits},
@@ -65,7 +65,7 @@ mod CairoVerifier {
         ContractAddress,
         storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
     };
-    use cairo_verifier::{
+    use integrity::{
         CairoVersion, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
         fri::fri::{
             FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,

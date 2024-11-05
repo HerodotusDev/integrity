@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     vector_commitment::vector_commitment::{
         VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
         VectorQuery, vector_commitment_decommit,

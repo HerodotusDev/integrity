@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::layouts::dex::{
         constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
     },

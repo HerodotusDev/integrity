@@ -32,14 +32,14 @@ mod benches;
 mod tests;
 
 #[cfg(feature: 'feature_change_my_name')]
-use cairo_verifier::{
+use integrity::{
     deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
 };
 #[cfg(feature: 'feature_change_my_name')]
 use starknet::contract_address::ContractAddressZero;
 
 // re-export
-use cairo_verifier::{
+use integrity::{
     contracts::fact_registry_interface::{
         IFactRegistry, IFactRegistryDispatcher, IFactRegistryDispatcherTrait
     },
@@ -50,17 +50,17 @@ use cairo_verifier::{
 };
 
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl;
+use integrity::air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::public_input::RecursivePublicInputImpl as PublicInputImpl;
+use integrity::air::layouts::recursive::public_input::RecursivePublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl as PublicInputImpl;
+use integrity::air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::public_input::SmallPublicInputImpl as PublicInputImpl;
+use integrity::air::layouts::small::public_input::SmallPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::public_input::StarknetPublicInputImpl as PublicInputImpl;
+use integrity::air::layouts::starknet::public_input::StarknetPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl;
+use integrity::air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl;
 
 
 #[cfg(feature: 'feature_change_my_name')]

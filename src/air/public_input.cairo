@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     domains::StarkDomains, air::constants::{MAX_ADDRESS, INITIAL_PC},
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
@@ -12,17 +12,17 @@ use cairo_verifier::{
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::constants::segments;
+use integrity::air::layouts::dex::constants::segments;
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::constants::segments;
+use integrity::air::layouts::recursive::constants::segments;
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::constants::segments;
+use integrity::air::layouts::recursive_with_poseidon::constants::segments;
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::constants::segments;
+use integrity::air::layouts::small::constants::segments;
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::constants::segments;
+use integrity::air::layouts::starknet::constants::segments;
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::constants::segments;
+use integrity::air::layouts::starknet_with_keccak::constants::segments;
 
 
 #[derive(Drop, Copy, PartialEq, Serde)]
@@ -190,8 +190,8 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
-    use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
-    use cairo_verifier::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
+    use integrity::tests::stone_proof_fibonacci_keccak::public_input::get;
+    use integrity::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {

@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{array_extend::ArrayExtendTrait, math::pow}, fri::fri_formula::fri_formula
 };
 

@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::{
         public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
         public_memory::{AddrValue, Page},
@@ -15,17 +15,17 @@ use cairo_verifier::{
     stark::{StarkProof, StarkConfig, StarkUnsentCommitment, StarkWitness},
 };
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::traces::TracesConfig;
+use integrity::air::layouts::dex::traces::TracesConfig;
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::traces::TracesConfig;
+use integrity::air::layouts::recursive::traces::TracesConfig;
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::traces::TracesConfig;
+use integrity::air::layouts::recursive_with_poseidon::traces::TracesConfig;
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::traces::TracesConfig;
+use integrity::air::layouts::small::traces::TracesConfig;
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::traces::TracesConfig;
+use integrity::air::layouts::starknet::traces::TracesConfig;
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::traces::TracesConfig;
+use integrity::air::layouts::starknet_with_keccak::traces::TracesConfig;
 
 #[derive(Drop, Serde)]
 struct StarkProofWithSerde {

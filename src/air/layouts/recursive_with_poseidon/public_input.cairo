@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{
         math::{pow, Felt252PartialOrd, Felt252Div},
         asserts::{assert_range_u128_le, assert_range_u128},

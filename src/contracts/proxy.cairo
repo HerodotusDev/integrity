@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     StarkProofWithSerde, CairoVersion,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     contracts::{
@@ -62,7 +62,7 @@ trait IProxy<TContractState> {
 
 #[starknet::contract]
 mod Proxy {
-    use cairo_verifier::{
+    use integrity::{
         contracts::{
             verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
             fact_registry::{

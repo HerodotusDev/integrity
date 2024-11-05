@@ -4,7 +4,7 @@ mod stark_verify;
 #[cfg(test)]
 mod tests;
 
-use cairo_verifier::{
+use integrity::{
     air::{public_input::{PublicInput, get_public_input_hash},},
     channel::channel::{Channel, ChannelImpl},
     fri::{
@@ -26,37 +26,37 @@ use cairo_verifier::{
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::{
+use integrity::air::layouts::dex::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::{
+use integrity::air::layouts::recursive::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
 };
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::{
+use integrity::air::layouts::recursive_with_poseidon::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::RecursiveWithPoseidonPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::{
+use integrity::air::layouts::small::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::SmallPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::{
+use integrity::air::layouts::starknet::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::{
+use integrity::air::layouts::starknet_with_keccak::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
     constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}

@@ -1,4 +1,4 @@
-use cairo_verifier::common::math::pow;
+use integrity::common::math::pow;
 
 // The cumulative value is defined using the next recursive formula:
 //   r_1 = 1, r_{j+1} = r_j * (1 + z * u_j) + alpha * u_j^2

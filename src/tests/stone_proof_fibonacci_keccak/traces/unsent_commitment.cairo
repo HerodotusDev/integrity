@@ -1,4 +1,4 @@
-use cairo_verifier::air::layouts::recursive::traces::TracesUnsentCommitment;
+use integrity::air::layouts::recursive::traces::TracesUnsentCommitment;
 
 fn get() -> TracesUnsentCommitment {
     return TracesUnsentCommitment {

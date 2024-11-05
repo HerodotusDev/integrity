@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     channel::channel::{Channel, ChannelTrait},
     vector_commitment::vector_commitment::{VectorCommitmentConfig, vector_commit, VectorCommitment}
 };

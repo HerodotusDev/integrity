@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{
         flip_endianness::FlipEndiannessTrait, hasher::hash_n_bytes, array_append::ArrayAppendTrait,
         math::pow,

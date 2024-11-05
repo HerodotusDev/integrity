@@ -1,4 +1,4 @@
-use cairo_verifier::common::bit_reverse::BitReverseTrait;
+use integrity::common::bit_reverse::BitReverseTrait;
 
 #[test]
 #[available_gas(9999999999)]

@@ -35,7 +35,7 @@ fn eval_oods_polynomial_inner{x}(
 }
 
 imports = lambda layout: f"""\
-use cairo_verifier::{{
+use integrity::{{
     air::layouts::{layout}::{{
         global_values::GlobalValues,
         constants::{{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE}},

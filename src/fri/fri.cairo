@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::math::pow, channel::channel::{Channel, ChannelTrait},
     fri::{
         fri_config::FriConfig, fri_first_layer::gather_first_layer_queries,

@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     stark::stark_verify::stark_verify,
     air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
     tests::stone_proof_fibonacci_keccak,

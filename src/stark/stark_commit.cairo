@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     channel::channel::{Channel, ChannelTrait}, common::powers_array::powers_array,
     domains::StarkDomains, fri::fri::fri_commit,
     stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
@@ -7,32 +7,32 @@ use cairo_verifier::{
 };
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::{
+use integrity::air::layouts::dex::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::{
+use integrity::air::layouts::recursive::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::{
+use integrity::air::layouts::recursive_with_poseidon::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::{
+use integrity::air::layouts::small::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::{
+use integrity::air::layouts::starknet::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::{
+use integrity::air::layouts::starknet_with_keccak::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };

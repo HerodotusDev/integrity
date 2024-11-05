@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
     tests::stone_proof_fibonacci_keccak,
 };

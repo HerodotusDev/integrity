@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     queries::queries::generate_queries, channel::channel::ChannelTrait,
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };

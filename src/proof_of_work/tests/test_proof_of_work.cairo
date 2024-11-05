@@ -1,4 +1,4 @@
-use cairo_verifier::proof_of_work::proof_of_work::verify_proof_of_work;
+use integrity::proof_of_work::proof_of_work::verify_proof_of_work;
 
 #[cfg(feature: 'blake2s')]
 #[test]

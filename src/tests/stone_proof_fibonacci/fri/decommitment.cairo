@@ -1,4 +1,4 @@
-use cairo_verifier::fri::fri::FriDecommitment;
+use integrity::fri::fri::FriDecommitment;
 
 fn get() -> FriDecommitment {
     return FriDecommitment {
