@@ -79,6 +79,7 @@ fn main(mut serialized: Span<felt252>, settings: @VerifierSettings) -> (felt252,
     let (program_hash, output_hash) = match settings.cairo_version {
         CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
         CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+        CairoVersion::CairoVersionTest => (0, 0),
     };
 
     (program_hash, output_hash)

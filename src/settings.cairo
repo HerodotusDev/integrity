@@ -8,6 +8,7 @@ type JobId = felt252;
 enum CairoVersion {
     Cairo0,
     Cairo1,
+    CairoVersionTest,
 }
 
 #[derive(Drop, Copy, PartialEq, Serde, starknet::Store)]
