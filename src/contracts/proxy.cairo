@@ -1,5 +1,5 @@
 use integrity::{
-    StarkProofWithSerde, CairoVersion,
+    StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     contracts::{
         verifier::InitResult,

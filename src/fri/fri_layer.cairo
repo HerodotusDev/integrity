@@ -1,6 +1,4 @@
-use integrity::{
-    common::{array_extend::ArrayExtendTrait, math::pow}, fri::fri_formula::fri_formula
-};
+use integrity::{common::{array_extend::ArrayExtendTrait, math::pow}, fri::fri_formula::fri_formula};
 
 #[derive(Drop, Copy)]
 struct FriLayerComputationParams {

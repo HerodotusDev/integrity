@@ -32,9 +32,7 @@ mod benches;
 mod tests;
 
 #[cfg(feature: 'feature_change_my_name')]
-use integrity::{
-    deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
-};
+use integrity::{deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},};
 #[cfg(feature: 'feature_change_my_name')]
 use starknet::contract_address::ContractAddressZero;
 
@@ -76,9 +74,14 @@ fn main(mut serialized: Span<felt252>, settings: @VerifierSettings) -> (felt252,
         .verify(ContractAddressZero::zero(), ContractAddressZero::zero(), settings);
     assert(security_bits >= SECURITY_BITS, 'Security bits are too low');
 
-    let (program_hash, output_hash) = match settings.cairo_version {
-        CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-        CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+    let (program_hash, output_hash) = match (*settings).cairo_version {
+        0 => stark_proof.public_input.verify_strict(),
+        1 => stark_proof.public_input.verify_relaxed(),
+        2 => stark_proof.public_input.verify_cairo1(),
+        _ => {
+            assert(false, 'invalid cairo_version');
+            (0, 0)
+        }
     };
 
     (program_hash, output_hash)

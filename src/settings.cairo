@@ -4,9 +4,11 @@ type PresetHash = felt252;
 type SecurityBits = u32;
 type JobId = felt252;
 
+
 #[derive(Drop, Copy, PartialEq, Serde, starknet::Store)]
 enum CairoVersion {
-    Cairo0,
+    Strict,
+    Relaxed,
     Cairo1,
 }
 
@@ -25,7 +27,7 @@ enum StoneVersion {
 // settings accepted by verifier (parameters for verification)
 #[derive(Drop, Copy, Serde, starknet::Store)]
 struct VerifierSettings {
-    cairo_version: CairoVersion,
+    cairo_version: felt252, // should be CairoVersion but causes compiler bug
     hasher_bit_length: HasherBitLength,
     stone_version: StoneVersion,
 }
@@ -49,11 +51,13 @@ struct VerifierConfiguration {
 fn split_settings(verifier_config: VerifierConfiguration) -> (VerifierSettings, VerifierPreset) {
     let layout = verifier_config.layout;
 
-    let cairo_version = if verifier_config.cairo_version == 'cairo0' {
-        CairoVersion::Cairo0
+    let cairo_version = if verifier_config.cairo_version == 'strict' {
+        0 // CairoVersion::Strict
+    } else if verifier_config.cairo_version == 'relaxed' {
+        1 // CairoVersion::Relaxed
     } else {
         assert(verifier_config.cairo_version == 'cairo1', 'Unsupported cairo version');
-        CairoVersion::Cairo1
+        2 // CairoVersion::Cairo1
     };
 
     let (hasher, hasher_bit_length) = if verifier_config.hasher == 'keccak_160_lsb' {

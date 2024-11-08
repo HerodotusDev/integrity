@@ -11,7 +11,7 @@ fn bench_air_traces_decommit() {
     let witness = stone_proof_fibonacci::traces::witness::get();
 
     let settings = VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
+        cairo_version: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };

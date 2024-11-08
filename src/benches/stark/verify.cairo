@@ -2,7 +2,7 @@ use integrity::{
     stark::stark_verify::stark_verify,
     air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
     tests::stone_proof_fibonacci_keccak,
-    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
+    settings::{VerifierSettings, HasherBitLength, StoneVersion},
 };
 
 fn bench_stark_verify() {
@@ -12,7 +12,7 @@ fn bench_stark_verify() {
     let stark_domains = stone_proof_fibonacci_keccak::stark::domains::get();
 
     let settings = VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
+        cairo_version: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };

@@ -5,8 +5,8 @@ use integrity::{
         fact_registry_interface::{VerificationListElement, Verification}, verifier::InitResult,
     },
     settings::{
-        VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, CairoVersion,
-        SecurityBits, FactHash, JobId, VerifierConfiguration, VerifierPreset,
+        VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, SecurityBits, FactHash,
+        JobId, VerifierConfiguration, VerifierPreset,
     },
 };
 use starknet::ContractAddress;
@@ -67,7 +67,7 @@ trait IFactRegistryExternal<TContractState> {
 #[starknet::contract]
 mod FactRegistry {
     use integrity::{
-        StarkProofWithSerde, StarkProof, CairoVersion,
+        StarkProofWithSerde, StarkProof,
         contracts::verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
         settings::{

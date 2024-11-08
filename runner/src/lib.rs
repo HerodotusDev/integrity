@@ -7,15 +7,17 @@ pub use vec252::VecFelt252;
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum CairoVersion {
-    Cairo0 = 0,
-    Cairo1 = 1,
+    Strict = 0,
+    Relaxed = 1,
+    Cairo1 = 2,
 }
 
 impl From<CairoVersion> for Felt252 {
     fn from(value: CairoVersion) -> Self {
         match value {
-            CairoVersion::Cairo0 => Felt252::from(0),
-            CairoVersion::Cairo1 => Felt252::from(1),
+            CairoVersion::Strict => Felt252::from(0),
+            CairoVersion::Relaxed => Felt252::from(1),
+            CairoVersion::Cairo1 => Felt252::from(2),
         }
     }
 }

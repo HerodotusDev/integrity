@@ -112,8 +112,13 @@ mod CairoVerifier {
         ) -> ProofVerified {
             let stark_proof: StarkProof = stark_proof_serde.into();
             let (program_hash, output_hash) = match settings.cairo_version {
-                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+                0 => stark_proof.public_input.verify_strict(),
+                1 => stark_proof.public_input.verify_relaxed(),
+                2 => stark_proof.public_input.verify_cairo1(),
+                _ => {
+                    assert(false, 'invalid cairo_version');
+                    (0, 0)
+                }
             };
             let security_bits = stark_proof
                 .verify(
@@ -139,8 +144,13 @@ mod CairoVerifier {
 
             let stark_proof: StarkProof = stark_proof_serde.into();
             let (program_hash, output_hash) = match settings.cairo_version {
-                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+                0 => stark_proof.public_input.verify_strict(),
+                1 => stark_proof.public_input.verify_relaxed(),
+                2 => stark_proof.public_input.verify_cairo1(),
+                _ => {
+                    assert(false, 'invalid cairo_version');
+                    (0, 0)
+                }
             };
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();

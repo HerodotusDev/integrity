@@ -3,7 +3,7 @@ use integrity::{
         VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
         VectorQuery, vector_commitment_decommit,
     },
-    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
+    settings::{VerifierSettings, HasherBitLength, StoneVersion},
 };
 
 #[cfg(feature: 'blake2s')]
@@ -108,7 +108,7 @@ fn test_vector_commitment_decommit_1() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
+        cairo_version: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
@@ -217,7 +217,7 @@ fn test_vector_commitment_decommit() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
+        cairo_version: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
