@@ -45,7 +45,7 @@ struct VerifierConfiguration {
     layout: felt252, // string encoded as hex
     hasher: felt252, // function and number of bits
     stone_version: felt252, // stone5 or stone6
-    memory_verification: felt252, // cairo0 or cairo1
+    memory_verification: felt252, // strict, relaxed or cairo1
 }
 
 fn split_settings(verifier_config: VerifierConfiguration) -> (VerifierSettings, VerifierPreset) {

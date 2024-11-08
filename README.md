@@ -2,9 +2,9 @@
 
 ![Integrity](.github/readme.png)
 
-[![Continuous Integration - tests](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml)
+[![Continuous Integration - tests](https://github.com/HerodotusDev/integrity/actions/workflows/tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml)
 
-[![Continuous Integration - proof verification tests](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml)
+[![Continuous Integration - proof verification tests](https://github.com/HerodotusDev/integrity/actions/workflows/proof_verification_tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml)
 
 ## Table of contents
 
@@ -44,7 +44,7 @@ After that, you can use `verify-on-starknet.sh` script to send the transaction t
 For example, run:
 
 ```bash
-./verify-on-starknet.sh 0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a examples/calldata recursive keccak_248_lsb stone5 cairo0
+./verify-on-starknet.sh 0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a examples/calldata recursive keccak_248_lsb stone5 strict
 ```
 
 This bash script internally calls `verify_proof_full_and_register_fact` function on FactRegistry contract.
@@ -70,7 +70,7 @@ You can use cairo runner to run the verifier on example proof:
 ```bash
 cargo run --release --bin runner -- \
 --program target/dev/integrity.sierra.json \
---cairo-version cairo0 \
+--memory-verification strict \
 --stone-version stone5 \
 --hasher-bit-length 160_lsb \
 < examples/proofs/recursive/cairo0_stone5_keccak_160_lsb_example_proof.json
@@ -90,7 +90,7 @@ verifier types: [`monolith`, `split`]
 
 There are also additional settings that can be configured at runtime:
 
-`memory_verification`: [`cairo0`, `cairo1`]<br /> TODO CHANGE
+`memory_verification`: [`strict`, `relaxed`, `cairo1`]<br />
 `stone_version`: [`stone5`, `stone6`]<br />
 hasher bit length: [`160_lsb`, `248_lsb`]
 
