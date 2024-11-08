@@ -42,8 +42,9 @@ use integrity::{
         IFactRegistry, IFactRegistryDispatcher, IFactRegistryDispatcherTrait
     },
     settings::{
-        FactHash, VerificationHash, PresetHash, SecurityBits, JobId, MemoryVerification, HasherBitLength,
-        StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration, split_settings
+        FactHash, VerificationHash, PresetHash, SecurityBits, JobId, MemoryVerification,
+        HasherBitLength, StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration,
+        split_settings
     },
 };
 

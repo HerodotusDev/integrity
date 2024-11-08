@@ -66,7 +66,8 @@ mod CairoVerifier {
         storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
     };
     use integrity::{
-        MemoryVerification, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+        MemoryVerification, PublicInputImpl, StarkProofWithSerde,
+        stark::{StarkProof, StarkProofImpl},
         fri::fri::{
             FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
             hash_constant, hash_variable
