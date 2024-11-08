@@ -1,6 +1,6 @@
 ## Main contracts
 
-FactRegistry: [0x2bcbc9dd00988db418fe0e4a9a05e9de2de7c1b68fda33db86cfd981ef313c9](https://sepolia.voyager.online/contract/0x2bcbc9dd00988db418fe0e4a9a05e9de2de7c1b68fda33db86cfd981ef313c9#readContract)
+FactRegistry: [0x29c2b0814ee46fda23adc8ea45b33dbc87288ad09644d6dd8bf6729ead7663a](https://sepolia.voyager.online/contract/0x29c2b0814ee46fda23adc8ea45b33dbc87288ad09644d6dd8bf6729ead7663a#readContract)
 
 Proxy: [0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a](https://sepolia.voyager.online/contract/0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a#readContract)
 
@@ -8,15 +8,15 @@ Proxy: [0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a](https
 
 | layout                  | hasher  | address                                                                                                                                                                                        |
 | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dex                     | keccak  | [0x00bcbb96b22a92015574ec9f91d2ed945882a575a4e9d3c210a73ba89e0e303f](https://sepolia.voyager.online/contract/0x00bcbb96b22a92015574ec9f91d2ed945882a575a4e9d3c210a73ba89e0e303f#writeContract) |
-| dex                     | blake2s | [0x06ec76dd259017b7348ad64b0fcd275dbf09852fbd0c566ccae568a9e9946bfa](https://sepolia.voyager.online/contract/0x06ec76dd259017b7348ad64b0fcd275dbf09852fbd0c566ccae568a9e9946bfa#writeContract) |
-| recursive               | keccak  | [0x05ab958fbb0ee6bdb22bbcdd2f14310332af8b4ae1df6670e6b27f85a164dea9](https://sepolia.voyager.online/contract/0x05ab958fbb0ee6bdb22bbcdd2f14310332af8b4ae1df6670e6b27f85a164dea9#writeContract) |
-| recursive               | blake2s | [0x05aC8699796B2721730Ad6bF92e0d18C28D784453194B279127c6BaCE5C3b806](https://sepolia.voyager.online/contract/0x05aC8699796B2721730Ad6bF92e0d18C28D784453194B279127c6BaCE5C3b806#writeContract) |
-| recursive_with_poseidon | keccak  | [0x017f154e7d7d17e597b99522f93dac9dc5fdc84fffb0c1556c384ef9b99e382d](https://sepolia.voyager.online/contract/0x017f154e7d7d17e597b99522f93dac9dc5fdc84fffb0c1556c384ef9b99e382d#writeContract) |
-| recursive_with_poseidon | blake2s | [0x005a22229211254d1f47c1082d3eac421eadd2d9fa74d5c2123245c4173f239c](https://sepolia.voyager.online/contract/0x005a22229211254d1f47c1082d3eac421eadd2d9fa74d5c2123245c4173f239c#writeContract) |
-| small                   | keccak  | [0x0636b3b67a391499bcdbbbaa03c9cc2e9526dcb12162b8cd45f8d50649502ab9](https://sepolia.voyager.online/contract/0x0636b3b67a391499bcdbbbaa03c9cc2e9526dcb12162b8cd45f8d50649502ab9#writeContract) |
-| small                   | blake2s | [0x06f23a4ca98495d556f3e320b8b8399e36975835f03aa40915354c334da2f555](https://sepolia.voyager.online/contract/0x06f23a4ca98495d556f3e320b8b8399e36975835f03aa40915354c334da2f555#writeContract) |
-| starknet                | keccak  | [0x04042f4f32b5245ff6c4c3cdff6c6e20b2c1925ecaae8160e41295fd22817764](https://sepolia.voyager.online/contract/0x04042f4f32b5245ff6c4c3cdff6c6e20b2c1925ecaae8160e41295fd22817764#writeContract) |
-| starknet                | blake2s | [0x05a6c0f84179d695f0b598cc5d0be50421c247da95cfe63e4cd66fc27f32dfe6](https://sepolia.voyager.online/contract/0x05a6c0f84179d695f0b598cc5d0be50421c247da95cfe63e4cd66fc27f32dfe6#writeContract) |
-| starknet_with_keccak    | keccak  | [0x043a7997e5cbadbdd976cb202ba24c771cb8560ed2af2823b8c7bf9f45695d8c](https://sepolia.voyager.online/contract/0x043a7997e5cbadbdd976cb202ba24c771cb8560ed2af2823b8c7bf9f45695d8c#writeContract) |
-| starknet_with_keccak    | blake2s | [0x016a49add364f99cbdefd5105a93c2f413a794444e116629bb37b7c4127387c7](https://sepolia.voyager.online/contract/0x016a49add364f99cbdefd5105a93c2f413a794444e116629bb37b7c4127387c7#writeContract) |
+| dex                     | keccak  | [0x02254c79b4047325a568ed5f0c470f7e2f4c5b17251bf1339486e1945474c860](https://sepolia.voyager.online/contract/0x02254c79b4047325a568ed5f0c470f7e2f4c5b17251bf1339486e1945474c860#writeContract) |
+| dex                     | blake2s | [0x06a7326d332e0660277693d4656ba4c5e6a3049ad223ee85ee0468aa42982982](https://sepolia.voyager.online/contract/0x06a7326d332e0660277693d4656ba4c5e6a3049ad223ee85ee0468aa42982982#writeContract) |
+| recursive               | keccak  | [0x03fdea84d2288d0162051b3606e8f42dbd74e2151ce40c077065f0623ebe84e5](https://sepolia.voyager.online/contract/0x03fdea84d2288d0162051b3606e8f42dbd74e2151ce40c077065f0623ebe84e5#writeContract) |
+| recursive               | blake2s | [0x01d216b505086733e3c921b46ae15054d9ca2759c9a342446dd5016561786749](https://sepolia.voyager.online/contract/0x01d216b505086733e3c921b46ae15054d9ca2759c9a342446dd5016561786749#writeContract) |
+| recursive_with_poseidon | keccak  | [0x00b9552c33830ffa76978caf835530b28e0fc0f05e7786e8c3026ca4ae4d7c81](https://sepolia.voyager.online/contract/0x00b9552c33830ffa76978caf835530b28e0fc0f05e7786e8c3026ca4ae4d7c81#writeContract) |
+| recursive_with_poseidon | blake2s | [0x077ac0027ac4aaa5362d03c4b381481b5a37a65da78e40a0f6d5b9128bbba49e](https://sepolia.voyager.online/contract/0x077ac0027ac4aaa5362d03c4b381481b5a37a65da78e40a0f6d5b9128bbba49e#writeContract) |
+| small                   | keccak  | [0x06a990f708e81a397c71cc816193befa7f22824561f42a2e4b1d2a6a7107e8b2](https://sepolia.voyager.online/contract/0x06a990f708e81a397c71cc816193befa7f22824561f42a2e4b1d2a6a7107e8b2#writeContract) |
+| small                   | blake2s | [0x042d089f0426781F1623f5bA47BB3452f5EF8b980a81DAc6183d80BE8F31aC40](https://sepolia.voyager.online/contract/0x042d089f0426781F1623f5bA47BB3452f5EF8b980a81DAc6183d80BE8F31aC40#writeContract) |
+| starknet                | keccak  | [0x00d7fd266dccc369f400879e4b2245beaa843fb02ae39230434eaeffa1a40c6e](https://sepolia.voyager.online/contract/0x00d7fd266dccc369f400879e4b2245beaa843fb02ae39230434eaeffa1a40c6e#writeContract) |
+| starknet                | blake2s | [0x05d7577af506bd61c76b45b76dbeebf3ab24ba6a091fac4aa63476e00692ec45](https://sepolia.voyager.online/contract/0x05d7577af506bd61c76b45b76dbeebf3ab24ba6a091fac4aa63476e00692ec45#writeContract) |
+| starknet_with_keccak    | keccak  | [0x044c71ae5394bdb96c74e449f8223e3d17f22c032990913d0961055700c487ef](https://sepolia.voyager.online/contract/0x044c71ae5394bdb96c74e449f8223e3d17f22c032990913d0961055700c487ef#writeContract) |
+| starknet_with_keccak    | blake2s | [0x014ddd21ec7544df1d8698e1f0a13a2e40b631ff7c0da10c81c7e5c20176406a](https://sepolia.voyager.online/contract/0x014ddd21ec7544df1d8698e1f0a13a2e40b631ff7c0da10c81c7e5c20176406a#writeContract) |

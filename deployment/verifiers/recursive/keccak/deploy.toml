@@ -1,6 +1,6 @@
 [[call]]
 call_type = "deploy"
-class_hash = "0x86b9ff63dcd5f683aaa189b5ad3d06e8d2ca8e0d1e6907a2ca956ae3bcc902"
+class_hash = "0x6079056ad7b320d7c9d914305423d46a8de68f3a5920bdc55db3c50ef5369d7"
 inputs = ["0", "0"]
 id = "cairo_verifier"
 unique = false
