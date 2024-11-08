@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                cairo_version: ['cairo0', 'cairo1']
+                cairo_version: ['strict', 'cairo1']
                 layout: ['recursive', 'recursive_with_poseidon', 'small', 'dex', 'starknet', 'starknet_with_keccak']
                 hash_function: ['keccak']
                 hasher_bit_length: ['160_lsb']
