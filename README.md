@@ -90,7 +90,7 @@ verifier types: [`monolith`, `split`]
 
 There are also additional settings that can be configured at runtime:
 
-`cairo_version`: [`cairo0`, `cairo1`]<br />
+`memory_verification`: [`cairo0`, `cairo1`]<br /> TODO CHANGE
 `stone_version`: [`stone5`, `stone6`]<br />
 hasher bit length: [`160_lsb`, `248_lsb`]
 

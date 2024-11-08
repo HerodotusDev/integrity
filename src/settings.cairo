@@ -6,7 +6,7 @@ type JobId = felt252;
 
 
 #[derive(Drop, Copy, PartialEq, Serde, starknet::Store)]
-enum CairoVersion {
+enum MemoryVerification {
     Strict,
     Relaxed,
     Cairo1,
@@ -27,7 +27,7 @@ enum StoneVersion {
 // settings accepted by verifier (parameters for verification)
 #[derive(Drop, Copy, Serde, starknet::Store)]
 struct VerifierSettings {
-    cairo_version: felt252, // should be CairoVersion but causes compiler bug
+    memory_verification: felt252, // should be MemoryVerification but causes compiler bug
     hasher_bit_length: HasherBitLength,
     stone_version: StoneVersion,
 }
@@ -45,19 +45,19 @@ struct VerifierConfiguration {
     layout: felt252, // string encoded as hex
     hasher: felt252, // function and number of bits
     stone_version: felt252, // stone5 or stone6
-    cairo_version: felt252, // cairo0 or cairo1
+    memory_verification: felt252, // cairo0 or cairo1
 }
 
 fn split_settings(verifier_config: VerifierConfiguration) -> (VerifierSettings, VerifierPreset) {
     let layout = verifier_config.layout;
 
-    let cairo_version = if verifier_config.cairo_version == 'strict' {
-        0 // CairoVersion::Strict
-    } else if verifier_config.cairo_version == 'relaxed' {
-        1 // CairoVersion::Relaxed
+    let memory_verification = if verifier_config.memory_verification == 'strict' {
+        0 // MemoryVerification::Strict
+    } else if verifier_config.memory_verification == 'relaxed' {
+        1 // MemoryVerification::Relaxed
     } else {
-        assert(verifier_config.cairo_version == 'cairo1', 'Unsupported cairo version');
-        2 // CairoVersion::Cairo1
+        assert(verifier_config.memory_verification == 'cairo1', 'Unsupported cairo version');
+        2 // MemoryVerification::Cairo1
     };
 
     let (hasher, hasher_bit_length) = if verifier_config.hasher == 'keccak_160_lsb' {
@@ -79,7 +79,7 @@ fn split_settings(verifier_config: VerifierConfiguration) -> (VerifierSettings, 
     };
 
     (
-        VerifierSettings { cairo_version, hasher_bit_length, stone_version },
+        VerifierSettings { memory_verification, hasher_bit_length, stone_version },
         VerifierPreset { layout, hasher }
     )
 }

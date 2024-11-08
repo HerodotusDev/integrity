@@ -1,5 +1,5 @@
 use integrity::{
-    StarkProof, CairoVersion, StarkProofWithSerde,
+    StarkProof, MemoryVerification, StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     settings::{VerifierSettings, FactHash, JobId, SecurityBits},
 };
@@ -66,7 +66,7 @@ mod CairoVerifier {
         storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
     };
     use integrity::{
-        CairoVersion, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+        MemoryVerification, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
         fri::fri::{
             FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
             hash_constant, hash_variable
@@ -111,12 +111,12 @@ mod CairoVerifier {
             stark_proof_serde: StarkProofWithSerde,
         ) -> ProofVerified {
             let stark_proof: StarkProof = stark_proof_serde.into();
-            let (program_hash, output_hash) = match settings.cairo_version {
+            let (program_hash, output_hash) = match settings.memory_verification {
                 0 => stark_proof.public_input.verify_strict(),
                 1 => stark_proof.public_input.verify_relaxed(),
                 2 => stark_proof.public_input.verify_cairo1(),
                 _ => {
-                    assert(false, 'invalid cairo_version');
+                    assert(false, 'invalid memory_verification');
                     (0, 0)
                 }
             };
@@ -143,12 +143,12 @@ mod CairoVerifier {
             assert(self.state_constant.entry(job_id).read().is_none(), 'job_id already exists');
 
             let stark_proof: StarkProof = stark_proof_serde.into();
-            let (program_hash, output_hash) = match settings.cairo_version {
+            let (program_hash, output_hash) = match settings.memory_verification {
                 0 => stark_proof.public_input.verify_strict(),
                 1 => stark_proof.public_input.verify_relaxed(),
                 2 => stark_proof.public_input.verify_cairo1(),
                 _ => {
-                    assert(false, 'invalid cairo_version');
+                    assert(false, 'invalid memory_verification');
                     (0, 0)
                 }
             };

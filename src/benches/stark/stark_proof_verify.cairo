@@ -15,7 +15,7 @@ fn bench_stark_proof_verify() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: 0, // strict
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };

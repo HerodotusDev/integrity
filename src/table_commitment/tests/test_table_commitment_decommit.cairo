@@ -20,7 +20,7 @@ fn test_table_commitment_decommit() {
     let witness = stone_proof_fibonacci::traces::witness::get().original;
 
     let settings = VerifierSettings {
-        cairo_version: 0, // strict
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
@@ -37,7 +37,7 @@ fn test_table_commitment_decommit() {
     let witness = stone_proof_fibonacci_keccak::traces::witness::get().original;
 
     let settings = VerifierSettings {
-        cairo_version: 0, // strict
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };

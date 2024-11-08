@@ -42,7 +42,7 @@ use integrity::{
         IFactRegistry, IFactRegistryDispatcher, IFactRegistryDispatcherTrait
     },
     settings::{
-        FactHash, VerificationHash, PresetHash, SecurityBits, JobId, CairoVersion, HasherBitLength,
+        FactHash, VerificationHash, PresetHash, SecurityBits, JobId, MemoryVerification, HasherBitLength,
         StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration, split_settings
     },
 };
@@ -74,12 +74,12 @@ fn main(mut serialized: Span<felt252>, settings: @VerifierSettings) -> (felt252,
         .verify(ContractAddressZero::zero(), ContractAddressZero::zero(), settings);
     assert(security_bits >= SECURITY_BITS, 'Security bits are too low');
 
-    let (program_hash, output_hash) = match (*settings).cairo_version {
+    let (program_hash, output_hash) = match (*settings).memory_verification {
         0 => stark_proof.public_input.verify_strict(),
         1 => stark_proof.public_input.verify_relaxed(),
         2 => stark_proof.public_input.verify_cairo1(),
         _ => {
-            assert(false, 'invalid cairo_version');
+            assert(false, 'invalid memory_verification');
             (0, 0)
         }
     };

@@ -73,7 +73,7 @@ mod Proxy {
             },
             fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait,}
         },
-        StarkProofWithSerde, StarkProof, CairoVersion,
+        StarkProofWithSerde, StarkProof, MemoryVerification,
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
         settings::{JobId, FactHash, VerificationHash},
     };

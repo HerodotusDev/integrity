@@ -2,7 +2,7 @@
 
 # Check if the arguments are provided
 if [ $# -ne 6 ]; then
-    echo "Usage: $0 <fact_registry_address> <calldata_file> <layout> <hasher> <stone_version> <cairo_version>"
+    echo "Usage: $0 <fact_registry_address> <calldata_file> <layout> <hasher> <stone_version> <memory_verification>"
     exit 1
 fi
 
@@ -22,7 +22,7 @@ calldata_file=$2
 layout=$(string_to_hex $3)
 hasher=$(string_to_hex $4)
 stone_version=$(string_to_hex $5)
-cairo_version=$(string_to_hex $6)
+memory_verification=$(string_to_hex $6)
 
 # Check if the file exists
 if [ ! -f "$calldata_file" ]; then
@@ -39,5 +39,5 @@ sncast \
     invoke \
     --contract-address "$contract_address" \
     --function "verify_proof_full_and_register_fact" \
-    --calldata $layout $hasher $stone_version $cairo_version $calldata \
+    --calldata $layout $hasher $stone_version $memory_verification $calldata \
     --fee-token eth

@@ -230,6 +230,7 @@ mod FactRegistry {
         }
     }
 
+    #[abi(embed_v0)]
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: FactHash
@@ -291,7 +292,7 @@ mod FactRegistry {
                 .update(verifier_config.layout)
                 .update(verifier_config.hasher)
                 .update(verifier_config.stone_version)
-                .update(verifier_config.cairo_version)
+                .update(verifier_config.memory_verification)
                 .finalize();
 
             let verification_hash = PoseidonImpl::new()

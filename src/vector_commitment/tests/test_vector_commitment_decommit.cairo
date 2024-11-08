@@ -108,7 +108,7 @@ fn test_vector_commitment_decommit_1() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: 0, // strict
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
@@ -217,7 +217,7 @@ fn test_vector_commitment_decommit() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: 0, // strict
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };

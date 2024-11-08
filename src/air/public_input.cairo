@@ -231,12 +231,12 @@ fn verify_relaxed_public_input(public_input: @PublicInput) -> (felt252, felt252)
 mod tests {
     use super::get_public_input_hash;
     use integrity::tests::stone_proof_fibonacci_keccak::public_input::get;
-    use integrity::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
+    use integrity::settings::{VerifierSettings, MemoryVerification, HasherBitLength, StoneVersion};
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
         let settings = VerifierSettings {
-            cairo_version: 2, // cairo1
+            memory_verification: 2, // cairo1
             hasher_bit_length: HasherBitLength::Lsb160,
             stone_version: StoneVersion::Stone5,
         };

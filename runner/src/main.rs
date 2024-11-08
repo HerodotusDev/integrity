@@ -7,7 +7,7 @@ use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use clap::Parser;
 use itertools::{chain, Itertools};
-use runner::{CairoVersion, HasherBitLength, StoneVersion};
+use runner::{HasherBitLength, MemoryVerification, StoneVersion};
 use std::{
     fs,
     io::{stdin, Read},
@@ -25,7 +25,7 @@ struct Cli {
     program: String,
     /// Cairo version - public memory pattern
     #[clap(value_enum, short, long)]
-    cairo_version: CairoVersion,
+    memory_verification: MemoryVerification,
     /// Stone version
     #[clap(value_enum, short, long)]
     stone_version: StoneVersion,
@@ -71,7 +71,7 @@ fn main() -> anyhow::Result<()> {
     let func = runner.find_function(ENTRYPOINT).unwrap();
     let args = &[
         Arg::Array(proof.into_iter().map(Arg::Value).collect_vec()),
-        Arg::Value(cli.cairo_version.into()),
+        Arg::Value(cli.memory_verification.into()),
         Arg::Value(cli.hasher_bit_length.into()),
         Arg::Value(cli.stone_version.into()),
     ];
