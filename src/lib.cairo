@@ -25,6 +25,7 @@ mod vector_commitment;
 
 mod settings;
 mod contracts;
+mod lib_utils;
 
 #[cfg(feature: 'recursive')]
 mod benches;
@@ -45,6 +46,11 @@ use integrity::{
         FactHash, VerificationHash, PresetHash, SecurityBits, JobId, MemoryVerification,
         HasherBitLength, StoneVersion, VerifierSettings, VerifierPreset, VerifierConfiguration,
         split_settings
+    },
+    lib_utils::{
+        get_verifier_config_hash, get_verification_hash, INTEGRITY_ADDRESS, Integrity,
+        IntegrityTrait, IntegrityWithConfig, IntegrityWithConfigTrait, calculate_fact_hash,
+        SHARP_BOOTLOADER_PROGRAM_HASH, STONE_BOOTLOADER_PROGRAM_HASH, calculate_bootloaded_fact_hash
     },
 };
 

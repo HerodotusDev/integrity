@@ -1,0 +1,124 @@
+use integrity::{
+    settings::{VerifierConfiguration, FactHash, SecurityBits, VerificationHash},
+    contracts::fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait}
+};
+use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
+use starknet::{ContractAddress};
+
+
+fn get_verifier_config_hash(verifier_config: VerifierConfiguration) -> felt252 {
+    PoseidonImpl::new()
+        .update(verifier_config.layout)
+        .update(verifier_config.hasher)
+        .update(verifier_config.stone_version)
+        .update(verifier_config.memory_verification)
+        .finalize()
+}
+
+fn get_verification_hash(
+    fact_hash: FactHash, verifier_config_hash: felt252, security_bits: u32
+) -> VerificationHash {
+    PoseidonImpl::new()
+        .update(fact_hash)
+        .update(verifier_config_hash)
+        .update(security_bits.into())
+        .finalize()
+}
+
+const INTEGRITY_ADDRESS: felt252 =
+    0x29c2b0814ee46fda23adc8ea45b33dbc87288ad09644d6dd8bf6729ead7663a;
+
+struct Integrity {
+    dispatcher: IFactRegistryDispatcher,
+}
+
+#[generate_trait]
+impl IntegrityImpl of IntegrityTrait {
+    fn new() -> Integrity {
+        Integrity {
+            dispatcher: IFactRegistryDispatcher {
+                contract_address: INTEGRITY_ADDRESS.try_into().unwrap()
+            }
+        }
+    }
+
+    fn from_address(contract_address: ContractAddress) -> Integrity {
+        Integrity { dispatcher: IFactRegistryDispatcher { contract_address } }
+    }
+
+    fn is_fact_hash_valid_with_security(
+        self: Integrity, fact_hash: FactHash, security_bits: SecurityBits
+    ) -> bool {
+        let mut verifications = self
+            .dispatcher
+            .get_all_verifications_for_fact_hash(fact_hash)
+            .span();
+        let mut result = false;
+        for verification in verifications {
+            if *verification.security_bits > security_bits {
+                result = true;
+                break;
+            }
+        };
+        result
+    }
+
+    fn is_verification_hash_valid(self: Integrity, verification_hash: VerificationHash) -> bool {
+        self.dispatcher.get_verification(verification_hash).is_some()
+    }
+
+    fn with_config(
+        self: Integrity, verifier_config: VerifierConfiguration, security_bits: SecurityBits
+    ) -> IntegrityWithConfig {
+        IntegrityWithConfig {
+            dispatcher: self.dispatcher,
+            verifier_config_hash: get_verifier_config_hash(verifier_config),
+            security_bits,
+        }
+    }
+}
+
+struct IntegrityWithConfig {
+    dispatcher: IFactRegistryDispatcher,
+    verifier_config_hash: felt252,
+    security_bits: SecurityBits,
+}
+
+#[generate_trait]
+impl IntegrityWithConfigImpl of IntegrityWithConfigTrait {
+    fn is_fact_hash_valid(self: IntegrityWithConfig, fact_hash: FactHash) -> bool {
+        let verification_hash = get_verification_hash(
+            fact_hash, self.verifier_config_hash, self.security_bits
+        );
+        self.dispatcher.get_verification(verification_hash).is_some()
+    }
+}
+
+fn calculate_fact_hash(program_hash: felt252, output: Span<felt252>) -> felt252 {
+    let mut output_hash = PoseidonImpl::new();
+    for x in output {
+        output_hash = output_hash.update(*x);
+    };
+    PoseidonImpl::new().update(program_hash).update(output_hash.finalize()).finalize()
+}
+
+const SHARP_BOOTLOADER_PROGRAM_HASH: felt252 =
+    0x5ab580b04e3532b6b18f81cfa654a05e29dd8e2352d88df1e765a84072db07;
+const STONE_BOOTLOADER_PROGRAM_HASH: felt252 =
+    0x40519557c48b25e7e7d27cb27297300b94909028c327b385990f0b649920cc3;
+
+fn calculate_bootloaded_fact_hash(
+    bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>
+) -> felt252 {
+    let mut bootloader_output = PoseidonImpl::new()
+        .update(0x1)
+        .update(child_output.len().into() + 2)
+        .update(child_program_hash);
+    for x in child_output {
+        bootloader_output = bootloader_output.update(*x);
+    };
+    PoseidonImpl::new()
+        .update(bootloader_program_hash)
+        .update(bootloader_output.finalize())
+        .finalize()
+}

@@ -79,7 +79,8 @@ mod FactRegistry {
                 VerificationListElement, Verification, IFactRegistryExternal, FactRegistered
             },
             fact_registry_interface::IFactRegistry,
-        }
+        },
+        lib_utils::{get_verifier_config_hash, get_verification_hash},
     };
     use starknet::{
         ContractAddress, get_caller_address,
@@ -288,18 +289,10 @@ mod FactRegistry {
             security_bits: SecurityBits,
             verifier_config: VerifierConfiguration,
         ) -> FactRegistered {
-            let verifier_config_hash = PoseidonImpl::new()
-                .update(verifier_config.layout)
-                .update(verifier_config.hasher)
-                .update(verifier_config.stone_version)
-                .update(verifier_config.memory_verification)
-                .finalize();
-
-            let verification_hash = PoseidonImpl::new()
-                .update(fact_hash)
-                .update(verifier_config_hash)
-                .update(security_bits.into())
-                .finalize();
+            let verifier_config_hash = get_verifier_config_hash(verifier_config);
+            let verification_hash = get_verification_hash(
+                fact_hash, verifier_config_hash, security_bits
+            );
 
             let event = FactRegistered {
                 fact_hash, verifier_address, security_bits, verifier_config, verification_hash
