@@ -10,3 +10,5 @@ mod small;
 mod starknet;
 #[cfg(feature: 'starknet_with_keccak')]
 mod starknet_with_keccak;
+#[cfg(feature: 'dynamic')]
+mod dynamic;

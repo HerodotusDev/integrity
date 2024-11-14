@@ -17,6 +17,10 @@ use integrity::{
 use integrity::air::layouts::dex::{
     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
 };
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::{
+    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+};
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::{
     traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}

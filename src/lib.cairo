@@ -56,6 +56,8 @@ use integrity::{
 
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::public_input::DexPublicInputImpl as PublicInputImpl;
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::public_input::DynamicPublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::public_input::RecursivePublicInputImpl as PublicInputImpl;
 #[cfg(feature: 'recursive_with_poseidon')]

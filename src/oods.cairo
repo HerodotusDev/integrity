@@ -8,6 +8,12 @@ use integrity::air::layouts::dex::{
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
 };
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::{
+    AIRComposition, AIROods, DynamicAIRCompositionImpl, DynamicAIROodsImpl,
+    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
+    constants::{CONSTRAINT_DEGREE, DynamicParams},
+};
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::{
     AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
@@ -38,6 +44,13 @@ use integrity::air::layouts::starknet_with_keccak::{
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
     constants::CONSTRAINT_DEGREE,
 };
+
+// TODO: for other layouts use integrity::air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+#[cfg(feature: 'dynamic')]
+fn get_n_columns(public_input: @DynamicParams) -> (u32, u32) {
+    // (n_original_columns, n_interaction_columns)
+    (*public_input.num_columns_first, *public_input.num_columns_second)
+}
 
 #[derive(Drop)]
 struct OodsEvaluationInfo {
@@ -77,14 +90,17 @@ fn verify_oods(
 }
 
 fn eval_oods_boundary_poly_at_points(
-    n_original_columns: u32,
-    n_interaction_columns: u32,
+    public_input: @PublicInput,
     eval_info: OodsEvaluationInfo,
     points: Span<felt252>,
     decommitment: TracesDecommitment,
     composition_decommitment: TableDecommitment,
     contract_address: ContractAddress,
 ) -> Array<felt252> {
+    let mut dynamic_params_span = public_input.dynamic_params.span();
+    let dynamic_params = Serde::<DynamicParams>::deserialize(ref dynamic_params_span).unwrap();
+    let (n_original_columns, n_interaction_columns) = get_n_columns(@dynamic_params);
+
     assert(
         decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
     );
@@ -129,6 +145,7 @@ fn eval_oods_boundary_poly_at_points(
                     *points.at(i),
                     eval_info.oods_point,
                     eval_info.trace_generator,
+                    dynamic_params,
                     contract_address,
                 )
             );

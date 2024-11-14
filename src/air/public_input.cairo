@@ -13,6 +13,8 @@ use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Has
 use poseidon::poseidon_hash_span;
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::constants::segments;
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::constants::segments;
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::constants::segments;
 #[cfg(feature: 'recursive_with_poseidon')]

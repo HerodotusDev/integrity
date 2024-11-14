@@ -107,6 +107,7 @@ impl RecursiveAIROodsImpl of AIROods {
         point: felt252,
         oods_point: felt252,
         trace_generator: felt252,
+        dynamic_params: DynamicParams,
         contract_address: ContractAddress,
     ) -> felt252 {
         eval_oods_polynomial_inner(

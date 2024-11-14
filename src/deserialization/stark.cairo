@@ -16,6 +16,8 @@ use integrity::{
 };
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::traces::TracesConfig;
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::traces::TracesConfig;
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::traces::TracesConfig;
 #[cfg(feature: 'recursive_with_poseidon')]

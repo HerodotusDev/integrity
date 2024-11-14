@@ -11,6 +11,11 @@ use integrity::air::layouts::dex::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
     traces::traces_commit,
 };
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::{
+    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
+    traces::traces_commit,
+};
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::{
     constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,

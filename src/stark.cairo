@@ -29,37 +29,36 @@ use starknet::ContractAddress;
 use integrity::air::layouts::dex::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+};
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::{
+    traces::{TracesConfig, TracesConfigTrait}, public_input::DynamicPublicInputImpl,
+    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
 };
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
 };
 #[cfg(feature: 'recursive_with_poseidon')]
 use integrity::air::layouts::recursive_with_poseidon::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::RecursiveWithPoseidonPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'small')]
 use integrity::air::layouts::small::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::SmallPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'starknet')]
 use integrity::air::layouts::starknet::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 #[cfg(feature: 'starknet_with_keccak')]
 use integrity::air::layouts::starknet_with_keccak::{
     traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
     traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
 };
 
 #[derive(Drop, Serde)]
@@ -79,7 +78,7 @@ impl StarkProofImpl of StarkProofTrait {
         settings: @VerifierSettings,
     ) -> (FriVerificationStateConstant, FriVerificationStateVariable, Span<felt252>, u32) {
         // Validate config.
-        let security_bits = self.config.validate();
+        let security_bits = self.config.validate(self.public_input);
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
@@ -116,8 +115,7 @@ impl StarkProofImpl of StarkProofTrait {
 
         // STARK verify phase.
         let (con, var) = stark_verify::stark_verify(
-            NUM_COLUMNS_FIRST,
-            NUM_COLUMNS_SECOND,
+            self.public_input,
             queries.span(),
             stark_commitment,
             *self.witness,
@@ -195,13 +193,13 @@ struct StarkConfig {
 
 #[generate_trait]
 impl StarkConfigImpl of StarkConfigTrait {
-    fn validate(self: @StarkConfig) -> u32 {
+    fn validate(self: @StarkConfig, public_input: @PublicInput) -> u32 {
         // Validate Proof of work config.
         self.proof_of_work.validate();
 
         // Validate traces config.
         let log_eval_domain_size = *self.log_trace_domain_size + *self.log_n_cosets;
-        self.traces.validate(log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
+        self.traces.validate(public_input, log_eval_domain_size, *self.n_verifier_friendly_commitment_layers);
 
         // Validate composition config.
         self

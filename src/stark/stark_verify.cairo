@@ -1,4 +1,5 @@
 use integrity::{
+    air::public_input::PublicInput,
     queries::queries::queries_to_points, domains::StarkDomains,
     fri::fri::{
         FriDecommitment, fri_verify_initial, FriVerificationStateConstant,
@@ -11,6 +12,8 @@ use integrity::{
 use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::traces::traces_decommit;
+#[cfg(feature: 'dynamic')]
+use integrity::air::layouts::dynamic::traces::traces_decommit;
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::traces::traces_decommit;
 #[cfg(feature: 'recursive_with_poseidon')]
@@ -25,8 +28,7 @@ use integrity::air::layouts::starknet_with_keccak::traces::traces_decommit;
 // STARK verify phase.
 // NOTICE: when using splitted verifier, witness.fri_witness may be ommited (empty array)
 fn stark_verify(
-    n_original_columns: u32,
-    n_interaction_columns: u32,
+    public_input: @PublicInput,
     queries: Span<felt252>,
     commitment: StarkCommitment,
     witness: StarkWitness,
@@ -58,8 +60,7 @@ fn stark_verify(
         constraint_coefficients: commitment.interaction_after_oods,
     };
     let oods_poly_evals = eval_oods_boundary_poly_at_points(
-        n_original_columns,
-        n_interaction_columns,
+        public_input,
         eval_info,
         points.span(),
         witness.traces_decommitment,
