@@ -69,7 +69,7 @@ fn main() -> anyhow::Result<()> {
     .unwrap();
 
     let func = runner.find_function(ENTRYPOINT).unwrap();
-    let args = &[
+    let args = vec![
         Arg::Array(proof.into_iter().map(Arg::Value).collect_vec()),
         Arg::Value(cli.memory_verification.into()),
         Arg::Value(cli.hasher_bit_length.into()),
