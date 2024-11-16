@@ -1,7 +1,7 @@
 use integrity::{
     air::{
         public_input::PublicInput,
-        layouts::dynamic::{global_values::InteractionElements, constants::DynamicParams}
+        layouts::dynamic::{global_values::InteractionElements, constants::{DynamicParams, DynamicParamsIndex as D, dynamic_params_from_felts}}
     },
     channel::channel::{Channel, ChannelTrait},
     table_commitment::table_commitment::{
@@ -75,17 +75,16 @@ impl TracesConfigImpl of TracesConfigTrait {
         log_eval_domain_size: felt252,
         n_verifier_friendly_commitment_layers: felt252,
     ) {
-        let mut dynamic_params_span = public_input.dynamic_params.span();
-        let dynamic_params = Serde::<DynamicParams>::deserialize(ref dynamic_params_span).unwrap();
+        let dynamic_params = dynamic_params_from_felts(public_input.dynamic_params.span());
 
         assert_in_range(*self.original.n_columns, 1, MAX_N_COLUMNS + 1);
         assert_in_range(*self.interaction.n_columns, 1, MAX_N_COLUMNS + 1);
         assert(
-            *self.original.n_columns == dynamic_params.num_columns_first.into(),
+            *self.original.n_columns == (*dynamic_params.at(D::num_columns_first)).into(),
             'Wrong number of columns'
         );
         assert(
-            *self.interaction.n_columns == dynamic_params.num_columns_second.into(),
+            *self.interaction.n_columns == (*dynamic_params.at(D::num_columns_second)).into(),
             'Wrong number of columns'
         );
 

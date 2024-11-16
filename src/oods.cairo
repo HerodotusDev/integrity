@@ -12,7 +12,7 @@ use integrity::air::layouts::dex::{
 use integrity::air::layouts::dynamic::{
     AIRComposition, AIROods, DynamicAIRCompositionImpl, DynamicAIROodsImpl,
     global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    constants::{CONSTRAINT_DEGREE, DynamicParams},
+    constants::{CONSTRAINT_DEGREE, DynamicParams, DynamicParamsIndex as D, dynamic_params_from_felts},
 };
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::{
@@ -47,9 +47,9 @@ use integrity::air::layouts::starknet_with_keccak::{
 
 // TODO: for other layouts use integrity::air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
 #[cfg(feature: 'dynamic')]
-fn get_n_columns(public_input: @DynamicParams) -> (u32, u32) {
+fn get_n_columns(dynamic_params: DynamicParams) -> (usize, usize) {
     // (n_original_columns, n_interaction_columns)
-    (*public_input.num_columns_first, *public_input.num_columns_second)
+    (*dynamic_params.at(D::num_columns_first), *dynamic_params.at(D::num_columns_second))
 }
 
 #[derive(Drop)]
@@ -60,6 +60,7 @@ struct OodsEvaluationInfo {
     constraint_coefficients: Span<felt252>,
 }
 
+use core::debug::PrintTrait;
 // Checks that the trace and the compostion agree at oods_point, assuming the prover provided us
 // with the proper evaluations.
 fn verify_oods(
@@ -97,9 +98,9 @@ fn eval_oods_boundary_poly_at_points(
     composition_decommitment: TableDecommitment,
     contract_address: ContractAddress,
 ) -> Array<felt252> {
-    let mut dynamic_params_span = public_input.dynamic_params.span();
-    let dynamic_params = Serde::<DynamicParams>::deserialize(ref dynamic_params_span).unwrap();
-    let (n_original_columns, n_interaction_columns) = get_n_columns(@dynamic_params);
+    let dynamic_params = dynamic_params_from_felts(public_input.dynamic_params.span());
+
+    let (n_original_columns, n_interaction_columns) = get_n_columns(dynamic_params);
 
     assert(
         decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'

@@ -39,348 +39,357 @@ const PUBLIC_MEMORY_FRACTION: felt252 = 8;
 // const RANGE_CHECK_N_PARTS: felt252 = 8;
 // const RANGE_CHECK96_N_PARTS: felt252 = 6;
 
-#[derive(Drop, Copy, Serde)]
-struct DynamicParams {
-    add_mod_a0_suboffset: usize,
-    add_mod_a1_suboffset: usize,
-    add_mod_a2_suboffset: usize,
-    add_mod_a3_suboffset: usize,
-    add_mod_a_offset_suboffset: usize,
-    add_mod_b0_suboffset: usize,
-    add_mod_b1_suboffset: usize,
-    add_mod_b2_suboffset: usize,
-    add_mod_b3_suboffset: usize,
-    add_mod_b_offset_suboffset: usize,
-    add_mod_c0_suboffset: usize,
-    add_mod_c1_suboffset: usize,
-    add_mod_c2_suboffset: usize,
-    add_mod_c3_suboffset: usize,
-    add_mod_c_offset_suboffset: usize,
-    add_mod_carry1_bit_column: usize,
-    add_mod_carry1_bit_offset: usize,
-    add_mod_carry1_sign_column: usize,
-    add_mod_carry1_sign_offset: usize,
-    add_mod_carry2_bit_column: usize,
-    add_mod_carry2_bit_offset: usize,
-    add_mod_carry2_sign_column: usize,
-    add_mod_carry2_sign_offset: usize,
-    add_mod_carry3_bit_column: usize,
-    add_mod_carry3_bit_offset: usize,
-    add_mod_carry3_sign_column: usize,
-    add_mod_carry3_sign_offset: usize,
-    add_mod_n_suboffset: usize,
-    add_mod_offsets_ptr_suboffset: usize,
-    add_mod_p0_suboffset: usize,
-    add_mod_p1_suboffset: usize,
-    add_mod_p2_suboffset: usize,
-    add_mod_p3_suboffset: usize,
-    add_mod_row_ratio: usize,
-    add_mod_sub_p_bit_column: usize,
-    add_mod_sub_p_bit_offset: usize,
-    add_mod_values_ptr_suboffset: usize,
-    bitwise_diluted_var_pool_suboffset: usize,
-    bitwise_row_ratio: usize,
-    bitwise_trim_unpacking192_suboffset: usize,
-    bitwise_trim_unpacking193_suboffset: usize,
-    bitwise_trim_unpacking194_suboffset: usize,
-    bitwise_trim_unpacking195_suboffset: usize,
-    bitwise_var_pool_suboffset: usize,
-    bitwise_x_or_y_suboffset: usize,
-    cpu_decode_mem_inst_suboffset: usize,
-    cpu_decode_off0_suboffset: usize,
-    cpu_decode_off1_suboffset: usize,
-    cpu_decode_off2_suboffset: usize,
-    cpu_decode_opcode_range_check_column_column: usize,
-    cpu_decode_opcode_range_check_column_offset: usize,
-    cpu_operands_mem_dst_suboffset: usize,
-    cpu_operands_mem_op0_suboffset: usize,
-    cpu_operands_mem_op1_suboffset: usize,
-    cpu_operands_ops_mul_column: usize,
-    cpu_operands_ops_mul_offset: usize,
-    cpu_operands_res_column: usize,
-    cpu_operands_res_offset: usize,
-    cpu_registers_ap_column: usize,
-    cpu_registers_ap_offset: usize,
-    cpu_registers_fp_column: usize,
-    cpu_registers_fp_offset: usize,
-    cpu_update_registers_update_pc_tmp0_column: usize,
-    cpu_update_registers_update_pc_tmp0_offset: usize,
-    cpu_update_registers_update_pc_tmp1_column: usize,
-    cpu_update_registers_update_pc_tmp1_offset: usize,
-    cpu_component_step: usize,
-    diluted_check_cumulative_value_column: usize,
-    diluted_check_cumulative_value_offset: usize,
-    diluted_check_permutation_cum_prod0_column: usize,
-    diluted_check_permutation_cum_prod0_offset: usize,
-    diluted_check_permuted_values_column: usize,
-    diluted_check_permuted_values_offset: usize,
-    diluted_pool_column: usize,
-    diluted_pool_offset: usize,
-    diluted_units_row_ratio: usize,
-    ec_op_doubled_points_x_column: usize,
-    ec_op_doubled_points_x_offset: usize,
-    ec_op_doubled_points_y_column: usize,
-    ec_op_doubled_points_y_offset: usize,
-    ec_op_doubling_slope_column: usize,
-    ec_op_doubling_slope_offset: usize,
-    ec_op_ec_subset_sum_bit_unpacking_prod_ones192_column: usize,
-    ec_op_ec_subset_sum_bit_unpacking_prod_ones192_offset: usize,
-    ec_op_ec_subset_sum_bit_unpacking_prod_ones196_column: usize,
-    ec_op_ec_subset_sum_bit_unpacking_prod_ones196_offset: usize,
-    ec_op_ec_subset_sum_partial_sum_x_column: usize,
-    ec_op_ec_subset_sum_partial_sum_x_offset: usize,
-    ec_op_ec_subset_sum_partial_sum_y_column: usize,
-    ec_op_ec_subset_sum_partial_sum_y_offset: usize,
-    ec_op_ec_subset_sum_selector_column: usize,
-    ec_op_ec_subset_sum_selector_offset: usize,
-    ec_op_ec_subset_sum_slope_column: usize,
-    ec_op_ec_subset_sum_slope_offset: usize,
-    ec_op_ec_subset_sum_x_diff_inv_column: usize,
-    ec_op_ec_subset_sum_x_diff_inv_offset: usize,
-    ec_op_m_suboffset: usize,
-    ec_op_p_x_suboffset: usize,
-    ec_op_p_y_suboffset: usize,
-    ec_op_q_x_suboffset: usize,
-    ec_op_q_y_suboffset: usize,
-    ec_op_r_x_suboffset: usize,
-    ec_op_r_y_suboffset: usize,
-    ec_op_builtin_row_ratio: usize,
-    ecdsa_message_suboffset: usize,
-    ecdsa_pubkey_suboffset: usize,
-    ecdsa_signature0_add_results_inv_column: usize,
-    ecdsa_signature0_add_results_inv_offset: usize,
-    ecdsa_signature0_add_results_slope_column: usize,
-    ecdsa_signature0_add_results_slope_offset: usize,
-    ecdsa_signature0_doubling_slope_column: usize,
-    ecdsa_signature0_doubling_slope_offset: usize,
-    ecdsa_signature0_exponentiate_generator_partial_sum_x_column: usize,
-    ecdsa_signature0_exponentiate_generator_partial_sum_x_offset: usize,
-    ecdsa_signature0_exponentiate_generator_partial_sum_y_column: usize,
-    ecdsa_signature0_exponentiate_generator_partial_sum_y_offset: usize,
-    ecdsa_signature0_exponentiate_generator_selector_column: usize,
-    ecdsa_signature0_exponentiate_generator_selector_offset: usize,
-    ecdsa_signature0_exponentiate_generator_slope_column: usize,
-    ecdsa_signature0_exponentiate_generator_slope_offset: usize,
-    ecdsa_signature0_exponentiate_generator_x_diff_inv_column: usize,
-    ecdsa_signature0_exponentiate_generator_x_diff_inv_offset: usize,
-    ecdsa_signature0_exponentiate_key_partial_sum_x_column: usize,
-    ecdsa_signature0_exponentiate_key_partial_sum_x_offset: usize,
-    ecdsa_signature0_exponentiate_key_partial_sum_y_column: usize,
-    ecdsa_signature0_exponentiate_key_partial_sum_y_offset: usize,
-    ecdsa_signature0_exponentiate_key_selector_column: usize,
-    ecdsa_signature0_exponentiate_key_selector_offset: usize,
-    ecdsa_signature0_exponentiate_key_slope_column: usize,
-    ecdsa_signature0_exponentiate_key_slope_offset: usize,
-    ecdsa_signature0_exponentiate_key_x_diff_inv_column: usize,
-    ecdsa_signature0_exponentiate_key_x_diff_inv_offset: usize,
-    ecdsa_signature0_extract_r_inv_column: usize,
-    ecdsa_signature0_extract_r_inv_offset: usize,
-    ecdsa_signature0_extract_r_slope_column: usize,
-    ecdsa_signature0_extract_r_slope_offset: usize,
-    ecdsa_signature0_key_points_x_column: usize,
-    ecdsa_signature0_key_points_x_offset: usize,
-    ecdsa_signature0_key_points_y_column: usize,
-    ecdsa_signature0_key_points_y_offset: usize,
-    ecdsa_signature0_q_x_squared_column: usize,
-    ecdsa_signature0_q_x_squared_offset: usize,
-    ecdsa_signature0_r_w_inv_column: usize,
-    ecdsa_signature0_r_w_inv_offset: usize,
-    ecdsa_signature0_z_inv_column: usize,
-    ecdsa_signature0_z_inv_offset: usize,
-    ecdsa_builtin_row_ratio: usize,
-    keccak_input_output_suboffset: usize,
-    keccak_keccak_diluted_column0_suboffset: usize,
-    keccak_keccak_diluted_column1_suboffset: usize,
-    keccak_keccak_diluted_column2_suboffset: usize,
-    keccak_keccak_diluted_column3_suboffset: usize,
-    keccak_keccak_parse_to_diluted_cumulative_sum_column: usize,
-    keccak_keccak_parse_to_diluted_cumulative_sum_offset: usize,
-    keccak_keccak_parse_to_diluted_final_reshaped_input_column: usize,
-    keccak_keccak_parse_to_diluted_final_reshaped_input_offset: usize,
-    keccak_keccak_parse_to_diluted_reshaped_intermediate_column: usize,
-    keccak_keccak_parse_to_diluted_reshaped_intermediate_offset: usize,
-    keccak_keccak_rotated_parity0_column: usize,
-    keccak_keccak_rotated_parity0_offset: usize,
-    keccak_keccak_rotated_parity1_column: usize,
-    keccak_keccak_rotated_parity1_offset: usize,
-    keccak_keccak_rotated_parity2_column: usize,
-    keccak_keccak_rotated_parity2_offset: usize,
-    keccak_keccak_rotated_parity3_column: usize,
-    keccak_keccak_rotated_parity3_offset: usize,
-    keccak_keccak_rotated_parity4_column: usize,
-    keccak_keccak_rotated_parity4_offset: usize,
-    keccak_row_ratio: usize,
-    mem_pool_addr_column: usize,
-    mem_pool_addr_offset: usize,
-    mem_pool_value_column: usize,
-    mem_pool_value_offset: usize,
-    memory_multi_column_perm_perm_cum_prod0_column: usize,
-    memory_multi_column_perm_perm_cum_prod0_offset: usize,
-    memory_sorted_addr_column: usize,
-    memory_sorted_addr_offset: usize,
-    memory_sorted_value_column: usize,
-    memory_sorted_value_offset: usize,
-    memory_units_row_ratio: usize,
-    mul_mod_a0_suboffset: usize,
-    mul_mod_a1_suboffset: usize,
-    mul_mod_a2_suboffset: usize,
-    mul_mod_a3_suboffset: usize,
-    mul_mod_a_offset_suboffset: usize,
-    mul_mod_b0_suboffset: usize,
-    mul_mod_b1_suboffset: usize,
-    mul_mod_b2_suboffset: usize,
-    mul_mod_b3_suboffset: usize,
-    mul_mod_b_offset_suboffset: usize,
-    mul_mod_c0_suboffset: usize,
-    mul_mod_c1_suboffset: usize,
-    mul_mod_c2_suboffset: usize,
-    mul_mod_c3_suboffset: usize,
-    mul_mod_c_offset_suboffset: usize,
-    mul_mod_carry0_part0_suboffset: usize,
-    mul_mod_carry0_part1_suboffset: usize,
-    mul_mod_carry0_part2_suboffset: usize,
-    mul_mod_carry0_part3_suboffset: usize,
-    mul_mod_carry0_part4_suboffset: usize,
-    mul_mod_carry0_part5_suboffset: usize,
-    mul_mod_carry0_part6_suboffset: usize,
-    mul_mod_carry1_part0_suboffset: usize,
-    mul_mod_carry1_part1_suboffset: usize,
-    mul_mod_carry1_part2_suboffset: usize,
-    mul_mod_carry1_part3_suboffset: usize,
-    mul_mod_carry1_part4_suboffset: usize,
-    mul_mod_carry1_part5_suboffset: usize,
-    mul_mod_carry1_part6_suboffset: usize,
-    mul_mod_carry2_part0_suboffset: usize,
-    mul_mod_carry2_part1_suboffset: usize,
-    mul_mod_carry2_part2_suboffset: usize,
-    mul_mod_carry2_part3_suboffset: usize,
-    mul_mod_carry2_part4_suboffset: usize,
-    mul_mod_carry2_part5_suboffset: usize,
-    mul_mod_carry2_part6_suboffset: usize,
-    mul_mod_carry3_part0_suboffset: usize,
-    mul_mod_carry3_part1_suboffset: usize,
-    mul_mod_carry3_part2_suboffset: usize,
-    mul_mod_carry3_part3_suboffset: usize,
-    mul_mod_carry3_part4_suboffset: usize,
-    mul_mod_carry3_part5_suboffset: usize,
-    mul_mod_carry3_part6_suboffset: usize,
-    mul_mod_carry4_part0_suboffset: usize,
-    mul_mod_carry4_part1_suboffset: usize,
-    mul_mod_carry4_part2_suboffset: usize,
-    mul_mod_carry4_part3_suboffset: usize,
-    mul_mod_carry4_part4_suboffset: usize,
-    mul_mod_carry4_part5_suboffset: usize,
-    mul_mod_carry4_part6_suboffset: usize,
-    mul_mod_carry5_part0_suboffset: usize,
-    mul_mod_carry5_part1_suboffset: usize,
-    mul_mod_carry5_part2_suboffset: usize,
-    mul_mod_carry5_part3_suboffset: usize,
-    mul_mod_carry5_part4_suboffset: usize,
-    mul_mod_carry5_part5_suboffset: usize,
-    mul_mod_carry5_part6_suboffset: usize,
-    mul_mod_n_suboffset: usize,
-    mul_mod_offsets_ptr_suboffset: usize,
-    mul_mod_p0_suboffset: usize,
-    mul_mod_p1_suboffset: usize,
-    mul_mod_p2_suboffset: usize,
-    mul_mod_p3_suboffset: usize,
-    mul_mod_p_multiplier0_part0_suboffset: usize,
-    mul_mod_p_multiplier0_part1_suboffset: usize,
-    mul_mod_p_multiplier0_part2_suboffset: usize,
-    mul_mod_p_multiplier0_part3_suboffset: usize,
-    mul_mod_p_multiplier0_part4_suboffset: usize,
-    mul_mod_p_multiplier0_part5_suboffset: usize,
-    mul_mod_p_multiplier1_part0_suboffset: usize,
-    mul_mod_p_multiplier1_part1_suboffset: usize,
-    mul_mod_p_multiplier1_part2_suboffset: usize,
-    mul_mod_p_multiplier1_part3_suboffset: usize,
-    mul_mod_p_multiplier1_part4_suboffset: usize,
-    mul_mod_p_multiplier1_part5_suboffset: usize,
-    mul_mod_p_multiplier2_part0_suboffset: usize,
-    mul_mod_p_multiplier2_part1_suboffset: usize,
-    mul_mod_p_multiplier2_part2_suboffset: usize,
-    mul_mod_p_multiplier2_part3_suboffset: usize,
-    mul_mod_p_multiplier2_part4_suboffset: usize,
-    mul_mod_p_multiplier2_part5_suboffset: usize,
-    mul_mod_p_multiplier3_part0_suboffset: usize,
-    mul_mod_p_multiplier3_part1_suboffset: usize,
-    mul_mod_p_multiplier3_part2_suboffset: usize,
-    mul_mod_p_multiplier3_part3_suboffset: usize,
-    mul_mod_p_multiplier3_part4_suboffset: usize,
-    mul_mod_p_multiplier3_part5_suboffset: usize,
-    mul_mod_row_ratio: usize,
-    mul_mod_values_ptr_suboffset: usize,
-    num_columns_first: usize,
-    num_columns_second: usize,
-    orig_public_memory_suboffset: usize,
-    pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_column: usize,
-    pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_offset: usize,
-    pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_column: usize,
-    pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_offset: usize,
-    pedersen_hash0_ec_subset_sum_partial_sum_x_column: usize,
-    pedersen_hash0_ec_subset_sum_partial_sum_x_offset: usize,
-    pedersen_hash0_ec_subset_sum_partial_sum_y_column: usize,
-    pedersen_hash0_ec_subset_sum_partial_sum_y_offset: usize,
-    pedersen_hash0_ec_subset_sum_selector_column: usize,
-    pedersen_hash0_ec_subset_sum_selector_offset: usize,
-    pedersen_hash0_ec_subset_sum_slope_column: usize,
-    pedersen_hash0_ec_subset_sum_slope_offset: usize,
-    pedersen_input0_suboffset: usize,
-    pedersen_input1_suboffset: usize,
-    pedersen_output_suboffset: usize,
-    pedersen_builtin_row_ratio: usize,
-    poseidon_param_0_input_output_suboffset: usize,
-    poseidon_param_1_input_output_suboffset: usize,
-    poseidon_param_2_input_output_suboffset: usize,
-    poseidon_poseidon_full_rounds_state0_column: usize,
-    poseidon_poseidon_full_rounds_state0_offset: usize,
-    poseidon_poseidon_full_rounds_state0_squared_column: usize,
-    poseidon_poseidon_full_rounds_state0_squared_offset: usize,
-    poseidon_poseidon_full_rounds_state1_column: usize,
-    poseidon_poseidon_full_rounds_state1_offset: usize,
-    poseidon_poseidon_full_rounds_state1_squared_column: usize,
-    poseidon_poseidon_full_rounds_state1_squared_offset: usize,
-    poseidon_poseidon_full_rounds_state2_column: usize,
-    poseidon_poseidon_full_rounds_state2_offset: usize,
-    poseidon_poseidon_full_rounds_state2_squared_column: usize,
-    poseidon_poseidon_full_rounds_state2_squared_offset: usize,
-    poseidon_poseidon_partial_rounds_state0_column: usize,
-    poseidon_poseidon_partial_rounds_state0_offset: usize,
-    poseidon_poseidon_partial_rounds_state0_squared_column: usize,
-    poseidon_poseidon_partial_rounds_state0_squared_offset: usize,
-    poseidon_poseidon_partial_rounds_state1_column: usize,
-    poseidon_poseidon_partial_rounds_state1_offset: usize,
-    poseidon_poseidon_partial_rounds_state1_squared_column: usize,
-    poseidon_poseidon_partial_rounds_state1_squared_offset: usize,
-    poseidon_row_ratio: usize,
-    range_check16_perm_cum_prod0_column: usize,
-    range_check16_perm_cum_prod0_offset: usize,
-    range_check16_sorted_column: usize,
-    range_check16_sorted_offset: usize,
-    range_check16_pool_column: usize,
-    range_check16_pool_offset: usize,
-    range_check96_builtin_inner_range_check0_suboffset: usize,
-    range_check96_builtin_inner_range_check1_suboffset: usize,
-    range_check96_builtin_inner_range_check2_suboffset: usize,
-    range_check96_builtin_inner_range_check3_suboffset: usize,
-    range_check96_builtin_inner_range_check4_suboffset: usize,
-    range_check96_builtin_inner_range_check5_suboffset: usize,
-    range_check96_builtin_mem_suboffset: usize,
-    range_check96_builtin_row_ratio: usize,
-    range_check_builtin_inner_range_check_suboffset: usize,
-    range_check_builtin_mem_suboffset: usize,
-    range_check_builtin_row_ratio: usize,
-    range_check_units_row_ratio: usize,
-    uses_add_mod_builtin: usize,
-    uses_bitwise_builtin: usize,
-    uses_ec_op_builtin: usize,
-    uses_ecdsa_builtin: usize,
-    uses_keccak_builtin: usize,
-    uses_mul_mod_builtin: usize,
-    uses_pedersen_builtin: usize,
-    uses_poseidon_builtin: usize,
-    uses_range_check96_builtin: usize,
-    uses_range_check_builtin: usize,
+// not a struct due to 
+type DynamicParams = Span<usize>;
+mod DynamicParamsIndex {
+    const add_mod_a0_suboffset: usize = 0;
+    const add_mod_a1_suboffset: usize = 1;
+    const add_mod_a2_suboffset: usize = 2;
+    const add_mod_a3_suboffset: usize = 3;
+    const add_mod_a_offset_suboffset: usize = 4;
+    const add_mod_b0_suboffset: usize = 5;
+    const add_mod_b1_suboffset: usize = 6;
+    const add_mod_b2_suboffset: usize = 7;
+    const add_mod_b3_suboffset: usize = 8;
+    const add_mod_b_offset_suboffset: usize = 9;
+    const add_mod_c0_suboffset: usize = 10;
+    const add_mod_c1_suboffset: usize = 11;
+    const add_mod_c2_suboffset: usize = 12;
+    const add_mod_c3_suboffset: usize = 13;
+    const add_mod_c_offset_suboffset: usize = 14;
+    const add_mod_carry1_bit_column: usize = 15;
+    const add_mod_carry1_bit_offset: usize = 16;
+    const add_mod_carry1_sign_column: usize = 17;
+    const add_mod_carry1_sign_offset: usize = 18;
+    const add_mod_carry2_bit_column: usize = 19;
+    const add_mod_carry2_bit_offset: usize = 20;
+    const add_mod_carry2_sign_column: usize = 21;
+    const add_mod_carry2_sign_offset: usize = 22;
+    const add_mod_carry3_bit_column: usize = 23;
+    const add_mod_carry3_bit_offset: usize = 24;
+    const add_mod_carry3_sign_column: usize = 25;
+    const add_mod_carry3_sign_offset: usize = 26;
+    const add_mod_n_suboffset: usize = 27;
+    const add_mod_offsets_ptr_suboffset: usize = 28;
+    const add_mod_p0_suboffset: usize = 29;
+    const add_mod_p1_suboffset: usize = 30;
+    const add_mod_p2_suboffset: usize = 31;
+    const add_mod_p3_suboffset: usize = 32;
+    const add_mod_row_ratio: usize = 33;
+    const add_mod_sub_p_bit_column: usize = 34;
+    const add_mod_sub_p_bit_offset: usize = 35;
+    const add_mod_values_ptr_suboffset: usize = 36;
+    const bitwise_diluted_var_pool_suboffset: usize = 37;
+    const bitwise_row_ratio: usize = 38;
+    const bitwise_trim_unpacking192_suboffset: usize = 39;
+    const bitwise_trim_unpacking193_suboffset: usize = 40;
+    const bitwise_trim_unpacking194_suboffset: usize = 41;
+    const bitwise_trim_unpacking195_suboffset: usize = 42;
+    const bitwise_var_pool_suboffset: usize = 43;
+    const bitwise_x_or_y_suboffset: usize = 44;
+    const cpu_decode_mem_inst_suboffset: usize = 45;
+    const cpu_decode_off0_suboffset: usize = 46;
+    const cpu_decode_off1_suboffset: usize = 47;
+    const cpu_decode_off2_suboffset: usize = 48;
+    const cpu_decode_opcode_range_check_column_column: usize = 49;
+    const cpu_decode_opcode_range_check_column_offset: usize = 50;
+    const cpu_operands_mem_dst_suboffset: usize = 51;
+    const cpu_operands_mem_op0_suboffset: usize = 52;
+    const cpu_operands_mem_op1_suboffset: usize = 53;
+    const cpu_operands_ops_mul_column: usize = 54;
+    const cpu_operands_ops_mul_offset: usize = 55;
+    const cpu_operands_res_column: usize = 56;
+    const cpu_operands_res_offset: usize = 57;
+    const cpu_registers_ap_column: usize = 58;
+    const cpu_registers_ap_offset: usize = 59;
+    const cpu_registers_fp_column: usize = 60;
+    const cpu_registers_fp_offset: usize = 61;
+    const cpu_update_registers_update_pc_tmp0_column: usize = 62;
+    const cpu_update_registers_update_pc_tmp0_offset: usize = 63;
+    const cpu_update_registers_update_pc_tmp1_column: usize = 64;
+    const cpu_update_registers_update_pc_tmp1_offset: usize = 65;
+    const cpu_component_step: usize = 66;
+    const diluted_check_cumulative_value_column: usize = 67;
+    const diluted_check_cumulative_value_offset: usize = 68;
+    const diluted_check_permutation_cum_prod0_column: usize = 69;
+    const diluted_check_permutation_cum_prod0_offset: usize = 70;
+    const diluted_check_permuted_values_column: usize = 71;
+    const diluted_check_permuted_values_offset: usize = 72;
+    const diluted_pool_column: usize = 73;
+    const diluted_pool_offset: usize = 74;
+    const diluted_units_row_ratio: usize = 75;
+    const ec_op_doubled_points_x_column: usize = 76;
+    const ec_op_doubled_points_x_offset: usize = 77;
+    const ec_op_doubled_points_y_column: usize = 78;
+    const ec_op_doubled_points_y_offset: usize = 79;
+    const ec_op_doubling_slope_column: usize = 80;
+    const ec_op_doubling_slope_offset: usize = 81;
+    const ec_op_ec_subset_sum_bit_unpacking_prod_ones192_column: usize = 82;
+    const ec_op_ec_subset_sum_bit_unpacking_prod_ones192_offset: usize = 83;
+    const ec_op_ec_subset_sum_bit_unpacking_prod_ones196_column: usize = 84;
+    const ec_op_ec_subset_sum_bit_unpacking_prod_ones196_offset: usize = 85;
+    const ec_op_ec_subset_sum_partial_sum_x_column: usize = 86;
+    const ec_op_ec_subset_sum_partial_sum_x_offset: usize = 87;
+    const ec_op_ec_subset_sum_partial_sum_y_column: usize = 88;
+    const ec_op_ec_subset_sum_partial_sum_y_offset: usize = 89;
+    const ec_op_ec_subset_sum_selector_column: usize = 90;
+    const ec_op_ec_subset_sum_selector_offset: usize = 91;
+    const ec_op_ec_subset_sum_slope_column: usize = 92;
+    const ec_op_ec_subset_sum_slope_offset: usize = 93;
+    const ec_op_ec_subset_sum_x_diff_inv_column: usize = 94;
+    const ec_op_ec_subset_sum_x_diff_inv_offset: usize = 95;
+    const ec_op_m_suboffset: usize = 96;
+    const ec_op_p_x_suboffset: usize = 97;
+    const ec_op_p_y_suboffset: usize = 98;
+    const ec_op_q_x_suboffset: usize = 99;
+    const ec_op_q_y_suboffset: usize = 100;
+    const ec_op_r_x_suboffset: usize = 101;
+    const ec_op_r_y_suboffset: usize = 102;
+    const ec_op_builtin_row_ratio: usize = 103;
+    const ecdsa_message_suboffset: usize = 104;
+    const ecdsa_pubkey_suboffset: usize = 105;
+    const ecdsa_signature0_add_results_inv_column: usize = 106;
+    const ecdsa_signature0_add_results_inv_offset: usize = 107;
+    const ecdsa_signature0_add_results_slope_column: usize = 108;
+    const ecdsa_signature0_add_results_slope_offset: usize = 109;
+    const ecdsa_signature0_doubling_slope_column: usize = 110;
+    const ecdsa_signature0_doubling_slope_offset: usize = 111;
+    const ecdsa_signature0_exponentiate_generator_partial_sum_x_column: usize = 112;
+    const ecdsa_signature0_exponentiate_generator_partial_sum_x_offset: usize = 113;
+    const ecdsa_signature0_exponentiate_generator_partial_sum_y_column: usize = 114;
+    const ecdsa_signature0_exponentiate_generator_partial_sum_y_offset: usize = 115;
+    const ecdsa_signature0_exponentiate_generator_selector_column: usize = 116;
+    const ecdsa_signature0_exponentiate_generator_selector_offset: usize = 117;
+    const ecdsa_signature0_exponentiate_generator_slope_column: usize = 118;
+    const ecdsa_signature0_exponentiate_generator_slope_offset: usize = 119;
+    const ecdsa_signature0_exponentiate_generator_x_diff_inv_column: usize = 120;
+    const ecdsa_signature0_exponentiate_generator_x_diff_inv_offset: usize = 121;
+    const ecdsa_signature0_exponentiate_key_partial_sum_x_column: usize = 122;
+    const ecdsa_signature0_exponentiate_key_partial_sum_x_offset: usize = 123;
+    const ecdsa_signature0_exponentiate_key_partial_sum_y_column: usize = 124;
+    const ecdsa_signature0_exponentiate_key_partial_sum_y_offset: usize = 125;
+    const ecdsa_signature0_exponentiate_key_selector_column: usize = 126;
+    const ecdsa_signature0_exponentiate_key_selector_offset: usize = 127;
+    const ecdsa_signature0_exponentiate_key_slope_column: usize = 128;
+    const ecdsa_signature0_exponentiate_key_slope_offset: usize = 129;
+    const ecdsa_signature0_exponentiate_key_x_diff_inv_column: usize = 130;
+    const ecdsa_signature0_exponentiate_key_x_diff_inv_offset: usize = 131;
+    const ecdsa_signature0_extract_r_inv_column: usize = 132;
+    const ecdsa_signature0_extract_r_inv_offset: usize = 133;
+    const ecdsa_signature0_extract_r_slope_column: usize = 134;
+    const ecdsa_signature0_extract_r_slope_offset: usize = 135;
+    const ecdsa_signature0_key_points_x_column: usize = 136;
+    const ecdsa_signature0_key_points_x_offset: usize = 137;
+    const ecdsa_signature0_key_points_y_column: usize = 138;
+    const ecdsa_signature0_key_points_y_offset: usize = 139;
+    const ecdsa_signature0_q_x_squared_column: usize = 140;
+    const ecdsa_signature0_q_x_squared_offset: usize = 141;
+    const ecdsa_signature0_r_w_inv_column: usize = 142;
+    const ecdsa_signature0_r_w_inv_offset: usize = 143;
+    const ecdsa_signature0_z_inv_column: usize = 144;
+    const ecdsa_signature0_z_inv_offset: usize = 145;
+    const ecdsa_builtin_row_ratio: usize = 146;
+    const keccak_input_output_suboffset: usize = 147;
+    const keccak_keccak_diluted_column0_suboffset: usize = 148;
+    const keccak_keccak_diluted_column1_suboffset: usize = 149;
+    const keccak_keccak_diluted_column2_suboffset: usize = 150;
+    const keccak_keccak_diluted_column3_suboffset: usize = 151;
+    const keccak_keccak_parse_to_diluted_cumulative_sum_column: usize = 152;
+    const keccak_keccak_parse_to_diluted_cumulative_sum_offset: usize = 153;
+    const keccak_keccak_parse_to_diluted_final_reshaped_input_column: usize = 154;
+    const keccak_keccak_parse_to_diluted_final_reshaped_input_offset: usize = 155;
+    const keccak_keccak_parse_to_diluted_reshaped_intermediate_column: usize = 156;
+    const keccak_keccak_parse_to_diluted_reshaped_intermediate_offset: usize = 157;
+    const keccak_keccak_rotated_parity0_column: usize = 158;
+    const keccak_keccak_rotated_parity0_offset: usize = 159;
+    const keccak_keccak_rotated_parity1_column: usize = 160;
+    const keccak_keccak_rotated_parity1_offset: usize = 161;
+    const keccak_keccak_rotated_parity2_column: usize = 162;
+    const keccak_keccak_rotated_parity2_offset: usize = 163;
+    const keccak_keccak_rotated_parity3_column: usize = 164;
+    const keccak_keccak_rotated_parity3_offset: usize = 165;
+    const keccak_keccak_rotated_parity4_column: usize = 166;
+    const keccak_keccak_rotated_parity4_offset: usize = 167;
+    const keccak_row_ratio: usize = 168;
+    const mem_pool_addr_column: usize = 169;
+    const mem_pool_addr_offset: usize = 170;
+    const mem_pool_value_column: usize = 171;
+    const mem_pool_value_offset: usize = 172;
+    const memory_multi_column_perm_perm_cum_prod0_column: usize = 173;
+    const memory_multi_column_perm_perm_cum_prod0_offset: usize = 174;
+    const memory_sorted_addr_column: usize = 175;
+    const memory_sorted_addr_offset: usize = 176;
+    const memory_sorted_value_column: usize = 177;
+    const memory_sorted_value_offset: usize = 178;
+    const memory_units_row_ratio: usize = 179;
+    const mul_mod_a0_suboffset: usize = 180;
+    const mul_mod_a1_suboffset: usize = 181;
+    const mul_mod_a2_suboffset: usize = 182;
+    const mul_mod_a3_suboffset: usize = 183;
+    const mul_mod_a_offset_suboffset: usize = 184;
+    const mul_mod_b0_suboffset: usize = 185;
+    const mul_mod_b1_suboffset: usize = 186;
+    const mul_mod_b2_suboffset: usize = 187;
+    const mul_mod_b3_suboffset: usize = 188;
+    const mul_mod_b_offset_suboffset: usize = 189;
+    const mul_mod_c0_suboffset: usize = 190;
+    const mul_mod_c1_suboffset: usize = 191;
+    const mul_mod_c2_suboffset: usize = 192;
+    const mul_mod_c3_suboffset: usize = 193;
+    const mul_mod_c_offset_suboffset: usize = 194;
+    const mul_mod_carry0_part0_suboffset: usize = 195;
+    const mul_mod_carry0_part1_suboffset: usize = 196;
+    const mul_mod_carry0_part2_suboffset: usize = 197;
+    const mul_mod_carry0_part3_suboffset: usize = 198;
+    const mul_mod_carry0_part4_suboffset: usize = 199;
+    const mul_mod_carry0_part5_suboffset: usize = 200;
+    const mul_mod_carry0_part6_suboffset: usize = 201;
+    const mul_mod_carry1_part0_suboffset: usize = 202;
+    const mul_mod_carry1_part1_suboffset: usize = 203;
+    const mul_mod_carry1_part2_suboffset: usize = 204;
+    const mul_mod_carry1_part3_suboffset: usize = 205;
+    const mul_mod_carry1_part4_suboffset: usize = 206;
+    const mul_mod_carry1_part5_suboffset: usize = 207;
+    const mul_mod_carry1_part6_suboffset: usize = 208;
+    const mul_mod_carry2_part0_suboffset: usize = 209;
+    const mul_mod_carry2_part1_suboffset: usize = 210;
+    const mul_mod_carry2_part2_suboffset: usize = 211;
+    const mul_mod_carry2_part3_suboffset: usize = 212;
+    const mul_mod_carry2_part4_suboffset: usize = 213;
+    const mul_mod_carry2_part5_suboffset: usize = 214;
+    const mul_mod_carry2_part6_suboffset: usize = 215;
+    const mul_mod_carry3_part0_suboffset: usize = 216;
+    const mul_mod_carry3_part1_suboffset: usize = 217;
+    const mul_mod_carry3_part2_suboffset: usize = 218;
+    const mul_mod_carry3_part3_suboffset: usize = 219;
+    const mul_mod_carry3_part4_suboffset: usize = 220;
+    const mul_mod_carry3_part5_suboffset: usize = 221;
+    const mul_mod_carry3_part6_suboffset: usize = 222;
+    const mul_mod_carry4_part0_suboffset: usize = 223;
+    const mul_mod_carry4_part1_suboffset: usize = 224;
+    const mul_mod_carry4_part2_suboffset: usize = 225;
+    const mul_mod_carry4_part3_suboffset: usize = 226;
+    const mul_mod_carry4_part4_suboffset: usize = 227;
+    const mul_mod_carry4_part5_suboffset: usize = 228;
+    const mul_mod_carry4_part6_suboffset: usize = 229;
+    const mul_mod_carry5_part0_suboffset: usize = 230;
+    const mul_mod_carry5_part1_suboffset: usize = 231;
+    const mul_mod_carry5_part2_suboffset: usize = 232;
+    const mul_mod_carry5_part3_suboffset: usize = 233;
+    const mul_mod_carry5_part4_suboffset: usize = 234;
+    const mul_mod_carry5_part5_suboffset: usize = 235;
+    const mul_mod_carry5_part6_suboffset: usize = 236;
+    const mul_mod_n_suboffset: usize = 237;
+    const mul_mod_offsets_ptr_suboffset: usize = 238;
+    const mul_mod_p0_suboffset: usize = 239;
+    const mul_mod_p1_suboffset: usize = 240;
+    const mul_mod_p2_suboffset: usize = 241;
+    const mul_mod_p3_suboffset: usize = 242;
+    const mul_mod_p_multiplier0_part0_suboffset: usize = 243;
+    const mul_mod_p_multiplier0_part1_suboffset: usize = 244;
+    const mul_mod_p_multiplier0_part2_suboffset: usize = 245;
+    const mul_mod_p_multiplier0_part3_suboffset: usize = 246;
+    const mul_mod_p_multiplier0_part4_suboffset: usize = 247;
+    const mul_mod_p_multiplier0_part5_suboffset: usize = 248;
+    const mul_mod_p_multiplier1_part0_suboffset: usize = 249;
+    const mul_mod_p_multiplier1_part1_suboffset: usize = 250;
+    const mul_mod_p_multiplier1_part2_suboffset: usize = 251;
+    const mul_mod_p_multiplier1_part3_suboffset: usize = 252;
+    const mul_mod_p_multiplier1_part4_suboffset: usize = 253;
+    const mul_mod_p_multiplier1_part5_suboffset: usize = 254;
+    const mul_mod_p_multiplier2_part0_suboffset: usize = 255;
+    const mul_mod_p_multiplier2_part1_suboffset: usize = 256;
+    const mul_mod_p_multiplier2_part2_suboffset: usize = 257;
+    const mul_mod_p_multiplier2_part3_suboffset: usize = 258;
+    const mul_mod_p_multiplier2_part4_suboffset: usize = 259;
+    const mul_mod_p_multiplier2_part5_suboffset: usize = 260;
+    const mul_mod_p_multiplier3_part0_suboffset: usize = 261;
+    const mul_mod_p_multiplier3_part1_suboffset: usize = 262;
+    const mul_mod_p_multiplier3_part2_suboffset: usize = 263;
+    const mul_mod_p_multiplier3_part3_suboffset: usize = 264;
+    const mul_mod_p_multiplier3_part4_suboffset: usize = 265;
+    const mul_mod_p_multiplier3_part5_suboffset: usize = 266;
+    const mul_mod_row_ratio: usize = 267;
+    const mul_mod_values_ptr_suboffset: usize = 268;
+    const num_columns_first: usize = 269;
+    const num_columns_second: usize = 270;
+    const orig_public_memory_suboffset: usize = 271;
+    const pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_column: usize = 272;
+    const pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones192_offset: usize = 273;
+    const pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_column: usize = 274;
+    const pedersen_hash0_ec_subset_sum_bit_unpacking_prod_ones196_offset: usize = 275;
+    const pedersen_hash0_ec_subset_sum_partial_sum_x_column: usize = 276;
+    const pedersen_hash0_ec_subset_sum_partial_sum_x_offset: usize = 277;
+    const pedersen_hash0_ec_subset_sum_partial_sum_y_column: usize = 278;
+    const pedersen_hash0_ec_subset_sum_partial_sum_y_offset: usize = 279;
+    const pedersen_hash0_ec_subset_sum_selector_column: usize = 280;
+    const pedersen_hash0_ec_subset_sum_selector_offset: usize = 281;
+    const pedersen_hash0_ec_subset_sum_slope_column: usize = 282;
+    const pedersen_hash0_ec_subset_sum_slope_offset: usize = 283;
+    const pedersen_input0_suboffset: usize = 284;
+    const pedersen_input1_suboffset: usize = 285;
+    const pedersen_output_suboffset: usize = 286;
+    const pedersen_builtin_row_ratio: usize = 287;
+    const poseidon_param_0_input_output_suboffset: usize = 288;
+    const poseidon_param_1_input_output_suboffset: usize = 289;
+    const poseidon_param_2_input_output_suboffset: usize = 290;
+    const poseidon_poseidon_full_rounds_state0_column: usize = 291;
+    const poseidon_poseidon_full_rounds_state0_offset: usize = 292;
+    const poseidon_poseidon_full_rounds_state0_squared_column: usize = 293;
+    const poseidon_poseidon_full_rounds_state0_squared_offset: usize = 294;
+    const poseidon_poseidon_full_rounds_state1_column: usize = 295;
+    const poseidon_poseidon_full_rounds_state1_offset: usize = 296;
+    const poseidon_poseidon_full_rounds_state1_squared_column: usize = 297;
+    const poseidon_poseidon_full_rounds_state1_squared_offset: usize = 298;
+    const poseidon_poseidon_full_rounds_state2_column: usize = 299;
+    const poseidon_poseidon_full_rounds_state2_offset: usize = 300;
+    const poseidon_poseidon_full_rounds_state2_squared_column: usize = 301;
+    const poseidon_poseidon_full_rounds_state2_squared_offset: usize = 302;
+    const poseidon_poseidon_partial_rounds_state0_column: usize = 303;
+    const poseidon_poseidon_partial_rounds_state0_offset: usize = 304;
+    const poseidon_poseidon_partial_rounds_state0_squared_column: usize = 305;
+    const poseidon_poseidon_partial_rounds_state0_squared_offset: usize = 306;
+    const poseidon_poseidon_partial_rounds_state1_column: usize = 307;
+    const poseidon_poseidon_partial_rounds_state1_offset: usize = 308;
+    const poseidon_poseidon_partial_rounds_state1_squared_column: usize = 309;
+    const poseidon_poseidon_partial_rounds_state1_squared_offset: usize = 310;
+    const poseidon_row_ratio: usize = 311;
+    const range_check16_perm_cum_prod0_column: usize = 312;
+    const range_check16_perm_cum_prod0_offset: usize = 313;
+    const range_check16_sorted_column: usize = 314;
+    const range_check16_sorted_offset: usize = 315;
+    const range_check16_pool_column: usize = 316;
+    const range_check16_pool_offset: usize = 317;
+    const range_check96_builtin_inner_range_check0_suboffset: usize = 318;
+    const range_check96_builtin_inner_range_check1_suboffset: usize = 319;
+    const range_check96_builtin_inner_range_check2_suboffset: usize = 320;
+    const range_check96_builtin_inner_range_check3_suboffset: usize = 321;
+    const range_check96_builtin_inner_range_check4_suboffset: usize = 322;
+    const range_check96_builtin_inner_range_check5_suboffset: usize = 323;
+    const range_check96_builtin_mem_suboffset: usize = 324;
+    const range_check96_builtin_row_ratio: usize = 325;
+    const range_check_builtin_inner_range_check_suboffset: usize = 326;
+    const range_check_builtin_mem_suboffset: usize = 327;
+    const range_check_builtin_row_ratio: usize = 328;
+    const range_check_units_row_ratio: usize = 329;
+    const uses_add_mod_builtin: usize = 330;
+    const uses_bitwise_builtin: usize = 331;
+    const uses_ec_op_builtin: usize = 332;
+    const uses_ecdsa_builtin: usize = 333;
+    const uses_keccak_builtin: usize = 334;
+    const uses_mul_mod_builtin: usize = 335;
+    const uses_pedersen_builtin: usize = 336;
+    const uses_poseidon_builtin: usize = 337;
+    const uses_range_check96_builtin: usize = 338;
+    const uses_range_check_builtin: usize = 339;
+}
+
+fn dynamic_params_from_felts(felts_span: Span<felt252>) -> DynamicParams {
+    let mut dynamic_params = array![];
+    for x in felts_span {
+        dynamic_params.append((*x).try_into().unwrap());
+    };
+    dynamic_params.span()
 }
 
 mod segments {
