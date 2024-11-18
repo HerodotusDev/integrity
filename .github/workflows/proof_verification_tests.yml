@@ -21,8 +21,6 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
-              with:
-                  lfs: true
 
             - name: Setup Scarb
               uses: software-mansion/setup-scarb@v1
