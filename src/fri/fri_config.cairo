@@ -33,6 +33,9 @@ impl FriConfigImpl of FriConfigTrait {
             *self.log_last_layer_degree_bound <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Value too big'
         );
         assert(*self.fri_step_sizes[0] == 0, 'Invalid value');
+        assert(
+            (*self.inner_layers).len().into() == *self.n_layers - 1, 'Invalid inner layer config'
+        );
 
         let mut i: u32 = 1;
         let n_layers: u32 = (*self.n_layers).try_into().unwrap();

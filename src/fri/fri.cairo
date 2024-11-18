@@ -115,6 +115,10 @@ fn fri_commit(
     ref channel: Channel, unsent_commitment: FriUnsentCommitment, config: FriConfig
 ) -> FriCommitment {
     assert((*config.fri_step_sizes.at(0)) == 0, 'Invalid value');
+    assert(
+        unsent_commitment.inner_layers.len().into() == config.n_layers - 1,
+        'Invalid inner layer commitments'
+    );
 
     let (commitments, eval_points) = fri_commit_rounds(
         ref channel,

@@ -109,10 +109,7 @@ impl RecursiveWithPoseidonPublicInputImpl of PublicInputTrait {
         let output_hash = poseidon_hash_span(output);
 
         // Check main page len
-        assert(
-            *memory.at(memory_index - 1) == *self.main_page.at(self.main_page.len() - 1),
-            'Invalid main page len'
-        );
+        assert(memory_index == self.main_page.len(), 'Invalid main page len');
 
         (program_hash, output_hash)
     }
