@@ -19,9 +19,10 @@ casm = false
 
 [features]
 
+all_cairo = []
+dex = []
 recursive = []
 recursive_with_poseidon = []
-dex = []
 small = []
 starknet = []
 starknet_with_keccak = []
