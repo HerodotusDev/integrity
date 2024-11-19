@@ -1,10 +1,12 @@
-# Cairo Verifier
+# Integrity
 
 ![Integrity](.github/readme.png)
 
 [![Continuous Integration - tests](https://github.com/HerodotusDev/integrity/actions/workflows/tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml)
 
 [![Continuous Integration - proof verification tests](https://github.com/HerodotusDev/integrity/actions/workflows/proof_verification_tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/proof_verification_tests.yml)
+
+Integrity is a STARK proof verifier written in cairo language and deployed on Starknet.
 
 ## Table of contents
 
