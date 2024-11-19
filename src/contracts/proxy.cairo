@@ -56,6 +56,7 @@ trait IProxy<TContractState> {
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
+    fn get_fact_registry(self: @TContractState) -> ContractAddress;
     fn set_fact_registry(ref self: TContractState, fact_registry: ContractAddress);
     fn replace_classhash(ref self: TContractState, classhash: ClassHash);
 }
@@ -196,6 +197,10 @@ mod Proxy {
                         OwnershipTransferred { previous_owner: caller, new_owner }
                     )
                 );
+        }
+
+        fn get_fact_registry(self: @ContractState) -> ContractAddress {
+            self.fact_registry.read()
         }
 
         fn set_fact_registry(ref self: ContractState, fact_registry: ContractAddress) {
