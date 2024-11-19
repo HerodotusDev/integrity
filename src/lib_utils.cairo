@@ -29,34 +29,35 @@ const INTEGRITY_ADDRESS: felt252 =
     0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c;
 const PROXY_ADDRESS: felt252 = 0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a;
 
-struct Integrity {
+#[derive(Drop, Copy, Serde)]
+struct IntegrityT {
     dispatcher: IFactRegistryDispatcher,
 }
 
 #[generate_trait]
-impl IntegrityImpl of IntegrityTrait {
-    fn new() -> Integrity {
-        Integrity {
+impl Integrity of IntegrityTrait {
+    fn new() -> IntegrityT {
+        IntegrityT {
             dispatcher: IFactRegistryDispatcher {
                 contract_address: contract_address_const::<INTEGRITY_ADDRESS>()
             }
         }
     }
 
-    fn new_proxy() -> Integrity {
-        Integrity {
+    fn new_proxy() -> IntegrityT {
+        IntegrityT {
             dispatcher: IFactRegistryDispatcher {
                 contract_address: contract_address_const::<PROXY_ADDRESS>()
             }
         }
     }
 
-    fn from_address(contract_address: ContractAddress) -> Integrity {
-        Integrity { dispatcher: IFactRegistryDispatcher { contract_address } }
+    fn from_address(contract_address: ContractAddress) -> IntegrityT {
+        IntegrityT { dispatcher: IFactRegistryDispatcher { contract_address } }
     }
 
     fn is_fact_hash_valid_with_security(
-        self: Integrity, fact_hash: FactHash, security_bits: SecurityBits
+        self: IntegrityT, fact_hash: FactHash, security_bits: SecurityBits
     ) -> bool {
         let mut verifications = self
             .dispatcher
@@ -72,30 +73,37 @@ impl IntegrityImpl of IntegrityTrait {
         result
     }
 
-    fn is_verification_hash_valid(self: Integrity, verification_hash: VerificationHash) -> bool {
+    fn is_verification_hash_valid(self: IntegrityT, verification_hash: VerificationHash) -> bool {
         self.dispatcher.get_verification(verification_hash).is_some()
     }
 
     fn with_config(
-        self: Integrity, verifier_config: VerifierConfiguration, security_bits: SecurityBits
-    ) -> IntegrityWithConfig {
-        IntegrityWithConfig {
+        self: IntegrityT, verifier_config: VerifierConfiguration, security_bits: SecurityBits
+    ) -> IntegrityWithConfigT {
+        IntegrityWithConfigT {
             dispatcher: self.dispatcher,
             verifier_config_hash: get_verifier_config_hash(verifier_config),
             security_bits,
         }
     }
+
+    fn with_hashed_config(
+        self: IntegrityT, verifier_config_hash: felt252, security_bits: SecurityBits
+    ) -> IntegrityWithConfigT {
+        IntegrityWithConfigT { dispatcher: self.dispatcher, verifier_config_hash, security_bits, }
+    }
 }
 
-struct IntegrityWithConfig {
+#[derive(Drop, Copy, Serde)]
+struct IntegrityWithConfigT {
     dispatcher: IFactRegistryDispatcher,
     verifier_config_hash: felt252,
     security_bits: SecurityBits,
 }
 
 #[generate_trait]
-impl IntegrityWithConfigImpl of IntegrityWithConfigTrait {
-    fn is_fact_hash_valid(self: IntegrityWithConfig, fact_hash: FactHash) -> bool {
+impl IntegrityWithConfig of IntegrityWithConfigTrait {
+    fn is_fact_hash_valid(self: IntegrityWithConfigT, fact_hash: FactHash) -> bool {
         let verification_hash = get_verification_hash(
             fact_hash, self.verifier_config_hash, self.security_bits
         );
