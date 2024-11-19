@@ -3,7 +3,7 @@ use integrity::{
     contracts::fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait}
 };
 use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
-use starknet::{ContractAddress};
+use starknet::{ContractAddress, contract_address_const};
 
 
 fn get_verifier_config_hash(verifier_config: VerifierConfiguration) -> felt252 {
@@ -25,8 +25,8 @@ fn get_verification_hash(
         .finalize()
 }
 
-const INTEGRITY_ADDRESS: felt252 =
-    0x29c2b0814ee46fda23adc8ea45b33dbc87288ad09644d6dd8bf6729ead7663a;
+const INTEGRITY_ADDRESS: felt252 = 0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c;
+const PROXY_ADDRESS: felt252 = 0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a;
 
 struct Integrity {
     dispatcher: IFactRegistryDispatcher,
@@ -37,7 +37,15 @@ impl IntegrityImpl of IntegrityTrait {
     fn new() -> Integrity {
         Integrity {
             dispatcher: IFactRegistryDispatcher {
-                contract_address: INTEGRITY_ADDRESS.try_into().unwrap()
+                contract_address: contract_address_const::<INTEGRITY_ADDRESS>()
+            }
+        }
+    }
+
+    fn new_proxy() -> Integrity {
+        Integrity {
+            dispatcher: IFactRegistryDispatcher {
+                contract_address: contract_address_const::<PROXY_ADDRESS>()
             }
         }
     }
