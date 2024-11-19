@@ -25,7 +25,8 @@ fn get_verification_hash(
         .finalize()
 }
 
-const INTEGRITY_ADDRESS: felt252 = 0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c;
+const INTEGRITY_ADDRESS: felt252 =
+    0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c;
 const PROXY_ADDRESS: felt252 = 0x16409cfef9b6c3e6002133b61c59d09484594b37b8e4daef7dcba5495a0ef1a;
 
 struct Integrity {
