@@ -1,41 +1,41 @@
 [[call]]
 call_type = "deploy"
-class_hash = "0x30a5d68284ec5b8a70a279d6fcbbdfd9e5eb18336ec564a51dfcc7fcee8aee0"
+class_hash = "0x4b4c16ed4d52624714fb87efe9d420618c5be3ab67fe6f002478e423a4d3984"
 inputs = []
 id = "contract_composition_1"
 unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x554d950505d3d51680788344e7caa7f891a0e1e98ff2dc6f95a24ed91a7fbf8"
+class_hash = "0x729a9f54ca7b416d3eac5ccb4ffd43c436b700bf4f4ecd87aafa20034d4f506"
 inputs = []
 id = "contract_composition_2"
 unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x6509ed905b06246b5947d9b4346007b1e5bea05f1c26809c909320dd470c746"
+class_hash = "0x66f23f373c9efed0db728c9ac2dcbcea9fa17311249e374bb04e471b9d45b4b"
 inputs = []
 id = "contract_composition_3"
 unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x2cd48e310ac9a82f9791338b6e8f211b091d188fff9c8e63fedbd6978c54a56"
+class_hash = "0x68712d80117620753da7d63dd8dcd83ba1c38a889318f33eada86c3589513e4"
 inputs = ["contract_composition_1", "contract_composition_2", "contract_composition_3"]
 id = "contract_composition_master"
 unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x7d86861816ded51e48aa2e0c0f405d68dad00ce3c1ff71ae5022bd1ef0fb9e0"
+class_hash = "0x3a1b3aceb40491ea87617f88c26a27657e68720df15b75d6ddd1d0cf90682b2"
 inputs = []
 id = "contract_oods"
 unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x4e325bf0aa7fc8735dd5407a21281f313e3fd94dacc25267148d9f43b60825a"
+class_hash = "0x208bcc564d47d3bb00ecd236913ffacfaea58c4ab59c11cc81bcf2e93d963dd"
 inputs = ["contract_composition_master", "contract_oods"]
 id = "cairo_verifier"
 unique = false
