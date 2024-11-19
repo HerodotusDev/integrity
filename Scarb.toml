@@ -18,14 +18,14 @@ casm = false
 
 [features]
 
-feature_change_my_name = []
+_verifier_logic = []
 
-recursive = ["feature_change_my_name"]
-recursive_with_poseidon = ["feature_change_my_name"]
-dex = ["feature_change_my_name"]
-small = ["feature_change_my_name"]
-starknet = ["feature_change_my_name"]
-starknet_with_keccak = ["feature_change_my_name"]
+recursive = ["_verifier_logic"]
+recursive_with_poseidon = ["_verifier_logic"]
+dex = ["_verifier_logic"]
+small = ["_verifier_logic"]
+starknet = ["_verifier_logic"]
+starknet_with_keccak = ["_verifier_logic"]
 
 keccak = []
 blake2s = []

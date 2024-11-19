@@ -1,8 +1,8 @@
 mod fact_registry_interface;
 
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod proxy;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod verifier;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod fact_registry;

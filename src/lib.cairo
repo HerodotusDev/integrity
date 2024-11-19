@@ -1,26 +1,26 @@
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod air;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod channel;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod common;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod deserialization;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod domains;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod fri;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod oods;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod proof_of_work;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod queries;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod stark;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod table_commitment;
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 mod vector_commitment;
 
 mod settings;
@@ -32,9 +32,9 @@ mod benches;
 #[cfg(feature: 'recursive')]
 mod tests;
 
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 use integrity::{deserialization::stark::StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},};
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 use starknet::contract_address::ContractAddressZero;
 
 // re-export
@@ -68,10 +68,10 @@ use integrity::air::layouts::starknet::public_input::StarknetPublicInputImpl as 
 use integrity::air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl as PublicInputImpl;
 
 
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 const SECURITY_BITS: u32 = 50;
 
-#[cfg(feature: 'feature_change_my_name')]
+#[cfg(feature: '_verifier_logic')]
 #[cfg(feature: 'monolith')]
 fn main(mut serialized: Span<felt252>, settings: @VerifierSettings) -> (felt252, felt252) {
     let stark_proof_serde = Serde::<StarkProofWithSerde>::deserialize(ref serialized).unwrap();

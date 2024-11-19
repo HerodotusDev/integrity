@@ -22,7 +22,8 @@ fn main() -> anyhow::Result<()> {
         witness.into_iter()
     );
 
-    let calldata_string = proof.into_iter()
+    let calldata_string = proof
+        .into_iter()
         .map(|f| f.to_string())
         .collect::<Vec<String>>()
         .join(" ");
