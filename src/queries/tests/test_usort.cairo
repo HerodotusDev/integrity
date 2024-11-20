@@ -1,4 +1,4 @@
-use cairo_verifier::queries::queries::usort;
+use integrity::queries::queries::usort;
 
 #[test]
 #[available_gas(9999999999)]

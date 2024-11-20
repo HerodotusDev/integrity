@@ -4,7 +4,7 @@ mod global_values;
 mod public_input;
 mod traces;
 
-use cairo_verifier::{
+use integrity::{
     air::{
         constants::{SHIFT_POINT_X, SHIFT_POINT_Y},
         layouts::recursive::{

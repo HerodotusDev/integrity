@@ -1,7 +1,7 @@
 echo -n "Owner account address: "
 read OWNER
 
-CLASSHASH=0x4012cfd3e1d5d7d10bf28ff0865a45572e4016734642adc39d87d5b653f2467
+CLASSHASH=0x4f69207c1c0ca1085fc3989027dcd4d7415e075dd6c061520775657e3018956
 
 sncast \
     deploy \

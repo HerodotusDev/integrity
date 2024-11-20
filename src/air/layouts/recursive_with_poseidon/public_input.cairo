@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{
         math::{pow, Felt252PartialOrd, Felt252Div},
         asserts::{assert_range_u128_le, assert_range_u128},
@@ -11,7 +11,9 @@ use cairo_verifier::{
             PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO,
             POSEIDON_ROW_RATIO
         },
-        public_input::{PublicInput, PublicInputTrait, verify_cairo1_public_input}
+        public_input::{
+            PublicInput, PublicInputTrait, verify_cairo1_public_input, verify_relaxed_public_input
+        }
     },
     domains::StarkDomains
 };
@@ -20,7 +22,7 @@ use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Has
 use poseidon::poseidon_hash_span;
 
 impl RecursiveWithPoseidonPublicInputImpl of PublicInputTrait {
-    fn verify_cairo0(self: @PublicInput) -> (felt252, felt252) {
+    fn verify_strict(self: @PublicInput) -> (felt252, felt252) {
         let public_segments = self.segments;
 
         let initial_pc = *public_segments.at(segments::PROGRAM).begin_addr;
@@ -110,6 +112,10 @@ impl RecursiveWithPoseidonPublicInputImpl of PublicInputTrait {
         assert(memory_index == self.main_page.len(), 'Invalid main page len');
 
         (program_hash, output_hash)
+    }
+
+    fn verify_relaxed(self: @PublicInput) -> (felt252, felt252) {
+        verify_relaxed_public_input(self)
     }
 
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252) {

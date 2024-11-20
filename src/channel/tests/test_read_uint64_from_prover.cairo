@@ -1,4 +1,4 @@
-use cairo_verifier::channel::channel::ChannelTrait;
+use integrity::channel::channel::ChannelTrait;
 
 #[test]
 #[available_gas(9999999999)]

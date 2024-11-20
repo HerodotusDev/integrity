@@ -1,4 +1,4 @@
-use cairo_verifier::{fri::fri::FriUnsentCommitment, tests::stone_proof_fibonacci};
+use integrity::{fri::fri::FriUnsentCommitment, tests::stone_proof_fibonacci};
 
 fn get() -> FriUnsentCommitment {
     return FriUnsentCommitment {

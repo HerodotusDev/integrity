@@ -1,4 +1,4 @@
-use cairo_verifier::{queries::queries::queries_to_points, domains::StarkDomains};
+use integrity::{queries::queries::queries_to_points, domains::StarkDomains};
 
 #[test]
 #[available_gas(9999999999)]

@@ -1,8 +1,8 @@
 use starknet::contract_address::ContractAddressZero;
-use cairo_verifier::{
+use integrity::{
     stark::{StarkProof, StarkProofTrait},
     tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
-    settings::{VerifierSettings, HasherBitLength, StoneVersion, CairoVersion},
+    settings::{VerifierSettings, HasherBitLength, StoneVersion},
 };
 
 #[cfg(feature: 'blake2s')]
@@ -19,7 +19,7 @@ fn test_stark_proof_fibonacci_verify() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };
@@ -42,7 +42,7 @@ fn test_stark_proof_fibonacci_verify() {
     };
 
     let settings = VerifierSettings {
-        cairo_version: CairoVersion::Cairo0,
+        memory_verification: 0, // strict
         hasher_bit_length: HasherBitLength::Lsb160,
         stone_version: StoneVersion::Stone5,
     };

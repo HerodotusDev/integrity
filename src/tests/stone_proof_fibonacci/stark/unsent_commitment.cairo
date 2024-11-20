@@ -1,4 +1,4 @@
-use cairo_verifier::{stark::StarkUnsentCommitment, tests::stone_proof_fibonacci};
+use integrity::{stark::StarkUnsentCommitment, tests::stone_proof_fibonacci};
 
 fn get() -> StarkUnsentCommitment {
     return StarkUnsentCommitment {

@@ -1,4 +1,4 @@
-use cairo_verifier::fri::fri_formula::fri_formula;
+use integrity::fri::fri_formula::fri_formula;
 
 #[test]
 #[available_gas(9999999999)]

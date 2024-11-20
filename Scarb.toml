@@ -1,13 +1,12 @@
 [package]
-name = "cairo_verifier"
+name = "integrity"
 version = "0.1.0"
 
 [dependencies]
-starknet = "2.8.2"
+starknet = "2.8.4"
 
 [dev-dependencies]
-cairo_test = "2.8.2"
-snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.27.0" }
+cairo_test = "2.8.4"
 
 [[target.starknet-contract]]
 casm = true
@@ -19,12 +18,14 @@ casm = false
 
 [features]
 
-recursive = []
-recursive_with_poseidon = []
-dex = []
-small = []
-starknet = []
-starknet_with_keccak = []
+_verifier_logic = []
+
+recursive = ["_verifier_logic"]
+recursive_with_poseidon = ["_verifier_logic"]
+dex = ["_verifier_logic"]
+small = ["_verifier_logic"]
+starknet = ["_verifier_logic"]
+starknet_with_keccak = ["_verifier_logic"]
 
 keccak = []
 blake2s = []

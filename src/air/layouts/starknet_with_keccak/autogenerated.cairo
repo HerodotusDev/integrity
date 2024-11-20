@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::layouts::starknet_with_keccak::{
         global_values::GlobalValues,
         constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},

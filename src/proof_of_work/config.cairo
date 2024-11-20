@@ -1,4 +1,4 @@
-use cairo_verifier::common::asserts::assert_in_range;
+use integrity::common::asserts::assert_in_range;
 
 const MAX_PROOF_OF_WORK_BITS: felt252 = 50;
 const MIN_PROOF_OF_WORK_BITS: felt252 = 20;

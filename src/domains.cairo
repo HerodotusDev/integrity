@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{consts::{FIELD_GENERATOR, STARK_PRIME_MINUS_ONE}, math::{pow, Felt252Div}},
     stark::StarkConfig,
 };
@@ -43,7 +43,7 @@ impl StarkDomainsImpl of StarkDomainsTrait {
 
 #[cfg(test)]
 mod tests {
-    use cairo_verifier::domains::{StarkDomains, StarkDomainsTrait};
+    use integrity::domains::{StarkDomains, StarkDomainsTrait};
     // test data from cairo0-verifier run on stone-prover generated proof
     #[test]
     #[available_gas(9999999999)]

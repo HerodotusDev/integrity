@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     channel::channel::ChannelImpl, air::layouts::recursive::{traces::traces_commit},
     tests::stone_proof_fibonacci_keccak,
 };

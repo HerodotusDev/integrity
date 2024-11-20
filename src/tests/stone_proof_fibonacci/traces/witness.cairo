@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::layouts::recursive::traces::TracesWitness,
     table_commitment::table_commitment::TableCommitmentWitness,
     vector_commitment::vector_commitment::VectorCommitmentWitness, tests::stone_proof_fibonacci,

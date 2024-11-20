@@ -15,7 +15,7 @@ pub fn bench(sierra_program: Program, function: &str) -> Result<RunResultStarkne
     let func = runner.find_function(function).unwrap();
     runner.run_function_with_starknet_context(
         func,
-        &[],
+        vec![],
         Some(u32::MAX as usize),
         Default::default(),
     )

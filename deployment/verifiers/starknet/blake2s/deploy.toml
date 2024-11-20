@@ -1,13 +1,13 @@
 [[call]]
 call_type = "deploy"
-class_hash = "0x06c41c76977bf08e33624ed3c01e2cc79922671c120af74795b5e2f8633d7a99"
+class_hash = "0x416f281795dbcc812a0f23c9082f4a786b47efa66e3d733a72031c7cbb9b5be"
 inputs = []
 id = "contract_composition"
 unique = false
 
 [[call]]
 call_type = "deploy"
-class_hash = "0x3b4262853675fd80d71d8860cfb99da12c3a7cb04de780e91a1b7f5d53a682a"
+class_hash = "0x6f3de7d6a1254cc744d2b25d7e15d74b211cc71e435ef8fda7c7bbddc2045f2"
 inputs = ["contract_composition", "0"]
 id = "cairo_verifier"
 unique = false

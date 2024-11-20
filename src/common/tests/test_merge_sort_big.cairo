@@ -1,4 +1,4 @@
-use cairo_verifier::common::merge_sort::merge_sort;
+use integrity::common::merge_sort::merge_sort;
 
 #[test]
 #[available_gas(9999999999)]

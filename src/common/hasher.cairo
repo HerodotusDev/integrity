@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{
         blake2s::blake2s, blake2s_u8::blake2s as blake2s_u8, flip_endianness::FlipEndiannessTrait,
     },

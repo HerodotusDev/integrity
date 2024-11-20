@@ -1,5 +1,5 @@
-use cairo_verifier::{
-    StarkProofWithSerde, CairoVersion,
+use integrity::{
+    StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     contracts::{
         verifier::InitResult,
@@ -56,23 +56,25 @@ trait IProxy<TContractState> {
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
+    fn get_fact_registry(self: @TContractState) -> ContractAddress;
     fn set_fact_registry(ref self: TContractState, fact_registry: ContractAddress);
     fn replace_classhash(ref self: TContractState, classhash: ClassHash);
 }
 
 #[starknet::contract]
 mod Proxy {
-    use cairo_verifier::{
+    use integrity::{
         contracts::{
             verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
             fact_registry::{
-                IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
+                IFactRegistryExternalDispatcher, IFactRegistryExternalDispatcherTrait,
                 FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings,
                 VerifierConfiguration, FactRegistered, VerificationListElement, Verification,
                 VerifierPreset
             },
+            fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait,}
         },
-        StarkProofWithSerde, StarkProof, CairoVersion,
+        StarkProofWithSerde, StarkProof, MemoryVerification,
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
         settings::{JobId, FactHash, VerificationHash},
     };
@@ -109,7 +111,9 @@ mod Proxy {
             verifier_config: VerifierConfiguration,
             stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
-            let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
+            let fact = IFactRegistryExternalDispatcher {
+                contract_address: self.fact_registry.read()
+            }
                 .verify_proof_full_and_register_fact(verifier_config, stark_proof);
 
             self.emit(fact);
@@ -122,7 +126,7 @@ mod Proxy {
             verifier_config: VerifierConfiguration,
             stark_proof: StarkProofWithSerde,
         ) -> InitResult {
-            IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
+            IFactRegistryExternalDispatcher { contract_address: self.fact_registry.read() }
                 .verify_proof_initial(job_id, verifier_config, stark_proof)
         }
 
@@ -133,7 +137,7 @@ mod Proxy {
             state_variable: FriVerificationStateVariable,
             witness: FriLayerWitness,
         ) -> (FriVerificationStateVariable, u32) {
-            IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
+            IFactRegistryExternalDispatcher { contract_address: self.fact_registry.read() }
                 .verify_proof_step(job_id, state_constant, state_variable, witness)
         }
 
@@ -144,7 +148,9 @@ mod Proxy {
             state_variable: FriVerificationStateVariable,
             last_layer_coefficients: Span<felt252>,
         ) -> FactRegistered {
-            let fact = IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
+            let fact = IFactRegistryExternalDispatcher {
+                contract_address: self.fact_registry.read()
+            }
                 .verify_proof_final_and_register_fact(
                     job_id, state_constant, state_variable, last_layer_coefficients
                 );
@@ -175,7 +181,7 @@ mod Proxy {
         fn register_verifier(
             ref self: ContractState, preset: VerifierPreset, address: ContractAddress
         ) {
-            IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
+            IFactRegistryExternalDispatcher { contract_address: self.fact_registry.read() }
                 .register_verifier(preset, address);
             self.emit(Event::VerifierRegistered(VerifierRegistered { address, preset }));
         }
@@ -191,6 +197,10 @@ mod Proxy {
                         OwnershipTransferred { previous_owner: caller, new_owner }
                     )
                 );
+        }
+
+        fn get_fact_registry(self: @ContractState) -> ContractAddress {
+            self.fact_registry.read()
         }
 
         fn set_fact_registry(ref self: ContractState, fact_registry: ContractAddress) {

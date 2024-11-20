@@ -1,4 +1,4 @@
-use cairo_verifier::fri::{
+use integrity::fri::{
     fri_layer::{FriLayerQuery, FriLayerComputationParams, compute_next_layer},
     fri_group::get_fri_group,
 };

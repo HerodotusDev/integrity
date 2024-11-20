@@ -1,4 +1,4 @@
-use cairo_verifier::common::{blake2s_u8::blake2s, tests::test_blake2s_u8::{get_arr_v1, get_arr_v2}};
+use integrity::common::{blake2s_u8::blake2s, tests::test_blake2s_u8::{get_arr_v1, get_arr_v2}};
 
 #[test]
 #[available_gas(9999999999)]

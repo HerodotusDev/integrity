@@ -1,4 +1,4 @@
-use cairo_verifier::air::{public_memory::AddrValue, public_input::{PublicInput, SegmentInfo},};
+use integrity::air::{public_memory::AddrValue, public_input::{PublicInput, SegmentInfo},};
 
 fn get() -> PublicInput {
     return PublicInput {

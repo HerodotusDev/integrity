@@ -1,4 +1,4 @@
-use cairo_verifier::fri::{fri_last_layer::verify_last_layer, fri_layer::FriLayerQuery};
+use integrity::fri::{fri_last_layer::verify_last_layer, fri_layer::FriLayerQuery};
 
 #[test]
 #[available_gas(9999999999)]

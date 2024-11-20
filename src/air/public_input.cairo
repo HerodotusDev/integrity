@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     domains::StarkDomains, air::constants::{MAX_ADDRESS, INITIAL_PC},
     air::public_memory::{
         Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
@@ -12,17 +12,17 @@ use cairo_verifier::{
 use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
 use poseidon::poseidon_hash_span;
 #[cfg(feature: 'dex')]
-use cairo_verifier::air::layouts::dex::constants::segments;
+use integrity::air::layouts::dex::constants::segments;
 #[cfg(feature: 'recursive')]
-use cairo_verifier::air::layouts::recursive::constants::segments;
+use integrity::air::layouts::recursive::constants::segments;
 #[cfg(feature: 'recursive_with_poseidon')]
-use cairo_verifier::air::layouts::recursive_with_poseidon::constants::segments;
+use integrity::air::layouts::recursive_with_poseidon::constants::segments;
 #[cfg(feature: 'small')]
-use cairo_verifier::air::layouts::small::constants::segments;
+use integrity::air::layouts::small::constants::segments;
 #[cfg(feature: 'starknet')]
-use cairo_verifier::air::layouts::starknet::constants::segments;
+use integrity::air::layouts::starknet::constants::segments;
 #[cfg(feature: 'starknet_with_keccak')]
-use cairo_verifier::air::layouts::starknet_with_keccak::constants::segments;
+use integrity::air::layouts::starknet_with_keccak::constants::segments;
 
 
 #[derive(Drop, Copy, PartialEq, Serde)]
@@ -48,7 +48,8 @@ struct PublicInput {
 }
 
 trait PublicInputTrait {
-    fn verify_cairo0(self: @PublicInput) -> (felt252, felt252);
+    fn verify_strict(self: @PublicInput) -> (felt252, felt252);
+    fn verify_relaxed(self: @PublicInput) -> (felt252, felt252);
     fn verify_cairo1(self: @PublicInput) -> (felt252, felt252);
     fn validate(self: @PublicInput, stark_domains: @StarkDomains);
 }
@@ -185,18 +186,57 @@ fn verify_cairo1_public_input(public_input: @PublicInput) -> (felt252, felt252) 
     (program_hash, output_hash)
 }
 
+fn verify_relaxed_public_input(public_input: @PublicInput) -> (felt252, felt252) {
+    let public_segments = public_input.segments;
+
+    let initial_pc: u32 = (*public_segments.at(segments::PROGRAM).begin_addr).try_into().unwrap();
+    let initial_ap: u32 = (*public_segments.at(segments::EXECUTION).begin_addr).try_into().unwrap();
+    let final_ap: u32 = (*public_segments.at(segments::EXECUTION).stop_ptr).try_into().unwrap();
+    let initial_fp: u32 = initial_ap;
+    let output_start: u32 = (*public_segments.at(segments::OUTPUT).begin_addr).try_into().unwrap();
+    let output_stop: u32 = (*public_segments.at(segments::OUTPUT).stop_ptr).try_into().unwrap();
+    let output_len: u32 = output_stop - output_start;
+
+    assert(initial_ap.into() < MAX_ADDRESS, 'Invalid initial_ap');
+    assert(final_ap.into() < MAX_ADDRESS, 'Invalid final_ap');
+
+    // TODO support continuous memory pages
+    assert(public_input.continuous_page_headers.len() == 0, 'Invalid continuous_page_headers');
+
+    let memory = public_input.main_page;
+
+    let mut memory_index: u32 = 0;
+
+    // 1. Program segment
+    let program_end_pc: u32 = (initial_fp - 2);
+    let program_len = program_end_pc - initial_pc;
+
+    let program = memory.extract_range(initial_pc, program_len, ref memory_index);
+    let program_hash = poseidon_hash_span(program);
+
+    // TODO: remove this hacky way with proper asserts
+    while (*memory[memory_index]).address < output_start.into() {
+        memory_index += 1;
+    };
+
+    // 2. Output segment
+    let output = memory.extract_range(output_start, output_len, ref memory_index);
+    let output_hash = poseidon_hash_span(output);
+    (program_hash, output_hash)
+}
+
 
 #[cfg(feature: 'recursive')]
 #[cfg(test)]
 mod tests {
     use super::get_public_input_hash;
-    use cairo_verifier::tests::stone_proof_fibonacci_keccak::public_input::get;
-    use cairo_verifier::settings::{VerifierSettings, CairoVersion, HasherBitLength, StoneVersion};
+    use integrity::tests::stone_proof_fibonacci_keccak::public_input::get;
+    use integrity::settings::{VerifierSettings, MemoryVerification, HasherBitLength, StoneVersion};
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
         let settings = VerifierSettings {
-            cairo_version: CairoVersion::Cairo1,
+            memory_verification: 2, // cairo1
             hasher_bit_length: HasherBitLength::Lsb160,
             stone_version: StoneVersion::Stone5,
         };

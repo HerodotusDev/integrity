@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     channel::channel::ChannelTrait, fri::fri::fri_commit, tests::stone_proof_fibonacci_keccak,
 };
 

@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     air::layouts::starknet_with_keccak::{
         constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
     },

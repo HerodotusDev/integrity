@@ -1,5 +1,5 @@
-use cairo_verifier::{
-    StarkProof, CairoVersion, StarkProofWithSerde,
+use integrity::{
+    StarkProof, MemoryVerification, StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
     settings::{VerifierSettings, FactHash, JobId, SecurityBits},
 };
@@ -65,8 +65,9 @@ mod CairoVerifier {
         ContractAddress,
         storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
     };
-    use cairo_verifier::{
-        CairoVersion, PublicInputImpl, StarkProofWithSerde, stark::{StarkProof, StarkProofImpl},
+    use integrity::{
+        MemoryVerification, PublicInputImpl, StarkProofWithSerde,
+        stark::{StarkProof, StarkProofImpl},
         fri::fri::{
             FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
             hash_constant, hash_variable
@@ -111,9 +112,14 @@ mod CairoVerifier {
             stark_proof_serde: StarkProofWithSerde,
         ) -> ProofVerified {
             let stark_proof: StarkProof = stark_proof_serde.into();
-            let (program_hash, output_hash) = match settings.cairo_version {
-                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+            let (program_hash, output_hash) = match settings.memory_verification {
+                0 => stark_proof.public_input.verify_strict(),
+                1 => stark_proof.public_input.verify_relaxed(),
+                2 => stark_proof.public_input.verify_cairo1(),
+                _ => {
+                    assert(false, 'invalid memory_verification');
+                    (0, 0)
+                }
             };
             let security_bits = stark_proof
                 .verify(
@@ -138,9 +144,14 @@ mod CairoVerifier {
             assert(self.state_constant.entry(job_id).read().is_none(), 'job_id already exists');
 
             let stark_proof: StarkProof = stark_proof_serde.into();
-            let (program_hash, output_hash) = match settings.cairo_version {
-                CairoVersion::Cairo0 => stark_proof.public_input.verify_cairo0(),
-                CairoVersion::Cairo1 => stark_proof.public_input.verify_cairo1(),
+            let (program_hash, output_hash) = match settings.memory_verification {
+                0 => stark_proof.public_input.verify_strict(),
+                1 => stark_proof.public_input.verify_relaxed(),
+                2 => stark_proof.public_input.verify_cairo1(),
+                _ => {
+                    assert(false, 'invalid memory_verification');
+                    (0, 0)
+                }
             };
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();

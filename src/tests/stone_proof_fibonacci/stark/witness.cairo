@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     stark::StarkWitness,
     table_commitment::table_commitment::{TableCommitmentWitness, TableDecommitment},
     vector_commitment::vector_commitment::VectorCommitmentWitness, tests::stone_proof_fibonacci,

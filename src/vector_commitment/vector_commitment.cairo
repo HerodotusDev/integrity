@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     common::{
         array_append::ArrayAppendTrait, math::pow, hasher::hash_truncated, math::DivRemFelt252,
         math::Felt252PartialOrd,

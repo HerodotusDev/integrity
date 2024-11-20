@@ -1,28 +1,16 @@
-use cairo_verifier::{
+use integrity::{
     StarkProofWithSerde,
     fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    contracts::verifier::InitResult,
+    contracts::{
+        fact_registry_interface::{VerificationListElement, Verification}, verifier::InitResult,
+    },
     settings::{
-        VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, CairoVersion,
-        SecurityBits, FactHash, JobId, VerifierConfiguration, VerifierPreset,
+        VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, SecurityBits, FactHash,
+        JobId, VerifierConfiguration, VerifierPreset,
     },
 };
 use starknet::ContractAddress;
 
-
-#[derive(Drop, Copy, Serde)]
-struct VerificationListElement {
-    verification_hash: VerificationHash,
-    security_bits: SecurityBits,
-    verifier_config: VerifierConfiguration,
-}
-
-#[derive(Drop, Copy, Serde, starknet::Store)]
-struct Verification {
-    fact_hash: FactHash,
-    security_bits: SecurityBits,
-    verifier_config: VerifierConfiguration,
-}
 
 #[derive(Drop, Copy, Serde, starknet::Event)]
 struct FactRegistered {
@@ -39,7 +27,7 @@ struct FactRegistered {
 }
 
 #[starknet::interface]
-trait IFactRegistry<TContractState> {
+trait IFactRegistryExternal<TContractState> {
     fn verify_proof_full_and_register_fact(
         ref self: TContractState,
         verifier_config: VerifierConfiguration,
@@ -69,30 +57,30 @@ trait IFactRegistry<TContractState> {
         last_layer_coefficients: Span<felt252>,
     ) -> FactRegistered;
 
-    fn get_all_verifications_for_fact_hash(
-        self: @TContractState, fact_hash: FactHash
-    ) -> Array<VerificationListElement>;
-    fn get_verification(
-        self: @TContractState, verification_hash: VerificationHash
-    ) -> Option<Verification>;
-
-    fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
     fn register_verifier(
         ref self: TContractState, preset: VerifierPreset, address: ContractAddress
     );
+
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 }
 
 #[starknet::contract]
 mod FactRegistry {
-    use cairo_verifier::{
-        StarkProofWithSerde, StarkProof, CairoVersion,
+    use integrity::{
+        StarkProofWithSerde, StarkProof,
         contracts::verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
         fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
         settings::{
             VerifierPreset, VerifierConfiguration, split_settings, JobId, FactHash,
             VerificationHash, PresetHash, SecurityBits,
         },
+        contracts::{
+            fact_registry::{
+                VerificationListElement, Verification, IFactRegistryExternal, FactRegistered
+            },
+            fact_registry_interface::IFactRegistry,
+        },
+        lib_utils::{get_verifier_config_hash, get_verification_hash},
     };
     use starknet::{
         ContractAddress, get_caller_address,
@@ -105,7 +93,6 @@ mod FactRegistry {
         poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
         starknet::event::EventEmitter,
     };
-    use super::{VerificationListElement, Verification, IFactRegistry, FactRegistered};
 
     #[storage]
     struct Storage {
@@ -144,7 +131,7 @@ mod FactRegistry {
     }
 
     #[abi(embed_v0)]
-    impl FactRegistryImpl of IFactRegistry<ContractState> {
+    impl FactRegistryExternalImpl of IFactRegistryExternal<ContractState> {
         fn verify_proof_full_and_register_fact(
             ref self: ContractState,
             verifier_config: VerifierConfiguration,
@@ -219,6 +206,33 @@ mod FactRegistry {
                 )
         }
 
+        fn register_verifier(
+            ref self: ContractState, preset: VerifierPreset, address: ContractAddress
+        ) {
+            assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
+            assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');
+            let preset_hash = self._hash_preset(preset);
+            assert(self.verifiers.entry(preset_hash).read().into() == 0, 'VERIFIER_ALREADY_EXISTS');
+            self.verifiers.entry(preset_hash).write(address);
+            self.emit(Event::VerifierRegistered(VerifierRegistered { address, preset }));
+        }
+
+        fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
+            let caller = get_caller_address();
+            assert(self.owner.read() == caller, 'ONLY_OWNER');
+            self.owner.write(new_owner);
+
+            self
+                .emit(
+                    Event::OwnershipTransferred(
+                        OwnershipTransferred { previous_owner: caller, new_owner }
+                    )
+                );
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn get_all_verifications_for_fact_hash(
             self: @ContractState, fact_hash: FactHash
         ) -> Array<VerificationListElement> {
@@ -260,30 +274,6 @@ mod FactRegistry {
             assert(verifier_address.into() != 0, 'VERIFIER_NOT_FOUND');
             verifier_address
         }
-
-        fn register_verifier(
-            ref self: ContractState, preset: VerifierPreset, address: ContractAddress
-        ) {
-            assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
-            assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');
-            let preset_hash = self._hash_preset(preset);
-            assert(self.verifiers.entry(preset_hash).read().into() == 0, 'VERIFIER_ALREADY_EXISTS');
-            self.verifiers.entry(preset_hash).write(address);
-            self.emit(Event::VerifierRegistered(VerifierRegistered { address, preset }));
-        }
-
-        fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
-            let caller = get_caller_address();
-            assert(self.owner.read() == caller, 'ONLY_OWNER');
-            self.owner.write(new_owner);
-
-            self
-                .emit(
-                    Event::OwnershipTransferred(
-                        OwnershipTransferred { previous_owner: caller, new_owner }
-                    )
-                );
-        }
     }
 
     #[generate_trait]
@@ -299,18 +289,10 @@ mod FactRegistry {
             security_bits: SecurityBits,
             verifier_config: VerifierConfiguration,
         ) -> FactRegistered {
-            let verifier_config_hash = PoseidonImpl::new()
-                .update(verifier_config.layout)
-                .update(verifier_config.hasher)
-                .update(verifier_config.stone_version)
-                .update(verifier_config.cairo_version)
-                .finalize();
-
-            let verification_hash = PoseidonImpl::new()
-                .update(fact_hash)
-                .update(verifier_config_hash)
-                .update(security_bits.into())
-                .finalize();
+            let verifier_config_hash = get_verifier_config_hash(verifier_config);
+            let verification_hash = get_verification_hash(
+                fact_hash, verifier_config_hash, security_bits
+            );
 
             let event = FactRegistered {
                 fact_hash, verifier_address, security_bits, verifier_config, verification_hash

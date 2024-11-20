@@ -1,4 +1,4 @@
-use cairo_verifier::common::flip_endianness::FlipEndiannessTrait;
+use integrity::common::flip_endianness::FlipEndiannessTrait;
 use core::num::traits::WrappingAdd;
 
 fn blake2s(data: Array<u8>) -> u256 {

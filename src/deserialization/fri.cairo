@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness, FriLayerWitness}},
     table_commitment::table_commitment::{TableCommitmentConfig, TableCommitmentWitness},
     vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitmentWitness},

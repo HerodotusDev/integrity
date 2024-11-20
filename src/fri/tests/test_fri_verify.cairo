@@ -1,4 +1,4 @@
-use cairo_verifier::{
+use integrity::{
     fri::fri::fri_verify_initial, tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
 };
 
