@@ -1,6 +1,12 @@
 [package]
 name = "integrity"
-version = "0.1.0"
+version = "2.0.0"
+authors = ["HerodotusDev"]
+description = "STARK proof verifier for Starknet"
+readme = "README.md"
+repository = "https://github.com/HerodotusDev/integrity"
+license = "Apache-2.0"
+keywords = ["STARK proof", "verifier", "cairo_verifier"]
 
 [dependencies]
 starknet = "2.8.4"
