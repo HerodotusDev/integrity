@@ -1,0 +1,9 @@
+audit
+benches
+deployment
+examples
+runner
+serializer
+rust-toolchain.toml
+*.sh
+snfoundry.toml
