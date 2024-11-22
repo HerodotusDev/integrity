@@ -74,7 +74,7 @@ Since integrity is deployed on Starknet, other contracts can call FactRegistry t
 
 ```toml
 [dependencies]
-integrity = { git = "https://github.com/HerodotusDev/integrity" }
+integrity = "2.0.0"
 ```
 
 The package provides many utility functions for interacting with the verifier. For contract calls, you can use `Integrity` struct which provides following methods:
