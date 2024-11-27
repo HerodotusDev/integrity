@@ -32,7 +32,7 @@ impl FriConfigImpl of FriConfigTrait {
         assert(
             *self.log_last_layer_degree_bound <= MAX_LAST_LAYER_LOG_DEGREE_BOUND, 'Value too big'
         );
-        assert(*self.fri_step_sizes[0] == 0, 'Invalid value');
+        assert(*self.fri_step_sizes[0] == 0, 'FRI/First step size != 0');
         assert(
             (*self.inner_layers).len().into() == *self.n_layers - 1, 'Invalid inner layer config'
         );
@@ -52,7 +52,9 @@ impl FriConfigImpl of FriConfigTrait {
             sum_of_step_sizes += fri_step;
 
             assert_in_range(fri_step, 1, MAX_FRI_STEP + 1);
-            assert(table_commitment.n_columns == pow(2, fri_step), 'Invalid value');
+            assert(
+                table_commitment.n_columns == pow(2, fri_step), 'FRI/wrong table commitment size'
+            );
             table_commitment.vector.validate(log_input_size, n_verifier_friendly_commitment_layers);
 
             i += 1;
