@@ -103,7 +103,7 @@ Available constants are:
 -   `INTEGRITY_ADDRESS` - address of official FactRegistry contract deployed on Starknet Sepolia
 -   `PROXY_ADDRESS` - address of official Proxy contract deployed on Starknet Sepolia
 -   `SHARP_BOOTLOADER_PROGRAM_HASH` - program hash of the bootloader used by SHARP prover
--   `STONE_BOOTLOADER_PROGRAM_HASH` - program hash of [TODO LINK]
+-   `STONE_BOOTLOADER_PROGRAM_HASH` - program hash of [Custom Stone Bootloader](https://github.com/Okm165/cairo1-cairo0bootloader/blob/master/cairo0-bootloader/bootloader/recursive/simple_bootloader.cairo)
 
 Example:
 
