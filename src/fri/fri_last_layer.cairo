@@ -9,7 +9,7 @@ fn verify_last_layer(mut queries: Span<FriLayerQuery>, coefficients: Span<felt25
                 assert(
                     horner_eval::horner_eval(coefficients, 1 / *query.x_inv_value) == *query
                         .y_value,
-                    'Invalid value'
+                    'FRI/last layer query invalid'
                 );
             },
             Option::None => { break; }
