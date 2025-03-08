@@ -8,6 +8,8 @@
 
 Integrity is a STARK proof verifier written in cairo language and deployed on Starknet.
 
+[Contract addresses](./deployed_contracts.md)
+
 ## Table of contents
 
 -   [Prerequisites](#prerequisites)
