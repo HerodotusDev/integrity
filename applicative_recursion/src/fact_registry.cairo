@@ -1,11 +1,3 @@
-use applicative_recursion::merkle_tree::{get_root_hash, hash_leaf, hash_leaves};
-use integrity::{
-    Integrity, IntegrityWithConfig, SHARP_BOOTLOADER_PROGRAM_HASH, VerifierConfiguration,
-    calculate_bootloaded_fact_hash, get_verifier_config_hash,
-};
-use openzeppelin::merkle_tree::hashes::PoseidonCHasher;
-use openzeppelin::merkle_tree::merkle_proof::process_proof;
-
 #[starknet::interface]
 pub trait IApplicativeRecursionFactRegistry<TContractState> {
     fn decommit_leaf(ref self: TContractState, leaf: felt252, proof: Span<felt252>);
@@ -16,6 +8,13 @@ pub trait IApplicativeRecursionFactRegistry<TContractState> {
 
 #[starknet::contract]
 pub mod ApplicativeRecursionFactRegistry {
+    use applicative_recursion::merkle_tree::{get_root_hash, hash_leaf, hash_leaves};
+    use integrity::{
+        Integrity, IntegrityWithConfig, SHARP_BOOTLOADER_PROGRAM_HASH, VerifierConfiguration,
+        calculate_bootloaded_fact_hash, get_verifier_config_hash,
+    };
+    use openzeppelin::merkle_tree::hashes::PoseidonCHasher;
+    use openzeppelin::merkle_tree::merkle_proof::process_proof;
     use starknet::ContractAddress;
     use starknet::storage::{
         Map, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,

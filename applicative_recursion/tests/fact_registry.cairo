@@ -2,14 +2,12 @@ use applicative_recursion::fact_registry::{
     IApplicativeRecursionFactRegistryDispatcher, IApplicativeRecursionFactRegistryDispatcherTrait,
 };
 use applicative_recursion::merkle_tree::hash_leaf;
+use integrity::VerifierConfiguration;
 use integrity::contracts::fact_registry_interface::{
     IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
 };
 use integrity::contracts::mocked_fact_registry::{
     IFactRegistryExternalDispatcher, IFactRegistryExternalDispatcherTrait,
-};
-use integrity::{
-    SHARP_BOOTLOADER_PROGRAM_HASH, VerifierConfiguration, calculate_bootloaded_fact_hash,
 };
 use openzeppelin::merkle_tree::hashes::PoseidonCHasher;
 use snforge_std::{ContractClassTrait, DeclareResultTrait, declare};
@@ -59,12 +57,7 @@ fn deploy_fact_registry() -> (
 
 #[test]
 fn test_decommit_tree() {
-    let (
-        ar_fact_registry_dispatcher,
-        ar_fact_registry_address,
-        integrity_dispatcher,
-        integrity_dispatcher_mocking,
-    ) =
+    let (ar_fact_registry_dispatcher, _, integrity_dispatcher, integrity_dispatcher_mocking) =
         deploy_fact_registry();
 
     let fact_hash = 0x4843d7fd82b4d3aff0c7da60f6cf4e8cf0f102d44c8c23435359b49df422ecd;
@@ -105,12 +98,7 @@ fn test_decommit_tree() {
 
 #[test]
 fn test_decommit_leaf() {
-    let (
-        ar_fact_registry_dispatcher,
-        ar_fact_registry_address,
-        integrity_dispatcher,
-        integrity_dispatcher_mocking,
-    ) =
+    let (ar_fact_registry_dispatcher, _, integrity_dispatcher, integrity_dispatcher_mocking) =
         deploy_fact_registry();
 
     let fact_hash = 0x4843d7fd82b4d3aff0c7da60f6cf4e8cf0f102d44c8c23435359b49df422ecd;
