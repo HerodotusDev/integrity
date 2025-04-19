@@ -1,23 +1,25 @@
-name: Continuous Integration - tests
+name: Continuous Integration - Applicative Recursion - tests
 
 on:
   push:
   pull_request:
 
 jobs:
-  formatting-and-testing:
+  applicative-recursion-formatting-and-testing:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          path: ./applicative_recursion
       
       - name: Setup Scarb
         uses: software-mansion/setup-scarb@v1
+        with:
+          tool-versions: ./applicative_recursion/.tool-versions
       
       - name: Format code
         run: scarb fmt -c
+        working-directory: ./applicative_recursion
       
       - name: Run tests
         run: scarb test
+        working-directory: ./applicative_recursion
