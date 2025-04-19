@@ -19,7 +19,7 @@ jobs:
       - name: Setup Snfoundry
         uses: foundry-rs/setup-snfoundry@v4
         with:
-          tool-versions: ./applicative_recursion/.tool-versions
+          starknet-foundry-version: 0.41.0
 
       - name: Print versions
         run: |
