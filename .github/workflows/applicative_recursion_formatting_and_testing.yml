@@ -1,4 +1,4 @@
-name: Continuous Integration - Applicative Recursion - tests
+name: Applicative Recursion - Formatting & Testing
 
 on:
   push:
@@ -14,12 +14,12 @@ jobs:
       - name: Setup Scarb
         uses: software-mansion/setup-scarb@v1
         with:
-          tool-versions: ./applicative_recursion/.tool-versions
+          tool-versions: "./applicative_recursion/.tool-versions"
       
       - name: Setup snfoundry
         uses: foundry-rs/setup-snfoundry@v4
         with:
-          tool-versions: ./applicative_recursion/.tool-versions
+          tool-versions: "./applicative_recursion/.tool-versions"
       
       - name: Format code
         run: scarb fmt -c
