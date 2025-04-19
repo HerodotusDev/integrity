@@ -20,7 +20,7 @@ pub mod ApplicativeRecursionFactRegistry {
     use starknet::storage::{
         Map, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use super::*;
+    use super::IApplicativeRecursionFactRegistry;
 
     #[storage]
     struct Storage {
@@ -46,6 +46,22 @@ pub mod ApplicativeRecursionFactRegistry {
         self.integrity_address.write(integrity_address);
         self.integrity_config_hash.write(get_verifier_config_hash(integrity_config));
         self.integrity_security_bits.write(integrity_security_bits);
+    }
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        FactRegistered: FactRegistered,
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct FactRegistered {
+        #[key]
+        fact_hash: felt252,
+        #[key]
+        root_hash: felt252,
+        #[key]
+        integrity_fact_hash: felt252,
     }
 
     #[generate_trait]
@@ -78,6 +94,14 @@ pub mod ApplicativeRecursionFactRegistry {
             assert(is_valid, 'Fact hash is not registered');
 
             self.fact_hashes.entry(leaf).write(true);
+            self
+                .emit(
+                    Event::FactRegistered(
+                        FactRegistered {
+                            fact_hash: leaf, root_hash, integrity_fact_hash: fact_hash,
+                        },
+                    ),
+                );
         }
 
         fn decommit_tree(ref self: ContractState, leaves: Span<felt252>) {
@@ -90,6 +114,15 @@ pub mod ApplicativeRecursionFactRegistry {
 
             for leaf in leaves {
                 self.fact_hashes.entry(*leaf).write(true);
+
+                self
+                    .emit(
+                        Event::FactRegistered(
+                            FactRegistered {
+                                fact_hash: *leaf, root_hash, integrity_fact_hash: fact_hash,
+                            },
+                        ),
+                    );
             }
         }
 

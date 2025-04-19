@@ -15,7 +15,9 @@ jobs:
         uses: software-mansion/setup-scarb@v1
       
       - name: Format code
-        run: scarb fmt -w src -c
+        working-directory: ./applicative_recursion
+        run: scarb fmt -c
       
       - name: Run tests
+        working-directory: ./applicative_recursion
         run: scarb test

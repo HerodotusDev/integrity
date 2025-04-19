@@ -14,7 +14,7 @@ integrity = { path = "../" }
 
 [dev-dependencies]
 cairo_test = "2.11.4"
-snforge_std = "0.41.0"
+snforge_std = "0.36.0"
 
 [scripts]
 test = "snforge test"

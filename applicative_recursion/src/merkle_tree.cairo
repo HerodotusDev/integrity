@@ -31,7 +31,7 @@ pub fn get_root_hash(leaves: Span<felt252>) -> felt252 {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::get_root_hash;
 
     #[test]
     fn test_root_hash() {
