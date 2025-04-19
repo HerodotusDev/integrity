@@ -16,6 +16,11 @@ jobs:
         with:
           tool-versions: ./applicative_recursion/.tool-versions
       
+      - name: Setup snfoundry
+        uses: foundry-rs/setup-snfoundry@v4
+        with:
+          tool-versions: ./applicative_recursion/.tool-versions
+      
       - name: Format code
         run: scarb fmt -c
         working-directory: ./applicative_recursion
