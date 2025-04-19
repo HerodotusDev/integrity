@@ -10,14 +10,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          path: ./applicative_recursion
       
       - name: Setup Scarb
         uses: software-mansion/setup-scarb@v1
       
       - name: Format code
-        working-directory: ./applicative_recursion
         run: scarb fmt -c
       
       - name: Run tests
-        working-directory: ./applicative_recursion
         run: scarb test
