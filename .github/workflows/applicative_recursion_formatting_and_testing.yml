@@ -10,24 +10,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          sparse-checkout: |
-            applicative_recursion
-          sparse-checkout-cone-mode: false
-
-      - name: Move to directory
-        run: |
-          mv applicative_recursion/* .
-          rm -rf applicative_recursion
 
       - name: Setup Scarb
         uses: software-mansion/setup-scarb@v1
+        with:
+          tool-versions: ./applicative_recursion/.tool-versions
 
       - name: Setup Snfoundry
         uses: foundry-rs/setup-snfoundry@v4
+        with:
+          tool-versions: ./applicative_recursion/.tool-versions
+
+      - name: Print versions
+        run: |
+          scarb --version
+          snforge --version
 
       - name: Format code
-        run: scarb fmt -w src -c
+        run: scarb fmt -c
+        working-directory: ./applicative_recursion
 
       - name: Run tests
         run: scarb test
+        working-directory: ./applicative_recursion
