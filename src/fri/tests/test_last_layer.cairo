@@ -347,7 +347,7 @@ fn test_verify_last_layer1() {
 }
 
 #[test]
-#[should_panic]
+#[should_panic(expected: 'Invalid value')]
 #[available_gas(9999999999)]
 fn test_verify_last_layer2() {
     let queries = array![

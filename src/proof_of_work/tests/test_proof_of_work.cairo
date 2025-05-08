@@ -12,7 +12,7 @@ fn test_verify_proof_of_work_0() {
 
 #[cfg(feature: 'blake2s')]
 #[test]
-#[should_panic]
+#[should_panic(expected: 'proof of work failed')]
 #[available_gas(9999999999)]
 fn test_verify_proof_of_work_1() {
     let digest: u256 = 0x1c5a5f4381df1f5cd7ca1d48a19d8ff802a71d94169de38382621fdc5514a10a;
@@ -35,7 +35,7 @@ fn test_verify_proof_of_work_0() {
 
 #[cfg(feature: 'keccak')]
 #[test]
-#[should_panic]
+#[should_panic(expected: 'proof of work failed')]
 #[available_gas(9999999999)]
 fn test_verify_proof_of_work_1() {
     let digest: u256 = u256 {
