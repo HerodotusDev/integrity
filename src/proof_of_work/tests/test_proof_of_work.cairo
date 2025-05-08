@@ -26,7 +26,7 @@ fn test_verify_proof_of_work_1() {
 #[available_gas(9999999999)]
 fn test_verify_proof_of_work_0() {
     let digest: u256 = u256 {
-        low: 0x6308b38ae2841c18fb8c06c9acc9bcd5, high: 0x5d35fab3c11198da5f6fe41666993b16
+        low: 0x6308b38ae2841c18fb8c06c9acc9bcd5, high: 0x5d35fab3c11198da5f6fe41666993b16,
     };
     let nonce: u64 = 0xd65397f;
     let n_bits: u8 = 0x1e;
@@ -39,7 +39,7 @@ fn test_verify_proof_of_work_0() {
 #[available_gas(9999999999)]
 fn test_verify_proof_of_work_1() {
     let digest: u256 = u256 {
-        low: 0x6308b38ae2841c18fb8c06c9acc9bcd5, high: 0x5d35fab3c11198da5f6fe41666993b16
+        low: 0x6308b38ae2841c18fb8c06c9acc9bcd5, high: 0x5d35fab3c11198da5f6fe41666993b16,
     };
     let nonce: u64 = 0xd65397f + 1;
     let n_bits: u8 = 0x1e;

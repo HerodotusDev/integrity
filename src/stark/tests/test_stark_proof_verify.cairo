@@ -1,9 +1,7 @@
+use integrity::settings::{HasherBitLength, StoneVersion, VerifierSettings};
+use integrity::stark::{StarkProof, StarkProofTrait};
+use integrity::tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak};
 use starknet::contract_address::ContractAddressZero;
-use integrity::{
-    stark::{StarkProof, StarkProofTrait},
-    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak},
-    settings::{VerifierSettings, HasherBitLength, StoneVersion},
-};
 
 #[cfg(feature: 'blake2s')]
 #[test]

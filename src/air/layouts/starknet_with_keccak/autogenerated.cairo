@@ -1,10 +1,8 @@
-use integrity::{
-    air::layouts::starknet_with_keccak::{
-        global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},
-    },
-    common::math::{Felt252Div, pow},
+use integrity::air::layouts::starknet_with_keccak::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
 };
+use integrity::air::layouts::starknet_with_keccak::global_values::GlobalValues;
+use integrity::common::math::{Felt252Div, pow};
 
 #[cfg(feature: 'monolith')]
 fn eval_composition_polynomial_inner(
@@ -11095,7 +11093,7 @@ fn eval_composition_polynomial_inner(
         column14_inter1_row0,
         column14_inter1_row1,
         column14_inter1_row2,
-        column14_inter1_row5
+        column14_inter1_row5,
     ] =
         (*mask_values
         .multi_pop_front::<734>()
@@ -12508,13 +12506,14 @@ fn eval_composition_polynomial_inner(
                 + 3618502788666131213697322783095070105623107215331596699973092056135872020479
                     * poseidon_poseidon_partial_rounds_state1_cubed_21
                 + 1246177936547655338400308396717835700699368047388302793172818304164989556526))
-            / domain14, // Constraint: poseidon/poseidon/margin_partial_to_full2.
-    ].span();
+            / domain14 // Constraint: poseidon/poseidon/margin_partial_to_full2.
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     total_sum
 }
@@ -19090,7 +19089,7 @@ fn eval_composition_polynomial_inner_part1(
         column14_inter1_row0,
         column14_inter1_row1,
         column14_inter1_row2,
-        column14_inter1_row5
+        column14_inter1_row5,
     ] =
         (*mask_values
         .multi_pop_front::<734>()
@@ -19810,13 +19809,14 @@ fn eval_composition_polynomial_inner_part1(
         (keccak_keccak_parse_to_diluted_partial_diluted1_0
             * keccak_keccak_parse_to_diluted_partial_diluted1_0
             - keccak_keccak_parse_to_diluted_partial_diluted1_0)
-            / domain43, // Constraint: keccak/keccak/parse_to_diluted/extract_bit_first_invocation1.
-    ].span();
+            / domain43 // Constraint: keccak/keccak/parse_to_diluted/extract_bit_first_invocation1.
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     total_sum
 }
@@ -30313,7 +30313,7 @@ fn eval_composition_polynomial_inner_part2(
         column10_row516115,
         column10_row516339,
         column10_row516347,
-        column10_row520199
+        column10_row520199,
     ] =
         (*mask_values
         .multi_pop_front::<621>()
@@ -30673,13 +30673,14 @@ fn eval_composition_polynomial_inner_part2(
         (keccak_keccak_sum_parities2_50176
             + column1_row405764
             - (column1_row4609 + column1_row7553 + column1_row7553))
-            / domain135, // Constraint: keccak/keccak/theta_rho_pi_i3_j2/n1.
-    ].span();
+            / domain135 // Constraint: keccak/keccak/theta_rho_pi_i3_j2/n1.
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     total_sum
 }
@@ -37818,7 +37819,7 @@ fn eval_composition_polynomial_inner_part3(
         column11_row477,
         column11_row493,
         column11_row501,
-        column11_row509
+        column11_row509,
     ] =
         (*mask_values
         .multi_pop_front::<701>()
@@ -38180,13 +38181,14 @@ fn eval_composition_polynomial_inner_part3(
                 + 3618502788666131213697322783095070105623107215331596699973092056135872020479
                     * poseidon_poseidon_partial_rounds_state1_cubed_21
                 + 1246177936547655338400308396717835700699368047388302793172818304164989556526))
-            / domain14, // Constraint: poseidon/poseidon/margin_partial_to_full2.
-    ].span();
+            / domain14 // Constraint: poseidon/poseidon/margin_partial_to_full2.
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     total_sum
 }
@@ -38846,7 +38848,7 @@ fn eval_oods_polynomial_inner(
         column11,
         column12,
         column13,
-        column14
+        column14,
     ] =
         (*column_values
         .multi_pop_front::<15>()
@@ -38856,800 +38858,170 @@ fn eval_oods_polynomial_inner(
     // Sum the OODS constraints on the trace polynomials.
     let mut total_sum = 0;
     let pows = [
-        pow0,
-        pow53,
-        pow54,
-        pow55,
-        pow56,
-        pow57,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow62,
-        pow63,
-        pow64,
-        pow65,
-        pow66,
-        pow67,
-    ].span();
+        pow0, pow53, pow54, pow55, pow56, pow57, pow58, pow59, pow60, pow61, pow62, pow63, pow64,
+        pow65, pow66, pow67,
+    ]
+        .span();
     for pow in pows {
         let value = (column0 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow53,
-        pow54,
-        pow56,
-        pow58,
-        pow60,
-        pow64,
-        pow68,
-        pow81,
-        pow92,
-        pow100,
-        pow114,
-        pow119,
-        pow127,
-        pow131,
-        pow141,
-        pow143,
-        pow147,
-        pow149,
-        pow150,
-        pow152,
-        pow158,
-        pow161,
-        pow164,
-        pow171,
-        pow175,
-        pow178,
-        pow181,
-        pow200,
-        pow214,
-        pow219,
-        pow220,
-        pow223,
-        pow218,
-        pow222,
-        pow225,
-        pow226,
-        pow227,
-        pow228,
-        pow229,
-        pow230,
-        pow231,
-        pow232,
-        pow233,
-        pow234,
-        pow237,
-        pow238,
-        pow241,
-        pow242,
-        pow243,
-        pow244,
-        pow245,
-        pow246,
-        pow247,
-        pow248,
-        pow249,
-        pow252,
-        pow256,
-        pow254,
-        pow257,
-        pow259,
-        pow258,
-        pow260,
-        pow262,
-        pow261,
-        pow263,
-        pow264,
-        pow266,
-        pow270,
-        pow272,
-        pow273,
-        pow274,
-        pow276,
-        pow277,
-        pow279,
-        pow278,
-        pow280,
-        pow282,
-        pow281,
-        pow283,
-        pow284,
-        pow285,
-        pow286,
-        pow287,
-        pow288,
-        pow289,
-        pow294,
-        pow290,
-        pow295,
-        pow297,
-        pow298,
-        pow296,
-        pow299,
-        pow300,
-        pow303,
-        pow308,
-        pow309,
-        pow310,
-        pow311,
-        pow312,
-        pow313,
-        pow314,
-        pow315,
-        pow316,
-        pow317,
-        pow318,
-        pow322,
-        pow319,
-        pow323,
-        pow324,
-        pow325,
-        pow326,
-        pow327,
-        pow328,
-        pow329,
-        pow330,
-        pow331,
-        pow332,
-        pow333,
-        pow335,
-        pow338,
-        pow342,
-        pow343,
-        pow345,
-        pow347,
-        pow346,
-        pow348,
-        pow350,
-        pow351,
-        pow354,
-        pow357,
-        pow352,
-        pow355,
-        pow353,
-        pow356,
-        pow358,
-        pow359,
-        pow360,
-        pow361,
-        pow362,
-        pow363,
-        pow364,
-        pow366,
-        pow367,
-        pow368,
-        pow369,
-        pow370,
-        pow371,
-        pow372,
-        pow373,
-        pow374,
-        pow375,
-        pow376,
-        pow379,
-        pow380,
-        pow382,
-        pow383,
-        pow384,
-        pow385,
-        pow386,
-        pow388,
-        pow389,
-        pow391,
-        pow392,
-        pow393,
-        pow403,
-        pow417,
-        pow424,
-        pow429,
-        pow378,
-        pow398,
-        pow478,
-        pow475,
-        pow476,
-        pow477,
-        pow472,
-        pow473,
-        pow474,
-        pow481,
-        pow471,
-        pow480,
-        pow482,
-        pow483,
-        pow484,
-        pow486,
-        pow52,
-        pow621,
-        pow487,
-        pow51,
-        pow50,
-        pow48,
-        pow540,
-        pow542,
-        pow544,
-        pow546,
-        pow548,
-        pow549,
-        pow530,
-        pow529,
-        pow526,
-        pow531,
-        pow47,
-        pow528,
-        pow536,
-        pow532,
-        pow533,
-        pow534,
-        pow46,
-        pow45,
-        pow44,
-        pow49,
-        pow541,
-        pow543,
-        pow545,
-        pow547,
-        pow550,
-        pow551,
-        pow43,
-        pow42,
-        pow41,
-        pow40,
-        pow39,
-        pow38,
-        pow513,
-        pow514,
-        pow512,
-        pow511,
-        pow37,
-        pow36,
-        pow35,
-        pow320,
-        pow34,
-        pow106,
-        pow137,
-        pow33,
-        pow105,
-        pow136,
-        pow32,
-        pow31,
-        pow444,
-        pow450,
-        pow30,
-        pow104,
-        pow135,
-        pow29,
-        pow28,
-        pow27,
-        pow520,
-        pow523,
-        pow519,
-        pow521,
-        pow555,
-        pow556,
-        pow557,
-        pow558,
-        pow559,
-        pow561,
-        pow571,
-        pow570,
-        pow569,
-        pow568,
-        pow26,
-        pow524,
-        pow25,
-        pow174,
-        pow217,
-        pow553,
-        pow24,
-        pow103,
-        pow134,
-        pow23,
-        pow22,
-        pow173,
-        pow216,
-        pow21,
-        pow102,
-        pow133,
-        pow573,
-        pow321,
-        pow562,
-        pow563,
-        pow620,
-        pow619,
-        pow617,
-        pow616,
-        pow20,
-        pow19,
-        pow18,
-        pow17,
-        pow387,
-        pow517,
-        pow518,
-        pow578,
-        pow16,
-        pow15,
-        pow14,
-        pow172,
-        pow215,
-        pow13,
-        pow101,
-        pow132,
-        pow584,
-        pow585,
-        pow618,
-        pow583,
-        pow12,
-        pow581,
-        pow11,
-        pow177,
-        pow10,
-        pow334,
-        pow9,
-        pow365,
-        pow592,
-        pow594,
-        pow593,
-        pow595,
-        pow596,
-        pow8,
-        pow597,
-        pow598,
-        pow600,
-        pow602,
-        pow603,
-        pow601,
-        pow608,
-        pow609,
-        pow610,
-        pow611,
-        pow613,
-        pow615,
-        pow612,
-        pow614,
-    ].span();
+        pow0, pow53, pow54, pow56, pow58, pow60, pow64, pow68, pow81, pow92, pow100, pow114, pow119,
+        pow127, pow131, pow141, pow143, pow147, pow149, pow150, pow152, pow158, pow161, pow164,
+        pow171, pow175, pow178, pow181, pow200, pow214, pow219, pow220, pow223, pow218, pow222,
+        pow225, pow226, pow227, pow228, pow229, pow230, pow231, pow232, pow233, pow234, pow237,
+        pow238, pow241, pow242, pow243, pow244, pow245, pow246, pow247, pow248, pow249, pow252,
+        pow256, pow254, pow257, pow259, pow258, pow260, pow262, pow261, pow263, pow264, pow266,
+        pow270, pow272, pow273, pow274, pow276, pow277, pow279, pow278, pow280, pow282, pow281,
+        pow283, pow284, pow285, pow286, pow287, pow288, pow289, pow294, pow290, pow295, pow297,
+        pow298, pow296, pow299, pow300, pow303, pow308, pow309, pow310, pow311, pow312, pow313,
+        pow314, pow315, pow316, pow317, pow318, pow322, pow319, pow323, pow324, pow325, pow326,
+        pow327, pow328, pow329, pow330, pow331, pow332, pow333, pow335, pow338, pow342, pow343,
+        pow345, pow347, pow346, pow348, pow350, pow351, pow354, pow357, pow352, pow355, pow353,
+        pow356, pow358, pow359, pow360, pow361, pow362, pow363, pow364, pow366, pow367, pow368,
+        pow369, pow370, pow371, pow372, pow373, pow374, pow375, pow376, pow379, pow380, pow382,
+        pow383, pow384, pow385, pow386, pow388, pow389, pow391, pow392, pow393, pow403, pow417,
+        pow424, pow429, pow378, pow398, pow478, pow475, pow476, pow477, pow472, pow473, pow474,
+        pow481, pow471, pow480, pow482, pow483, pow484, pow486, pow52, pow621, pow487, pow51, pow50,
+        pow48, pow540, pow542, pow544, pow546, pow548, pow549, pow530, pow529, pow526, pow531,
+        pow47, pow528, pow536, pow532, pow533, pow534, pow46, pow45, pow44, pow49, pow541, pow543,
+        pow545, pow547, pow550, pow551, pow43, pow42, pow41, pow40, pow39, pow38, pow513, pow514,
+        pow512, pow511, pow37, pow36, pow35, pow320, pow34, pow106, pow137, pow33, pow105, pow136,
+        pow32, pow31, pow444, pow450, pow30, pow104, pow135, pow29, pow28, pow27, pow520, pow523,
+        pow519, pow521, pow555, pow556, pow557, pow558, pow559, pow561, pow571, pow570, pow569,
+        pow568, pow26, pow524, pow25, pow174, pow217, pow553, pow24, pow103, pow134, pow23, pow22,
+        pow173, pow216, pow21, pow102, pow133, pow573, pow321, pow562, pow563, pow620, pow619,
+        pow617, pow616, pow20, pow19, pow18, pow17, pow387, pow517, pow518, pow578, pow16, pow15,
+        pow14, pow172, pow215, pow13, pow101, pow132, pow584, pow585, pow618, pow583, pow12, pow581,
+        pow11, pow177, pow10, pow334, pow9, pow365, pow592, pow594, pow593, pow595, pow596, pow8,
+        pow597, pow598, pow600, pow602, pow603, pow601, pow608, pow609, pow610, pow611, pow613,
+        pow615, pow612, pow614,
+    ]
+        .span();
     for pow in pows {
         let value = (column1 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53,].span();
+    let pows = [pow0, pow53].span();
     for pow in pows {
         let value = (column2 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53, pow170, pow171, pow213,].span();
+    let pows = [pow0, pow53, pow170, pow171, pow213].span();
     for pow in pows {
         let value = (column3 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53, pow170, pow171,].span();
+    let pows = [pow0, pow53, pow170, pow171].span();
     for pow in pows {
         let value = (column4 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53, pow149, pow150, pow152, pow153, pow167, pow168, pow171,].span();
+    let pows = [pow0, pow53, pow149, pow150, pow152, pow153, pow167, pow168, pow171].span();
     for pow in pows {
         let value = (column5 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow170,].span();
+    let pows = [pow0, pow170].span();
     for pow in pows {
         let value = (column6 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow53,
-        pow54,
-        pow55,
-        pow56,
-        pow57,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow62,
-        pow63,
-        pow64,
-        pow65,
-        pow66,
-        pow67,
-        pow418,
-        pow419,
-        pow420,
-        pow427,
-        pow428,
-        pow431,
-        pow432,
-        pow433,
-        pow434,
-        pow435,
-        pow436,
-        pow437,
-        pow438,
-        pow439,
-        pow440,
-        pow441,
-        pow442,
-        pow443,
-        pow446,
-        pow447,
-        pow448,
-        pow449,
-        pow451,
-        pow452,
-        pow453,
-        pow454,
-        pow457,
-        pow460,
-        pow464,
-        pow468,
-        pow504,
-        pow505,
-        pow506,
-        pow507,
-        pow508,
-        pow515,
-        pow516,
-        pow565,
-        pow566,
-        pow572,
-        pow574,
-        pow576,
-        pow579,
-        pow580,
-        pow588,
-    ].span();
+        pow0, pow53, pow54, pow55, pow56, pow57, pow58, pow59, pow60, pow61, pow62, pow63, pow64,
+        pow65, pow66, pow67, pow418, pow419, pow420, pow427, pow428, pow431, pow432, pow433, pow434,
+        pow435, pow436, pow437, pow438, pow439, pow440, pow441, pow442, pow443, pow446, pow447,
+        pow448, pow449, pow451, pow452, pow453, pow454, pow457, pow460, pow464, pow468, pow504,
+        pow505, pow506, pow507, pow508, pow515, pow516, pow565, pow566, pow572, pow574, pow576,
+        pow579, pow580, pow588,
+    ]
+        .span();
     for pow in pows {
         let value = (column7 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow53,
-        pow54,
-        pow55,
-        pow56,
-        pow57,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow64,
-        pow65,
-        pow68,
-        pow85,
-        pow86,
-        pow109,
-        pow110,
-        pow122,
-        pow123,
-        pow138,
-        pow139,
-        pow144,
-        pow145,
-        pow154,
-        pow155,
-        pow179,
-        pow180,
-        pow184,
-        pow185,
-        pow190,
-        pow194,
-        pow197,
-        pow195,
-        pow198,
-        pow196,
-        pow199,
-        pow202,
-        pow221,
-        pow224,
-        pow235,
-        pow236,
-        pow239,
-        pow240,
-        pow250,
-        pow251,
-        pow268,
-        pow275,
-        pow337,
-        pow7,
-        pow293,
-        pow306,
-        pow307,
-        pow336,
-        pow348,
-        pow349,
-        pow381,
-        pow399,
-        pow425,
-        pow430,
-        pow377,
-        pow401,
-        pow400,
-        pow409,
-        pow414,
-        pow413,
-        pow394,
-        pow412,
-        pow410,
-        pow469,
-        pow489,
-        pow623,
-        pow622,
-        pow470,
-        pow490,
-        pow485,
-        pow497,
-        pow496,
-        pow495,
-        pow492,
+        pow0, pow53, pow54, pow55, pow56, pow57, pow58, pow59, pow60, pow61, pow64, pow65, pow68,
+        pow85, pow86, pow109, pow110, pow122, pow123, pow138, pow139, pow144, pow145, pow154,
+        pow155, pow179, pow180, pow184, pow185, pow190, pow194, pow197, pow195, pow198, pow196,
+        pow199, pow202, pow221, pow224, pow235, pow236, pow239, pow240, pow250, pow251, pow268,
+        pow275, pow337, pow7, pow293, pow306, pow307, pow336, pow348, pow349, pow381, pow399,
+        pow425, pow430, pow377, pow401, pow400, pow409, pow414, pow413, pow394, pow412, pow410,
+        pow469, pow489, pow623, pow622, pow470, pow490, pow485, pow497, pow496, pow495, pow492,
         pow539,
-    ].span();
+    ]
+        .span();
     for pow in pows {
         let value = (column8 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53, pow54, pow55,].span();
+    let pows = [pow0, pow53, pow54, pow55].span();
     for pow in pows {
         let value = (column9 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow53,
-        pow54,
-        pow55,
-        pow56,
-        pow57,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow64,
-        pow65,
-        pow71,
-        pow72,
-        pow73,
-        pow76,
-        pow89,
-        pow110,
-        pow112,
-        pow125,
-        pow139,
-        pow140,
-        pow146,
-        pow156,
-        pow162,
-        pow165,
-        pow167,
-        pow176,
-        pow183,
-        pow205,
-        pow207,
-        pow208,
-        pow210,
-        pow211,
-        pow265,
-        pow269,
-        pow271,
-        pow302,
-        pow304,
-        pow305,
-        pow339,
-        pow344,
-        pow390,
-        pow395,
-        pow396,
-        pow397,
-        pow402,
-        pow416,
-        pow421,
-        pow422,
-        pow423,
-        pow415,
-        pow404,
-        pow426,
-        pow445,
-        pow491,
-        pow493,
-        pow6,
-        pow70,
-        pow525,
-        pow527,
-        pow535,
-        pow537,
-        pow5,
-        pow69,
-        pow301,
-        pow510,
-        pow509,
-        pow253,
-        pow255,
-        pow267,
-        pow291,
-        pow292,
-        pow624,
-        pow625,
-        pow626,
-        pow522,
-        pow552,
-        pow554,
-        pow567,
-        pow627,
-        pow4,
-        pow340,
-        pow341,
-        pow564,
-        pow575,
-        pow3,
-        pow2,
-        pow80,
-        pow577,
-        pow560,
-        pow1,
-        pow604,
-        pow586,
-        pow587,
-        pow582,
-        pow589,
-        pow538,
-        pow590,
-        pow591,
-        pow599,
-        pow605,
-        pow606,
-        pow607,
-        pow628,
-    ].span();
+        pow0, pow53, pow54, pow55, pow56, pow57, pow58, pow59, pow60, pow61, pow64, pow65, pow71,
+        pow72, pow73, pow76, pow89, pow110, pow112, pow125, pow139, pow140, pow146, pow156, pow162,
+        pow165, pow167, pow176, pow183, pow205, pow207, pow208, pow210, pow211, pow265, pow269,
+        pow271, pow302, pow304, pow305, pow339, pow344, pow390, pow395, pow396, pow397, pow402,
+        pow416, pow421, pow422, pow423, pow415, pow404, pow426, pow445, pow491, pow493, pow6, pow70,
+        pow525, pow527, pow535, pow537, pow5, pow69, pow301, pow510, pow509, pow253, pow255, pow267,
+        pow291, pow292, pow624, pow625, pow626, pow522, pow552, pow554, pow567, pow627, pow4,
+        pow340, pow341, pow564, pow575, pow3, pow2, pow80, pow577, pow560, pow1, pow604, pow586,
+        pow587, pow582, pow589, pow538, pow590, pow591, pow599, pow605, pow606, pow607, pow628,
+    ]
+        .span();
     for pow in pows {
         let value = (column10 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow53,
-        pow54,
-        pow55,
-        pow56,
-        pow57,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow62,
-        pow63,
-        pow64,
-        pow65,
-        pow66,
-        pow68,
-        pow71,
-        pow72,
-        pow73,
-        pow74,
-        pow75,
-        pow76,
-        pow77,
-        pow78,
-        pow79,
-        pow82,
-        pow83,
-        pow84,
-        pow85,
-        pow87,
-        pow88,
-        pow90,
-        pow91,
-        pow93,
-        pow94,
-        pow95,
-        pow96,
-        pow97,
-        pow98,
-        pow99,
-        pow107,
-        pow108,
-        pow110,
-        pow111,
-        pow113,
-        pow115,
-        pow116,
-        pow117,
-        pow118,
-        pow120,
-        pow121,
-        pow124,
-        pow126,
-        pow128,
-        pow129,
-        pow130,
-        pow142,
-        pow148,
-        pow151,
-        pow157,
-        pow159,
-        pow160,
-        pow163,
-        pow166,
-        pow169,
-        pow182,
-        pow186,
-        pow187,
-        pow188,
-        pow189,
-        pow190,
-        pow191,
-        pow192,
-        pow193,
-        pow201,
-        pow203,
-        pow204,
-        pow206,
-        pow209,
-        pow212,
-        pow405,
-        pow406,
-        pow407,
-        pow408,
-        pow411,
-        pow431,
-        pow455,
-        pow456,
-        pow458,
-        pow459,
-        pow461,
-        pow462,
-        pow463,
-        pow466,
-        pow467,
-        pow479,
-        pow488,
-        pow494,
-        pow465,
-        pow498,
-        pow499,
-        pow500,
-        pow501,
-        pow502,
-        pow503,
-    ].span();
+        pow0, pow53, pow54, pow55, pow56, pow57, pow58, pow59, pow60, pow61, pow62, pow63, pow64,
+        pow65, pow66, pow68, pow71, pow72, pow73, pow74, pow75, pow76, pow77, pow78, pow79, pow82,
+        pow83, pow84, pow85, pow87, pow88, pow90, pow91, pow93, pow94, pow95, pow96, pow97, pow98,
+        pow99, pow107, pow108, pow110, pow111, pow113, pow115, pow116, pow117, pow118, pow120,
+        pow121, pow124, pow126, pow128, pow129, pow130, pow142, pow148, pow151, pow157, pow159,
+        pow160, pow163, pow166, pow169, pow182, pow186, pow187, pow188, pow189, pow190, pow191,
+        pow192, pow193, pow201, pow203, pow204, pow206, pow209, pow212, pow405, pow406, pow407,
+        pow408, pow411, pow431, pow455, pow456, pow458, pow459, pow461, pow462, pow463, pow466,
+        pow467, pow479, pow488, pow494, pow465, pow498, pow499, pow500, pow501, pow502, pow503,
+    ]
+        .span();
     for pow in pows {
         let value = (column11 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53,].span();
+    let pows = [pow0, pow53].span();
     for pow in pows {
         let value = (column12 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53,].span();
+    let pows = [pow0, pow53].span();
     for pow in pows {
         let value = (column13 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow53, pow54, pow57,].span();
+    let pows = [pow0, pow53, pow54, pow57].span();
     for pow in pows {
         let value = (column14 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     // Sum the OODS boundary constraints on the composition polynomials.
     let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());

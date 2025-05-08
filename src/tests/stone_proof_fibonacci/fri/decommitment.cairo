@@ -20,7 +20,7 @@ fn get() -> FriDecommitment {
             0x4ae8beb6c117ed28ad2481e6eb3920ba0d196dcf91fad745d0f3d31bf6d05ed,
             0x2924fde5d241de3ecacc842ee3d3110d2fcf16ba3512e17768ddab1176d56f8,
             0x64d3211f03010d3832ef559fa7159fc080cdc653948ba27c73e681108b96f07,
-            0x168dc9a375545abcdd0f89474ef29b7603d6ba848e6dc160e0edd5d3a362a3a
+            0x168dc9a375545abcdd0f89474ef29b7603d6ba848e6dc160e0edd5d3a362a3a,
         ]
             .span(),
         points: array![
@@ -41,7 +41,7 @@ fn get() -> FriDecommitment {
             0x7568bbdb9e6589c8b2ecb173d2c4de5fe7e22b82b3534821e97f156eb950c42,
             0x6c5c9a950bdf0c568bc3c0b22bc2640ac25a291952dda577938c99c4b0acfaa,
             0x58eaadad1f9488a1fa306bcd1674fd63efa43eef9c416afd6272149b1d36f32,
-            0x6a334d04c8fc44e835dd60eb585be69825d6854507921990d90f7553de33ec4
+            0x6a334d04c8fc44e835dd60eb585be69825d6854507921990d90f7553de33ec4,
         ]
             .span(),
     };

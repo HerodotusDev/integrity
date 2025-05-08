@@ -1,14 +1,12 @@
-use integrity::{
-    channel::channel::Channel,
-    vector_commitment::vector_commitment::{
-        VectorCommitment, VectorCommitmentConfig, vector_commit, VectorCommitmentConfigTrait
-    }
+use integrity::channel::channel::Channel;
+use integrity::vector_commitment::vector_commitment::{
+    VectorCommitment, VectorCommitmentConfig, VectorCommitmentConfigTrait, vector_commit,
 };
 
 #[test]
 #[available_gas(9999999999)]
 fn test_validate_vector_commitment() {
-    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
+    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7 };
     config.validate(21, 7);
 }
 
@@ -16,7 +14,7 @@ fn test_validate_vector_commitment() {
 #[should_panic(expected: 'n_verifier_friendly mismatch')]
 #[available_gas(9999999999)]
 fn test_invalid_validate_vector_commitment_1() {
-    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
+    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7 };
     config.validate(21, 8);
 }
 
@@ -24,6 +22,6 @@ fn test_invalid_validate_vector_commitment_1() {
 #[should_panic(expected: 'height mismatch')]
 #[available_gas(9999999999)]
 fn test_invalid_validate_vector_commitment_2() {
-    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7, };
+    let config = VectorCommitmentConfig { height: 21, n_verifier_friendly_commitment_layers: 7 };
     config.validate(22, 7);
 }

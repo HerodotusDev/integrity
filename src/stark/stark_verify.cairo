@@ -1,14 +1,3 @@
-use integrity::{
-    queries::queries::queries_to_points, domains::StarkDomains,
-    fri::fri::{
-        FriDecommitment, fri_verify_initial, FriVerificationStateConstant,
-        FriVerificationStateVariable
-    },
-    stark::{StarkUnsentCommitment, StarkWitness, StarkCommitment},
-    table_commitment::table_commitment::table_decommit,
-    oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points}, settings::VerifierSettings,
-};
-use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::traces::traces_decommit;
 #[cfg(feature: 'recursive')]
@@ -21,6 +10,16 @@ use integrity::air::layouts::small::traces::traces_decommit;
 use integrity::air::layouts::starknet::traces::traces_decommit;
 #[cfg(feature: 'starknet_with_keccak')]
 use integrity::air::layouts::starknet_with_keccak::traces::traces_decommit;
+use integrity::domains::StarkDomains;
+use integrity::fri::fri::{
+    FriDecommitment, FriVerificationStateConstant, FriVerificationStateVariable, fri_verify_initial,
+};
+use integrity::oods::{OodsEvaluationInfo, eval_oods_boundary_poly_at_points};
+use integrity::queries::queries::queries_to_points;
+use integrity::settings::VerifierSettings;
+use integrity::stark::{StarkCommitment, StarkUnsentCommitment, StarkWitness};
+use integrity::table_commitment::table_commitment::table_decommit;
+use starknet::ContractAddress;
 
 // STARK verify phase.
 // NOTICE: when using splitted verifier, witness.fri_witness may be ommited (empty array)
@@ -71,7 +70,5 @@ fn stark_verify(
     let fri_decommitment = FriDecommitment {
         values: oods_poly_evals.span(), points: points.span(),
     };
-    fri_verify_initial(
-        queries: queries, commitment: commitment.fri, decommitment: fri_decommitment,
-    )
+    fri_verify_initial(queries: queries, commitment: commitment.fri, decommitment: fri_decommitment)
 }

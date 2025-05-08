@@ -1,24 +1,18 @@
-use integrity::{
-    common::{
-        math::{pow, Felt252PartialOrd, Felt252Div},
-        asserts::{assert_range_u128_le, assert_range_u128},
-    },
-    air::{
-        public_memory::{Page, PageTrait},
-        constants::{MAX_ADDRESS, INITIAL_PC, MAX_LOG_N_STEPS, MAX_RANGE_CHECK},
-        layouts::starknet::constants::{
-            segments, get_builtins, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, LAYOUT_CODE,
-            PEDERSEN_BUILTIN_ROW_RATIO, RANGE_CHECK_BUILTIN_ROW_RATIO, BITWISE_ROW_RATIO,
-            ECDSA_BUILTIN_ROW_RATIO, EC_OP_BUILTIN_ROW_RATIO, POSEIDON_ROW_RATIO
-        },
-        public_input::{
-            PublicInput, PublicInputTrait, verify_cairo1_public_input, verify_relaxed_public_input
-        }
-    },
-    domains::StarkDomains
+use core::hash::{Hash, HashStateExTrait, HashStateTrait};
+use core::pedersen::PedersenTrait;
+use integrity::air::constants::{INITIAL_PC, MAX_ADDRESS, MAX_LOG_N_STEPS, MAX_RANGE_CHECK};
+use integrity::air::layouts::starknet::constants::{
+    BITWISE_ROW_RATIO, CPU_COMPONENT_HEIGHT, CPU_COMPONENT_STEP, ECDSA_BUILTIN_ROW_RATIO,
+    EC_OP_BUILTIN_ROW_RATIO, LAYOUT_CODE, PEDERSEN_BUILTIN_ROW_RATIO, POSEIDON_ROW_RATIO,
+    RANGE_CHECK_BUILTIN_ROW_RATIO, get_builtins, segments,
 };
-
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
+use integrity::air::public_input::{
+    PublicInput, PublicInputTrait, verify_cairo1_public_input, verify_relaxed_public_input,
+};
+use integrity::air::public_memory::{Page, PageTrait};
+use integrity::common::asserts::{assert_range_u128, assert_range_u128_le};
+use integrity::common::math::{Felt252Div, Felt252PartialOrd, pow};
+use integrity::domains::StarkDomains;
 use poseidon::poseidon_hash_span;
 
 impl StarknetPublicInputImpl of PublicInputTrait {
@@ -52,11 +46,11 @@ impl StarknetPublicInputImpl of PublicInputTrait {
         let program_len = program_end_pc - initial_pc;
         let program = memory
             .extract_range(
-                initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), ref memory_index
+                initial_pc.try_into().unwrap(), program_len.try_into().unwrap(), ref memory_index,
             );
 
         assert(
-            *program[0] == 0x40780017fff7fff, 'Invalid program'
+            *program[0] == 0x40780017fff7fff, 'Invalid program',
         ); // Instruction: ap += N_BUILTINS.
         assert(*program[1] == builtins.len().into(), 'Invalid program');
         assert(*program[2] == 0x1104800180018000, 'Invalid program'); // Instruction: call rel ?.
@@ -90,21 +84,21 @@ impl StarknetPublicInputImpl of PublicInputTrait {
             stop_addresses.append(*public_segments.at(2 + i).stop_ptr);
 
             i += 1;
-        };
+        }
         memory.verify_stack(initial_ap, begin_addresses.span(), builtins_len, ref memory_index);
         memory
             .verify_stack(
                 final_ap - builtins_len.into(),
                 stop_addresses.span(),
                 builtins_len,
-                ref memory_index
+                ref memory_index,
             );
 
         // 3. Output segment
         let output_len = output_stop - output_start;
         let output = memory
             .extract_range(
-                output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index
+                output_start.try_into().unwrap(), output_len.try_into().unwrap(), ref memory_index,
             );
         let output_hash = poseidon_hash_span(output);
 
@@ -127,7 +121,7 @@ impl StarknetPublicInputImpl of PublicInputTrait {
         let n_steps = pow(2, *self.log_n_steps);
         let trace_length = *stark_domains.trace_domain_size;
         assert(
-            n_steps * CPU_COMPONENT_HEIGHT * CPU_COMPONENT_STEP == trace_length, 'Wrong trace size'
+            n_steps * CPU_COMPONENT_HEIGHT * CPU_COMPONENT_STEP == trace_length, 'Wrong trace size',
         );
 
         assert(0 <= *self.range_check_min, 'wrong rc_min');

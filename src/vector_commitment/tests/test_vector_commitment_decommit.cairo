@@ -1,9 +1,7 @@
-use integrity::{
-    vector_commitment::vector_commitment::{
-        VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, vector_commit,
-        VectorQuery, vector_commitment_decommit,
-    },
-    settings::{VerifierSettings, HasherBitLength, StoneVersion},
+use integrity::settings::{HasherBitLength, StoneVersion, VerifierSettings};
+use integrity::vector_commitment::vector_commitment::{
+    VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, VectorQuery, vector_commit,
+    vector_commitment_decommit,
 };
 
 #[cfg(feature: 'blake2s')]
@@ -11,42 +9,40 @@ use integrity::{
 #[available_gas(9999999999)]
 fn test_vector_commitment_decommit_1() {
     let commitment = VectorCommitment {
-        config: VectorCommitmentConfig {
-            height: 0x9, n_verifier_friendly_commitment_layers: 0x64,
-        },
-        commitment_hash: 0x1e9b0fa29ebe52b9c9a43a1d44e555ce42da3199370134d758735bfe9f40269
+        config: VectorCommitmentConfig { height: 0x9, n_verifier_friendly_commitment_layers: 0x64 },
+        commitment_hash: 0x1e9b0fa29ebe52b9c9a43a1d44e555ce42da3199370134d758735bfe9f40269,
     };
 
     let queries = array![
         VectorQuery {
-            index: 0x73, value: 0x12346ea425a6aebc8c323a401410cc325aabaf99b54e600a7271f146488aa2d
+            index: 0x73, value: 0x12346ea425a6aebc8c323a401410cc325aabaf99b54e600a7271f146488aa2d,
         },
         VectorQuery {
-            index: 0xa5, value: 0x1aabe006a27bfa5f93bde192ff552adbef87058e62546c831ed14ce94866ac1
+            index: 0xa5, value: 0x1aabe006a27bfa5f93bde192ff552adbef87058e62546c831ed14ce94866ac1,
         },
         VectorQuery {
-            index: 0xb0, value: 0x7205a2b5f5f403b8053b4e4ac65e2a484c007f6d118524fe28b7cdf2a56bb8a
+            index: 0xb0, value: 0x7205a2b5f5f403b8053b4e4ac65e2a484c007f6d118524fe28b7cdf2a56bb8a,
         },
         VectorQuery {
-            index: 0xf8, value: 0x5d49462d844a3f203c59d39fa005cbe153c78e6ac831987f19c0d6dfae38fad
+            index: 0xf8, value: 0x5d49462d844a3f203c59d39fa005cbe153c78e6ac831987f19c0d6dfae38fad,
         },
         VectorQuery {
-            index: 0x115, value: 0x53d21587a9cb08d1b9402a4b8c2a9d37942b26963936200fea3122eaaf870b1
+            index: 0x115, value: 0x53d21587a9cb08d1b9402a4b8c2a9d37942b26963936200fea3122eaaf870b1,
         },
         VectorQuery {
-            index: 0x11c, value: 0x7c3355a75f6b36a95068b68d48e7539cd97531b7478e2cf7d2dc85b32bafc66
+            index: 0x11c, value: 0x7c3355a75f6b36a95068b68d48e7539cd97531b7478e2cf7d2dc85b32bafc66,
         },
         VectorQuery {
-            index: 0x12f, value: 0xb6f3a522577229ac26f12df90daaf376afbd960ee4b0ab07f270bf9c5da56a
+            index: 0x12f, value: 0xb6f3a522577229ac26f12df90daaf376afbd960ee4b0ab07f270bf9c5da56a,
         },
         VectorQuery {
-            index: 0x13c, value: 0x174cfc44eb57da0eda6ae9407db71c5144940f05ef51f858bc8e229d15703e2
+            index: 0x13c, value: 0x174cfc44eb57da0eda6ae9407db71c5144940f05ef51f858bc8e229d15703e2,
         },
         VectorQuery {
-            index: 0x153, value: 0x2220da78b33e155482bdf0534dc30fc17fe059a7b9e30f710ee2681a8151484
+            index: 0x153, value: 0x2220da78b33e155482bdf0534dc30fc17fe059a7b9e30f710ee2681a8151484,
         },
         VectorQuery {
-            index: 0x1f4, value: 0x566b71a4f84556a3816d911c5dfb45f75cc962d9829acd0dd56e81517cc73b8
+            index: 0x1f4, value: 0x566b71a4f84556a3816d911c5dfb45f75cc962d9829acd0dd56e81517cc73b8,
         },
     ]
         .span();
@@ -102,7 +98,7 @@ fn test_vector_commitment_decommit_1() {
             0x1da36b1fb01d0470d48c3eb4c92263eadb7b58c8829f2ee77e3287a6e39c902,
             0x78dac96e95e86f83b4a426bd0505d84b5ea967822d0fca9f3bd28331164d94b,
             0x1d50c82e363d8e7fa2641c9f2137b99832372d1879a2ee02b2c824a4cb620dd,
-            0x2fd5a64db6093c9efda84ba327a43043e41310626073e58331c9f2f9f2db20f
+            0x2fd5a64db6093c9efda84ba327a43043e41310626073e58331c9f2f9f2db20f,
         ]
             .span(),
     };
@@ -120,42 +116,40 @@ fn test_vector_commitment_decommit_1() {
 #[available_gas(9999999999)]
 fn test_vector_commitment_decommit() {
     let commitment = VectorCommitment {
-        config: VectorCommitmentConfig {
-            height: 0x9, n_verifier_friendly_commitment_layers: 0x64,
-        },
-        commitment_hash: 0x1e9b0fa29ebe52b9c9a43a1d44e555ce42da3199370134d758735bfe9f40269
+        config: VectorCommitmentConfig { height: 0x9, n_verifier_friendly_commitment_layers: 0x64 },
+        commitment_hash: 0x1e9b0fa29ebe52b9c9a43a1d44e555ce42da3199370134d758735bfe9f40269,
     };
 
     let queries = array![
         VectorQuery {
-            index: 0x73, value: 0x12346ea425a6aebc8c323a401410cc325aabaf99b54e600a7271f146488aa2d
+            index: 0x73, value: 0x12346ea425a6aebc8c323a401410cc325aabaf99b54e600a7271f146488aa2d,
         },
         VectorQuery {
-            index: 0xa5, value: 0x1aabe006a27bfa5f93bde192ff552adbef87058e62546c831ed14ce94866ac1
+            index: 0xa5, value: 0x1aabe006a27bfa5f93bde192ff552adbef87058e62546c831ed14ce94866ac1,
         },
         VectorQuery {
-            index: 0xb0, value: 0x7205a2b5f5f403b8053b4e4ac65e2a484c007f6d118524fe28b7cdf2a56bb8a
+            index: 0xb0, value: 0x7205a2b5f5f403b8053b4e4ac65e2a484c007f6d118524fe28b7cdf2a56bb8a,
         },
         VectorQuery {
-            index: 0xf8, value: 0x5d49462d844a3f203c59d39fa005cbe153c78e6ac831987f19c0d6dfae38fad
+            index: 0xf8, value: 0x5d49462d844a3f203c59d39fa005cbe153c78e6ac831987f19c0d6dfae38fad,
         },
         VectorQuery {
-            index: 0x115, value: 0x53d21587a9cb08d1b9402a4b8c2a9d37942b26963936200fea3122eaaf870b1
+            index: 0x115, value: 0x53d21587a9cb08d1b9402a4b8c2a9d37942b26963936200fea3122eaaf870b1,
         },
         VectorQuery {
-            index: 0x11c, value: 0x7c3355a75f6b36a95068b68d48e7539cd97531b7478e2cf7d2dc85b32bafc66
+            index: 0x11c, value: 0x7c3355a75f6b36a95068b68d48e7539cd97531b7478e2cf7d2dc85b32bafc66,
         },
         VectorQuery {
-            index: 0x12f, value: 0xb6f3a522577229ac26f12df90daaf376afbd960ee4b0ab07f270bf9c5da56a
+            index: 0x12f, value: 0xb6f3a522577229ac26f12df90daaf376afbd960ee4b0ab07f270bf9c5da56a,
         },
         VectorQuery {
-            index: 0x13c, value: 0x174cfc44eb57da0eda6ae9407db71c5144940f05ef51f858bc8e229d15703e2
+            index: 0x13c, value: 0x174cfc44eb57da0eda6ae9407db71c5144940f05ef51f858bc8e229d15703e2,
         },
         VectorQuery {
-            index: 0x153, value: 0x2220da78b33e155482bdf0534dc30fc17fe059a7b9e30f710ee2681a8151484
+            index: 0x153, value: 0x2220da78b33e155482bdf0534dc30fc17fe059a7b9e30f710ee2681a8151484,
         },
         VectorQuery {
-            index: 0x1f4, value: 0x566b71a4f84556a3816d911c5dfb45f75cc962d9829acd0dd56e81517cc73b8
+            index: 0x1f4, value: 0x566b71a4f84556a3816d911c5dfb45f75cc962d9829acd0dd56e81517cc73b8,
         },
     ]
         .span();
@@ -211,7 +205,7 @@ fn test_vector_commitment_decommit() {
             0x1da36b1fb01d0470d48c3eb4c92263eadb7b58c8829f2ee77e3287a6e39c902,
             0x78dac96e95e86f83b4a426bd0505d84b5ea967822d0fca9f3bd28331164d94b,
             0x1d50c82e363d8e7fa2641c9f2137b99832372d1879a2ee02b2c824a4cb620dd,
-            0x2fd5a64db6093c9efda84ba327a43043e41310626073e58331c9f2f9f2db20f
+            0x2fd5a64db6093c9efda84ba327a43043e41310626073e58331c9f2f9f2db20f,
         ]
             .span(),
     };

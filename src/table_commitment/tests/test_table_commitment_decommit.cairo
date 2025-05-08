@@ -1,13 +1,11 @@
-use integrity::{
-    vector_commitment::vector_commitment::{
-        VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness
-    },
-    table_commitment::table_commitment::{
-        table_decommit, TableCommitment, TableCommitmentConfig, TableDecommitment,
-        TableCommitmentWitness
-    },
-    tests::{stone_proof_fibonacci_keccak, stone_proof_fibonacci},
-    settings::{VerifierSettings, HasherBitLength, StoneVersion},
+use integrity::settings::{HasherBitLength, StoneVersion, VerifierSettings};
+use integrity::table_commitment::table_commitment::{
+    TableCommitment, TableCommitmentConfig, TableCommitmentWitness, TableDecommitment,
+    table_decommit,
+};
+use integrity::tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak};
+use integrity::vector_commitment::vector_commitment::{
+    VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness,
 };
 
 #[cfg(feature: 'blake2s')]

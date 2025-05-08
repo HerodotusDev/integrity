@@ -1,10 +1,8 @@
-use integrity::{
-    air::layouts::recursive::{
-        global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},
-    },
-    common::math::{Felt252Div, pow},
+use integrity::air::layouts::recursive::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
 };
+use integrity::air::layouts::recursive::global_values::GlobalValues;
+use integrity::common::math::{Felt252Div, pow};
 
 fn eval_composition_polynomial_inner(
     mut mask_values: Span<felt252>,
@@ -234,7 +232,7 @@ fn eval_composition_polynomial_inner(
         column9_inter1_row0,
         column9_inter1_row1,
         column9_inter1_row2,
-        column9_inter1_row5
+        column9_inter1_row5,
     ] =
         (*mask_values
         .multi_pop_front::<133>()
@@ -589,13 +587,14 @@ fn eval_composition_polynomial_inner(
         ((column1_row92 + column1_row124) * 16 - column1_row33)
             / domain6, // Constraint: bitwise/unique_unpacking194.
         ((column1_row94 + column1_row126) * 256 - column1_row97)
-            / domain6, // Constraint: bitwise/unique_unpacking195.
-    ].span();
+            / domain6 // Constraint: bitwise/unique_unpacking195.
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     total_sum
 }
@@ -825,12 +824,13 @@ fn eval_oods_polynomial_inner(
         (column9 - *oods_values.pop_front().unwrap()) / (point - pow4 * oods_point),
         (column9 - *oods_values.pop_front().unwrap()) / (point - pow6 * oods_point),
         (column9 - *oods_values.pop_front().unwrap()) / (point - pow11 * oods_point),
-    ].span();
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     // Sum the OODS boundary constraints on the composition polynomials.
     let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());

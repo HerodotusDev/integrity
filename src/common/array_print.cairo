@@ -7,7 +7,7 @@ impl ArrayPrintTrait<T, +PrintTrait<T>, +Drop<T>, +Copy<T>> of PrintTrait<Array<
         loop {
             if i == span.len() {
                 break;
-            };
+            }
             (*span[i]).print();
             i += 1;
         };
@@ -20,7 +20,7 @@ impl SpanPrintTrait<T, +PrintTrait<T>, +Drop<T>, +Copy<T>> of PrintTrait<Span<T>
         loop {
             if i == self.len() {
                 break;
-            };
+            }
             (*self[i]).print();
             i += 1;
         };

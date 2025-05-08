@@ -1,15 +1,14 @@
+use integrity::channel::channel::ChannelTrait;
+use integrity::stark::stark_commit::stark_commit;
+use integrity::tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak};
 use starknet::contract_address::ContractAddressZero;
-use integrity::{
-    stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
-    tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
-};
 
 #[cfg(feature: 'blake2s')]
 #[test]
 #[available_gas(9999999999)]
 fn test_stark_commit() {
     let mut channel = ChannelTrait::new_with_counter(
-        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0,
     );
 
     let public_input = stone_proof_fibonacci::public_input::get();
@@ -26,12 +25,12 @@ fn test_stark_commit() {
             @stark_domains,
             ContractAddressZero::zero(),
         ) == stone_proof_fibonacci::stark::commitment::get(),
-        'Invalid value'
+        'Invalid value',
     );
 
     assert(
         channel.digest == 0x9c769c7e0797cf043b06b980072a798b141f2bc41b14e85ad93ba178b13de7,
-        'Invalid value'
+        'Invalid value',
     );
     assert(channel.counter == 0x0, 'Invalid value');
 }
@@ -41,7 +40,7 @@ fn test_stark_commit() {
 #[available_gas(9999999999)]
 fn test_stark_commit() {
     let mut channel = ChannelTrait::new_with_counter(
-        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0,
     );
 
     let public_input = stone_proof_fibonacci_keccak::public_input::get();
@@ -58,12 +57,12 @@ fn test_stark_commit() {
             @stark_domains,
             ContractAddressZero::zero(),
         ) == stone_proof_fibonacci_keccak::stark::commitment::get(),
-        'Invalid value'
+        'Invalid value',
     );
 
     assert(
         channel.digest == 0x28f12249c8cba51796d59e7573019ce2b4608c9a8cdeee26e821b0763c69229,
-        'Invalid value'
+        'Invalid value',
     );
     assert(channel.counter == 0x0, 'Invalid value');
 }

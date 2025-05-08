@@ -1,13 +1,12 @@
-use integrity::{
-    StarkProofWithSerde,
-    fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    contracts::{
-        fact_registry_interface::{VerificationListElement, Verification}, verifier::InitResult,
-    },
-    settings::{
-        VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, SecurityBits, FactHash,
-        JobId, VerifierConfiguration, VerifierPreset,
-    },
+use integrity::StarkProofWithSerde;
+use integrity::contracts::fact_registry_interface::{Verification, VerificationListElement};
+use integrity::contracts::verifier::InitResult;
+use integrity::fri::fri::{
+    FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
+};
+use integrity::settings::{
+    FactHash, HasherBitLength, JobId, SecurityBits, StoneVersion, VerificationHash,
+    VerifierConfiguration, VerifierPreset, VerifierSettings,
 };
 use starknet::ContractAddress;
 
@@ -58,7 +57,7 @@ trait IFactRegistryExternal<TContractState> {
     ) -> FactRegistered;
 
     fn register_verifier(
-        ref self: TContractState, preset: VerifierPreset, address: ContractAddress
+        ref self: TContractState, preset: VerifierPreset, address: ContractAddress,
     );
 
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
@@ -66,33 +65,30 @@ trait IFactRegistryExternal<TContractState> {
 
 #[starknet::contract]
 mod FactRegistry {
-    use integrity::{
-        StarkProofWithSerde, StarkProof,
-        contracts::verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
-        fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-        settings::{
-            VerifierPreset, VerifierConfiguration, split_settings, JobId, FactHash,
-            VerificationHash, PresetHash, SecurityBits,
-        },
-        contracts::{
-            fact_registry::{
-                VerificationListElement, Verification, IFactRegistryExternal, FactRegistered
-            },
-            fact_registry_interface::IFactRegistry,
-        },
-        lib_utils::{get_verifier_config_hash, get_verification_hash},
+    use core::keccak::keccak_u256s_be_inputs;
+    use core::poseidon::{HashStateImpl, Poseidon, PoseidonImpl};
+    use core::starknet::event::EventEmitter;
+    use integrity::contracts::fact_registry::{
+        FactRegistered, IFactRegistryExternal, Verification, VerificationListElement,
     };
-    use starknet::{
-        ContractAddress, get_caller_address,
-        storage::{
-            StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map, Vec,
-            VecTrait, MutableVecTrait
-        },
+    use integrity::contracts::fact_registry_interface::IFactRegistry;
+    use integrity::contracts::verifier::{
+        ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait, InitResult,
     };
-    use core::{
-        poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
-        starknet::event::EventEmitter,
+    use integrity::fri::fri::{
+        FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
     };
+    use integrity::lib_utils::{get_verification_hash, get_verifier_config_hash};
+    use integrity::settings::{
+        FactHash, JobId, PresetHash, SecurityBits, VerificationHash, VerifierConfiguration,
+        VerifierPreset, split_settings,
+    };
+    use integrity::{StarkProof, StarkProofWithSerde};
+    use starknet::storage::{
+        Map, MutableVecTrait, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
+        Vec, VecTrait,
+    };
+    use starknet::{ContractAddress, get_caller_address};
 
     #[storage]
     struct Storage {
@@ -122,7 +118,7 @@ mod FactRegistry {
     #[derive(Drop, starknet::Event)]
     struct OwnershipTransferred {
         previous_owner: ContractAddress,
-        new_owner: ContractAddress
+        new_owner: ContractAddress,
     }
 
     #[constructor]
@@ -145,7 +141,7 @@ mod FactRegistry {
 
             self
                 ._register_fact(
-                    result.fact, verifier_address, result.security_bits, verifier_config
+                    result.fact, verifier_address, result.security_bits, verifier_config,
                 )
         }
 
@@ -158,7 +154,7 @@ mod FactRegistry {
             self.verifier_configs.entry(job_id).write(Option::Some(verifier_config));
             let (verifier_settings, verifier_preset) = split_settings(verifier_config);
             ICairoVerifierDispatcher {
-                contract_address: self.get_verifier_address(verifier_preset)
+                contract_address: self.get_verifier_address(verifier_preset),
             }
                 .verify_proof_initial(job_id, verifier_settings, stark_proof)
         }
@@ -197,17 +193,17 @@ mod FactRegistry {
             let verifier_address = self.get_verifier_address(verifier_preset);
             let result = ICairoVerifierDispatcher { contract_address: verifier_address }
                 .verify_proof_final(
-                    job_id, state_constant, state_variable, last_layer_coefficients
+                    job_id, state_constant, state_variable, last_layer_coefficients,
                 );
 
             self
                 ._register_fact(
-                    result.fact, verifier_address, result.security_bits, verifier_config
+                    result.fact, verifier_address, result.security_bits, verifier_config,
                 )
         }
 
         fn register_verifier(
-            ref self: ContractState, preset: VerifierPreset, address: ContractAddress
+            ref self: ContractState, preset: VerifierPreset, address: ContractAddress,
         ) {
             assert(self.owner.read() == get_caller_address(), 'ONLY_OWNER');
             assert(address.into() != 0, 'INVALID_VERIFIER_ADDRESS');
@@ -225,8 +221,8 @@ mod FactRegistry {
             self
                 .emit(
                     Event::OwnershipTransferred(
-                        OwnershipTransferred { previous_owner: caller, new_owner }
-                    )
+                        OwnershipTransferred { previous_owner: caller, new_owner },
+                    ),
                 );
         }
     }
@@ -234,7 +230,7 @@ mod FactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn get_all_verifications_for_fact_hash(
-            self: @ContractState, fact_hash: FactHash
+            self: @ContractState, fact_hash: FactHash,
         ) -> Array<VerificationListElement> {
             let verifications = self.fact_verifications.entry(fact_hash);
             let n = verifications.len();
@@ -255,16 +251,16 @@ mod FactRegistry {
                         VerificationListElement {
                             verification_hash,
                             security_bits: verification.security_bits,
-                            verifier_config: verification.verifier_config
-                        }
+                            verifier_config: verification.verifier_config,
+                        },
                     );
                 i += 1;
-            };
+            }
             arr
         }
 
         fn get_verification(
-            self: @ContractState, verification_hash: VerificationHash
+            self: @ContractState, verification_hash: VerificationHash,
         ) -> Option<Verification> {
             self.verification_hashes.entry(verification_hash).read()
         }
@@ -291,11 +287,11 @@ mod FactRegistry {
         ) -> FactRegistered {
             let verifier_config_hash = get_verifier_config_hash(verifier_config);
             let verification_hash = get_verification_hash(
-                fact_hash, verifier_config_hash, security_bits
+                fact_hash, verifier_config_hash, security_bits,
             );
 
             let event = FactRegistered {
-                fact_hash, verifier_address, security_bits, verifier_config, verification_hash
+                fact_hash, verifier_address, security_bits, verifier_config, verification_hash,
             };
             self.emit(Event::FactRegistered(event));
 
@@ -304,7 +300,7 @@ mod FactRegistry {
                 self.fact_verifications.entry(fact_hash).append().write(verification_hash);
                 verification_hash_entry
                     .write(
-                        Option::Some(Verification { fact_hash, security_bits, verifier_config })
+                        Option::Some(Verification { fact_hash, security_bits, verifier_config }),
                     );
             }
             event

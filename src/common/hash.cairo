@@ -11,7 +11,7 @@ fn hash_felts(mut elements: Span<felt252>) -> felt252 {
             Option::None => {
                 hash_state = hash_state.update(len.into());
                 break hash_state.finalize();
-            }
+            },
         }
     }
 }

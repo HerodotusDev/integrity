@@ -1,10 +1,8 @@
-use integrity::{
-    air::layouts::recursive_with_poseidon::{
-        global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},
-    },
-    common::math::{Felt252Div, pow},
+use integrity::air::layouts::recursive_with_poseidon::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
 };
+use integrity::air::layouts::recursive_with_poseidon::global_values::GlobalValues;
+use integrity::common::math::{Felt252Div, pow};
 
 fn eval_composition_polynomial_inner(
     mut mask_values: Span<felt252>,
@@ -347,7 +345,7 @@ fn eval_composition_polynomial_inner(
         column7_inter1_row0,
         column7_inter1_row1,
         column7_inter1_row2,
-        column7_inter1_row5
+        column7_inter1_row5,
     ] =
         (*mask_values
         .multi_pop_front::<192>()

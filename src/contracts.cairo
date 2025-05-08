@@ -1,3 +1,5 @@
+#[cfg(feature: '_verifier_logic')]
+mod fact_registry;
 mod fact_registry_interface;
 mod mocked_fact_registry;
 
@@ -5,5 +7,3 @@ mod mocked_fact_registry;
 mod proxy;
 #[cfg(feature: '_verifier_logic')]
 mod verifier;
-#[cfg(feature: '_verifier_logic')]
-mod fact_registry;

@@ -1,7 +1,6 @@
-use integrity::{
-    fri::fri_config::FriConfig, table_commitment::table_commitment::{TableCommitmentConfig},
-    vector_commitment::vector_commitment::{VectorCommitmentConfig}
-};
+use integrity::fri::fri_config::FriConfig;
+use integrity::table_commitment::table_commitment::TableCommitmentConfig;
+use integrity::vector_commitment::vector_commitment::VectorCommitmentConfig;
 
 fn get() -> FriConfig {
     return FriConfig {
@@ -31,7 +30,7 @@ fn get() -> FriConfig {
                 vector: VectorCommitmentConfig {
                     height: 0x9, n_verifier_friendly_commitment_layers: 0x64,
                 },
-            }
+            },
         ]
             .span(),
         // Array of size n_layers, each entry represents the FRI step size,

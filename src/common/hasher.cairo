@@ -1,9 +1,7 @@
-use integrity::{
-    common::{
-        blake2s::blake2s, blake2s_u8::blake2s as blake2s_u8, flip_endianness::FlipEndiannessTrait,
-    },
-    settings::{VerifierSettings, HasherBitLength},
-};
+use integrity::common::blake2s::blake2s;
+use integrity::common::blake2s_u8::blake2s as blake2s_u8;
+use integrity::common::flip_endianness::FlipEndiannessTrait;
+use integrity::settings::{HasherBitLength, VerifierSettings};
 
 
 #[cfg(feature: 'blake2s')]

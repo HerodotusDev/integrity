@@ -82,5 +82,5 @@ struct InteractionElements {
     range_check16_perm_interaction_elm: felt252,
     diluted_check_permutation_interaction_elm: felt252,
     diluted_check_interaction_z: felt252,
-    diluted_check_interaction_alpha: felt252
+    diluted_check_interaction_alpha: felt252,
 }

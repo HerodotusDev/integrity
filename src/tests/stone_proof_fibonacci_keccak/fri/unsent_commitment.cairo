@@ -1,4 +1,5 @@
-use integrity::{fri::fri::FriUnsentCommitment, tests::stone_proof_fibonacci_keccak};
+use integrity::fri::fri::FriUnsentCommitment;
+use integrity::tests::stone_proof_fibonacci_keccak;
 
 fn get() -> FriUnsentCommitment {
     return FriUnsentCommitment {

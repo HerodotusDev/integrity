@@ -1,8 +1,8 @@
-use integrity::{
-    settings::{VerifierConfiguration, FactHash, SecurityBits, VerificationHash},
-    contracts::fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait}
+use core::poseidon::{HashStateImpl, Poseidon, PoseidonImpl};
+use integrity::contracts::fact_registry_interface::{
+    IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
 };
-use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
+use integrity::settings::{FactHash, SecurityBits, VerificationHash, VerifierConfiguration};
 use starknet::{ContractAddress, contract_address_const};
 
 
@@ -16,7 +16,7 @@ fn get_verifier_config_hash(verifier_config: VerifierConfiguration) -> felt252 {
 }
 
 fn get_verification_hash(
-    fact_hash: FactHash, verifier_config_hash: felt252, security_bits: u32
+    fact_hash: FactHash, verifier_config_hash: felt252, security_bits: u32,
 ) -> VerificationHash {
     PoseidonImpl::new()
         .update(fact_hash)
@@ -39,16 +39,16 @@ impl Integrity of IntegrityTrait {
     fn new() -> IntegrityT {
         IntegrityT {
             dispatcher: IFactRegistryDispatcher {
-                contract_address: contract_address_const::<INTEGRITY_ADDRESS>()
-            }
+                contract_address: contract_address_const::<INTEGRITY_ADDRESS>(),
+            },
         }
     }
 
     fn new_proxy() -> IntegrityT {
         IntegrityT {
             dispatcher: IFactRegistryDispatcher {
-                contract_address: contract_address_const::<PROXY_ADDRESS>()
-            }
+                contract_address: contract_address_const::<PROXY_ADDRESS>(),
+            },
         }
     }
 
@@ -57,7 +57,7 @@ impl Integrity of IntegrityTrait {
     }
 
     fn is_fact_hash_valid_with_security(
-        self: IntegrityT, fact_hash: FactHash, security_bits: SecurityBits
+        self: IntegrityT, fact_hash: FactHash, security_bits: SecurityBits,
     ) -> bool {
         let mut verifications = self
             .dispatcher
@@ -69,7 +69,7 @@ impl Integrity of IntegrityTrait {
                 result = true;
                 break;
             }
-        };
+        }
         result
     }
 
@@ -78,7 +78,7 @@ impl Integrity of IntegrityTrait {
     }
 
     fn with_config(
-        self: IntegrityT, verifier_config: VerifierConfiguration, security_bits: SecurityBits
+        self: IntegrityT, verifier_config: VerifierConfiguration, security_bits: SecurityBits,
     ) -> IntegrityWithConfigT {
         IntegrityWithConfigT {
             dispatcher: self.dispatcher,
@@ -88,9 +88,9 @@ impl Integrity of IntegrityTrait {
     }
 
     fn with_hashed_config(
-        self: IntegrityT, verifier_config_hash: felt252, security_bits: SecurityBits
+        self: IntegrityT, verifier_config_hash: felt252, security_bits: SecurityBits,
     ) -> IntegrityWithConfigT {
-        IntegrityWithConfigT { dispatcher: self.dispatcher, verifier_config_hash, security_bits, }
+        IntegrityWithConfigT { dispatcher: self.dispatcher, verifier_config_hash, security_bits }
     }
 }
 
@@ -105,7 +105,7 @@ struct IntegrityWithConfigT {
 impl IntegrityWithConfig of IntegrityWithConfigTrait {
     fn is_fact_hash_valid(self: IntegrityWithConfigT, fact_hash: FactHash) -> bool {
         let verification_hash = get_verification_hash(
-            fact_hash, self.verifier_config_hash, self.security_bits
+            fact_hash, self.verifier_config_hash, self.security_bits,
         );
         self.dispatcher.get_verification(verification_hash).is_some()
     }
@@ -115,7 +115,7 @@ fn calculate_fact_hash(program_hash: felt252, output: Span<felt252>) -> felt252 
     let mut output_hash = PoseidonImpl::new();
     for x in output {
         output_hash = output_hash.update(*x);
-    };
+    }
     PoseidonImpl::new().update(program_hash).update(output_hash.finalize()).finalize()
 }
 
@@ -125,7 +125,7 @@ const STONE_BOOTLOADER_PROGRAM_HASH: felt252 =
     0x40519557c48b25e7e7d27cb27297300b94909028c327b385990f0b649920cc3;
 
 fn calculate_bootloaded_fact_hash(
-    bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>
+    bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>,
 ) -> felt252 {
     let mut bootloader_output = PoseidonImpl::new()
         .update(0x1)
@@ -133,7 +133,7 @@ fn calculate_bootloaded_fact_hash(
         .update(child_program_hash);
     for x in child_output {
         bootloader_output = bootloader_output.update(*x);
-    };
+    }
     PoseidonImpl::new()
         .update(bootloader_program_hash)
         .update(bootloader_output.finalize())

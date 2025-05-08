@@ -1,8 +1,7 @@
-use integrity::{
-    air::layouts::recursive::traces::TracesWitness,
-    table_commitment::table_commitment::TableCommitmentWitness,
-    vector_commitment::vector_commitment::VectorCommitmentWitness, tests::stone_proof_fibonacci,
-};
+use integrity::air::layouts::recursive::traces::TracesWitness;
+use integrity::table_commitment::table_commitment::TableCommitmentWitness;
+use integrity::tests::stone_proof_fibonacci;
+use integrity::vector_commitment::vector_commitment::VectorCommitmentWitness;
 
 fn get() -> TracesWitness {
     return TracesWitness {
@@ -315,7 +314,7 @@ fn get() -> TracesWitness {
                     0x342f1da46e4f70d7a41f70714f62e151705f9ca06c2d6087ce729c050f12f2f,
                     0x373b26e2465ae4464f66febde45a53f992bdff2f58e60a697a0b604caf9fc67,
                     0x43c1d5dbd030aae8775256291ba4283c4b63abc522a56da347dd3cfa0aa4087,
-                    0x7bb5682667ee265dacd2cd55a197078315703aefcc62f18b177888515e7d512
+                    0x7bb5682667ee265dacd2cd55a197078315703aefcc62f18b177888515e7d512,
                 ]
                     .span(),
             },
@@ -629,7 +628,7 @@ fn get() -> TracesWitness {
                     0x7105987aa664ac789b3388832e585669bafbee41509178a796dff43426dd666,
                     0x2666a07c5a886794759e217d4889ea45d303140264f5cf37f65b47e74a9b486,
                     0x6670be2d0acdcfac1bd40025e9a5ccd4c260593a88f7ae40b7468b2a1c01045,
-                    0x7a49be4920adfa9dd254293cdf063cddc5637051389ca0086601543e7ca2664
+                    0x7a49be4920adfa9dd254293cdf063cddc5637051389ca0086601543e7ca2664,
                 ]
                     .span(),
             },

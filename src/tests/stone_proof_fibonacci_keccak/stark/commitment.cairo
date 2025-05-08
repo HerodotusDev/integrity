@@ -1,9 +1,7 @@
-use integrity::{
-    stark::StarkCommitment,
-    table_commitment::table_commitment::{TableCommitmentConfig, TableCommitment},
-    vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitment},
-    tests::stone_proof_fibonacci_keccak,
-};
+use integrity::stark::StarkCommitment;
+use integrity::table_commitment::table_commitment::{TableCommitment, TableCommitmentConfig};
+use integrity::tests::stone_proof_fibonacci_keccak;
+use integrity::vector_commitment::vector_commitment::{VectorCommitment, VectorCommitmentConfig};
 
 fn get() -> StarkCommitment {
     return StarkCommitment {
@@ -159,7 +157,7 @@ fn get() -> StarkCommitment {
             0x6dcf7f9d643754dde755f59b7e99d23fa8fe3873081d61cef76746e42f2c2bf,
             0x2fb76d734073db3e5f46085ec5058f02ccab70d70c31508c22e659ed00337ae,
             0x75bcd848a595eeed1e03977dd35f052ebf6a15306961e4fc57670916663e15e,
-            0x7a702a902f300a47fb79f18195691f2f1cd57fa870b6d4e12d365ed59231506
+            0x7a702a902f300a47fb79f18195691f2f1cd57fa870b6d4e12d365ed59231506,
         ]
             .span(),
         fri: stone_proof_fibonacci_keccak::fri::commitment::get(),

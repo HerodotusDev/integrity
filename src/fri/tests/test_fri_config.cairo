@@ -1,4 +1,5 @@
-use integrity::{fri::fri_config::FriConfigTrait, tests::stone_proof_fibonacci};
+use integrity::fri::fri_config::FriConfigTrait;
+use integrity::tests::stone_proof_fibonacci;
 
 #[test]
 #[available_gas(9999999999)]
@@ -11,8 +12,8 @@ fn test_fri_config() {
     assert(
         fri_config
             .validate(
-                log_n_cosets, n_verifier_friendly_commitment_layers
+                log_n_cosets, n_verifier_friendly_commitment_layers,
             ) == log_expected_input_degree,
-        'Invalid value'
+        'Invalid value',
     );
 }

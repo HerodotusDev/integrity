@@ -17,6 +17,6 @@ fn get() -> Array<felt252> {
         0x2ce83a,
         0x384d24,
         0x3a1e60,
-        0x3d46eb
+        0x3d46eb,
     ];
 }

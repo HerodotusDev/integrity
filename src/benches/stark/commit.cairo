@@ -1,11 +1,10 @@
-use integrity::{
-    stark::stark_commit::stark_commit, channel::channel::ChannelTrait,
-    tests::stone_proof_fibonacci_keccak,
-};
+use integrity::channel::channel::ChannelTrait;
+use integrity::stark::stark_commit::stark_commit;
+use integrity::tests::stone_proof_fibonacci_keccak;
 
 fn bench_stark_commit() {
     let mut channel = ChannelTrait::new_with_counter(
-        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0
+        0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 0x0,
     );
 
     let public_input = stone_proof_fibonacci_keccak::public_input::get();
@@ -19,6 +18,6 @@ fn bench_stark_commit() {
         @unsent_commitment,
         @config,
         @stark_domains,
-        0.try_into().unwrap()
+        0.try_into().unwrap(),
     );
 }

@@ -1,7 +1,6 @@
-use integrity::{
-    common::{consts::{FIELD_GENERATOR, STARK_PRIME_MINUS_ONE}, math::{pow, Felt252Div}},
-    stark::StarkConfig,
-};
+use integrity::common::consts::{FIELD_GENERATOR, STARK_PRIME_MINUS_ONE};
+use integrity::common::math::{Felt252Div, pow};
+use integrity::stark::StarkConfig;
 
 // Information about the domains that are used in the stark proof.
 #[derive(Drop, Copy, PartialEq)]
@@ -53,7 +52,7 @@ mod tests {
 
         assert(
             StarkDomainsTrait::new(
-                log_trace_domain_size, log_n_cosets
+                log_trace_domain_size, log_n_cosets,
             ) == StarkDomains {
                 log_eval_domain_size: 0x16,
                 eval_domain_size: 0x400000,
@@ -62,7 +61,7 @@ mod tests {
                 trace_domain_size: 0x40000,
                 trace_generator: 0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046,
             },
-            'Domain creation failed'
+            'Domain creation failed',
         )
     }
 }

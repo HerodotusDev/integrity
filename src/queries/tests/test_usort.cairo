@@ -20,7 +20,7 @@ fn test_usort_2() {
     let unsorted: Array<u64> = array![742, 360, 952, 891, 634, 707, 582, 264, 806, 720];
     assert(
         usort(unsorted.span()) == array![264, 360, 582, 634, 707, 720, 742, 806, 891, 952],
-        'Invalid sorting'
+        'Invalid sorting',
     );
 }
 

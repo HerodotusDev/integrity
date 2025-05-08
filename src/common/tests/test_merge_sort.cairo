@@ -132,7 +132,7 @@ fn test_merge_sort_27_random() {
         397120964,
         4155302219,
         598760305,
-        3087811260
+        3087811260,
     ];
     let output: Array<u32> = array![
         397120964,
@@ -163,7 +163,7 @@ fn test_merge_sort_27_random() {
         3901384727,
         4155302219,
         4228656862,
-        4267084068
+        4267084068,
     ];
     assert(merge_sort(input.span()) == output, 'merge_sort_27_random');
 }

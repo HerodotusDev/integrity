@@ -1,9 +1,7 @@
-use integrity::{
-    stark::stark_verify::stark_verify,
-    air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
-    tests::stone_proof_fibonacci_keccak,
-    settings::{VerifierSettings, HasherBitLength, StoneVersion},
-};
+use integrity::air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+use integrity::settings::{HasherBitLength, StoneVersion, VerifierSettings};
+use integrity::stark::stark_verify::stark_verify;
+use integrity::tests::stone_proof_fibonacci_keccak;
 
 fn bench_stark_verify() {
     let queries = stone_proof_fibonacci_keccak::queries::get().span();

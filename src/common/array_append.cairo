@@ -1,7 +1,5 @@
-use integrity::common::{
-    flip_endianness::FlipEndiannessU32,
-    split::{u16_split, u32_split, u64_split, u128_split, u256_split}
-};
+use integrity::common::flip_endianness::FlipEndiannessU32;
+use integrity::common::split::{u128_split, u16_split, u256_split, u32_split, u64_split};
 
 // 2^8 = 256
 const U128maxU8: u128 = 256;
@@ -52,7 +50,7 @@ impl ArrayU32AppendFeltsSpan of ArrayAppendTrait<u32, Span<felt252>> {
         loop {
             match element.pop_front() {
                 Option::Some(elem) => self.append_little_endian(*elem),
-                Option::None => { break; }
+                Option::None => { break; },
             }
         }
     }
@@ -60,7 +58,7 @@ impl ArrayU32AppendFeltsSpan of ArrayAppendTrait<u32, Span<felt252>> {
         loop {
             match element.pop_front() {
                 Option::Some(elem) => self.append_big_endian(*elem),
-                Option::None => { break; }
+                Option::None => { break; },
             }
         }
     }
@@ -225,7 +223,7 @@ impl ArrayU64AppendFeltSpan of ArrayAppendTrait<u64, Span<felt252>> {
         loop {
             match element.pop_front() {
                 Option::Some(element) => { self.append_big_endian(*element); },
-                Option::None => { break; }
+                Option::None => { break; },
             }
         };
     }
@@ -234,7 +232,7 @@ impl ArrayU64AppendFeltSpan of ArrayAppendTrait<u64, Span<felt252>> {
         loop {
             match element.pop_front() {
                 Option::Some(element) => { self.append_big_endian(*element); },
-                Option::None => { break; }
+                Option::None => { break; },
             }
         };
     }

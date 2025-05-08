@@ -1,19 +1,3 @@
-use integrity::{
-    air::{
-        public_input::{ContinuousPageHeader, PublicInput, SegmentInfo},
-        public_memory::{AddrValue, Page},
-    },
-    deserialization::{
-        traces::{
-            TracesConfigWithSerde, TracesDecommitmentWithSerde, TracesWitnessWithSerde,
-            TracesUnsentCommitmentWithSerde, TableCommitmentConfigWithSerde,
-            TableCommitmentWitnessWithSerde, TableDecommitmentWithSerde
-        },
-        fri::{FriConfigWithSerde, FriUnsentCommitmentWithSerde, FriWitnessWithSerde},
-        pow::{ProofOfWorkConfigWithSerde, ProofOfWorkUnsentCommitmentWithSerde},
-    },
-    stark::{StarkProof, StarkConfig, StarkUnsentCommitment, StarkWitness},
-};
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::traces::TracesConfig;
 #[cfg(feature: 'recursive')]
@@ -26,6 +10,20 @@ use integrity::air::layouts::small::traces::TracesConfig;
 use integrity::air::layouts::starknet::traces::TracesConfig;
 #[cfg(feature: 'starknet_with_keccak')]
 use integrity::air::layouts::starknet_with_keccak::traces::TracesConfig;
+use integrity::air::public_input::{ContinuousPageHeader, PublicInput, SegmentInfo};
+use integrity::air::public_memory::{AddrValue, Page};
+use integrity::deserialization::fri::{
+    FriConfigWithSerde, FriUnsentCommitmentWithSerde, FriWitnessWithSerde,
+};
+use integrity::deserialization::pow::{
+    ProofOfWorkConfigWithSerde, ProofOfWorkUnsentCommitmentWithSerde,
+};
+use integrity::deserialization::traces::{
+    TableCommitmentConfigWithSerde, TableCommitmentWitnessWithSerde, TableDecommitmentWithSerde,
+    TracesConfigWithSerde, TracesDecommitmentWithSerde, TracesUnsentCommitmentWithSerde,
+    TracesWitnessWithSerde,
+};
+use integrity::stark::{StarkConfig, StarkProof, StarkUnsentCommitment, StarkWitness};
 
 #[derive(Drop, Serde)]
 struct StarkProofWithSerde {
@@ -103,10 +101,10 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
 
             segments
                 .append(
-                    SegmentInfo { begin_addr: *self.segments[i], stop_ptr: *self.segments[i + 1], }
+                    SegmentInfo { begin_addr: *self.segments[i], stop_ptr: *self.segments[i + 1] },
                 );
             i += 2;
-        };
+        }
 
         let mut page = ArrayTrait::<AddrValue>::new();
         let mut i = 0;
@@ -115,10 +113,10 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
                 break;
             }
 
-            page.append(AddrValue { address: *self.main_page[i], value: *self.main_page[i + 1], });
+            page.append(AddrValue { address: *self.main_page[i], value: *self.main_page[i + 1] });
 
             i += 2;
-        };
+        }
 
         let mut continuous_page_headers = ArrayTrait::<ContinuousPageHeader>::new();
         let mut i = 0;
@@ -134,11 +132,11 @@ impl IntoPublicInput of Into<PublicInputWithSerde, PublicInput> {
                         size: *self.continuous_page_headers[i + 1],
                         hash: (*self.continuous_page_headers[i + 2]).into(),
                         prod: *self.continuous_page_headers[i + 3],
-                    }
+                    },
                 );
 
             i += 4;
-        };
+        }
         PublicInput {
             log_n_steps: self.log_n_steps,
             range_check_min: self.range_check_min,

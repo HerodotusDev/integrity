@@ -13,7 +13,7 @@ fn powers_array(initial: felt252, alpha: felt252, n: u32) -> Array<felt252> {
         value *= alpha;
 
         i += 1;
-    };
+    }
 
     array
 }

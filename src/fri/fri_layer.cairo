@@ -1,4 +1,6 @@
-use integrity::{common::{array_extend::ArrayExtendTrait, math::pow}, fri::fri_formula::fri_formula};
+use integrity::common::array_extend::ArrayExtendTrait;
+use integrity::common::math::pow;
+use integrity::fri::fri_formula::fri_formula;
 
 #[derive(Drop, Copy)]
 struct FriLayerComputationParams {
@@ -54,7 +56,7 @@ fn compute_coset_elements(
         }
 
         i += 1;
-    };
+    }
 
     (coset_elements, coset_x_inv)
 }
@@ -94,7 +96,11 @@ fn compute_next_layer(
         verify_indices.append(coset_index);
 
         let (coset_elements, coset_x_inv) = compute_coset_elements(
-            ref queries, ref sibling_witness, coset_size, coset_index * coset_size, params.fri_group
+            ref queries,
+            ref sibling_witness,
+            coset_size,
+            coset_index * coset_size,
+            params.fri_group,
         );
 
         // Verify that at least one query was consumed.
@@ -113,10 +119,10 @@ fn compute_next_layer(
         next_queries
             .append(
                 FriLayerQuery {
-                    index: coset_index, y_value: fri_formula_res, x_inv_value: next_x_inv
-                }
+                    index: coset_index, y_value: fri_formula_res, x_inv_value: next_x_inv,
+                },
             );
-    };
+    }
 
     (next_queries, verify_indices, verify_y_values)
 }

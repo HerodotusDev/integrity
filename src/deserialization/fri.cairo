@@ -1,7 +1,8 @@
-use integrity::{
-    fri::{fri_config::FriConfig, fri::{FriUnsentCommitment, FriWitness, FriLayerWitness}},
-    table_commitment::table_commitment::{TableCommitmentConfig, TableCommitmentWitness},
-    vector_commitment::vector_commitment::{VectorCommitmentConfig, VectorCommitmentWitness},
+use integrity::fri::fri::{FriLayerWitness, FriUnsentCommitment, FriWitness};
+use integrity::fri::fri_config::FriConfig;
+use integrity::table_commitment::table_commitment::{TableCommitmentConfig, TableCommitmentWitness};
+use integrity::vector_commitment::vector_commitment::{
+    VectorCommitmentConfig, VectorCommitmentWitness,
 };
 
 #[derive(Drop, Serde)]
@@ -34,11 +35,11 @@ impl IntoFriConfig of Into<FriConfigWithSerde, FriConfig> {
                         vector: VectorCommitmentConfig {
                             height: *self.inner_layers.at(i + 1),
                             n_verifier_friendly_commitment_layers: *self.inner_layers.at(i + 2),
-                        }
-                    }
+                        },
+                    },
                 );
             i += 3;
-        };
+        }
         FriConfig {
             log_input_size: self.log_input_size,
             n_layers: self.n_layers,
@@ -64,7 +65,7 @@ impl IntoFriUnsentCommitment of Into<FriUnsentCommitmentWithSerde, FriUnsentComm
             }
             inner_layers.append(*self.inner_layers[i]);
             i += 1;
-        };
+        }
         FriUnsentCommitment {
             inner_layers: inner_layers.span(),
             last_layer_coefficients: self.last_layer_coefficients.span(),
@@ -98,7 +99,7 @@ impl IntoFriWitness of Into<FriWitnessWithSerde, FriWitness> {
                 leaves.append(*layers_span[i]);
                 i += 1;
                 j += 1;
-            };
+            }
 
             let n = *layers_span[i];
             i += 1;
@@ -111,7 +112,7 @@ impl IntoFriWitness of Into<FriWitnessWithSerde, FriWitness> {
                 authentications.append(*layers_span[i]);
                 i += 1;
                 j += 1;
-            };
+            }
 
             layers
                 .append(
@@ -120,12 +121,12 @@ impl IntoFriWitness of Into<FriWitnessWithSerde, FriWitness> {
                         table_witness: TableCommitmentWitness {
                             vector: VectorCommitmentWitness {
                                 authentications: authentications.span(),
-                            }
+                            },
                         },
-                    }
+                    },
                 );
-        };
+        }
 
-        FriWitness { layers: layers.span(), }
+        FriWitness { layers: layers.span() }
     }
 }

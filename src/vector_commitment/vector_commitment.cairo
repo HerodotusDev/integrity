@@ -1,17 +1,15 @@
-use integrity::{
-    common::{
-        array_append::ArrayAppendTrait, math::pow, hasher::hash_truncated, math::DivRemFelt252,
-        math::Felt252PartialOrd,
-    },
-    channel::channel::{Channel, ChannelImpl}, settings::VerifierSettings,
-};
+use integrity::channel::channel::{Channel, ChannelImpl};
+use integrity::common::array_append::ArrayAppendTrait;
+use integrity::common::hasher::hash_truncated;
+use integrity::common::math::{DivRemFelt252, Felt252PartialOrd, pow};
+use integrity::settings::VerifierSettings;
 use poseidon::hades_permutation;
 
 // Commitment for a vector of field elements.
 #[derive(Drop, Copy, PartialEq, Serde)]
 struct VectorCommitment {
     config: VectorCommitmentConfig,
-    commitment_hash: felt252
+    commitment_hash: felt252,
 }
 
 #[derive(Drop, Copy, PartialEq, Serde)]
@@ -32,7 +30,7 @@ impl VectorCommitmentConfigImpl of VectorCommitmentConfigTrait {
         // case, all Merkle layers use the verifier-friendly hash).
         assert(
             *self.n_verifier_friendly_commitment_layers == n_verifier_friendly_commitment_layers,
-            'n_verifier_friendly mismatch'
+            'n_verifier_friendly mismatch',
         );
     }
 }
@@ -61,10 +59,10 @@ struct VectorCommitmentWitness {
 }
 
 fn vector_commit(
-    ref channel: Channel, unsent_commitment: felt252, config: VectorCommitmentConfig
+    ref channel: Channel, unsent_commitment: felt252, config: VectorCommitmentConfig,
 ) -> VectorCommitment {
     channel.read_felt_from_prover(unsent_commitment); // commitment is being sent
-    VectorCommitment { config: config, commitment_hash: unsent_commitment, }
+    VectorCommitment { config: config, commitment_hash: unsent_commitment }
 }
 
 // Decommits a VectorCommitment at multiple indices.
@@ -73,7 +71,7 @@ fn vector_commitment_decommit(
     commitment: VectorCommitment,
     queries: Span<VectorQuery>,
     witness: VectorCommitmentWitness,
-    settings: @VerifierSettings
+    settings: @VerifierSettings,
 ) {
     let shift = pow(2, commitment.config.height);
     let shifted_queries = shift_queries(queries, shift, commitment.config.height);
@@ -84,7 +82,7 @@ fn vector_commitment_decommit(
         commitment.config.n_verifier_friendly_commitment_layers,
         witness.authentications,
         0,
-        settings
+        settings,
     );
 
     assert(expected_commitment == commitment.commitment_hash, 'decommitment failed');
@@ -99,7 +97,7 @@ fn compute_root_from_queries(
     n_verifier_friendly_layers: felt252,
     authentications: Span<felt252>,
     auth_start: u32,
-    settings: @VerifierSettings
+    settings: @VerifierSettings,
 ) -> felt252 {
     let current: VectorQueryWithDepth = *queue[start];
 
@@ -118,13 +116,13 @@ fn compute_root_from_queries(
             if current.index + 1 == next.index {
                 // next is a sibling of current
                 let hash = hash_blake_or_poseidon(
-                    current.value, next.value, is_verifier_friendly, settings
+                    current.value, next.value, is_verifier_friendly, settings,
                 );
                 queue
                     .append(
                         VectorQueryWithDepth {
                             index: parent, value: hash, depth: current.depth - 1,
-                        }
+                        },
                     );
                 return compute_root_from_queries(
                     queue,
@@ -132,30 +130,30 @@ fn compute_root_from_queries(
                     n_verifier_friendly_layers,
                     authentications,
                     auth_start,
-                    settings
+                    settings,
                 );
             }
         }
         assert(auth_start != authentications.len(), 'authentications is too short');
         hash_blake_or_poseidon(
-            current.value, *authentications[auth_start], is_verifier_friendly, settings
+            current.value, *authentications[auth_start], is_verifier_friendly, settings,
         )
     } else {
         assert(auth_start != authentications.len(), 'authentications is too short');
         hash_blake_or_poseidon(
-            *authentications[auth_start], current.value, is_verifier_friendly, settings
+            *authentications[auth_start], current.value, is_verifier_friendly, settings,
         )
     };
-    queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1, });
+    queue.append(VectorQueryWithDepth { index: parent, value: hash, depth: current.depth - 1 });
     compute_root_from_queries(
-        queue, start + 1, n_verifier_friendly_layers, authentications, auth_start + 1, settings
+        queue, start + 1, n_verifier_friendly_layers, authentications, auth_start + 1, settings,
     )
 }
 
 // Shifts the query indices by shift=2**height, to convert index representation to heap-like.
 // Validates the query index range.
 fn shift_queries(
-    mut queries: Span<VectorQuery>, shift: felt252, height: felt252
+    mut queries: Span<VectorQuery>, shift: felt252, height: felt252,
 ) -> Array<VectorQueryWithDepth> {
     let mut shifted_queries = ArrayTrait::new();
     loop {
@@ -165,17 +163,17 @@ fn shift_queries(
                     .append(
                         VectorQueryWithDepth {
                             index: *query.index + shift, value: *query.value, depth: height,
-                        }
+                        },
                     );
             },
-            Option::None => { break; }
+            Option::None => { break; },
         }
-    };
+    }
     shifted_queries
 }
 
 fn hash_blake_or_poseidon(
-    x: felt252, y: felt252, is_verifier_friendly: bool, settings: @VerifierSettings
+    x: felt252, y: felt252, is_verifier_friendly: bool, settings: @VerifierSettings,
 ) -> felt252 {
     if is_verifier_friendly {
         let (hash, _, _) = hades_permutation(x, y, 2);

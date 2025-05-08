@@ -1,16 +1,6 @@
-use integrity::{
-    domains::StarkDomains, air::constants::{MAX_ADDRESS, INITIAL_PC},
-    air::public_memory::{
-        Page, PageTrait, ContinuousPageHeader, get_continuous_pages_product, AddrValueSize
-    },
-    common::{
-        array_extend::ArrayExtend, array_append::ArrayAppendTrait,
-        math::{pow, Felt252PartialOrd, Felt252Div},
-    },
-    settings::{StoneVersion, VerifierSettings},
-};
-use core::{pedersen::PedersenTrait, hash::{HashStateTrait, HashStateExTrait, Hash}};
-use poseidon::poseidon_hash_span;
+use core::hash::{Hash, HashStateExTrait, HashStateTrait};
+use core::pedersen::PedersenTrait;
+use integrity::air::constants::{INITIAL_PC, MAX_ADDRESS};
 #[cfg(feature: 'dex')]
 use integrity::air::layouts::dex::constants::segments;
 #[cfg(feature: 'recursive')]
@@ -23,6 +13,15 @@ use integrity::air::layouts::small::constants::segments;
 use integrity::air::layouts::starknet::constants::segments;
 #[cfg(feature: 'starknet_with_keccak')]
 use integrity::air::layouts::starknet_with_keccak::constants::segments;
+use integrity::air::public_memory::{
+    AddrValueSize, ContinuousPageHeader, Page, PageTrait, get_continuous_pages_product,
+};
+use integrity::common::array_append::ArrayAppendTrait;
+use integrity::common::array_extend::ArrayExtend;
+use integrity::common::math::{Felt252Div, Felt252PartialOrd, pow};
+use integrity::domains::StarkDomains;
+use integrity::settings::{StoneVersion, VerifierSettings};
+use poseidon::poseidon_hash_span;
 
 
 #[derive(Drop, Copy, PartialEq, Serde)]
@@ -44,7 +43,7 @@ struct PublicInput {
     padding_addr: felt252,
     padding_value: felt252,
     main_page: Page,
-    continuous_page_headers: Array<ContinuousPageHeader>
+    continuous_page_headers: Array<ContinuousPageHeader>,
 }
 
 trait PublicInputTrait {
@@ -70,7 +69,7 @@ fn get_public_input_hash(
         }
         main_page_hash_state = main_page_hash_state.update_with(*public_input.main_page.at(i));
         i += 1;
-    };
+    }
     main_page_hash_state = main_page_hash_state
         .update_with(AddrValueSize * public_input.main_page.len());
     let main_page_hash = main_page_hash_state.finalize();
@@ -95,9 +94,9 @@ fn get_public_input_hash(
                 hash_data.append(*seg.begin_addr);
                 hash_data.append(*seg.stop_ptr);
             },
-            Option::None => { break; }
+            Option::None => { break; },
         }
-    };
+    }
 
     hash_data.append(*public_input.padding_addr);
     hash_data.append(*public_input.padding_value);
@@ -116,9 +115,9 @@ fn get_public_input_hash(
                 hash_data.append(*continuous_page.size);
                 hash_data.append(*continuous_page.hash);
             },
-            Option::None => { break; }
+            Option::None => { break; },
         }
-    };
+    }
 
     poseidon_hash_span(hash_data.span())
 }
@@ -127,7 +126,7 @@ fn get_public_input_hash(
 // This is the value that needs to be at the memory__multi_column_perm__perm__public_memory_prod
 // member expression.
 fn get_public_memory_product_ratio(
-    public_input: @PublicInput, z: felt252, alpha: felt252, public_memory_column_size: felt252
+    public_input: @PublicInput, z: felt252, alpha: felt252, public_memory_column_size: felt252,
 ) -> felt252 {
     let (pages_product, total_length) = get_public_memory_product(public_input, z, alpha);
 
@@ -143,7 +142,7 @@ fn get_public_memory_product_ratio(
 
 // Returns the product of all public memory cells.
 fn get_public_memory_product(
-    public_input: @PublicInput, z: felt252, alpha: felt252
+    public_input: @PublicInput, z: felt252, alpha: felt252,
 ) -> (felt252, felt252) {
     let main_page_prod = public_input.main_page.get_product(z, alpha);
 
@@ -217,7 +216,7 @@ fn verify_relaxed_public_input(public_input: @PublicInput) -> (felt252, felt252)
     // TODO: remove this hacky way with proper asserts
     while (*memory[memory_index]).address < output_start.into() {
         memory_index += 1;
-    };
+    }
 
     // 2. Output segment
     let output = memory.extract_range(output_start, output_len, ref memory_index);
@@ -229,9 +228,9 @@ fn verify_relaxed_public_input(public_input: @PublicInput) -> (felt252, felt252)
 #[cfg(feature: 'recursive')]
 #[cfg(test)]
 mod tests {
-    use super::get_public_input_hash;
+    use integrity::settings::{HasherBitLength, MemoryVerification, StoneVersion, VerifierSettings};
     use integrity::tests::stone_proof_fibonacci_keccak::public_input::get;
-    use integrity::settings::{VerifierSettings, MemoryVerification, HasherBitLength, StoneVersion};
+    use super::get_public_input_hash;
     #[test]
     #[available_gas(9999999999)]
     fn test_get_public_input_hash() {
@@ -243,7 +242,8 @@ mod tests {
         let public_input = get();
         let hash = get_public_input_hash(@public_input, 0, @settings);
         assert(
-            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52, 'Hash invalid'
+            hash == 0xaf91f2c71f4a594b1575d258ce82464475c82d8fb244142d0db450491c1b52,
+            'Hash invalid',
         )
     }
 }
