@@ -17,11 +17,6 @@ jobs:
       - name: Setup Snfoundry
         uses: foundry-rs/setup-snfoundry@v4
 
-      - name: Print versions
-        run: |
-          scarb --version
-          snforge --version
-
       - name: Format code
         run: scarb fmt -c
         working-directory: ./applicative_recursion

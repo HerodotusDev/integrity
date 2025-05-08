@@ -13,6 +13,9 @@ jobs:
       
       - name: Setup Scarb
         uses: software-mansion/setup-scarb@v1
+
+      - name: Setup Snfoundry
+        uses: foundry-rs/setup-snfoundry@v4
       
       - name: Format code
         run: scarb fmt -w src -c
