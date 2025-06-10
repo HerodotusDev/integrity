@@ -8,6 +8,8 @@
 
 Integrity is a STARK proof verifier written in cairo language and deployed on Starknet.
 
+[Contract addresses](./deployed_contracts.md)
+
 ## Table of contents
 
 -   [Prerequisites](#prerequisites)
@@ -44,7 +46,7 @@ After that, you can use `verify-on-starknet.sh` script to send the transaction t
 For example, run:
 
 ```bash
-./verify-on-starknet.sh 0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c examples/calldata recursive keccak_248_lsb stone5 strict
+./verify-on-starknet.sh 0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c examples/calldata recursive keccak_160_lsb stone5 strict
 ```
 
 This bash script internally calls `verify_proof_full_and_register_fact` function on FactRegistry contract.
