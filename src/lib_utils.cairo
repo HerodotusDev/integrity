@@ -65,7 +65,7 @@ impl Integrity of IntegrityTrait {
             .span();
         let mut result = false;
         for verification in verifications {
-            if *verification.security_bits > security_bits {
+            if *verification.security_bits >= security_bits {
                 result = true;
                 break;
             }
