@@ -1,0 +1,26 @@
+[package]
+name = "applicative_recursion"
+version = "1.0.0"
+edition = "2024_07"
+
+# See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
+
+openzeppelin_merkle_tree = "2.0.0-alpha.0"
+
+[dependencies]
+starknet = "2.9.4"
+openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v2.0.0-alpha.0" }
+integrity = { path = "../" }
+
+[dev-dependencies]
+cairo_test = "2.11.4"
+snforge_std = "0.41.0"
+
+[scripts]
+test = "snforge test"
+
+[tool.scarb]
+allow-prebuilt-plugins = ["snforge_std"]
+
+[[target.starknet-contract]]
+build-external-contracts = ["integrity::contracts::mocked_fact_registry::MockedFactRegistry"]

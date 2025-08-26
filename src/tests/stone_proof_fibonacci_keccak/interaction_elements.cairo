@@ -7,6 +7,6 @@ fn get() -> InteractionElements {
         range_check16_perm_interaction_elm: 0x645541a20083f184215fcb20d8014bed0546f6ae292f9eb7ee3de254117c597,
         diluted_check_permutation_interaction_elm: 0x11d978931f41d88e9e8930b42c84b6471782ca8c565464dd6f468c2b4804a22,
         diluted_check_interaction_z: 0x1e22e58ff299d68ff2d5823796c232bd70a8e700d70379417849503417a478a,
-        diluted_check_interaction_alpha: 0x3b74ba4892c5814cd3d16f5f28df48e8a6dc70a3d67f18b1b4921510fe88278
+        diluted_check_interaction_alpha: 0x3b74ba4892c5814cd3d16f5f28df48e8a6dc70a3d67f18b1b4921510fe88278,
     }
 }

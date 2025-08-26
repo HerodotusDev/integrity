@@ -1,23 +1,22 @@
-use integrity::{
-    channel::channel::{Channel, ChannelTrait},
-    common::{
-        merge_sort::merge_sort, math::pow, consts::FIELD_GENERATOR, bit_reverse::BitReverseTrait
-    },
-    domains::StarkDomains
-};
+use integrity::channel::channel::{Channel, ChannelTrait};
+use integrity::common::bit_reverse::BitReverseTrait;
+use integrity::common::consts::FIELD_GENERATOR;
+use integrity::common::math::pow;
+use integrity::common::merge_sort::merge_sort;
+use integrity::domains::StarkDomains;
 
 // 2^64 = 18446744073709551616
 const U128maxU64: u128 = 18446744073709551616;
 
 fn generate_queries(
-    ref channel: Channel, n_samples: u32, query_upper_bound: u64
+    ref channel: Channel, n_samples: u32, query_upper_bound: u64,
 ) -> Array<felt252> {
     let samples = sample_random_queries(ref channel, n_samples, query_upper_bound);
     usort(samples.span().slice(0, n_samples))
 }
 
 fn sample_random_queries(
-    ref channel: Channel, mut n_samples: u32, query_upper_bound: u64
+    ref channel: Channel, mut n_samples: u32, query_upper_bound: u64,
 ) -> Array<u64> {
     let mut result = ArrayTrait::<u64>::new();
 
@@ -35,7 +34,7 @@ fn sample_random_queries(
         result.append(sample.try_into().unwrap());
 
         n_samples -= 1;
-    };
+    }
 
     result
 }
@@ -67,7 +66,7 @@ fn usort(input: Span<u64>) -> Array<felt252> {
         }
 
         i += 1;
-    };
+    }
 
     result
 }
@@ -94,10 +93,10 @@ fn queries_to_points(queries: Span<felt252>, stark_domains: @StarkDomains) -> Ar
         // FIELD_GENERATOR * eval_generator ^ reversed_index.
         points
             .append(
-                FIELD_GENERATOR * pow(*stark_domains.eval_generator, index.bit_reverse().into())
+                FIELD_GENERATOR * pow(*stark_domains.eval_generator, index.bit_reverse().into()),
             );
 
         i += 1;
-    };
+    }
     points
 }

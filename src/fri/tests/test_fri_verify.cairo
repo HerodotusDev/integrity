@@ -1,6 +1,5 @@
-use integrity::{
-    fri::fri::fri_verify_initial, tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak}
-};
+use integrity::fri::fri::fri_verify_initial;
+use integrity::tests::{stone_proof_fibonacci, stone_proof_fibonacci_keccak};
 
 #[cfg(feature: 'blake2s')]
 #[test]

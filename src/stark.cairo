@@ -3,64 +3,81 @@ mod stark_verify;
 
 #[cfg(test)]
 mod tests;
-
-use integrity::{
-    air::{public_input::{PublicInput, get_public_input_hash},},
-    channel::channel::{Channel, ChannelImpl},
-    fri::{
-        fri_config::{FriConfig, FriConfigTrait},
-        fri::{
-            FriUnsentCommitment, FriWitness, FriCommitment, FriVerificationStateConstant,
-            FriVerificationStateVariable, FriLayerWitness, fri_verify_step, fri_verify_final
-        }
-    },
-    queries::queries, domains::StarkDomainsImpl,
-    table_commitment::table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, TableCommitment
-    },
-    proof_of_work::{
-        config::{ProofOfWorkConfig, ProofOfWorkConfigTrait},
-        proof_of_work::ProofOfWorkUnsentCommitment
-    },
-    vector_commitment::vector_commitment::VectorCommitmentConfigTrait, settings::VerifierSettings,
-};
-use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use integrity::air::layouts::dex::{
-    traces::{TracesConfig, TracesConfigTrait}, public_input::DexPublicInputImpl,
-    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+use integrity::air::layouts::dex::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::public_input::DexPublicInputImpl;
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::traces::{
+    TracesCommitment, TracesConfig, TracesConfigTrait, TracesDecommitment, TracesUnsentCommitment,
+    TracesWitness,
 };
 #[cfg(feature: 'recursive')]
-use integrity::air::layouts::recursive::{
-    traces::{TracesConfig, TracesConfigTrait}, public_input::RecursivePublicInputImpl,
-    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND},
+use integrity::air::layouts::recursive::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::public_input::RecursivePublicInputImpl;
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::traces::{
+    TracesCommitment, TracesConfig, TracesConfigTrait, TracesDecommitment, TracesUnsentCommitment,
+    TracesWitness,
 };
 #[cfg(feature: 'recursive_with_poseidon')]
-use integrity::air::layouts::recursive_with_poseidon::{
-    traces::{TracesConfig, TracesConfigTrait}, public_input::RecursiveWithPoseidonPublicInputImpl,
-    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+use integrity::air::layouts::recursive_with_poseidon::constants::{
+    NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
+};
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::public_input::RecursiveWithPoseidonPublicInputImpl;
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::traces::{
+    TracesCommitment, TracesConfig, TracesConfigTrait, TracesDecommitment, TracesUnsentCommitment,
+    TracesWitness,
 };
 #[cfg(feature: 'small')]
-use integrity::air::layouts::small::{
-    traces::{TracesConfig, TracesConfigTrait}, public_input::SmallPublicInputImpl,
-    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+use integrity::air::layouts::small::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::public_input::SmallPublicInputImpl;
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::traces::{
+    TracesCommitment, TracesConfig, TracesConfigTrait, TracesDecommitment, TracesUnsentCommitment,
+    TracesWitness,
 };
 #[cfg(feature: 'starknet')]
-use integrity::air::layouts::starknet::{
-    traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetPublicInputImpl,
-    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+use integrity::air::layouts::starknet::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::public_input::StarknetPublicInputImpl;
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::traces::{
+    TracesCommitment, TracesConfig, TracesConfigTrait, TracesDecommitment, TracesUnsentCommitment,
+    TracesWitness,
 };
 #[cfg(feature: 'starknet_with_keccak')]
-use integrity::air::layouts::starknet_with_keccak::{
-    traces::{TracesConfig, TracesConfigTrait}, public_input::StarknetWithKeccakPublicInputImpl,
-    traces::{TracesUnsentCommitment, TracesCommitment, TracesDecommitment, TracesWitness},
-    constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}
+use integrity::air::layouts::starknet_with_keccak::constants::{
+    NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
 };
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::public_input::StarknetWithKeccakPublicInputImpl;
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::traces::{
+    TracesCommitment, TracesConfig, TracesConfigTrait, TracesDecommitment, TracesUnsentCommitment,
+    TracesWitness,
+};
+use integrity::air::public_input::{PublicInput, get_public_input_hash};
+use integrity::channel::channel::{Channel, ChannelImpl};
+use integrity::domains::StarkDomainsImpl;
+use integrity::fri::fri::{
+    FriCommitment, FriLayerWitness, FriUnsentCommitment, FriVerificationStateConstant,
+    FriVerificationStateVariable, FriWitness, fri_verify_final, fri_verify_step,
+};
+use integrity::fri::fri_config::{FriConfig, FriConfigTrait};
+use integrity::proof_of_work::config::{ProofOfWorkConfig, ProofOfWorkConfigTrait};
+use integrity::proof_of_work::proof_of_work::ProofOfWorkUnsentCommitment;
+use integrity::queries::queries;
+use integrity::settings::VerifierSettings;
+use integrity::table_commitment::table_commitment::{
+    TableCommitment, TableCommitmentConfig, TableCommitmentWitness, TableDecommitment,
+};
+use integrity::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
+use starknet::ContractAddress;
 
 #[derive(Drop, Serde)]
 struct StarkProof {
@@ -83,13 +100,13 @@ impl StarkProofImpl of StarkProofTrait {
 
         // Validate the public input.
         let stark_domains = StarkDomainsImpl::new(
-            *self.config.log_trace_domain_size, *self.config.log_n_cosets
+            *self.config.log_trace_domain_size, *self.config.log_n_cosets,
         );
         self.public_input.validate(@stark_domains);
 
         // Compute the initial hash seed for the Fiat-Shamir channel.
         let digest = get_public_input_hash(
-            self.public_input, *self.config.n_verifier_friendly_commitment_layers, settings
+            self.public_input, *self.config.n_verifier_friendly_commitment_layers, settings,
         );
 
         // Construct the channel.
@@ -102,7 +119,7 @@ impl StarkProofImpl of StarkProofTrait {
             self.unsent_commitment,
             self.config,
             @stark_domains,
-            composition_contract_address
+            composition_contract_address,
         );
 
         let last_layer_coefficients = stark_commitment.fri.last_layer_coefficients;
@@ -111,7 +128,7 @@ impl StarkProofImpl of StarkProofTrait {
         let queries = queries::generate_queries(
             ref channel,
             (*self.config.n_queries).try_into().unwrap(),
-            stark_domains.eval_domain_size.try_into().unwrap()
+            stark_domains.eval_domain_size.try_into().unwrap(),
         );
 
         // STARK verify phase.
@@ -162,13 +179,13 @@ impl StarkProofImpl of StarkProofTrait {
             }
 
             let (new_con, new_var) = Self::verify_step(
-                con, var, *(*self.witness.fri_witness.layers).at(i), settings
+                con, var, *(*self.witness.fri_witness.layers).at(i), settings,
             );
             var = new_var;
             con = new_con;
 
             i += 1;
-        };
+        }
 
         let (_, new_var) = Self::verify_final(con, var, last_layer_coefficients);
         assert(new_var.iter.into() == n + 1, 'Verification not finalized');

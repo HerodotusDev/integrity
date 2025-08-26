@@ -1,10 +1,8 @@
-use integrity::{
-    air::layouts::starknet::{
-        global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},
-    },
-    common::math::{Felt252Div, pow},
+use integrity::air::layouts::starknet::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
 };
+use integrity::air::layouts::starknet::global_values::GlobalValues;
+use integrity::common::math::{Felt252Div, pow};
 
 fn eval_composition_polynomial_inner(
     mut mask_values: Span<felt252>,
@@ -437,7 +435,7 @@ fn eval_composition_polynomial_inner(
         column9_inter1_row5,
         column9_inter1_row7,
         column9_inter1_row11,
-        column9_inter1_row15
+        column9_inter1_row15,
     ] =
         (*mask_values
         .multi_pop_front::<271>()
@@ -1174,13 +1172,14 @@ fn eval_composition_polynomial_inner(
                 + 3618502788666131213697322783095070105623107215331596699973092056135872020479
                     * poseidon_poseidon_partial_rounds_state1_cubed_21
                 + 1246177936547655338400308396717835700699368047388302793172818304164989556526))
-            / domain13, // Constraint: poseidon/poseidon/margin_partial_to_full2.
-    ].span();
+            / domain13 // Constraint: poseidon/poseidon/margin_partial_to_full2.
+    ]
+        .span();
 
     let mut total_sum = 0;
     for value in values {
         total_sum += *constraint_coefficients.pop_front().unwrap() * *value;
-    };
+    }
 
     total_sum
 }
@@ -1398,307 +1397,94 @@ fn eval_oods_polynomial_inner(
     // Sum the OODS constraints on the trace polynomials.
     let mut total_sum = 0;
     let pows = [
-        pow0,
-        pow17,
-        pow24,
-        pow25,
-        pow26,
-        pow27,
-        pow28,
-        pow30,
-        pow31,
-        pow32,
-        pow33,
-        pow34,
-        pow35,
-        pow36,
-        pow37,
-        pow38,
-    ].span();
+        pow0, pow17, pow24, pow25, pow26, pow27, pow28, pow30, pow31, pow32, pow33, pow34, pow35,
+        pow36, pow37, pow38,
+    ]
+        .span();
     for pow in pows {
         let value = (column0 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow17, pow134, pow135, pow172,].span();
+    let pows = [pow0, pow17, pow134, pow135, pow172].span();
     for pow in pows {
         let value = (column1 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow17, pow134, pow135,].span();
+    let pows = [pow0, pow17, pow134, pow135].span();
     for pow in pows {
         let value = (column2 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow17, pow105, pow106, pow108, pow109, pow122, pow123, pow135,].span();
+    let pows = [pow0, pow17, pow105, pow106, pow108, pow109, pow122, pow123, pow135].span();
     for pow in pows {
         let value = (column3 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow134,].span();
+    let pows = [pow0, pow134].span();
     for pow in pows {
         let value = (column4 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow17,
-        pow24,
-        pow25,
-        pow26,
-        pow27,
-        pow28,
-        pow30,
-        pow31,
-        pow32,
-        pow35,
-        pow36,
-        pow39,
-        pow53,
-        pow54,
-        pow74,
-        pow75,
-        pow85,
-        pow86,
-        pow94,
-        pow95,
-        pow100,
-        pow101,
-        pow110,
-        pow111,
-        pow141,
-        pow142,
-        pow145,
-        pow146,
-        pow153,
-        pow157,
-        pow160,
-        pow152,
-        pow159,
-        pow151,
-        pow158,
-        pow163,
-        pow175,
-        pow178,
-        pow177,
-        pow188,
-        pow184,
-        pow185,
-        pow187,
-        pow16,
-        pow23,
-        pow15,
-        pow22,
-        pow14,
-        pow21,
-        pow13,
-        pow20,
-        pow12,
-        pow19,
-        pow139,
-        pow140,
-        pow11,
-        pow18,
-        pow10,
-        pow161,
-        pow9,
+        pow0, pow17, pow24, pow25, pow26, pow27, pow28, pow30, pow31, pow32, pow35, pow36, pow39,
+        pow53, pow54, pow74, pow75, pow85, pow86, pow94, pow95, pow100, pow101, pow110, pow111,
+        pow141, pow142, pow145, pow146, pow153, pow157, pow160, pow152, pow159, pow151, pow158,
+        pow163, pow175, pow178, pow177, pow188, pow184, pow185, pow187, pow16, pow23, pow15, pow22,
+        pow14, pow21, pow13, pow20, pow12, pow19, pow139, pow140, pow11, pow18, pow10, pow161, pow9,
         pow173,
-    ].span();
+    ]
+        .span();
     for pow in pows {
         let value = (column5 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow17, pow24, pow25,].span();
+    let pows = [pow0, pow17, pow24, pow25].span();
     for pow in pows {
         let value = (column6 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow17,
-        pow24,
-        pow25,
-        pow26,
-        pow27,
-        pow28,
-        pow30,
-        pow31,
-        pow32,
-        pow34,
-        pow35,
-        pow36,
-        pow38,
-        pow40,
-        pow41,
-        pow44,
-        pow47,
-        pow50,
-        pow57,
-        pow60,
-        pow72,
-        pow77,
-        pow79,
-        pow83,
-        pow88,
-        pow90,
-        pow93,
-        pow96,
-        pow97,
-        pow99,
-        pow102,
-        pow103,
-        pow106,
-        pow112,
-        pow114,
-        pow117,
-        pow118,
-        pow120,
-        pow136,
-        pow143,
-        pow166,
-        pow168,
-        pow170,
-        pow174,
-        pow191,
-        pow176,
-        pow179,
-        pow180,
-        pow181,
-        pow182,
-        pow192,
-        pow183,
-        pow186,
-        pow189,
-        pow190,
-    ].span();
+        pow0, pow17, pow24, pow25, pow26, pow27, pow28, pow30, pow31, pow32, pow34, pow35, pow36,
+        pow38, pow40, pow41, pow44, pow47, pow50, pow57, pow60, pow72, pow77, pow79, pow83, pow88,
+        pow90, pow93, pow96, pow97, pow99, pow102, pow103, pow106, pow112, pow114, pow117, pow118,
+        pow120, pow136, pow143, pow166, pow168, pow170, pow174, pow191, pow176, pow179, pow180,
+        pow181, pow182, pow192, pow183, pow186, pow189, pow190,
+    ]
+        .span();
     for pow in pows {
         let value = (column7 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     let pows = [
-        pow0,
-        pow17,
-        pow24,
-        pow25,
-        pow26,
-        pow27,
-        pow28,
-        pow30,
-        pow31,
-        pow32,
-        pow33,
-        pow34,
-        pow35,
-        pow36,
-        pow37,
-        pow39,
-        pow40,
-        pow41,
-        pow42,
-        pow43,
-        pow45,
-        pow46,
-        pow47,
-        pow48,
-        pow49,
-        pow50,
-        pow51,
-        pow52,
-        pow53,
-        pow55,
-        pow56,
-        pow58,
-        pow59,
-        pow60,
-        pow61,
-        pow62,
-        pow63,
-        pow69,
-        pow70,
-        pow71,
-        pow72,
-        pow73,
-        pow75,
-        pow76,
-        pow78,
-        pow79,
-        pow80,
-        pow81,
-        pow82,
-        pow83,
-        pow84,
-        pow87,
-        pow89,
-        pow90,
-        pow91,
-        pow92,
-        pow98,
-        pow104,
-        pow107,
-        pow113,
-        pow115,
-        pow116,
-        pow119,
-        pow121,
-        pow133,
-        pow144,
-        pow147,
-        pow148,
-        pow149,
-        pow150,
-        pow153,
-        pow154,
-        pow155,
-        pow156,
-        pow162,
-        pow164,
-        pow165,
-        pow167,
-        pow169,
-        pow171,
-        pow8,
-        pow7,
-        pow138,
-        pow137,
-        pow6,
-        pow5,
-        pow4,
-        pow29,
-        pow124,
-        pow125,
-        pow126,
-        pow127,
-        pow128,
-        pow129,
-        pow130,
-        pow131,
-        pow132,
-        pow3,
-        pow2,
-        pow1,
-        pow64,
-        pow65,
-        pow66,
-        pow67,
-        pow68,
-    ].span();
+        pow0, pow17, pow24, pow25, pow26, pow27, pow28, pow30, pow31, pow32, pow33, pow34, pow35,
+        pow36, pow37, pow39, pow40, pow41, pow42, pow43, pow45, pow46, pow47, pow48, pow49, pow50,
+        pow51, pow52, pow53, pow55, pow56, pow58, pow59, pow60, pow61, pow62, pow63, pow69, pow70,
+        pow71, pow72, pow73, pow75, pow76, pow78, pow79, pow80, pow81, pow82, pow83, pow84, pow87,
+        pow89, pow90, pow91, pow92, pow98, pow104, pow107, pow113, pow115, pow116, pow119, pow121,
+        pow133, pow144, pow147, pow148, pow149, pow150, pow153, pow154, pow155, pow156, pow162,
+        pow164, pow165, pow167, pow169, pow171, pow8, pow7, pow138, pow137, pow6, pow5, pow4, pow29,
+        pow124, pow125, pow126, pow127, pow128, pow129, pow130, pow131, pow132, pow3, pow2, pow1,
+        pow64, pow65, pow66, pow67, pow68,
+    ]
+        .span();
     for pow in pows {
         let value = (column8 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
-    let pows = [pow0, pow17, pow24, pow25, pow27, pow30, pow34, pow38,].span();
+    let pows = [pow0, pow17, pow24, pow25, pow27, pow30, pow34, pow38].span();
     for pow in pows {
         let value = (column9 - *oods_values.pop_front().unwrap()) / (point - *pow * oods_point);
         total_sum += *constraint_coefficients.pop_front().unwrap() * value;
-    };
+    }
 
     // Sum the OODS boundary constraints on the composition polynomials.
     let oods_point_to_deg = pow(oods_point, CONSTRAINT_DEGREE.into());

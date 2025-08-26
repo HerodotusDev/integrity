@@ -1,4 +1,5 @@
-use integrity::air::{public_memory::AddrValue, public_input::{PublicInput, SegmentInfo},};
+use integrity::air::public_input::{PublicInput, SegmentInfo};
+use integrity::air::public_memory::AddrValue;
 
 fn get() -> PublicInput {
     return PublicInput {
@@ -50,12 +51,12 @@ fn get() -> PublicInput {
             AddrValue { address: 0x1e, value: 0x482680017ffd8000 },
             AddrValue {
                 address: 0x1f,
-                value: 0x800000000000011000000000000000000000000000000000000000000000000
+                value: 0x800000000000011000000000000000000000000000000000000000000000000,
             },
             AddrValue { address: 0x20, value: 0x1104800180018000 },
             AddrValue {
                 address: 0x21,
-                value: 0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffff9
+                value: 0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffff9,
             },
             AddrValue { address: 0x22, value: 0x208b7fff7fff7ffe },
             AddrValue { address: 0x23, value: 0x25 },

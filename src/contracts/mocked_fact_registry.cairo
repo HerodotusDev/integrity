@@ -1,9 +1,7 @@
-use integrity::{
-    contracts::{fact_registry_interface::{VerificationListElement, Verification},},
-    settings::{
-        VerifierSettings, VerificationHash, HasherBitLength, StoneVersion, SecurityBits, FactHash,
-        JobId, VerifierConfiguration, VerifierPreset,
-    },
+use integrity::contracts::fact_registry_interface::{Verification, VerificationListElement};
+use integrity::settings::{
+    FactHash, HasherBitLength, JobId, SecurityBits, StoneVersion, VerificationHash,
+    VerifierConfiguration, VerifierPreset, VerifierSettings,
 };
 use starknet::ContractAddress;
 
@@ -34,28 +32,23 @@ trait IFactRegistryExternal<TContractState> {
 
 #[starknet::contract]
 mod MockedFactRegistry {
-    use integrity::{
-        settings::{
-            VerifierPreset, VerifierConfiguration, split_settings, JobId, FactHash,
-            VerificationHash, PresetHash, SecurityBits,
-        },
-        contracts::{
-            mocked_fact_registry::{IFactRegistryExternal, FactRegistered},
-            fact_registry_interface::{IFactRegistry, VerificationListElement, Verification},
-        },
-        lib_utils::{get_verifier_config_hash, get_verification_hash},
+    use core::keccak::keccak_u256s_be_inputs;
+    use core::poseidon::{HashStateImpl, Poseidon, PoseidonImpl};
+    use core::starknet::event::EventEmitter;
+    use integrity::contracts::fact_registry_interface::{
+        IFactRegistry, Verification, VerificationListElement,
     };
-    use starknet::{
-        ContractAddress, get_caller_address,
-        storage::{
-            StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map, Vec,
-            VecTrait, MutableVecTrait
-        },
+    use integrity::contracts::mocked_fact_registry::{FactRegistered, IFactRegistryExternal};
+    use integrity::lib_utils::{get_verification_hash, get_verifier_config_hash};
+    use integrity::settings::{
+        FactHash, JobId, PresetHash, SecurityBits, VerificationHash, VerifierConfiguration,
+        VerifierPreset, split_settings,
     };
-    use core::{
-        poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
-        starknet::event::EventEmitter,
+    use starknet::storage::{
+        Map, MutableVecTrait, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
+        Vec, VecTrait,
     };
+    use starknet::{ContractAddress, get_caller_address};
 
     #[storage]
     struct Storage {
@@ -84,7 +77,7 @@ mod MockedFactRegistry {
     #[abi(embed_v0)]
     impl FactRegistryImpl of IFactRegistry<ContractState> {
         fn get_all_verifications_for_fact_hash(
-            self: @ContractState, fact_hash: FactHash
+            self: @ContractState, fact_hash: FactHash,
         ) -> Array<VerificationListElement> {
             let verifications = self.fact_verifications.entry(fact_hash);
             let n = verifications.len();
@@ -105,16 +98,16 @@ mod MockedFactRegistry {
                         VerificationListElement {
                             verification_hash,
                             security_bits: verification.security_bits,
-                            verifier_config: verification.verifier_config
-                        }
+                            verifier_config: verification.verifier_config,
+                        },
                     );
                 i += 1;
-            };
+            }
             arr
         }
 
         fn get_verification(
-            self: @ContractState, verification_hash: VerificationHash
+            self: @ContractState, verification_hash: VerificationHash,
         ) -> Option<Verification> {
             self.verification_hashes.entry(verification_hash).read()
         }
@@ -139,11 +132,11 @@ mod MockedFactRegistry {
         ) -> FactRegistered {
             let verifier_config_hash = get_verifier_config_hash(verifier_config);
             let verification_hash = get_verification_hash(
-                fact_hash, verifier_config_hash, security_bits
+                fact_hash, verifier_config_hash, security_bits,
             );
 
             let event = FactRegistered {
-                fact_hash, verifier_address, security_bits, verifier_config, verification_hash
+                fact_hash, verifier_address, security_bits, verifier_config, verification_hash,
             };
             self.emit(Event::FactRegistered(event));
 
@@ -152,7 +145,7 @@ mod MockedFactRegistry {
                 self.fact_verifications.entry(fact_hash).append().write(verification_hash);
                 verification_hash_entry
                     .write(
-                        Option::Some(Verification { fact_hash, security_bits, verifier_config })
+                        Option::Some(Verification { fact_hash, security_bits, verifier_config }),
                     );
             }
             event

@@ -1,0 +1,15 @@
+[[call]]
+call_type = "deploy"
+class_hash = "0x0553da7f80b8672f3b6aebc8b23eba313c036a2aa2809839270ee59b8cb16f6a"
+inputs = [
+    "0x2697ab2f3631993e735ca0e5a8b526b42210f87a3ab0d84276e05ea469f942a", # bootloader program hash
+    "0x675d09dc6a5a1a2317bee3abcc05074881553e0b88c05c646f384b924aa6445", # aggregator program hash
+    "0x4ce7851f00b6c3289674841fd7a1b96b6fd41ed1edc248faccd672c26371b8c", # integrity address
+    "0x7265637572736976655f776974685f706f736569646f6e", # layout
+    "0x6b656363616b5f3136305f6c7362", # hasher
+    "0x73746f6e6536", # stone version
+    "0x72656c61786564", # memory verification
+    "0x60" # security bits
+]
+id = "deploy"
+unique = false

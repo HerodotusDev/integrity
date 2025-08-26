@@ -4,7 +4,7 @@ impl ArrayExtend<T, +Copy<T>, +Drop<T>> of ArrayExtendTrait<T> {
         loop {
             match span.pop_front() {
                 Option::Some(elem) => { self.append(*elem); },
-                Option::None => { break; }
+                Option::None => { break; },
             }
         }
     }

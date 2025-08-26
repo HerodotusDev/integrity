@@ -1,9 +1,9 @@
-use integrity::{
-    common::{consts::FIELD_GENERATOR_INVERSE, math::Felt252Div}, fri::fri_layer::FriLayerQuery,
-};
+use integrity::common::consts::FIELD_GENERATOR_INVERSE;
+use integrity::common::math::Felt252Div;
+use integrity::fri::fri_layer::FriLayerQuery;
 
 fn gather_first_layer_queries(
-    queries: Span<felt252>, evaluations: Span<felt252>, x_values: Span<felt252>
+    queries: Span<felt252>, evaluations: Span<felt252>, x_values: Span<felt252>,
 ) -> Array<FriLayerQuery> {
     let mut fri_queries = ArrayTrait::<FriLayerQuery>::new();
 
@@ -23,11 +23,11 @@ fn gather_first_layer_queries(
                     index: *queries.at(i),
                     y_value: *evaluations.at(i),
                     x_inv_value: 1 / shifted_x_value,
-                }
+                },
             );
 
         i += 1;
-    };
+    }
 
     fri_queries
 }

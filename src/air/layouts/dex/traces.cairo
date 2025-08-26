@@ -1,15 +1,13 @@
-use integrity::{
-    air::layouts::dex::{
-        constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND}, global_values::InteractionElements,
-    },
-    channel::channel::{Channel, ChannelTrait},
-    table_commitment::table_commitment::{
-        TableCommitment, TableDecommitment, TableCommitmentWitness, table_commit, table_decommit,
-        TableCommitmentConfig
-    },
-    vector_commitment::vector_commitment::VectorCommitmentConfigTrait,
-    common::asserts::assert_in_range, settings::VerifierSettings,
+use integrity::air::layouts::dex::constants::{NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND};
+use integrity::air::layouts::dex::global_values::InteractionElements;
+use integrity::channel::channel::{Channel, ChannelTrait};
+use integrity::common::asserts::assert_in_range;
+use integrity::settings::VerifierSettings;
+use integrity::table_commitment::table_commitment::{
+    TableCommitment, TableCommitmentConfig, TableCommitmentWitness, TableDecommitment, table_commit,
+    table_decommit,
 };
+use integrity::vector_commitment::vector_commitment::VectorCommitmentConfigTrait;
 
 // A protocol component (see stark.cairo for details about protocol components) for the traces
 // of the CPU AIR.
@@ -89,11 +87,11 @@ impl TracesConfigImpl of TracesConfigTrait {
 // Reads the traces commitment from the channel.
 // Returns the commitment, along with GlobalValue required to evaluate the constraint polynomial.
 fn traces_commit(
-    ref channel: Channel, unsent_commitment: TracesUnsentCommitment, config: TracesConfig
+    ref channel: Channel, unsent_commitment: TracesUnsentCommitment, config: TracesConfig,
 ) -> TracesCommitment {
     // Read original commitment.
     let original_commitment = table_commit(
-        ref channel, unsent_commitment.original, config.original
+        ref channel, unsent_commitment.original, config.original,
     );
     // Generate interaction elements for the first interaction.
     let interaction_elements = InteractionElements {
@@ -103,7 +101,7 @@ fn traces_commit(
     };
     // Read interaction commitment.
     let interaction_commitment = table_commit(
-        ref channel, unsent_commitment.interaction, config.interaction
+        ref channel, unsent_commitment.interaction, config.interaction,
     );
 
     TracesCommitment {
@@ -124,6 +122,6 @@ fn traces_decommit(
 ) {
     table_decommit(commitment.original, queries, decommitment.original, witness.original, settings);
     table_decommit(
-        commitment.interaction, queries, decommitment.interaction, witness.interaction, settings
+        commitment.interaction, queries, decommitment.interaction, witness.interaction, settings,
     )
 }

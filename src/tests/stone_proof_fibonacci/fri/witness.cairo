@@ -1,8 +1,6 @@
-use integrity::{
-    fri::fri::{FriWitness, FriLayerWitness},
-    table_commitment::table_commitment::TableCommitmentWitness,
-    vector_commitment::vector_commitment::VectorCommitmentWitness,
-};
+use integrity::fri::fri::{FriLayerWitness, FriWitness};
+use integrity::table_commitment::table_commitment::TableCommitmentWitness;
+use integrity::vector_commitment::vector_commitment::VectorCommitmentWitness;
 
 fn get() -> FriWitness {
     return FriWitness {
@@ -279,7 +277,7 @@ fn get() -> FriWitness {
                     0x238b9da183467797cd0e62480eb078221bb36d3d49086908d0b66c21c8c5eb9,
                     0x7e97528cff2d9318830e6c975b708b244442e48435824e77706a198602bb56d,
                     0x3b21e13441ecdfd08f7231b2695a6316b9d203f82f149269ee2c2fc5066b42b,
-                    0x22498106ed4f426459eeffb24f3ee1656a74abc651eb6b7d0df798def15a793
+                    0x22498106ed4f426459eeffb24f3ee1656a74abc651eb6b7d0df798def15a793,
                 ]
                     .span(),
                 // Table commitment witnesses for decommiting all the leaves.
@@ -520,7 +518,7 @@ fn get() -> FriWitness {
                             0x5ee1627d45358bcec706e0233185e9615e9c2d79c7b322d6f11392b384eb9d9,
                             0x81582ebf3887152d06b2f20e842f0e76948700fe5c7688a1fd04ce739607c1,
                             0x16e5f08b430ae667163ce48cbc53da7444fa589894664715c2832bd7d2aea36,
-                            0x1e6b7f988e6bc55c13fb30585ac8c2803027351e0dd3c67708bf41efee81ca4
+                            0x1e6b7f988e6bc55c13fb30585ac8c2803027351e0dd3c67708bf41efee81ca4,
                         ]
                             .span(),
                     },
@@ -654,7 +652,7 @@ fn get() -> FriWitness {
                     0x18d5adbd93dc9d9c51c5aada92a9468a57f6c1e435ef2cb75bb3013e9069ad6,
                     0x19ccdd92bf65bb186984bc6b8358ff0acdcdce20e71b12ccd35143b477d03fb,
                     0x75b51f739d616a692f23a6249877c39e15c80e52ba9d88884b9be19ebd37af2,
-                    0x4fa1db996b9e8c9011f2dc39e30875b2a93bdcb5375ed19320a67034013857f
+                    0x4fa1db996b9e8c9011f2dc39e30875b2a93bdcb5375ed19320a67034013857f,
                 ]
                     .span(),
                 // Table commitment witnesses for decommiting all the leaves.
@@ -841,7 +839,7 @@ fn get() -> FriWitness {
                             0x2475accf9c728b1dfc1a68931160177080c258d680d3e639dcc52cf52ac937a,
                             0x417ba71113a10d99bc0f5e299d5d114e226a30b0e64608cd5ecd35a8a0fc05e,
                             0x16071eac454d7ad563706f3c9656c7141a2a2135c4034e0aea45fb51880bcad,
-                            0x3a440d00cb12b2d37f14f573301bbcab14fc48df34acd992d0748386236c152
+                            0x3a440d00cb12b2d37f14f573301bbcab14fc48df34acd992d0748386236c152,
                         ]
                             .span(),
                     },
@@ -903,7 +901,7 @@ fn get() -> FriWitness {
                     0x41a42a3c08ac422e856f0558cf65bedde5da6af19c34b08e623d8e83a6c82d7,
                     0x2940754dd5fefcfa62330ce5bc43223b9392b8a9c8be0105eeb330fff94344c,
                     0x4d93548aa431a52fe269597cb1d49d570dd6a03d66926b8de2470bcad927e65,
-                    0x2e8ad9faec86d735f2874e8035a4496fc39c3bd48157e869060b99738d41449
+                    0x2e8ad9faec86d735f2874e8035a4496fc39c3bd48157e869060b99738d41449,
                 ]
                     .span(),
                 // Table commitment witnesses for decommiting all the leaves.
@@ -1054,7 +1052,7 @@ fn get() -> FriWitness {
                             0x45a85a9d13fe9fdc6ffeb61f24820295bc9b8f3ff9e65af2fcf45b43f9974ff,
                             0x7167b3173ee546c82d73e0892d2055d0aa4dd5e9a5dab34879dc772bb9f6b13,
                             0x5e1ec8434858c3773ad1d7b598dd75c5b649764d96b76da3ed7534002acf2df,
-                            0x37eeeed73fe8d80c7c9453f77ed3421f5a9ef85361ad62e70f3ab330bc23451
+                            0x37eeeed73fe8d80c7c9453f77ed3421f5a9ef85361ad62e70f3ab330bc23451,
                         ]
                             .span(),
                     },
@@ -1112,7 +1110,7 @@ fn get() -> FriWitness {
                     0x51ed0a6d25ffc029b3681309a283d9735eae398f4bfa07d2e3d0dd44d380c08,
                     0xca69088180c747e1c23a8077e340bb988f5ec8570515413b6592c25648db70,
                     0x22dd7c45d79e2bcf9fce96b45225a029be97e568da18b145baaf7cd2960b991,
-                    0x2b2b51b5bee675a76dbc6c6f25b03380538c079835d1512e33866391a8100aa
+                    0x2b2b51b5bee675a76dbc6c6f25b03380538c079835d1512e33866391a8100aa,
                 ]
                     .span(),
                 // Table commitment witnesses for decommiting all the leaves.
@@ -1229,13 +1227,13 @@ fn get() -> FriWitness {
                             0x7a58d2ba009e4e2c28371536a10a95670f6541ebd9d793f9469915d28187b79,
                             0x3286485097624b8134d67384d0edad80cfa40092a107985ef1638a8fec761c7,
                             0x285ef0d4a246948be3a38a6bfc8e15e98df02e9a5c37050ea6d462a80251f55,
-                            0x3d10ca0b15570b89903dad4106fa7bc0b54f222c3df5562283acc71690fe488
+                            0x3d10ca0b15570b89903dad4106fa7bc0b54f222c3df5562283acc71690fe488,
                         ]
                             .span(),
                     },
                 },
-            }
+            },
         ]
-            .span()
+            .span(),
     };
 }

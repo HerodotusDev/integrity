@@ -1,8 +1,7 @@
-use integrity::{
-    channel::channel::ChannelImpl, air::layouts::recursive::{traces::traces_decommit},
-    tests::stone_proof_fibonacci,
-    settings::{VerifierSettings, HasherBitLength, StoneVersion, MemoryVerification},
-};
+use integrity::air::layouts::recursive::traces::traces_decommit;
+use integrity::channel::channel::ChannelImpl;
+use integrity::settings::{HasherBitLength, MemoryVerification, StoneVersion, VerifierSettings};
+use integrity::tests::stone_proof_fibonacci;
 
 fn bench_air_traces_decommit() {
     let queries = stone_proof_fibonacci::queries::get().span();

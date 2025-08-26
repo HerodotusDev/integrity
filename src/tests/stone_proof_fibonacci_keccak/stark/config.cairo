@@ -1,8 +1,7 @@
-use integrity::{
-    stark::StarkConfig, table_commitment::table_commitment::TableCommitmentConfig,
-    vector_commitment::vector_commitment::VectorCommitmentConfig,
-    tests::stone_proof_fibonacci_keccak,
-};
+use integrity::stark::StarkConfig;
+use integrity::table_commitment::table_commitment::TableCommitmentConfig;
+use integrity::tests::stone_proof_fibonacci_keccak;
+use integrity::vector_commitment::vector_commitment::VectorCommitmentConfig;
 
 fn get() -> StarkConfig {
     return StarkConfig {

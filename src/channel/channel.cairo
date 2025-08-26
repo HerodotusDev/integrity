@@ -31,7 +31,7 @@ impl ChannelImpl of ChannelTrait {
             } else {
                 break;
             }
-        };
+        }
         res
     }
 
@@ -52,9 +52,9 @@ impl ChannelImpl of ChannelTrait {
         loop {
             match values.pop_front() {
                 Option::Some(value) => { hash_data.append(*value); },
-                Option::None => { break; }
+                Option::None => { break; },
             }
-        };
+        }
 
         self.digest = poseidon_hash_span(hash_data.span());
         self.counter = 0;

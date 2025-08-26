@@ -1,41 +1,52 @@
-use integrity::{
-    channel::channel::{Channel, ChannelTrait}, common::powers_array::powers_array,
-    domains::StarkDomains, fri::fri::fri_commit,
-    stark::{StarkUnsentCommitment, StarkConfig, StarkCommitment},
-    proof_of_work::proof_of_work::proof_of_work_commit,
-    table_commitment::table_commitment::table_commit, oods::verify_oods,
-};
-use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use integrity::air::layouts::dex::{
-    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    traces::traces_commit,
-};
+use integrity::air::layouts::dex::constants::{CONSTRAINT_DEGREE, MASK_SIZE, N_CONSTRAINTS};
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::public_input::PublicInput;
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::traces::traces_commit;
 #[cfg(feature: 'recursive')]
-use integrity::air::layouts::recursive::{
-    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    traces::traces_commit,
+use integrity::air::layouts::recursive::constants::{CONSTRAINT_DEGREE, MASK_SIZE, N_CONSTRAINTS};
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::public_input::PublicInput;
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::traces::traces_commit;
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, N_CONSTRAINTS,
 };
 #[cfg(feature: 'recursive_with_poseidon')]
-use integrity::air::layouts::recursive_with_poseidon::{
-    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    traces::traces_commit,
-};
+use integrity::air::layouts::recursive_with_poseidon::public_input::PublicInput;
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::traces::traces_commit;
 #[cfg(feature: 'small')]
-use integrity::air::layouts::small::{
-    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    traces::traces_commit,
-};
+use integrity::air::layouts::small::constants::{CONSTRAINT_DEGREE, MASK_SIZE, N_CONSTRAINTS};
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::public_input::PublicInput;
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::traces::traces_commit;
 #[cfg(feature: 'starknet')]
-use integrity::air::layouts::starknet::{
-    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    traces::traces_commit,
+use integrity::air::layouts::starknet::constants::{CONSTRAINT_DEGREE, MASK_SIZE, N_CONSTRAINTS};
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::public_input::PublicInput;
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::traces::traces_commit;
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, N_CONSTRAINTS,
 };
 #[cfg(feature: 'starknet_with_keccak')]
-use integrity::air::layouts::starknet_with_keccak::{
-    constants::{CONSTRAINT_DEGREE, N_CONSTRAINTS, MASK_SIZE}, public_input::PublicInput,
-    traces::traces_commit,
-};
+use integrity::air::layouts::starknet_with_keccak::public_input::PublicInput;
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::traces::traces_commit;
+use integrity::channel::channel::{Channel, ChannelTrait};
+use integrity::common::powers_array::powers_array;
+use integrity::domains::StarkDomains;
+use integrity::fri::fri::fri_commit;
+use integrity::oods::verify_oods;
+use integrity::proof_of_work::proof_of_work::proof_of_work_commit;
+use integrity::stark::{StarkCommitment, StarkConfig, StarkUnsentCommitment};
+use integrity::table_commitment::table_commitment::table_commit;
+use starknet::ContractAddress;
 
 // STARK commitment phase.
 fn stark_commit(
@@ -47,7 +58,7 @@ fn stark_commit(
     contract_address: ContractAddress,
 ) -> StarkCommitment {
     // Read the commitment of the 'traces' component.
-    let traces_commitment = traces_commit(ref channel, *unsent_commitment.traces, *config.traces,);
+    let traces_commitment = traces_commit(ref channel, *unsent_commitment.traces, *config.traces);
 
     // Generate interaction values after traces commitment.
     let composition_alpha = channel.random_felt_to_prover();

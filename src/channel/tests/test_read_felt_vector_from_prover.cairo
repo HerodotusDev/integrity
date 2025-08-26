@@ -4,7 +4,7 @@ use integrity::channel::channel::ChannelTrait;
 #[available_gas(9999999999)]
 fn test_read_felt_vector_from_prover_0() {
     let mut channel = ChannelTrait::new_with_counter(
-        0x2b4170a9346779f70d000c57781ae074fbd07a52bfe93af87a2017db08c0a7b, 0x1
+        0x2b4170a9346779f70d000c57781ae074fbd07a52bfe93af87a2017db08c0a7b, 0x1,
     );
     channel
         .read_felt_vector_from_prover(
@@ -74,11 +74,11 @@ fn test_read_felt_vector_from_prover_0() {
                 0x27b0d75dcecef920d1b2c6ef98b493d8fb97d89cab101a4d9a02862ef623c39,
                 0x44fd3361c232b9d288c73cb7a1e158a4912091d9bcc9a77ba41b0b7b413095d,
             ]
-                .span()
+                .span(),
         );
     assert(
         channel.digest == 0x69eb7eb40004d1d7375b1ff9ccff8f7aed629e669b4fc3e11db4e748fdfbb2f,
-        'Invalid value'
+        'Invalid value',
     );
     assert(channel.counter == 0x0, 'Invalid value');
 }

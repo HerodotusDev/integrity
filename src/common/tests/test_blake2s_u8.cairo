@@ -1,6 +1,5 @@
-use integrity::common::{
-    array_append::ArrayAppendTrait, blake2s_u8::{blake2s, truncated_blake2s, load32}
-};
+use integrity::common::array_append::ArrayAppendTrait;
+use integrity::common::blake2s_u8::{blake2s, load32, truncated_blake2s};
 
 fn get_arr_v1(n: u32) -> Array<u8> {
     let mut arr = ArrayTrait::new();
@@ -11,7 +10,7 @@ fn get_arr_v1(n: u32) -> Array<u8> {
             break;
         }
         i += 1;
-    };
+    }
     let mut out = ArrayTrait::new();
     i = 0;
     loop {
@@ -23,7 +22,7 @@ fn get_arr_v1(n: u32) -> Array<u8> {
         if i == n {
             break;
         };
-    };
+    }
     out
 }
 
@@ -40,7 +39,7 @@ fn get_arr_v2(n: u32) -> Array<u8> {
             break;
         }
         i += 1;
-    };
+    }
     let mut out = ArrayTrait::new();
     i = 0;
     loop {
@@ -52,7 +51,7 @@ fn get_arr_v2(n: u32) -> Array<u8> {
         if i == n {
             break;
         };
-    };
+    }
     out
 }
 
@@ -61,15 +60,15 @@ fn get_arr_v2(n: u32) -> Array<u8> {
 fn test_blake2s_v1() {
     assert(
         blake2s(
-            get_arr_v1(1)
+            get_arr_v1(1),
         ) == 0x035c8c55b225b3cad27dec93997fb528978127b9aa3c145c4308b8b6a4b0c7d4,
-        'invalid hash (1)'
+        'invalid hash (1)',
     );
     assert(
         blake2s(
-            get_arr_v1(2)
+            get_arr_v1(2),
         ) == 0x676da142c9e15751cf6c94e96ebc05925408612bbcf56437adf6fb21822fca4b,
-        'invalid hash (2)'
+        'invalid hash (2)',
     );
 }
 
@@ -78,15 +77,15 @@ fn test_blake2s_v1() {
 fn test_blake2s_v2() {
     assert(
         blake2s(
-            get_arr_v2(1)
+            get_arr_v2(1),
         ) == 0x3becbdec8344113fbee53542a4ef696e97db25efb96cef60d2919bb4dd00ed3e,
-        'invalid hash (1)'
+        'invalid hash (1)',
     );
     assert(
         blake2s(
-            get_arr_v2(2)
+            get_arr_v2(2),
         ) == 0x5229f5d506302edae36f9cac3f5d176cd9b6aa8420da6d74d7956789099faf70,
-        'invalid hash (2)'
+        'invalid hash (2)',
     );
 }
 
@@ -98,6 +97,6 @@ fn test_truncated_blake2s() {
     data.append_big_endian(129252051435949032402481343903845417193011527432);
     assert(
         truncated_blake2s(data) == 642191007116032514313255519742888271333651019057,
-        'invalid truncated_blake2s'
+        'invalid truncated_blake2s',
     );
 }

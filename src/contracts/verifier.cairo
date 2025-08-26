@@ -1,8 +1,8 @@
-use integrity::{
-    StarkProof, MemoryVerification, StarkProofWithSerde,
-    fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    settings::{VerifierSettings, FactHash, JobId, SecurityBits},
+use integrity::fri::fri::{
+    FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
 };
+use integrity::settings::{FactHash, JobId, SecurityBits, VerifierSettings};
+use integrity::{MemoryVerification, StarkProof, StarkProofWithSerde};
 
 #[derive(Drop, Serde)]
 struct InitResult {
@@ -61,21 +61,19 @@ trait ICairoVerifier<TContractState> {
 
 #[starknet::contract]
 mod CairoVerifier {
-    use starknet::{
-        ContractAddress,
-        storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map},
+    use core::poseidon::{HashStateImpl, Poseidon, PoseidonImpl};
+    use integrity::fri::fri::{
+        FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable, hash_constant,
+        hash_variable,
     };
-    use integrity::{
-        MemoryVerification, PublicInputImpl, StarkProofWithSerde,
-        stark::{StarkProof, StarkProofImpl},
-        fri::fri::{
-            FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
-            hash_constant, hash_variable
-        },
-        settings::{VerifierSettings, JobId, FactHash, SecurityBits},
+    use integrity::settings::{FactHash, JobId, SecurityBits, VerifierSettings};
+    use integrity::stark::{StarkProof, StarkProofImpl};
+    use integrity::{MemoryVerification, PublicInputImpl, StarkProofWithSerde};
+    use starknet::ContractAddress;
+    use starknet::storage::{
+        Map, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use core::poseidon::{Poseidon, PoseidonImpl, HashStateImpl};
-    use super::{ProofVerified, InitResult, ICairoVerifier};
+    use super::{ICairoVerifier, InitResult, ProofVerified};
 
     #[storage]
     struct Storage {
@@ -85,14 +83,14 @@ mod CairoVerifier {
         state_variable: Map<JobId, Option<felt252>>, // job_id => hash(variable state)
         state_fact: Map<JobId, Option<FactHash>>, // job_id => fact_hash
         state_security_bits: Map<JobId, Option<SecurityBits>>, // job_id => security_bits
-        state_settings: Map<JobId, Option<VerifierSettings>>, // job_id => verifier_settings
+        state_settings: Map<JobId, Option<VerifierSettings>> // job_id => verifier_settings
     }
 
     #[constructor]
     fn constructor(
         ref self: ContractState,
         composition_contract_address: ContractAddress,
-        oods_contract_address: ContractAddress
+        oods_contract_address: ContractAddress,
     ) {
         self.composition_contract_address.write(composition_contract_address);
         self.oods_contract_address.write(oods_contract_address);
@@ -119,13 +117,13 @@ mod CairoVerifier {
                 _ => {
                     assert(false, 'invalid memory_verification');
                     (0, 0)
-                }
+                },
             };
             let security_bits = stark_proof
                 .verify(
                     self.composition_contract_address.read(),
                     self.oods_contract_address.read(),
-                    @settings
+                    @settings,
                 );
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
@@ -151,7 +149,7 @@ mod CairoVerifier {
                 _ => {
                     assert(false, 'invalid memory_verification');
                     (0, 0)
-                }
+                },
             };
 
             let fact = PoseidonImpl::new().update(program_hash).update(output_hash).finalize();
@@ -160,7 +158,7 @@ mod CairoVerifier {
                 .verify_initial(
                     self.composition_contract_address.read(),
                     self.oods_contract_address.read(),
-                    @settings
+                    @settings,
                 );
             self.state_constant.entry(job_id).write(Option::Some(hash_constant(@con)));
             self.state_variable.entry(job_id).write(Option::Some(hash_variable(@var)));
@@ -194,7 +192,7 @@ mod CairoVerifier {
                     .entry(job_id)
                     .read()
                     .expect('No state (constant) saved'),
-                'Invalid state (constant)'
+                'Invalid state (constant)',
             );
             assert(
                 hash_variable(@state_variable) == self
@@ -202,12 +200,12 @@ mod CairoVerifier {
                     .entry(job_id)
                     .read()
                     .expect('No state (variable) saved'),
-                'Invalid state (variable)'
+                'Invalid state (variable)',
             );
             let settings = self.state_settings.entry(job_id).read().expect('No settings saved');
 
             let (con, var) = StarkProofImpl::verify_step(
-                state_constant, state_variable, witness, @settings
+                state_constant, state_variable, witness, @settings,
             );
             self.state_variable.entry(job_id).write(Option::Some(hash_variable(@var)));
 
@@ -225,11 +223,11 @@ mod CairoVerifier {
         ) -> ProofVerified {
             assert(
                 hash_constant(@state_constant) == self.state_constant.entry(job_id).read().unwrap(),
-                'Invalid state (constant)'
+                'Invalid state (constant)',
             );
             assert(
                 hash_variable(@state_variable) == self.state_variable.entry(job_id).read().unwrap(),
-                'Invalid state (variable)'
+                'Invalid state (variable)',
             );
             let fact = self.state_fact.entry(job_id).read().expect('No fact saved');
             let security_bits = self
@@ -239,7 +237,7 @@ mod CairoVerifier {
                 .expect('No security bits saved');
 
             let (new_con, new_var) = StarkProofImpl::verify_final(
-                state_constant, state_variable, last_layer_coefficients
+                state_constant, state_variable, last_layer_coefficients,
             );
             assert(new_var.iter.into() == new_con.n_layers + 1, 'Verification not finalized');
 

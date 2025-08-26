@@ -1,5 +1,5 @@
-use integrity::{
-    settings::{FactHash, VerifierPreset, VerificationHash, SecurityBits, VerifierConfiguration,},
+use integrity::settings::{
+    FactHash, SecurityBits, VerificationHash, VerifierConfiguration, VerifierPreset,
 };
 use starknet::ContractAddress;
 
@@ -20,11 +20,11 @@ struct Verification {
 #[starknet::interface]
 trait IFactRegistry<TContractState> {
     fn get_all_verifications_for_fact_hash(
-        self: @TContractState, fact_hash: FactHash
+        self: @TContractState, fact_hash: FactHash,
     ) -> Array<VerificationListElement>;
 
     fn get_verification(
-        self: @TContractState, verification_hash: VerificationHash
+        self: @TContractState, verification_hash: VerificationHash,
     ) -> Option<Verification>;
 
     fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;

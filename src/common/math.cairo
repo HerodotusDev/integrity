@@ -16,7 +16,7 @@ fn pow(base: felt252, exp: felt252) -> felt252 {
             curr_base = curr_base * curr_base;
             exp = exp / 2;
         }
-    };
+    }
     res
 }
 

@@ -9,10 +9,10 @@ license = "Apache-2.0"
 keywords = ["STARK proof", "verifier", "cairo_verifier"]
 
 [dependencies]
-starknet = "2.8.4"
+starknet = "2.11.4"
 
 [dev-dependencies]
-cairo_test = "2.8.4"
+snforge_std = "0.41.0"
 
 [[target.starknet-contract]]
 casm = true
@@ -21,6 +21,9 @@ casm = true
 [lib]
 sierra = true
 casm = false
+
+[scripts]
+test = "snforge test"
 
 [features]
 

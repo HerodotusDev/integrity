@@ -1,7 +1,7 @@
 #[derive(Drop, Copy, Hash, PartialEq, Serde)]
 struct AddrValue {
     address: felt252,
-    value: felt252
+    value: felt252,
 }
 const AddrValueSize: u32 = 2;
 
@@ -69,7 +69,7 @@ impl PageImpl of PageTrait {
         let mut slice = self.span().slice(addr, len);
         while let Option::Some(current) = slice.pop_front() {
             arr.append(*current.value);
-        };
+        }
         arr.span()
     }
 
@@ -78,7 +78,7 @@ impl PageImpl of PageTrait {
         start_ap: felt252,
         segment_addresses: Span<felt252>,
         builtins_len: usize,
-        ref offset: usize
+        ref offset: usize,
     ) {
         let mut i = 0;
 
@@ -98,7 +98,7 @@ impl PageImpl of PageTrait {
 }
 
 fn get_continuous_pages_product(
-    mut page_headers: Span<ContinuousPageHeader>
+    mut page_headers: Span<ContinuousPageHeader>,
 ) -> (felt252, felt252) {
     let mut res = 1;
     let mut total_length = 0;
@@ -109,9 +109,9 @@ fn get_continuous_pages_product(
                 res *= *header.prod;
                 total_length += *header.size;
             },
-            Option::None => { break; }
+            Option::None => { break; },
         }
-    };
+    }
 
     (res, total_length)
 }

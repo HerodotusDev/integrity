@@ -1,7 +1,5 @@
-use integrity::{
-    air::layouts::recursive::traces::TracesDecommitment,
-    table_commitment::table_commitment::TableDecommitment,
-};
+use integrity::air::layouts::recursive::traces::TracesDecommitment;
+use integrity::table_commitment::table_commitment::TableDecommitment;
 
 fn get() -> TracesDecommitment {
     return TracesDecommitment {
@@ -76,7 +74,7 @@ fn get() -> TracesDecommitment {
                 0x713272f23405a27a0c8f46705f8c8e8f18286f1b368baace6654e788b437a85,
                 0x52dd724126aa589695a807016b3a030f66d035f58ceda4675b08e6eb700e362,
                 0x425606a0d129d87548a4315c0548decbc6f1ecd3f76a9b6bf77fbb859e6cf47,
-                0x61e378adc06e8c25707453f902a88a58320f383024acb6e8766faad2dae72a4
+                0x61e378adc06e8c25707453f902a88a58320f383024acb6e8766faad2dae72a4,
             ]
                 .span(),
         },
@@ -111,7 +109,7 @@ fn get() -> TracesDecommitment {
                 0x60ad0242b3f839ce26a48fab179628f81a02768082dfb09c48db6e44e6dd111,
                 0x1feaa9ecc39d6ad84bc3bb79327b39731545e636ee2ca7ace1677cb8b1f6887,
                 0x6cab97e59dae1d257f420aea18b44d84d40cc76cc6bbf81bb4307f5e28c88af,
-                0x461c77600d1fee552f0b2ae8cb786c17c02360bcde0c1b2c568590792af759c
+                0x461c77600d1fee552f0b2ae8cb786c17c02360bcde0c1b2c568590792af759c,
             ]
                 .span(),
         },

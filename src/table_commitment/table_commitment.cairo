@@ -1,13 +1,13 @@
-use integrity::{
-    common::{
-        flip_endianness::FlipEndiannessTrait, array_append::ArrayAppendTrait,
-        math::Felt252PartialOrd, consts::MONTGOMERY_R, hasher::hash_truncated,
-    },
-    vector_commitment::vector_commitment::{
-        VectorCommitmentConfig, VectorCommitment, VectorCommitmentWitness, vector_commit,
-        VectorQuery, vector_commitment_decommit
-    },
-    channel::channel::Channel, settings::VerifierSettings,
+use integrity::channel::channel::Channel;
+use integrity::common::array_append::ArrayAppendTrait;
+use integrity::common::consts::MONTGOMERY_R;
+use integrity::common::flip_endianness::FlipEndiannessTrait;
+use integrity::common::hasher::hash_truncated;
+use integrity::common::math::Felt252PartialOrd;
+use integrity::settings::VerifierSettings;
+use integrity::vector_commitment::vector_commitment::{
+    VectorCommitment, VectorCommitmentConfig, VectorCommitmentWitness, VectorQuery, vector_commit,
+    vector_commitment_decommit,
 };
 use poseidon::poseidon_hash_span;
 
@@ -40,10 +40,10 @@ struct TableCommitmentWitness {
 }
 
 fn table_commit(
-    ref channel: Channel, unsent_commitment: felt252, config: TableCommitmentConfig
+    ref channel: Channel, unsent_commitment: felt252, config: TableCommitmentConfig,
 ) -> TableCommitment {
     let vector_commitment = vector_commit(ref channel, unsent_commitment, config.vector);
-    TableCommitment { config: config, vector_commitment: vector_commitment, }
+    TableCommitment { config: config, vector_commitment: vector_commitment }
 }
 
 // Decommits a TableCommitment at multiple indices.
@@ -80,7 +80,7 @@ fn table_decommit(
     assert(n_columns >= 1, 'Must have at least 1 column');
 
     assert(
-        decommitment.values.len().into() == n_queries * n_columns, 'Invalid decommitment length'
+        decommitment.values.len().into() == n_queries * n_columns, 'Invalid decommitment length',
     );
 
     // Convert decommitment values to Montgomery form, since the commitment is in that form.
@@ -96,7 +96,7 @@ fn table_decommit(
     );
 
     vector_commitment_decommit(
-        commitment.vector_commitment, vector_queries.span(), witness.vector, settings
+        commitment.vector_commitment, vector_queries.span(), witness.vector, settings,
     );
 }
 
@@ -105,9 +105,9 @@ fn to_montgomery(mut arr: Span<felt252>) -> Array<felt252> {
     loop {
         match arr.pop_front() {
             Option::Some(elem) => { res.append(*elem * MONTGOMERY_R); },
-            Option::None => { break; }
+            Option::None => { break; },
         }
-    };
+    }
     res
 }
 
@@ -116,7 +116,7 @@ fn generate_vector_queries(
     values: Span<felt252>,
     n_columns: u32,
     is_verifier_friendly: bool,
-    settings: @VerifierSettings
+    settings: @VerifierSettings,
 ) -> Array<VectorQuery> {
     let queries_len = queries.len();
     let mut vector_queries = ArrayTrait::new();
@@ -141,6 +141,6 @@ fn generate_vector_queries(
         };
         vector_queries.append(VectorQuery { index: *queries[i], value: hash });
         i += 1;
-    };
+    }
     vector_queries
 }

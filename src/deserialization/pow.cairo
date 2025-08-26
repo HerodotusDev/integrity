@@ -1,6 +1,5 @@
-use integrity::proof_of_work::{
-    config::ProofOfWorkConfig, proof_of_work::ProofOfWorkUnsentCommitment
-};
+use integrity::proof_of_work::config::ProofOfWorkConfig;
+use integrity::proof_of_work::proof_of_work::ProofOfWorkUnsentCommitment;
 
 #[derive(Drop, Serde)]
 struct ProofOfWorkConfigWithSerde {
@@ -9,7 +8,7 @@ struct ProofOfWorkConfigWithSerde {
 }
 impl IntoProofOfWorkConfig of Into<ProofOfWorkConfigWithSerde, ProofOfWorkConfig> {
     fn into(self: ProofOfWorkConfigWithSerde) -> ProofOfWorkConfig {
-        ProofOfWorkConfig { n_bits: self.n_bits.try_into().unwrap(), }
+        ProofOfWorkConfig { n_bits: self.n_bits.try_into().unwrap() }
     }
 }
 
@@ -18,9 +17,9 @@ struct ProofOfWorkUnsentCommitmentWithSerde {
     nonce: felt252,
 }
 impl IntoProofOfWorkUnsentCommitment of Into<
-    ProofOfWorkUnsentCommitmentWithSerde, ProofOfWorkUnsentCommitment
+    ProofOfWorkUnsentCommitmentWithSerde, ProofOfWorkUnsentCommitment,
 > {
     fn into(self: ProofOfWorkUnsentCommitmentWithSerde) -> ProofOfWorkUnsentCommitment {
-        ProofOfWorkUnsentCommitment { nonce: self.nonce.try_into().unwrap(), }
+        ProofOfWorkUnsentCommitment { nonce: self.nonce.try_into().unwrap() }
     }
 }

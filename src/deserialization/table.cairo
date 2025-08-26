@@ -1,8 +1,8 @@
-use integrity::{
-    table_commitment::table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
-    },
-    deserialization::vector::{VectorCommitmentConfigWithSerde, VectorCommitmentWitnessWithSerde}
+use integrity::deserialization::vector::{
+    VectorCommitmentConfigWithSerde, VectorCommitmentWitnessWithSerde,
+};
+use integrity::table_commitment::table_commitment::{
+    TableCommitmentConfig, TableCommitmentWitness, TableDecommitment,
 };
 
 #[derive(Drop, Serde)]
@@ -13,7 +13,7 @@ struct TableCommitmentConfigWithSerde {
 
 impl IntoTableCommitmentConfig of Into<TableCommitmentConfigWithSerde, TableCommitmentConfig> {
     fn into(self: TableCommitmentConfigWithSerde) -> TableCommitmentConfig {
-        TableCommitmentConfig { n_columns: self.n_columns, vector: self.vector.into(), }
+        TableCommitmentConfig { n_columns: self.n_columns, vector: self.vector.into() }
     }
 }
 
@@ -24,7 +24,7 @@ struct TableDecommitmentWithSerde {
 }
 impl IntoTableDecommitment of Into<TableDecommitmentWithSerde, TableDecommitment> {
     fn into(self: TableDecommitmentWithSerde) -> TableDecommitment {
-        TableDecommitment { values: self.values.span(), }
+        TableDecommitment { values: self.values.span() }
     }
 }
 
@@ -34,6 +34,6 @@ struct TableCommitmentWitnessWithSerde {
 }
 impl IntoTableCommitmentWitness of Into<TableCommitmentWitnessWithSerde, TableCommitmentWitness> {
     fn into(self: TableCommitmentWitnessWithSerde) -> TableCommitmentWitness {
-        TableCommitmentWitness { vector: self.vector.into(), }
+        TableCommitmentWitness { vector: self.vector.into() }
     }
 }

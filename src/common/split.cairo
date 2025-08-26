@@ -4,7 +4,7 @@ fn u256_split(input: u256) -> (u128, u128) {
 
 fn u128_split(input: u128) -> (u64, u64) {
     let (high, low) = core::integer::u128_safe_divmod(
-        input, 0x10000000000000000_u128.try_into().unwrap()
+        input, 0x10000000000000000_u128.try_into().unwrap(),
     );
 
     (high.try_into().unwrap(), low.try_into().unwrap())

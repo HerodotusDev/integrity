@@ -30,18 +30,18 @@ fn merge_sort<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(mut arr: Span<T>) -> Array<
             if start + chunk >= arr.len() {
                 break;
             };
-        };
+        }
         loop {
             if start >= arr.len() {
                 break;
-            };
+            }
             new_arr.append(*arr.at(start));
             start += 1;
-        };
+        }
         arr = new_arr.span();
         ret = new_arr;
         chunk *= 2;
-    };
+    }
     ret
 }
 
@@ -63,7 +63,7 @@ fn merge_arrays<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
         } else {
             break;
         }
-    };
+    }
 
     // Append the remaining elements from left_arr, if any
     loop {
@@ -73,7 +73,7 @@ fn merge_arrays<T, +Copy<T>, +Drop<T>, +PartialOrd<T>>(
         } else {
             break;
         }
-    };
+    }
 
     // Append the remaining elements from right_arr, if any
     loop {

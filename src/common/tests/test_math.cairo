@@ -1,4 +1,4 @@
-use integrity::common::math::{pow, DivRemFelt252};
+use integrity::common::math::{DivRemFelt252, pow};
 
 #[test]
 #[available_gas(9999999999)]
@@ -7,9 +7,9 @@ fn test_pow_1() {
     let exp = 69439516760000993875127;
     assert(
         pow(
-            base, exp
+            base, exp,
         ) == 2804690217475462062143361339624939640984649667966511418446363596075299761851,
-        'Invalid value'
+        'Invalid value',
     );
 }
 
@@ -20,9 +20,9 @@ fn test_pow_2() {
     let exp = 193456804421077096570009938751278224656090409051406060084;
     assert(
         pow(
-            base, exp
+            base, exp,
         ) == 2672162222334975109199941471365701890765112108683608796920114577809390903720,
-        'Invalid value'
+        'Invalid value',
     );
 }
 

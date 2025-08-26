@@ -1,9 +1,7 @@
-use integrity::{
-    stark::StarkWitness,
-    table_commitment::table_commitment::{TableCommitmentWitness, TableDecommitment},
-    vector_commitment::vector_commitment::VectorCommitmentWitness,
-    tests::stone_proof_fibonacci_keccak,
-};
+use integrity::stark::StarkWitness;
+use integrity::table_commitment::table_commitment::{TableCommitmentWitness, TableDecommitment};
+use integrity::tests::stone_proof_fibonacci_keccak;
+use integrity::vector_commitment::vector_commitment::VectorCommitmentWitness;
 
 fn get() -> StarkWitness {
     return StarkWitness {
@@ -30,9 +28,9 @@ fn get() -> StarkWitness {
                 0x6b90ce41d9581f9cd6f59e3853d27731d1413e134bf4e460984d2069125444b,
                 0x76033ecf0736a2871bd443651416ff0cadc0766d211e5664f3a0615e2934b5f,
                 0x121f3f91e17d3331df67d77b6f81c288b538c382d1751d6f81b2fbe247c1470,
-                0x18b1e78ed8bad85ab8eb8d5182462144bcce5da7385c14433a5f217b5bf7ef
+                0x18b1e78ed8bad85ab8eb8d5182462144bcce5da7385c14433a5f217b5bf7ef,
             ]
-                .span()
+                .span(),
         },
         composition_witness: TableCommitmentWitness {
             vector: VectorCommitmentWitness {
@@ -196,10 +194,10 @@ fn get() -> StarkWitness {
                     0x357e35aad82d57c34cbbd8b70df26fd403d0ee0198e6bf1d10218cfa5bb874d,
                     0x68fa850803cebb815a363eae319a6068e915ca61653a2672387b7e63c299a6d,
                     0x4222a4a1d42276570fefd7dde277e64c2c064480d2bca726920fd9dcb27e755,
-                    0x52d152c87e6520b614e7851b8ee820b87aa9e1bcffa93f75191122822b9a1eb
+                    0x52d152c87e6520b614e7851b8ee820b87aa9e1bcffa93f75191122822b9a1eb,
                 ]
-                    .span()
-            }
+                    .span(),
+            },
         },
         fri_witness: stone_proof_fibonacci_keccak::fri::witness::get(),
     };

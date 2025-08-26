@@ -1010,11 +1010,11 @@ fn test_merge_sort_2() {
         66,
         399,
         759,
-        525
+        525,
     ];
     assert(
         merge_sort(
-            unsorted
+            unsorted,
         ) == array![
             0,
             8,
@@ -2015,9 +2015,9 @@ fn test_merge_sort_2() {
             999,
             999,
             999,
-            1000
+            1000,
         ],
-        'Invalid sorting'
+        'Invalid sorting',
     );
 }
 
@@ -2668,11 +2668,11 @@ fn test_merge_sort_3() {
         553569,
         513716,
         651919,
-        219447
+        219447,
     ];
     assert(
         merge_sort(
-            unsorted
+            unsorted,
         ) == array![
             411,
             3654,
@@ -3317,8 +3317,8 @@ fn test_merge_sort_3() {
             997105,
             997568,
             998838,
-            999854
+            999854,
         ],
-        'Invalid sorting'
+        'Invalid sorting',
     );
 }

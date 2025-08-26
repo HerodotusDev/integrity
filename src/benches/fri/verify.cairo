@@ -1,4 +1,5 @@
-use integrity::{fri::fri::fri_verify_initial, tests::stone_proof_fibonacci_keccak};
+use integrity::fri::fri::fri_verify_initial;
+use integrity::tests::stone_proof_fibonacci_keccak;
 
 fn bench_fri_verify() {
     let queries = stone_proof_fibonacci_keccak::queries::get().span();

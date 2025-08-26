@@ -1,4 +1,5 @@
-use integrity::{stark::StarkUnsentCommitment, tests::stone_proof_fibonacci_keccak};
+use integrity::stark::StarkUnsentCommitment;
+use integrity::tests::stone_proof_fibonacci_keccak;
 
 fn get() -> StarkUnsentCommitment {
     return StarkUnsentCommitment {

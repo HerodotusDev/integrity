@@ -1,10 +1,9 @@
-use integrity::{
-    common::{
-        flip_endianness::FlipEndiannessTrait, hasher::hash_n_bytes, array_append::ArrayAppendTrait,
-        math::pow,
-    },
-    channel::channel::{Channel, ChannelTrait}, proof_of_work::config::ProofOfWorkConfig
-};
+use integrity::channel::channel::{Channel, ChannelTrait};
+use integrity::common::array_append::ArrayAppendTrait;
+use integrity::common::flip_endianness::FlipEndiannessTrait;
+use integrity::common::hasher::hash_n_bytes;
+use integrity::common::math::pow;
+use integrity::proof_of_work::config::ProofOfWorkConfig;
 
 const MAGIC: u64 = 0x0123456789abcded;
 
@@ -14,7 +13,7 @@ struct ProofOfWorkUnsentCommitment {
 }
 
 fn proof_of_work_commit(
-    ref channel: Channel, unsent_commitment: ProofOfWorkUnsentCommitment, config: ProofOfWorkConfig
+    ref channel: Channel, unsent_commitment: ProofOfWorkUnsentCommitment, config: ProofOfWorkConfig,
 ) {
     verify_proof_of_work(channel.digest.into(), config.n_bits, unsent_commitment.nonce);
     channel.read_uint64_from_prover(unsent_commitment.nonce);
@@ -43,6 +42,6 @@ fn verify_proof_of_work(digest: u256, n_bits: u8, nonce: u64) {
     let work_limit = pow(2, 128 - n_bits.into());
     assert(
         Into::<u128, u256>::into(hash.high) < Into::<felt252, u256>::into(work_limit),
-        'proof of work failed'
+        'proof of work failed',
     )
 }

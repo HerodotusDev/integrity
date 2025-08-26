@@ -1,43 +1,77 @@
-use integrity::{
-    common::array_extend::ArrayExtendTrait, table_commitment::table_commitment::TableDecommitment
-};
-use starknet::ContractAddress;
 #[cfg(feature: 'dex')]
-use integrity::air::layouts::dex::{
-    AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl,
-    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    constants::CONSTRAINT_DEGREE,
-};
+use integrity::air::layouts::dex::constants::CONSTRAINT_DEGREE;
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::global_values::InteractionElements;
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::public_input::PublicInput;
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::traces::TracesDecommitment;
+#[cfg(feature: 'dex')]
+use integrity::air::layouts::dex::{AIRComposition, AIROods, DexAIRCompositionImpl, DexAIROodsImpl};
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::constants::CONSTRAINT_DEGREE;
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::global_values::InteractionElements;
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::public_input::PublicInput;
+#[cfg(feature: 'recursive')]
+use integrity::air::layouts::recursive::traces::TracesDecommitment;
 #[cfg(feature: 'recursive')]
 use integrity::air::layouts::recursive::{
     AIRComposition, AIROods, RecursiveAIRCompositionImpl, RecursiveAIROodsImpl,
-    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    constants::CONSTRAINT_DEGREE,
 };
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::constants::CONSTRAINT_DEGREE;
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::global_values::InteractionElements;
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::public_input::PublicInput;
+#[cfg(feature: 'recursive_with_poseidon')]
+use integrity::air::layouts::recursive_with_poseidon::traces::TracesDecommitment;
 #[cfg(feature: 'recursive_with_poseidon')]
 use integrity::air::layouts::recursive_with_poseidon::{
     AIRComposition, AIROods, RecursiveWithPoseidonAIRCompositionImpl,
-    RecursiveWithPoseidonAIROodsImpl, global_values::InteractionElements, public_input::PublicInput,
-    traces::TracesDecommitment, constants::CONSTRAINT_DEGREE,
+    RecursiveWithPoseidonAIROodsImpl,
 };
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::constants::CONSTRAINT_DEGREE;
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::global_values::InteractionElements;
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::public_input::PublicInput;
+#[cfg(feature: 'small')]
+use integrity::air::layouts::small::traces::TracesDecommitment;
 #[cfg(feature: 'small')]
 use integrity::air::layouts::small::{
     AIRComposition, AIROods, SmallAIRCompositionImpl, SmallAIROodsImpl,
-    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    constants::CONSTRAINT_DEGREE,
 };
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::constants::CONSTRAINT_DEGREE;
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::global_values::InteractionElements;
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::public_input::PublicInput;
+#[cfg(feature: 'starknet')]
+use integrity::air::layouts::starknet::traces::TracesDecommitment;
 #[cfg(feature: 'starknet')]
 use integrity::air::layouts::starknet::{
     AIRComposition, AIROods, StarknetAIRCompositionImpl, StarknetAIROodsImpl,
-    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    constants::CONSTRAINT_DEGREE,
 };
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::constants::CONSTRAINT_DEGREE;
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::global_values::InteractionElements;
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::public_input::PublicInput;
+#[cfg(feature: 'starknet_with_keccak')]
+use integrity::air::layouts::starknet_with_keccak::traces::TracesDecommitment;
 #[cfg(feature: 'starknet_with_keccak')]
 use integrity::air::layouts::starknet_with_keccak::{
     AIRComposition, AIROods, StarknetWithKeccakAIRCompositionImpl, StarknetWithKeccakAIROodsImpl,
-    global_values::InteractionElements, public_input::PublicInput, traces::TracesDecommitment,
-    constants::CONSTRAINT_DEGREE,
 };
+use integrity::common::array_extend::ArrayExtendTrait;
+use integrity::table_commitment::table_commitment::TableDecommitment;
+use starknet::ContractAddress;
 
 #[derive(Drop)]
 struct OodsEvaluationInfo {
@@ -86,14 +120,14 @@ fn eval_oods_boundary_poly_at_points(
     contract_address: ContractAddress,
 ) -> Array<felt252> {
     assert(
-        decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
+        decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value',
     );
     assert(
         decommitment.interaction.values.len() == points.len() * n_interaction_columns,
-        'Invalid value'
+        'Invalid value',
     );
     assert(
-        composition_decommitment.values.len() == points.len() * CONSTRAINT_DEGREE, 'Invalid value'
+        composition_decommitment.values.len() == points.len() * CONSTRAINT_DEGREE, 'Invalid value',
     );
 
     let mut evaluations = ArrayTrait::<felt252>::new();
@@ -113,11 +147,11 @@ fn eval_oods_boundary_poly_at_points(
                 decommitment
                     .interaction
                     .values
-                    .slice(i * n_interaction_columns, n_interaction_columns)
+                    .slice(i * n_interaction_columns, n_interaction_columns),
             );
         column_values
             .extend(
-                composition_decommitment.values.slice(i * CONSTRAINT_DEGREE, CONSTRAINT_DEGREE)
+                composition_decommitment.values.slice(i * CONSTRAINT_DEGREE, CONSTRAINT_DEGREE),
             );
 
         evaluations
@@ -130,11 +164,11 @@ fn eval_oods_boundary_poly_at_points(
                     eval_info.oods_point,
                     eval_info.trace_generator,
                     contract_address,
-                )
+                ),
             );
 
         i += 1;
-    };
+    }
 
     evaluations
 }
@@ -161,7 +195,7 @@ mod tests {
             0x47148421d376a8ca07af1e4c89890bf29c90272f63b16103646397d907281a8,
             0x40000,
             0x4768803ef85256034f67453635f87997ff61841e411ee63ce7b0a8b9745a046,
-            0.try_into().unwrap()
+            0.try_into().unwrap(),
         );
     }
 }

@@ -1,4 +1,5 @@
-use integrity::{queries::queries::queries_to_points, domains::StarkDomains};
+use integrity::domains::StarkDomains;
+use integrity::queries::queries::queries_to_points;
 
 #[test]
 #[available_gas(9999999999)]
@@ -36,7 +37,7 @@ fn test_queries_to_points_0() {
 
     assert(
         queries_to_points(
-            queries, @stark_domains
+            queries, @stark_domains,
         ) == array![
             0x2db7913d585ab151bc2b66c288d0bc9b8c791083d1e4a347f418d499696385a,
             0x13de0c034702b2f857d20f1c4392d7308adf523675a6917ef9b24ffe481b3f3,
@@ -57,6 +58,6 @@ fn test_queries_to_points_0() {
             0x4ee93f199c1a2b9ed46dd9d0c1f51fd453a37698dd8074fe1eb197d4b42541b,
             0x27b6342139b5ab8f1ff29fea7f5602d3a438163f5547d2d341a5418ea90abe4,
         ],
-        'Invalid value'
+        'Invalid value',
     );
 }

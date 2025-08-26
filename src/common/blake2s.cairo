@@ -1,5 +1,5 @@
-use integrity::common::flip_endianness::FlipEndiannessTrait;
 use core::num::traits::WrappingAdd;
+use integrity::common::flip_endianness::FlipEndiannessTrait;
 
 fn blake2s(data: Array<u32>) -> u256 {
     let mut state = blake2s_init();
@@ -50,7 +50,7 @@ fn blake2s_init() -> blake2s_state {
         0x510E527F,
         0x9B05688C,
         0x1F83D9AB,
-        0x5BE0CD19
+        0x5BE0CD19,
     ];
     let mut buf = array![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -252,14 +252,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 0 - 0,4,8,12
         v0 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v0, v4), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v0, v4), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v12 = rotr16(v12 ^ v0);
         v8 = WrappingAdd::wrapping_add(v8, v12);
         v4 = rotr12(v4 ^ v8);
         v0 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v0, v4), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v0, v4), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v12 = rotr8(v12 ^ v0);
         v8 = WrappingAdd::wrapping_add(v8, v12);
@@ -268,14 +268,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 1 - 1,5,9,13
         v1 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v1, v5), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v1, v5), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v13 = rotr16(v13 ^ v1);
         v9 = WrappingAdd::wrapping_add(v9, v13);
         v5 = rotr12(v5 ^ v9);
         v1 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v1, v5), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v1, v5), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v13 = rotr8(v13 ^ v1);
         v9 = WrappingAdd::wrapping_add(v9, v13);
@@ -284,14 +284,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 2 - 2,6,10,14
         v2 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v2, v6), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v2, v6), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v14 = rotr16(v14 ^ v2);
         v10 = WrappingAdd::wrapping_add(v10, v14);
         v6 = rotr12(v6 ^ v10);
         v2 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v2, v6), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v2, v6), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v14 = rotr8(v14 ^ v2);
         v10 = WrappingAdd::wrapping_add(v10, v14);
@@ -300,14 +300,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 3 - 3,7,11,15
         v3 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v3, v7), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v3, v7), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v15 = rotr16(v15 ^ v3);
         v11 = WrappingAdd::wrapping_add(v11, v15);
         v7 = rotr12(v7 ^ v11);
         v3 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v3, v7), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v3, v7), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v15 = rotr8(v15 ^ v3);
         v11 = WrappingAdd::wrapping_add(v11, v15);
@@ -316,14 +316,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 4 - 0,5,10,15
         v0 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v0, v5), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v0, v5), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v15 = rotr16(v15 ^ v0);
         v10 = WrappingAdd::wrapping_add(v10, v15);
         v5 = rotr12(v5 ^ v10);
         v0 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v0, v5), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v0, v5), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v15 = rotr8(v15 ^ v0);
         v10 = WrappingAdd::wrapping_add(v10, v15);
@@ -332,14 +332,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 5 - 1,6,11,12
         v1 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v1, v6), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v1, v6), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v12 = rotr16(v12 ^ v1);
         v11 = WrappingAdd::wrapping_add(v11, v12);
         v6 = rotr12(v6 ^ v11);
         v1 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v1, v6), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v1, v6), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v12 = rotr8(v12 ^ v1);
         v11 = WrappingAdd::wrapping_add(v11, v12);
@@ -348,14 +348,14 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 6 - 2,7,8,13
         v2 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v2, v7), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v2, v7), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v13 = rotr16(v13 ^ v2);
         v8 = WrappingAdd::wrapping_add(v8, v13);
         v7 = rotr12(v7 ^ v8);
         v2 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v2, v7), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v2, v7), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v13 = rotr8(v13 ^ v2);
         v8 = WrappingAdd::wrapping_add(v8, v13);
@@ -364,19 +364,19 @@ fn blake2s_compress(mut s: blake2s_state, m: Array<u32>) -> blake2s_state {
         // 7 - 3,4,9,14
         v3 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v3, v4), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v3, v4), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v14 = rotr16(v14 ^ v3);
         v9 = WrappingAdd::wrapping_add(v9, v14);
         v4 = rotr12(v4 ^ v9);
         v3 =
             WrappingAdd::wrapping_add(
-                WrappingAdd::wrapping_add(v3, v4), *m_span.at(*sigma.pop_front().unwrap())
+                WrappingAdd::wrapping_add(v3, v4), *m_span.at(*sigma.pop_front().unwrap()),
             );
         v14 = rotr8(v14 ^ v3);
         v9 = WrappingAdd::wrapping_add(v9, v14);
         v4 = rotr7(v4 ^ v9);
-    };
+    }
 
     let mut new_h = ArrayTrait::new();
     new_h.append((*s.h[0]) ^ v0 ^ v8);
@@ -411,7 +411,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
                 }
                 new_buf.append(*buf_span.at(i));
                 i += 1;
-            };
+            }
 
             i = 0;
             loop {
@@ -420,7 +420,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
                 }
                 new_buf.append(*in_span[i]);
                 i += 1;
-            };
+            }
 
             // blake2s_increment_counter
             s.t0 = WrappingAdd::wrapping_add(s.t0, 64_u32);
@@ -452,7 +452,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
                     }
                     compress_in.append(*in_span[in_shift + i]);
                     i += 1;
-                };
+                }
 
                 s = blake2s_compress(s, compress_in);
 
@@ -470,7 +470,7 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
             }
             new_buf.append(*buf_span[i]);
             i += 1;
-        };
+        }
         i = 0;
         loop {
             if i == in_len {
@@ -478,13 +478,13 @@ fn blake2s_update(mut s: blake2s_state, in: Array<u32>) -> blake2s_state {
             }
             new_buf.append(*in_span[in_shift + i]);
             i += 1;
-        };
+        }
         loop {
             if new_buf.len() == 16 {
                 break;
             }
             new_buf.append(0);
-        };
+        }
         s.buf = new_buf;
         s.buflen += in_len;
     }
@@ -512,14 +512,14 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
         }
         buf.append(*buf_span[i]);
         i += 1;
-    };
+    }
     loop {
         if i == 16 {
             break;
         }
         buf.append(0);
         i += 1;
-    };
+    }
 
     s = blake2s_compress(s, buf);
 
@@ -533,7 +533,7 @@ fn blake2s_final(mut s: blake2s_state) -> u256 {
             break;
         }
         multiplier *= 0x100000000;
-    };
+    }
 
     result
 }

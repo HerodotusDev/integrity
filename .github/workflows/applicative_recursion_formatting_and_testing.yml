@@ -1,0 +1,26 @@
+name: Applicative Recursion - Formatting & Testing
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  applicative-recursion-formatting-and-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Scarb
+        uses: software-mansion/setup-scarb@v1
+
+      - name: Setup Snfoundry
+        uses: foundry-rs/setup-snfoundry@v4
+
+      - name: Format code
+        run: scarb fmt -c
+        working-directory: ./applicative_recursion
+
+      - name: Run tests
+        run: scarb test
+        working-directory: ./applicative_recursion

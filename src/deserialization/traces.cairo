@@ -1,41 +1,36 @@
-use integrity::{
-    deserialization::{
-        vector::{
-            VectorCommitmentConfig, VectorCommitmentWitness, VectorCommitmentConfigWithSerde,
-            VectorCommitmentWitnessWithSerde
-        },
-        table::{
-            TableCommitmentConfigWithSerde, TableDecommitmentWithSerde,
-            TableCommitmentWitnessWithSerde,
-        }
-    },
-    table_commitment::table_commitment::{
-        TableCommitmentConfig, TableCommitmentWitness, TableDecommitment
-    },
-};
 #[cfg(feature: 'dex')]
-use integrity::air::layouts::dex::{
-    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+use integrity::air::layouts::dex::traces::{
+    TracesConfig, TracesDecommitment, TracesUnsentCommitment, TracesWitness,
 };
 #[cfg(feature: 'recursive')]
-use integrity::air::layouts::recursive::{
-    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+use integrity::air::layouts::recursive::traces::{
+    TracesConfig, TracesDecommitment, TracesUnsentCommitment, TracesWitness,
 };
 #[cfg(feature: 'recursive_with_poseidon')]
-use integrity::air::layouts::recursive_with_poseidon::{
-    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+use integrity::air::layouts::recursive_with_poseidon::traces::{
+    TracesConfig, TracesDecommitment, TracesUnsentCommitment, TracesWitness,
 };
 #[cfg(feature: 'small')]
-use integrity::air::layouts::small::{
-    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+use integrity::air::layouts::small::traces::{
+    TracesConfig, TracesDecommitment, TracesUnsentCommitment, TracesWitness,
 };
 #[cfg(feature: 'starknet')]
-use integrity::air::layouts::starknet::{
-    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+use integrity::air::layouts::starknet::traces::{
+    TracesConfig, TracesDecommitment, TracesUnsentCommitment, TracesWitness,
 };
 #[cfg(feature: 'starknet_with_keccak')]
-use integrity::air::layouts::starknet_with_keccak::{
-    traces::TracesConfig, traces::{TracesUnsentCommitment, TracesDecommitment, TracesWitness}
+use integrity::air::layouts::starknet_with_keccak::traces::{
+    TracesConfig, TracesDecommitment, TracesUnsentCommitment, TracesWitness,
+};
+use integrity::deserialization::table::{
+    TableCommitmentConfigWithSerde, TableCommitmentWitnessWithSerde, TableDecommitmentWithSerde,
+};
+use integrity::deserialization::vector::{
+    VectorCommitmentConfig, VectorCommitmentConfigWithSerde, VectorCommitmentWitness,
+    VectorCommitmentWitnessWithSerde,
+};
+use integrity::table_commitment::table_commitment::{
+    TableCommitmentConfig, TableCommitmentWitness, TableDecommitment,
 };
 
 #[derive(Drop, Serde)]

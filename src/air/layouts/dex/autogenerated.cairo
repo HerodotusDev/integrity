@@ -1,10 +1,8 @@
-use integrity::{
-    air::layouts::dex::{
-        global_values::GlobalValues,
-        constants::{CONSTRAINT_DEGREE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND, MASK_SIZE},
-    },
-    common::math::{Felt252Div, pow},
+use integrity::air::layouts::dex::constants::{
+    CONSTRAINT_DEGREE, MASK_SIZE, NUM_COLUMNS_FIRST, NUM_COLUMNS_SECOND,
 };
+use integrity::air::layouts::dex::global_values::GlobalValues;
+use integrity::common::math::{Felt252Div, pow};
 
 fn eval_composition_polynomial_inner(
     mut mask_values: Span<felt252>,
@@ -264,7 +262,7 @@ fn eval_composition_polynomial_inner(
         column21_inter1_row0,
         column21_inter1_row1,
         column21_inter1_row2,
-        column21_inter1_row5
+        column21_inter1_row5,
     ] =
         (*mask_values
         .multi_pop_front::<200>()
@@ -1462,7 +1460,7 @@ fn eval_oods_polynomial_inner(
         column18,
         column19,
         column20,
-        column21
+        column21,
     ] =
         (*column_values
         .multi_pop_front::<22>()

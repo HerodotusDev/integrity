@@ -8,8 +8,8 @@ fn horner_eval(mut coefs: Span<felt252>, point: felt252) -> felt252 {
     loop {
         match coefs.pop_back() {
             Option::Some(coef) => { res = *coef + point * res; },
-            Option::None => { break; }
+            Option::None => { break; },
         }
-    };
+    }
     res
 }

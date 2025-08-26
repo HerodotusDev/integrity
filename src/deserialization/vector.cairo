@@ -1,5 +1,5 @@
 use integrity::vector_commitment::vector_commitment::{
-    VectorCommitmentConfig, VectorCommitmentWitness
+    VectorCommitmentConfig, VectorCommitmentWitness,
 };
 
 #[derive(Drop, Serde)]
@@ -22,9 +22,9 @@ struct VectorCommitmentWitnessWithSerde {
     authentications: Array<felt252>,
 }
 impl IntoVectorCommitmentWitness of Into<
-    VectorCommitmentWitnessWithSerde, VectorCommitmentWitness
+    VectorCommitmentWitnessWithSerde, VectorCommitmentWitness,
 > {
     fn into(self: VectorCommitmentWitnessWithSerde) -> VectorCommitmentWitness {
-        VectorCommitmentWitness { authentications: self.authentications.span(), }
+        VectorCommitmentWitness { authentications: self.authentications.span() }
     }
 }

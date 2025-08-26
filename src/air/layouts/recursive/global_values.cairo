@@ -37,7 +37,7 @@ struct GlobalValues {
     range_check16_perm_public_memory_prod: felt252,
     diluted_check_first_elm: felt252,
     diluted_check_permutation_public_memory_prod: felt252,
-    diluted_check_final_cum_val: felt252
+    diluted_check_final_cum_val: felt252,
 }
 
 // Elements that are sent from the prover after the commitment on the original trace.
@@ -49,5 +49,5 @@ struct InteractionElements {
     range_check16_perm_interaction_elm: felt252,
     diluted_check_permutation_interaction_elm: felt252,
     diluted_check_interaction_z: felt252,
-    diluted_check_interaction_alpha: felt252
+    diluted_check_interaction_alpha: felt252,
 }

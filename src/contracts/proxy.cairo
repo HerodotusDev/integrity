@@ -1,16 +1,13 @@
-use integrity::{
-    StarkProofWithSerde,
-    fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-    contracts::{
-        verifier::InitResult,
-        fact_registry::{
-            FactRegistered, VerifierConfiguration, VerificationListElement, Verification,
-            VerifierPreset
-        },
-    },
-    settings::{JobId, FactHash, VerificationHash},
+use integrity::StarkProofWithSerde;
+use integrity::contracts::fact_registry::{
+    FactRegistered, Verification, VerificationListElement, VerifierConfiguration, VerifierPreset,
 };
-use starknet::{ContractAddress, ClassHash};
+use integrity::contracts::verifier::InitResult;
+use integrity::fri::fri::{
+    FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
+};
+use integrity::settings::{FactHash, JobId, VerificationHash};
+use starknet::{ClassHash, ContractAddress};
 
 #[starknet::interface]
 trait IProxy<TContractState> {
@@ -44,15 +41,15 @@ trait IProxy<TContractState> {
     ) -> FactRegistered;
 
     fn get_all_verifications_for_fact_hash(
-        self: @TContractState, fact_hash: FactHash
+        self: @TContractState, fact_hash: FactHash,
     ) -> Array<VerificationListElement>;
     fn get_verification(
-        self: @TContractState, verification_hash: VerificationHash
+        self: @TContractState, verification_hash: VerificationHash,
     ) -> Option<Verification>;
 
     fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
     fn register_verifier(
-        ref self: TContractState, preset: VerifierPreset, address: ContractAddress
+        ref self: TContractState, preset: VerifierPreset, address: ContractAddress,
     );
     fn transfer_ownership(ref self: TContractState, new_owner: ContractAddress);
 
@@ -63,26 +60,29 @@ trait IProxy<TContractState> {
 
 #[starknet::contract]
 mod Proxy {
-    use integrity::{
-        contracts::{
-            verifier::{InitResult, ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait},
-            fact_registry::{
-                IFactRegistryExternalDispatcher, IFactRegistryExternalDispatcherTrait,
-                FactRegistry::{VerifierRegistered, OwnershipTransferred}, VerifierSettings,
-                VerifierConfiguration, FactRegistered, VerificationListElement, Verification,
-                VerifierPreset
-            },
-            fact_registry_interface::{IFactRegistryDispatcher, IFactRegistryDispatcherTrait,}
-        },
-        StarkProofWithSerde, StarkProof, MemoryVerification,
-        fri::fri::{FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable},
-        settings::{JobId, FactHash, VerificationHash},
+    use core::keccak::keccak_u256s_be_inputs;
+    use core::poseidon::{HashStateImpl, Poseidon, PoseidonImpl};
+    use core::starknet::event::EventEmitter;
+    use integrity::contracts::fact_registry::FactRegistry::{
+        OwnershipTransferred, VerifierRegistered,
     };
-    use starknet::{ContractAddress, ClassHash, get_caller_address, syscalls};
-    use core::{
-        poseidon::{Poseidon, PoseidonImpl, HashStateImpl}, keccak::keccak_u256s_be_inputs,
-        starknet::event::EventEmitter
+    use integrity::contracts::fact_registry::{
+        FactRegistered, IFactRegistryExternalDispatcher, IFactRegistryExternalDispatcherTrait,
+        Verification, VerificationListElement, VerifierConfiguration, VerifierPreset,
+        VerifierSettings,
     };
+    use integrity::contracts::fact_registry_interface::{
+        IFactRegistryDispatcher, IFactRegistryDispatcherTrait,
+    };
+    use integrity::contracts::verifier::{
+        ICairoVerifierDispatcher, ICairoVerifierDispatcherTrait, InitResult,
+    };
+    use integrity::fri::fri::{
+        FriLayerWitness, FriVerificationStateConstant, FriVerificationStateVariable,
+    };
+    use integrity::settings::{FactHash, JobId, VerificationHash};
+    use integrity::{MemoryVerification, StarkProof, StarkProofWithSerde};
+    use starknet::{ClassHash, ContractAddress, get_caller_address, syscalls};
     use super::IProxy;
 
     #[event]
@@ -112,7 +112,7 @@ mod Proxy {
             stark_proof: StarkProofWithSerde,
         ) -> FactRegistered {
             let fact = IFactRegistryExternalDispatcher {
-                contract_address: self.fact_registry.read()
+                contract_address: self.fact_registry.read(),
             }
                 .verify_proof_full_and_register_fact(verifier_config, stark_proof);
 
@@ -149,10 +149,10 @@ mod Proxy {
             last_layer_coefficients: Span<felt252>,
         ) -> FactRegistered {
             let fact = IFactRegistryExternalDispatcher {
-                contract_address: self.fact_registry.read()
+                contract_address: self.fact_registry.read(),
             }
                 .verify_proof_final_and_register_fact(
-                    job_id, state_constant, state_variable, last_layer_coefficients
+                    job_id, state_constant, state_variable, last_layer_coefficients,
                 );
 
             self.emit(fact);
@@ -160,14 +160,14 @@ mod Proxy {
         }
 
         fn get_all_verifications_for_fact_hash(
-            self: @ContractState, fact_hash: FactHash
+            self: @ContractState, fact_hash: FactHash,
         ) -> Array<VerificationListElement> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_all_verifications_for_fact_hash(fact_hash)
         }
 
         fn get_verification(
-            self: @ContractState, verification_hash: VerificationHash
+            self: @ContractState, verification_hash: VerificationHash,
         ) -> Option<Verification> {
             IFactRegistryDispatcher { contract_address: self.fact_registry.read() }
                 .get_verification(verification_hash)
@@ -179,7 +179,7 @@ mod Proxy {
         }
 
         fn register_verifier(
-            ref self: ContractState, preset: VerifierPreset, address: ContractAddress
+            ref self: ContractState, preset: VerifierPreset, address: ContractAddress,
         ) {
             IFactRegistryExternalDispatcher { contract_address: self.fact_registry.read() }
                 .register_verifier(preset, address);
@@ -194,8 +194,8 @@ mod Proxy {
             self
                 .emit(
                     Event::OwnershipTransferred(
-                        OwnershipTransferred { previous_owner: caller, new_owner }
-                    )
+                        OwnershipTransferred { previous_owner: caller, new_owner },
+                    ),
                 );
         }
 
