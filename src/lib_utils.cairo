@@ -217,7 +217,10 @@ fn calculate_bootloaded_fact_hash(
 }
 
 fn calculate_wrapped_bootloaded_fact_hash(
-    wrapper_program_hash: felt252, bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>
+    wrapper_program_hash: felt252,
+    bootloader_program_hash: felt252,
+    child_program_hash: felt252,
+    child_output: Span<felt252>
 ) -> felt252 {
     let mut bootloader_output = PoseidonImpl::new()
         .update(0x1)
@@ -234,8 +237,5 @@ fn calculate_wrapped_bootloaded_fact_hash(
         .update(bootloader_program_hash)
         .update(bootloader_output.finalize());
 
-    PoseidonImpl::new()
-        .update(bootloader_program_hash)
-        .update(wrapper_output.finalize())
-        .finalize()
+    PoseidonImpl::new().update(bootloader_program_hash).update(wrapper_output.finalize()).finalize()
 }
