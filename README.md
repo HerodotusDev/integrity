@@ -76,13 +76,14 @@ Since integrity is deployed on Starknet, other contracts can call FactRegistry t
 
 ```toml
 [dependencies]
-integrity = "2.0.0"
+integrity = "2.1.0"
 ```
 
 The package provides many utility functions for interacting with the verifier. For contract calls, you can use `Integrity` struct which provides following methods:
 
 -   `new() -> Integrity` - creates new interface for interacting with official FactRegistry (contract address is set automatically).
 -   `new_proxy() -> Integrity` - creates new interface using official Proxy contract (contract address is set automatically).
+-   `new_satellite(is_mocked: bool) -> Satellite` - creates new interface using [Satellite contract](https://github.com/HerodotusDev/satellite) (recommended when using [Atlantic](https://www.herodotus.cloud/en/atlantic)).
 -   `from_address(address: ContractAddress) -> Integrity` - create new interface using custom FactRegistry deployment.
 -   `is_fact_hash_valid_with_security(self: Integrity, fact_hash: felt252, security_bits: u32) -> bool` - checks if given `fact_hash` has been verified with at least `security_bits` number of security bits.
 -   `is_verification_hash_valid(self: Integrity, verification_hash: felt252) -> bool` - checks if given `verification_hash` has been verified.
@@ -99,6 +100,7 @@ There are also few utility function for calculating hashes:
 -   `get_verification_hash(fact_hash: felt252, verifier_config_hash: felt252, security_bits: u32) -> felt252` - calculates verification hash for given `fact_hash`, `verifier_config_hash` and `security_bits`.
 -   `calculate_fact_hash(program_hash: felt256, output: Span<felt252>) -> felt252` - calculates fact hash for given `program_hash` and `output` array.
 -   `calculate_bootloaded_fact_hash(bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>) -> felt252` - calculates fact hash for program that was bootloaded with standard bootloader.
+-   `calculate_wrapped_bootloaded_fact_hash(wrapper_program_hash: felt252, bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>) -> felt252` - calculates fact hash for a wrapped and bootloaded with the standard bootloader.
 
 Available constants are:
 
