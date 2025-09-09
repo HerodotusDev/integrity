@@ -29,3 +29,14 @@ trait IFactRegistry<TContractState> {
 
     fn get_verifier_address(self: @TContractState, preset: VerifierPreset) -> ContractAddress;
 }
+
+#[starknet::interface]
+pub trait IFactRegistryWithMocking<TContractState> {
+    fn get_all_verifications_for_fact_hash(
+        self: @TContractState, fact_hash: FactHash, is_mocked: bool,
+    ) -> Span<VerificationListElement>;
+
+    fn get_verification(
+        self: @TContractState, verification_hash: VerificationHash, is_mocked: bool,
+    ) -> Option<Verification>;
+}
