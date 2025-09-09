@@ -50,7 +50,8 @@ use integrity::{
     lib_utils::{
         get_verifier_config_hash, get_verification_hash, IntegrityT, Integrity, IntegrityTrait,
         IntegrityWithConfigT, IntegrityWithConfig, IntegrityWithConfigTrait, calculate_fact_hash,
-        SHARP_BOOTLOADER_PROGRAM_HASH, STONE_BOOTLOADER_PROGRAM_HASH, calculate_bootloaded_fact_hash
+        SHARP_BOOTLOADER_PROGRAM_HASH, STONE_BOOTLOADER_PROGRAM_HASH, calculate_bootloaded_fact_hash,
+        calculate_wrapped_bootloaded_fact_hash
     },
 };
 
