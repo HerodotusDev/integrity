@@ -99,6 +99,7 @@ There are also few utility function for calculating hashes:
 -   `get_verification_hash(fact_hash: felt252, verifier_config_hash: felt252, security_bits: u32) -> felt252` - calculates verification hash for given `fact_hash`, `verifier_config_hash` and `security_bits`.
 -   `calculate_fact_hash(program_hash: felt256, output: Span<felt252>) -> felt252` - calculates fact hash for given `program_hash` and `output` array.
 -   `calculate_bootloaded_fact_hash(bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>) -> felt252` - calculates fact hash for program that was bootloaded with standard bootloader.
+-   `calculate_wrapped_bootloaded_fact_hash(wrapper_program_hash: felt252, bootloader_program_hash: felt252, child_program_hash: felt252, child_output: Span<felt252>) -> felt252` - calculates fact hash for a wrapped and bootloaded with the standard bootloader.
 
 Available constants are:
 
