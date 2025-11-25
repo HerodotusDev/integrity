@@ -1,6 +1,6 @@
 # Integrity
 
-![Integrity](.github/readme.webp)
+![Integrity](.github/readme.png)
 
 [![Continuous Integration - tests](https://github.com/HerodotusDev/integrity/actions/workflows/tests.yml/badge.svg)](https://github.com/HerodotusDev/cairo-verifier/actions/workflows/tests.yml)
 
