@@ -59,6 +59,7 @@ fn verify_oods(
     trace_generator: felt252,
     contract_address: ContractAddress,
 ) {
+    assert(oods.len() >= 2, 'Invalid OODS length');
     let composition_from_trace = AIRComposition::eval_composition_polynomial(
         interaction_elements,
         public_input,
