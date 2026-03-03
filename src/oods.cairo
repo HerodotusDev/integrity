@@ -86,14 +86,16 @@ fn eval_oods_boundary_poly_at_points(
     contract_address: ContractAddress,
 ) -> Array<felt252> {
     assert(
-        decommitment.original.values.len() == points.len() * n_original_columns, 'Invalid value'
+        decommitment.original.values.len() == points.len() * n_original_columns,
+        'OODS/wrong orig values len'
     );
     assert(
         decommitment.interaction.values.len() == points.len() * n_interaction_columns,
-        'Invalid value'
+        'OODS/wrong interact values len'
     );
     assert(
-        composition_decommitment.values.len() == points.len() * CONSTRAINT_DEGREE, 'Invalid value'
+        composition_decommitment.values.len() == points.len() * CONSTRAINT_DEGREE,
+        'OODS/wrong compos values len'
     );
 
     let mut evaluations = ArrayTrait::<felt252>::new();

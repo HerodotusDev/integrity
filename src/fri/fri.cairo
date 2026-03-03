@@ -114,7 +114,7 @@ fn fri_commit_rounds(
 fn fri_commit(
     ref channel: Channel, unsent_commitment: FriUnsentCommitment, config: FriConfig
 ) -> FriCommitment {
-    assert((*config.fri_step_sizes.at(0)) == 0, 'Invalid value');
+    assert((*config.fri_step_sizes.at(0)) == 0, 'FRI/First step size != 0');
     assert(
         unsent_commitment.inner_layers.len().into() == config.n_layers - 1,
         'Invalid inner layer commitments'
@@ -133,7 +133,8 @@ fn fri_commit(
     let coefficients = unsent_commitment.last_layer_coefficients;
 
     assert(
-        pow(2, config.log_last_layer_degree_bound) == coefficients.len().into(), 'Invalid value'
+        pow(2, config.log_last_layer_degree_bound) == coefficients.len().into(),
+        'FRI/wrong last layer coeffs len'
     );
 
     FriCommitment {
@@ -180,7 +181,7 @@ fn fri_verify_layer_step(
 fn fri_verify_initial(
     queries: Span<felt252>, commitment: FriCommitment, decommitment: FriDecommitment,
 ) -> (FriVerificationStateConstant, FriVerificationStateVariable) {
-    assert(queries.len() == decommitment.values.len(), 'Invalid value');
+    assert(queries.len() == decommitment.values.len(), 'FRI/wrong queries len');
 
     // Compute first FRI layer queries.
     let fri_queries = gather_first_layer_queries(
@@ -193,7 +194,7 @@ fn fri_verify_initial(
             .last_layer_coefficients
             .len()
             .into() == pow(2, commitment.config.log_last_layer_degree_bound),
-        'Invlid value'
+        'FRI/wrong last layer coeffs len'
     );
 
     (
